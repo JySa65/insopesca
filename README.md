@@ -1,4 +1,4 @@
-# Proyecto IV 
+# Insopesca
 <!-- [![Build Status](https://travis-ci.org/JySa65/insopeca-api.svg?branch=master)](https://travis-ci.org/JySa65/insopeca-api) -->
 
 ## Requirements
@@ -23,13 +23,6 @@
 1. Edit values in `.env` depending on your preferences
 
         nano .env
-
-### Automatic using `Invoke`
-
-You must first install or verify that your computer has `python 3.6` or higher, `pip` and `virtualenv`
-
-        python3.x -m virtualenv ./.env && source ./.env/bin/activate
-        python3.x -m pip install -r requirements-invoke.txt
 
 ### Generate Secret Key
 
