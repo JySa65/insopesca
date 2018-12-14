@@ -18,17 +18,17 @@
 
 1. Copy to `env.example` into `.env`
 
-        cp env.example .env
+       $ cp env.example .env
 
 1. Edit values in `.env` depending on your preferences
 
-        nano .env
+       $ nano .env
 
 ### Generate Secret Key
 
 1. You must generate the secret key
     
-        python3.x generate_key.py
+        $ python3.x generate_key.py
 
 1. Copy the result in the .env file
 
@@ -36,14 +36,14 @@
 
 ### Init work environment
 
-        (.env) ➜ docker-compose build
-        (.env) ➜ docker-compose run web python manage migrate
+        $ docker-compose build
+        $ docker-compose run web python manage migrate
 
 ### Django Admin
 
 1. Create user:
 
-        (.env) ➜ docker-compose run web python manage createsuperuser
+        $ docker-compose run web python manage createsuperuser
 
 1. Access to django admin [localhost:8000/admin/](http://localhost:8000/admin/)
 
@@ -51,8 +51,8 @@
 
 1. Start containers
 
-        (.env) ➜ docker-compose up
+        $ docker-compose up
 
 1. Stop and destroy containers
 
-        (.env) ➜ docker-compose down
+        $ docker-compose down
