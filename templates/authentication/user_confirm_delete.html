@@ -1,0 +1,7 @@
+<h1>Desea Eliminar a: {{ object.email }}</h1>
+
+<form action="" method="post">
+	{% csrf_token %}
+	<button type="submit">Aceptar</button>
+	<a href="{% url 'authentication:list' %}">Volver</a>
+</form>
