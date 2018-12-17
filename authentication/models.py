@@ -35,7 +35,8 @@ class User(AbstractBaseUser, PermissionsMixin):
                             blank=False, null=False)
     last_name = models.CharField(_('Apellidos'), max_length=50,
                                  blank=False, null=False)
-    email = models.EmailField(_('Correo Electronico'), null=True, blank=True, unique=True)
+    email = models.EmailField(_('Correo Electronico'), null=False,
+                              blank=False, unique=True)
 
     # user
     uuid = models.CharField(_("Uuid"), max_length=50, null=True, blank=True)
@@ -47,7 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         _('Es Super Usuario'), default=False)
     is_delete = models.BooleanField(_('Eliminado'), default=False)
     role = models.CharField(_('Rol'), max_length=500,
-                        null=True, blank=True, choices=Selects().role())
+                            null=True, blank=True, choices=Selects().role())
     level = models.CharField(_('Level'), max_length=50,
                              null=True, blank=True, choices=Selects().level())
     # join

@@ -51,6 +51,18 @@ Usuarios
 									<a href="{% url 'authentication:delete' object.pk %}" class="btn btn-rounded btn-danger"><i class="fas fa-user-times"></i></a>
 								</td>
 							</tr>
+							{% empty %}
+
+							<tr>
+								<td></td>
+								<td>No</td>
+								<td>Hay</td>
+								<td>Registros</td>
+								<td>En</td>
+								<td>Esto</td>
+								<td>Momento</td>
+							</tr>
+
 							{% endfor %}
 						</tbody>
 					</table>

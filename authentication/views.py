@@ -23,7 +23,9 @@ class UserListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         super(UserListView, self).get_queryset()
-        return self.model.objects.filter(is_delete=False)
+        return self.model.objects.filter(is_delete=False).exclude(
+            email=self.request.user.email
+        )
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
