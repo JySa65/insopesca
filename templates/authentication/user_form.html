@@ -1,10 +1,22 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
-{% block title %} USUARIOS REGISTRO {% endblock %}
+{% block title %} 
+{% if object.pk %}
+USUARIO {{ object.email }}
+{% else %}
+USUARIOS REGISTRO 
+{% endif %}
+{% endblock %}
 {% block sidebar %}
 {% include 'sidebar/authentication.html' %}
 {% endblock sidebar %}
-{% block pageheader %}Registro De Usuario{% endblock pageheader %}
+{% block pageheader %}
+{% if object.pk %}
+Actualizacion De Usuario
+{% else %}
+Registro De Usuario
+{% endif %}
+{% endblock pageheader %}
 
 {% block context %}
 <div class="row">
@@ -16,6 +28,13 @@
 			<div class="card-body">
 				<form action="" method="post">
 					{% csrf_token %}
+					{{ form.errors }}
+					{% if form.errors %}
+					<div class="form-group text-center">
+						<div class="alert alert-danger" role="alert">
+						</div>
+					</div>
+					{% endif %}
 					<div class="form-group">
 						<label for="id_{{ form.email.name }}" class="col-form-label">Correo Electronico</label>
 						{{ form.email|add_class:"form-control"|attr:"autocomplete:off"|attr:"autofocus" }}
@@ -54,7 +73,7 @@
 								{{ form.role|add_class:"form-control"|attr:"autocomplete:off" }}
 							</div>
 						</div>
-						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" id="role">
 							<div class="form-group">
 								<label for="id_{{ form.level.name }}">Nivel</label>
 								{{ form.level|add_class:"form-control"|attr:"autocomplete:off" }}

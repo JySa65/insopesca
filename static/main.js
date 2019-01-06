@@ -150,7 +150,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _scs
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("var is_super = document.querySelector(\"#id_is_superuser\");\n\nif (is_super) {\n  is_super.onclick = function (e) {\n    var role_level = document.querySelector(\"#role_level\");\n    var value = e.target.checked;\n\n    if (value) {\n      role_level.setAttribute(\"hidden\", \"hidden\");\n    } else {\n      role_level.removeAttribute(\"hidden\");\n    }\n  };\n}\n\n//# sourceURL=webpack:///./src/module/user_register.js?");
+eval("var is_super = document.querySelector(\"#id_is_superuser\");\n\nif (is_super) {\n  is_super.onclick = function (e) {\n    var role_level = document.querySelector(\"#role_level\");\n    var value = e.target.checked;\n\n    if (value) {\n      role_level.setAttribute(\"hidden\", \"hidden\");\n    } else {\n      role_level.removeAttribute(\"hidden\");\n    }\n  };\n}\n\nvar role = document.querySelector(\"#id_role\");\n\nif (role) {\n  role.onchange = function (e) {\n    var role = document.querySelector(\"#role\");\n    var value = e.target.value;\n    var level = document.querySelector(\"#id_level\");\n\n    if (value == \"is_coordinator\") {\n      role.setAttribute(\"hidden\", \"hidden\");\n      level.removeAttribute(\"required\");\n    } else {\n      role.removeAttribute(\"hidden\");\n      level.setAttribute(\"required\", \"required\");\n      level.value = \"\";\n    }\n  };\n}\n\n//# sourceURL=webpack:///./src/module/user_register.js?");
 
 /***/ }),
 

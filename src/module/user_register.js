@@ -10,3 +10,20 @@ if (is_super) {
 		}
 	}
 }
+
+const role = document.querySelector("#id_role")
+if (role) {
+	role.onchange = e => {
+		const role = document.querySelector("#role")
+		const value = e.target.value
+		const level = document.querySelector("#id_level")
+		if (value == "is_coordinator") {
+			role.setAttribute("hidden", "hidden")
+			level.removeAttribute("required")
+		} else {
+			role.removeAttribute("hidden")
+			level.setAttribute("required", "required")
+			level.value = ""
+		}
+	}
+}

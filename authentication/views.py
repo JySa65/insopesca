@@ -35,7 +35,15 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 class UserCreateView(LoginRequiredMixin, CreateView):
     model = models.User
     form_class = forms.UserCreateForm
-    success_url = reverse_lazy('authentication:list')
+
+    def form_valid(self, form):
+        _object = form.save(commit=False)
+        _object.set_password(_object.ci)
+        self.object = _object.save()
+        return super(UserCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('authentication:detail', args=(self.object.pk,))
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
@@ -47,6 +55,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = models.User
     success_url = reverse_lazy('authentication:list')
+
 
 class HomePageFormView(TemplateView):
     template_name = "authentication/homepage.html"

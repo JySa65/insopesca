@@ -1,9 +1,8 @@
 from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from authentication.models import User
 
 
-class UserCreateForm(UserCreationForm):
+class UserCreateForm(ModelForm):
 
     class Meta:
         model = User
@@ -12,7 +11,7 @@ class UserCreateForm(UserCreationForm):
 
 
 
-class UserUpdateForm(UserChangeForm):
+class UserUpdateForm(ModelForm):
 
     class Meta:
         model = User
