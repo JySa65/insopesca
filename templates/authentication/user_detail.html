@@ -1,5 +1,163 @@
-{{ object.pk }} <br>
-	<a>{{ object.email }}</a> <br>
-	{{ object.name }} <br>
-	{{ object.last_name }} <br>
-<br>
+{% extends 'base.html' %}
+{% block title %} {{ object.name|upper }} {% endblock %}
+
+
+{% block sidebar %}
+{% include 'sidebar/authentication.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+{{ object.get_full_name }}
+{% endblock pageheader %}
+
+{% block context %}
+<div class="row">
+	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 text-primary"><b>Información Personal</b></span>
+			</div>
+			<div class="card-body">
+				<div class="row p-0">
+					<div class="col-sm-12 mb-3">
+						<label class="h5">
+							<b>Cedula:</b>
+						</label>
+						<span class="h5"> {{ object.ci }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Nombre:</b>
+						</label>
+						<span class="h5">{{ object.name }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Apellido:</b>
+						</label>
+						<span class="h5">{{ object.last_name }}</span>
+					</div>
+					<div class="col-sm-12">
+						<label class="h5">
+							<b>Correo Electronico:</b>
+						</label>
+						<span class="h5">{{ object.email }}</span>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="card-header">
+				<span class="h4 text-primary"><b>Permisos</b></span>
+			</div>
+			<div class="card-body">
+				<div class="row p-0">
+					<div class="col-sm-3 mb-3">
+						<label class="h5">
+							<b>Activo: </b>
+						</label>
+						{% if object.is_active %}
+						<span class="badge badge-success">Activo</span>
+						{% else %}
+						<span class="badge badge-danger">Inactivo</span>
+						{% endif %}
+					</div>
+					<div class="col-sm-5 mb-3">
+						<label class="h5">
+							<b>Acceso Al Administrador: </b>
+						</label>
+						{% if object.is_staff %}
+						<span class="badge badge-success">Si</span>
+						{% else %}
+						<span class="badge badge-danger">No</span>
+						{% endif %}
+					</div>
+					<div class="col-sm-4 mb-3">
+						<label class="h5">
+							<b>Super Usuario: </b>
+						</label>
+						{% if object.is_superuser %}
+						<span class="badge badge-success">Si</span>
+						{% else %}
+						<span class="badge badge-danger">No</span>
+						{% endif %}
+					</div>
+					{% if not object.is_superuser %}
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Rol: </b>
+						</label>
+						{% if object.role == "is_coordinator" %}
+						<span class="h5">Coordinador</span>
+						{% else %}
+						<span class="h5">Trabajador</span>
+						{% endif %}
+					</div>
+					{% if object.role != "is_coordinator" %}
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Nivel: </b>
+						</label>
+						{% if object.level == "is_ord_pesque" %}
+						<span class="h5">Ordenacion Pesquera</span>
+						{% elif object.level == "is_acuicul" %}
+						<span class="h5">Acuicultura</span>
+						{% endif %}
+					</div>
+					{% endif %}
+					{% endif %}
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row text-center">
+					<div class="col-sm-6 mb-3">
+						<a href="{% url 'authentication:update' object.pk %}" class="btn btn-rounded btn-info">
+							<i class="far fa-edit"></i>
+							Actualizar
+						</a>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<a href="{% url 'authentication:delete' object.pk %}" class="btn btn-rounded btn-danger">
+							<i class="fas fa-user-times"></i>
+							Eliminar
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 text-primary"><b>Información De Seguridad</b></span>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-sm-6 mb-4">
+						<label class="h5">
+							<b>Cambio La Contraseña: </b>
+						</label>
+						{% if object.change_pass %}
+						<span class="badge badge-success">Si</span>
+						{% else %}
+						<span class="badge badge-danger">No</span>
+						{% endif %}
+					</div>
+					<div class="col-sm-6 mb-4">
+						<label class="h5">
+							<b>Completo Las Preguntas: </b>
+						</label>
+						{% if object.question %}
+						<span class="badge badge-success">Si</span>
+						{% else %}
+						<span class="badge badge-danger">No</span>
+						{% endif %}
+					</div>
+					<div class="col-sm-12 mb-3 text-center">
+						<a href="#!" class="btn btn-rounded btn-warning">
+							<i class="far fa-edit"></i>
+							Reestablecer Acceso Al Sistema
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
