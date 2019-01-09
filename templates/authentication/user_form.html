@@ -18,12 +18,17 @@ Registro De Usuario
 {% endif %}
 {% endblock pageheader %}
 
+
 {% block context %}
 <div class="row">
 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 		<div class="card">
 			<div class="card-header">
+				{% if object.pk %}
+				<a href="{% url 'authentication:detail' object.pk %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				{% else %}
 				<a href="{% url 'authentication:list' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				{% endif %}
 			</div>
 			<div class="card-body">
 				<form action="" method="post">
