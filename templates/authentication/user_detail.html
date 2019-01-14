@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 {% block title %} {{ object.name|upper }} {% endblock %}
-
-
 {% block sidebar %}
 {% include 'sidebar/authentication.html' %}
 {% endblock sidebar %}
@@ -114,12 +112,14 @@
 							Actualizar
 						</a>
 					</div>
+					{% if request.user.pk != object.pk %}
 					<div class="col-sm-6 mb-3">
 						<a href="{% url 'authentication:delete' object.pk %}" class="btn btn-rounded btn-danger">
 							<i class="fas fa-user-times"></i>
 							Eliminar
 						</a>
 					</div>
+					{% endif %}
 				</div>
 			</div>
 		</div>
@@ -158,6 +158,54 @@
 				</div>
 			</div>
 		</div>
+		{% if request.user.pk == object.pk %}
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 text-primary"><b>Preguntas De Seguridad</b></span>
+			</div>
+			<div class="card-body">
+				{% for question in questions %}
+				<div class="row">
+					<div class="col-sm-12">
+						<label class="h5">
+							<b>Pregunta {{ forloop.counter }}: </b>
+						</label>
+						<span class="h5">{{ question.question }}</span>
+					</div>
+					<div class="col-sm-12">
+						<label class="h5">
+							<b>Respuesta {{ forloop.counter }}: </b>
+						</label>
+						<span class="h5">{{ question.answer }}</span>
+						{% if not forloop.last %}
+						<hr>
+						{% endif %}
+					</div>
+				</div>
+				{% empty %}
+				<div class="row text-center">
+					<div class="col-sm-12 mb-3">
+						<label class="h5">
+							<b>No tiene Preguntas Registradas</b>
+						</label>
+						<span class="h5">{{ object.name }}</span>
+					</div>
+				</div>
+				{% endfor %}
+				<div class="col-sm-12 mb-3 mt-3 text-center">
+					<a href="{% url 'authentication:security_question' object.pk %}" class="btn btn-rounded btn-warning">
+						{% if not questions %}
+						<i class="fa fa-plus"></i>
+						Añadir Preguntas
+						{% else %}
+						<i class="far fa-edit"></i>
+						Editar Preguntas
+						{% endif %}
+						</a>
+					</div>
+			</div>
+		</div>
+		{% endif %}
 	</div>
 </div>
 {% endblock %}

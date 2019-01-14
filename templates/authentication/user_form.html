@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
-{% block title %} 
+{% block title %}
 {% if object.pk %}
 USUARIO {{ object.email }}
 {% else %}
-USUARIOS REGISTRO 
+USUARIOS REGISTRO
 {% endif %}
 {% endblock %}
 {% block sidebar %}
@@ -33,13 +33,18 @@ Registro De Usuario
 			<div class="card-body">
 				<form action="" method="post">
 					{% csrf_token %}
-					{{ form.errors }}
-					{% if form.errors %}
-					<div class="form-group text-center">
-						<div class="alert alert-danger" role="alert">
+					{% for field in form %}
+						{% if field.errors %}
+						<div class="form-group">
+							<div class="alert alert-danger" role="alert">
+								{{ field.label }}:
+								{% for error in field.errors %}
+									{{ error }}
+								{% endfor %}
+							</div>
 						</div>
-					</div>
-					{% endif %}
+						{% endif %}
+					{% endfor %}
 					<div class="form-group">
 						<label for="id_{{ form.email.name }}" class="col-form-label">Correo Electronico</label>
 						{{ form.email|add_class:"form-control"|attr:"autocomplete:off"|attr:"autofocus" }}

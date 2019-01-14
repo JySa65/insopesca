@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %} Preguntas De Seguridad {{ object.name|upper }} {% endblock %}
+{% block sidebar %}
+{% include 'sidebar/authentication.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+Preguntas De Seguridad: {{ object.get_full_name }}
+{% endblock pageheader %}
+
+{% block context %}
+<div class="row">
+  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="card">
+      <div class="card-header">
+        <a href="javascript:window.history.back()" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+      </div>
+      <div class="card-body">
+        <form action="" method="post">
+          {% csrf_token %}
+          {% for field in form %}
+          {% if field.errors %}
+          <div class="form-group">
+              <div class="alert alert-danger" role="alert">
+								{{ field.label }}:
+								{% for error in field.errors %}
+									{{ error }}
+								{% endfor %}
+							</div>
+						</div>
+						{% endif %}
+					{% endfor %}
+          
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="id_{{ form.question_one.name }}" class="col-form-label">Pregunta 1</label>
+                {{ form.question_one }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="id_{{ form.answer_one.name }}" class="col-form-label">Respuesta 1</label>
+                {{ form.answer_one }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="id_{{ form.question_two.name }}" class="col-form-label">Pregunta 2</label>
+                {{ form.question_two }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="id_{{ form.answer_two.name }}" class="col-form-label">Respuesta 2</label>
+                {{ form.answer_two }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="id_{{ form.question_three.name }}" class="col-form-label">Pregunta 3</label>
+                {{ form.question_three }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="id_{{ form.answer_three.name }}" class="col-form-label">Respuesta 3</label>
+                {{ form.answer_three }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row text-center">
+            <div class="col-sm-12">
+              <br><br>
+              <div class="form-group">
+                <button type="submit" class="btn btn-rounded btn-success">Aceptar</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

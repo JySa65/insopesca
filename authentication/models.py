@@ -72,3 +72,19 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.name
+
+
+class SecurityQuestion(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.TextField(_("Pregunta"), null=False)
+    answer = models.TextField(_("Respuesta"), null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Pregunta De Seguridad"
+        verbose_name_plural = "Preguntas De Seguridad"
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return self.user.email

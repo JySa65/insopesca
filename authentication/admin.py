@@ -1,5 +1,5 @@
 from django.contrib import admin
-from authentication.models import User
+from authentication.models import User, SecurityQuestion
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import ugettext, ugettext_lazy as _
 # Register your models here.
@@ -34,3 +34,5 @@ class UserAdmin(BaseUserAdmin):
         (_('Permissions'), {
          'fields': ('is_superuser', 'is_active', 'is_staff')}),
     )
+
+admin.site.register(SecurityQuestion)

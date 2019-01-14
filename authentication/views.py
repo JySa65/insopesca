@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 # generic View
 from django.views.generic import CreateView, ListView, UpdateView, \
@@ -31,6 +31,12 @@ class UserListView(LoginRequiredMixin, ListView):
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = models.User
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserDetailView, self).get_context_data(**kwargs)
+        context['questions'] = models.SecurityQuestion.objects.filter(
+            user__pk=self.request.user.pk)
+        return context
+
 
 class UserCreateView(LoginRequiredMixin, CreateView):
     model = models.User
@@ -55,6 +61,41 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = models.User
     success_url = reverse_lazy('authentication:list')
+
+
+class SecurityQuestionCreateView(LoginRequiredMixin, FormView):
+    model = models.SecurityQuestion
+    form_class = forms.SecurityQuestionForm
+    template_name = 'authentication/securityquestion_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SecurityQuestionCreateView,
+                        self).get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
+
+    def post(self, *args, **kwargs):
+        form = self.form_class(self.request.POST)
+        if form.is_valid():
+            self.model.objects.filter(user=self.request.user).delete()
+            user = get_object_or_404(models.User, pk=self.request.user.pk)
+            question_one = form.cleaned_data.get("question_one")
+            question_two = form.cleaned_data.get("question_two")
+            question_three = form.cleaned_data.get("question_three")
+            answer_one = form.cleaned_data.get("answer_one")
+            answer_two = form.cleaned_data.get("answer_two")
+            answer_three = form.cleaned_data.get("answer_three")
+            securitys = [
+                {'question': question_one, 'answer': answer_one},
+                {'question': question_two, 'answer': answer_two},
+                {'question': question_three, 'answer': answer_three}
+            ]
+            for security in securitys:
+                self.model.objects.create(**security, user=user)
+            return HttpResponseRedirect(
+                reverse_lazy(
+                    'authentication:detail', args=(self.kwargs['pk'],)))
+        return render(self.request, self.template_name, {'form': form})
 
 
 class HomePageFormView(TemplateView):
