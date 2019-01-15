@@ -1,6 +1,6 @@
 from authentication.views import UserListView, UserCreateView, UserUpdateView, \
     UserDeleteView, UserDetailView, ChangePassword, HomePageFormView, \
-    SecurityQuestionCreateView
+    SecurityQuestionCreateView, UserAdminDetailView, UserAdminUpdateView
 from django.urls import path
 
 app_name = "authentication"
@@ -18,4 +18,9 @@ urlpatterns = [
     # change password
     path('change_password/', ChangePassword.as_view(), name="change_password"),
 
+    # Profile
+    path('detail/',
+        UserAdminDetailView.as_view(), name='detail_profile'),
+    path('update/',
+        UserAdminUpdateView.as_view(), name='update_profile'),
 ]

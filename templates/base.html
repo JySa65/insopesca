@@ -130,9 +130,9 @@
 										{{ request.user.email }}</h5>
 									<span class="status"></span><span class="ml-2">Disponible</span>
 								</div>
-								<a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Pefil</a>
+								<a class="dropdown-item" href="{% url 'authentication:detail_profile' %}"><i class="fas fa-user mr-2"></i>Pefil</a>
 								<a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Configuración</a>
-								<a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>Cerrar Sesión</a>
+								<a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-power-off mr-2"></i>Cerrar Sesión</a>
 							</div>
 						</li>
 					</ul>

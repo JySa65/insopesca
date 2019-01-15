@@ -23,7 +23,7 @@ class UserListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         super(UserListView, self).get_queryset()
-        return self.model.objects.filter(is_delete=False).exclude(
+        return self.model.objects.filter(is_delete=False, is_superuser=False).exclude(
             email=self.request.user.email
         )
 
@@ -61,6 +61,46 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = models.User
     success_url = reverse_lazy('authentication:list')
+
+
+class UserAdminDetailView(LoginRequiredMixin, DetailView):
+    model = models.User
+
+    def get_object(self):
+        user = self.request.user.pk
+        object = get_object_or_404(self.model, pk=user)
+        return object
+
+    def get_context_data(self, **kwargs):
+        context = super(UserAdminDetailView,
+                        self).get_context_data(**kwargs)
+        context['profile'] = True
+        return context
+
+
+class UserAdminUpdateView(LoginRequiredMixin, UpdateView):
+    model = models.User
+    form_class = forms.UserUpdateForm
+
+    def get_object(self):
+        user = self.request.user.pk
+        object = get_object_or_404(self.model, pk=user)
+        return object
+
+    def get_context_data(self, **kwargs):
+        context = super(UserAdminUpdateView,
+                        self).get_context_data(**kwargs)
+        context['profile'] = True
+        return context
+
+    def form_valid(self, form):
+        _object = form.save(commit=False)
+        _object.is_active = True
+        self.object = _object.save()
+        return super(UserAdminUpdateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('authentication:detail_profile')
 
 
 class SecurityQuestionCreateView(LoginRequiredMixin, FormView):

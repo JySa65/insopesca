@@ -24,10 +24,14 @@ Registro De Usuario
 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 		<div class="card">
 			<div class="card-header">
-				{% if object.pk %}
-				<a href="{% url 'authentication:detail' object.pk %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				{% if not profile %}
+					{% if object.pk %}
+					<a href="{% url 'authentication:detail' object.pk %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+					{% else %}
+					<a href="{% url 'authentication:list' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+					{% endif %}
 				{% else %}
-				<a href="{% url 'authentication:list' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+					<a href="{% url 'authentication:detail_profile' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
 				{% endif %}
 			</div>
 			<div class="card-body">
@@ -61,6 +65,8 @@ Registro De Usuario
 						<label for="id_{{ form.last_name.name }}" class="col-form-label">Apellido</label>
 						{{ form.last_name|add_class:"form-control"|attr:"autocomplete:off" }}
 					</div>
+
+					{% if request.user.is_superuser %}
 					<div class="form-group text-center">
 						<br>
 						<label class="custom-control custom-checkbox custom-control-inline">
@@ -90,10 +96,15 @@ Registro De Usuario
 							</div>
 						</div>
 					</div>
+					{% endif %}
+
+					
+					{{ form.password }}
 					<div class="form-group text-center">
 						<br>
 						<button type="submit" class="btn btn-rounded btn-success">Aceptar</button>
 					</div>
+
 				</form>
 			</div>
 		</div>
