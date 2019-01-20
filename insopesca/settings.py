@@ -51,7 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'authentication.middlewares.VerifyQuestionAndChagePassword',
+    'authentication.middlewares.VerifyChagePassword',
+    'authentication.middlewares.VerifyQuestion',
     'authentication.middlewares.RequestUserValidUrl',
 ]
 

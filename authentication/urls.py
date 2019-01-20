@@ -1,7 +1,10 @@
+from django.urls import path
+
 from authentication.views import UserListView, UserCreateView, UserUpdateView, \
     UserDeleteView, UserDetailView, ChangePassword, HomePageFormView, \
-    SecurityQuestionCreateView, UserAdminDetailView, UserAdminUpdateView
-from django.urls import path
+    SecurityQuestionCreateView, UserAdminDetailView, UserAdminUpdateView, \
+    RestoreDataUser
+    
 
 app_name = "authentication"
 
@@ -23,4 +26,6 @@ urlpatterns = [
         UserAdminDetailView.as_view(), name='detail_profile'),
     path('update/',
         UserAdminUpdateView.as_view(), name='update_profile'),
+
+    path('restore-data/', RestoreDataUser.as_view(), name="restore_data"),
 ]

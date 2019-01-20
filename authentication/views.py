@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 # generic View
 from django.views.generic import CreateView, ListView, UpdateView, \
-    DeleteView, DetailView, FormView, TemplateView
+    DeleteView, DetailView, FormView, TemplateView, View
+# serializer
+from django.core import serializers
 # login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
@@ -15,6 +17,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 # Model Authentication
 from authentication import models, forms
+import json
 # Create your views here.
 
 
@@ -185,3 +188,26 @@ class ChangePassword(LoginRequiredMixin, FormView):
         update_session_auth_hash(self.request, user)
         logout(self.request)
         return super(ChangePassword, self).form_valid(form)
+
+
+class RestoreDataUser(LoginRequiredMixin, View):
+    model = models.User
+
+    def post(self, request, *args, **kwargs):
+        try:
+            pk = int(json.loads(str(request.body, 'utf-8')).get('pk'))
+            user = get_object_or_404(self.model, pk=pk)
+            user.set_password(user.ci)
+            user.change_pass = False
+            user.save()
+            data = {
+                "status": True,
+            }
+            return JsonResponse(data, safe=False)
+        except Exception as e:
+            data = {
+                "status": False,
+                "msg": e
+            }
+            return JsonResponse(data, safe=False)
+        
