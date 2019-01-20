@@ -25,4 +25,6 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name="logout"),
     path('authentication/', include(
         'authentication.urls', namespace="authentication")),
+    path("acuicultura/",include('acuicultura.urls',namespace="acuicultura"))
+
 ]

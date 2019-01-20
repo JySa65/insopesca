@@ -11,3 +11,10 @@ class Selects(object):
 			('is_ord_pesque', 'Ordenación Pesquera'),
 			('is_acuicul', 'Acuicultura'),
 		)
+	def type_document(self):
+		return (
+			('CEDULA','CEDULA'),
+			('PASAPORTE','PASAPORTE'),
+			('RIF','RIF')
+			
+		)
