@@ -4,11 +4,21 @@
 <li class="nav-item">
 	<a class="nav-link" href="#"><i class="fas fa-file-pdf"></i>Reportes</a>
 </li>
-<li class="nav-item">
-	<a class="nav-link" href="#"><i class="fas fa-cog"></i>Configuracion</a>
+<li class="nav-item ">
+	<a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Configuración <span class="badge badge-success">6</span></a>
+	<div id="submenu-1" class="collapse submenu" style="">
+			<ul class="nav flex-column">
+					<li class="nav-item">
+							<a class="nav-link" href="{% url 'authentication:change_password' %}">Cambio De Contraseña</a>
+					</li>
+					<li class="nav-item">
+							<a class="nav-link" href="dashboard-sales.html">Sesiones</a>
+					</li>
+			</ul>
+	</div>
 </li>
 <li class="nav-item">
-	<a class="nav-link" href="#"><i class="fas fa-power-off "></i>Cerrar Sesión</a>
+	<a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-power-off "></i>Cerrar Sesión</a>
 </li>
 <!-- <li class="nav-divider">
 	Features

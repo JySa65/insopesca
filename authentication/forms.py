@@ -17,6 +17,11 @@ class UserUpdateForm(forms.ModelForm):
         fields = ('email', 'ci', 'name', 'last_name', 'role', 'level',
                   'is_active', 'is_staff', 'is_superuser', 'password')  # '__all__'
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password'].widget.attrs.update(
+            {'hidden': 'hidden'})
+
 
 class SecurityQuestionForm(forms.ModelForm):
     question_one = forms.CharField(max_length=1000, required=True)

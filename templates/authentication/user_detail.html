@@ -107,7 +107,7 @@
 			<div class="card-body">
 				<div class="row text-center">
 					<div class="col-sm-6 mb-3">
-						<a href="{% url 'authentication:update' object.pk %}" class="btn btn-rounded btn-info">
+						<a href="{% if not profile %} {% url 'authentication:update' object.pk %} {% else %} {% url 'authentication:update_profile' %} {% endif %} " class="btn btn-rounded btn-info">
 							<i class="far fa-edit"></i>
 							Actualizar
 						</a>
@@ -149,12 +149,14 @@
 						<span class="badge badge-danger">No</span>
 						{% endif %}
 					</div>
+					{% if request.user.is_superuser and request.user.pk != object.pk %}
 					<div class="col-sm-12 mb-3 text-center">
-						<a href="#!" class="btn btn-rounded btn-warning">
+						<a href="#!" class="btn btn-rounded btn-warning" id="restore_data" data="{{ object.pk }}">
 							<i class="far fa-edit"></i>
 							Reestablecer Acceso Al Sistema
 						</a>
 					</div>
+					{% endif %}
 				</div>
 			</div>
 		</div>
