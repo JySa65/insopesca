@@ -74,6 +74,8 @@ class UserAdminDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(UserAdminDetailView,
                         self).get_context_data(**kwargs)
+        context['questions'] = models.SecurityQuestion.objects.filter(
+            user__pk=self.request.user.pk)
         context['profile'] = True
         return context
 
@@ -132,6 +134,8 @@ class SecurityQuestionCreateView(LoginRequiredMixin, FormView):
             ]
             for security in securitys:
                 self.model.objects.create(**security, user=user)
+            user.question = True
+            user.save()
             return HttpResponseRedirect(
                 reverse_lazy(
                     'authentication:detail', args=(self.kwargs['pk'],)))

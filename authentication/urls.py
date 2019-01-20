@@ -16,7 +16,7 @@ urlpatterns = [
          name="security_question"),
 
     # change password
-    path('change_password/', ChangePassword.as_view(), name="change_password"),
+    path('change-password/', ChangePassword.as_view(), name="change_password"),
 
     # Profile
     path('detail/',

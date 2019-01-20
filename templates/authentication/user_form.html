@@ -25,29 +25,29 @@ Registro De Usuario
 		<div class="card">
 			<div class="card-header">
 				{% if not profile %}
-					{% if object.pk %}
-					<a href="{% url 'authentication:detail' object.pk %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
-					{% else %}
-					<a href="{% url 'authentication:list' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
-					{% endif %}
+				{% if object.pk %}
+				<a href="{% url 'authentication:detail' object.pk %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
 				{% else %}
-					<a href="{% url 'authentication:detail_profile' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				<a href="{% url 'authentication:list' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				{% endif %}
+				{% else %}
+				<a href="{% url 'authentication:detail_profile' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
 				{% endif %}
 			</div>
 			<div class="card-body">
 				<form action="" method="post">
 					{% csrf_token %}
 					{% for field in form %}
-						{% if field.errors %}
-						<div class="form-group">
-							<div class="alert alert-danger" role="alert">
-								{{ field.label }}:
-								{% for error in field.errors %}
-									{{ error }}
-								{% endfor %}
-							</div>
+					{% if field.errors %}
+					<div class="form-group">
+						<div class="alert alert-danger" role="alert">
+							{{ field.label }}:
+							{% for error in field.errors %}
+							{{ error }}
+							{% endfor %}
 						</div>
-						{% endif %}
+					</div>
+					{% endif %}
 					{% endfor %}
 					<div class="form-group">
 						<label for="id_{{ form.email.name }}" class="col-form-label">Correo Electronico</label>
@@ -66,23 +66,26 @@ Registro De Usuario
 						{{ form.last_name|add_class:"form-control"|attr:"autocomplete:off" }}
 					</div>
 
-					{% if request.user.is_superuser %}
 					<div class="form-group text-center">
 						<br>
-						<label class="custom-control custom-checkbox custom-control-inline">
-							{{ form.is_superuser|add_class:"custom-control-input" }}
+						<label class="custom-control custom-checkbox custom-control-inline"
+						style="{%if request.user.pk == object.pk %}display:none;{% endif %}">
+							{{ form.is_superuser|add_class:"custom-control-input"}}
 							<span class="custom-control-label">Es Super Usuario</span>
 						</label>
-						<label class="custom-control custom-checkbox custom-control-inline">
+						<label class="custom-control custom-checkbox custom-control-inline"
+						style="{%if request.user.pk == object.pk %}display:none;{% endif %}">
 							{{ form.is_staff|add_class:"custom-control-input" }}
 							<span class="custom-control-label">Acceso Al Administrador</span>
 						</label>
-						<label class="custom-control custom-checkbox custom-control-inline">
+						<label class="custom-control custom-checkbox custom-control-inline"
+						style="{%if request.user.pk == object.pk %}display:none;{% endif %}">
 							{{ form.is_active|add_class:"custom-control-input" }}
 							<span class="custom-control-label">Es Activo</span>
 						</label>
 					</div>
-					<div class="row" id="role_level">
+					<div class="row" id="role_level"
+					style="{%if request.user.pk == object.pk %}display:none;{% endif %}">
 						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
 							<div class="form-group">
 								<label for="id_{{ form.role.name }}">Rol</label>
@@ -96,9 +99,8 @@ Registro De Usuario
 							</div>
 						</div>
 					</div>
-					{% endif %}
 
-					
+
 					{{ form.password }}
 					<div class="form-group text-center">
 						<br>
