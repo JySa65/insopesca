@@ -26,5 +26,8 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name="logout"),
     path('authentication/', include(
         'authentication.urls', namespace="authentication")),
-    path('forgot-password', ForgotPassword.as_view(), name="forgot_password")
+    path('forgot-password', ForgotPassword.as_view(), name="forgot_password"),
+    path("acuicultura/", include(
+        'acuicultura.urls', namespace="acuicultura"))
+
 ]
