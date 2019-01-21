@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from authentication.views import LoginFormView, HomePageFormView
+from authentication.views import LoginFormView, HomePageFormView, \
+    ForgotPassword
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
@@ -25,4 +26,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name="logout"),
     path('authentication/', include(
         'authentication.urls', namespace="authentication")),
+    path('forgot-password', ForgotPassword.as_view(), name="forgot_password")
 ]

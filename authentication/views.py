@@ -211,3 +211,7 @@ class RestoreDataUser(LoginRequiredMixin, View):
             }
             return JsonResponse(data, safe=False)
         
+
+class ForgotPassword(FormView):
+    model = models.SecurityQuestion
+    template_name = "authentication/forgot_password.html"
