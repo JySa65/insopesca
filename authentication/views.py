@@ -145,10 +145,6 @@ class SecurityQuestionCreateView(LoginRequiredMixin, FormView):
         return render(self.request, self.template_name, {'form': form})
 
 
-class HomePageFormView(TemplateView):
-    template_name = "authentication/homepage.html"
-
-
 class LoginFormView(FormView):
     form_class = AuthenticationForm
     template_name = "authentication/login.html"
@@ -210,8 +206,9 @@ class RestoreDataUser(LoginRequiredMixin, View):
                 "msg": e
             }
             return JsonResponse(data, safe=False)
-        
+
 
 class ForgotPassword(FormView):
-    model = models.SecurityQuestion
+    model = models.User
     template_name = "authentication/forgot_password.html"
+    form_class = forms.ForgotPasswordForm

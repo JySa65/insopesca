@@ -15,14 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from authentication.views import LoginFormView, HomePageFormView, \
-    ForgotPassword
+from authentication.views import LoginFormView, ForgotPassword
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
-    path('', HomePageFormView.as_view(), name="homepage"),
     path('admin/', admin.site.urls),
-    path('login/', LoginFormView.as_view(), name="login"),
+    path('', LoginFormView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),
     path('authentication/', include(
         'authentication.urls', namespace="authentication")),
