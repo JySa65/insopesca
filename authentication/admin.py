@@ -2,6 +2,7 @@ from django.contrib import admin
 from authentication.models import User, SecurityQuestion
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import ugettext, ugettext_lazy as _
+from simple_history.admin import SimpleHistoryAdmin
 # Register your models here.
 
 
@@ -29,10 +30,11 @@ class UserAdmin(BaseUserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('ci', 'name', 'last_name', 'email', 'password1', 'password2')}
-        ),
+         ),
         (_('Market Stall'), {'fields': ('role', 'level',)}),
         (_('Permissions'), {
          'fields': ('is_superuser', 'is_active', 'is_staff')}),
     )
 
-admin.site.register(SecurityQuestion)
+
+admin.site.register(SecurityQuestion, SimpleHistoryAdmin)

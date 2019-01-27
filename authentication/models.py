@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, \
     PermissionsMixin, BaseUserManager
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.utils import timezone
+from simple_history.models import HistoricalRecords
 from utils.Select import Selects
 import datetime
 # Create your models here.
@@ -56,7 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         _('Unido Desde'), default=timezone.now)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    history = HistoricalRecords()
     objects = UserManager()
     USERNAME_FIELD = 'email'
 
@@ -80,7 +81,8 @@ class SecurityQuestion(models.Model):
     answer = models.TextField(_("Respuesta"), null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    history = HistoricalRecords(user_model=User)
+    
     class Meta:
         verbose_name = "Pregunta De Seguridad"
         verbose_name_plural = "Preguntas De Seguridad"
@@ -88,3 +90,11 @@ class SecurityQuestion(models.Model):
 
     def __str__(self):
         return self.user.email
+
+    @property
+    def _history_user(self):
+        return self.changed_by
+
+    @_history_user.setter
+    def _history_user(self, value):
+        self.changed_by = value
