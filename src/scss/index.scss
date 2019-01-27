@@ -1,1 +1,10 @@
-@import 'sweetalert2/src/sweetalert2.scss'
+@import "sweetalert2/src/sweetalert2.scss";
+
+.field-icon {
+  float: right;
+  margin-right: 5px;
+  margin-top: -23px;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+}

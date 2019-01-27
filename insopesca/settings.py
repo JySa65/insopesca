@@ -149,5 +149,5 @@ AUTH_USER_MODEL = 'authentication.User'
 SHELL_PLUS = "bpython"
 
 #login url
-LOGIN_URL = '/login/'
-LOGOUT_REDIRECT_URL='/login/'
+LOGIN_URL = '/'
+LOGOUT_REDIRECT_URL='/'
