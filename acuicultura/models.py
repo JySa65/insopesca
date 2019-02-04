@@ -22,10 +22,12 @@ class Production_unit(models.Model):
     document = models.CharField(_("Documento"),max_length=10, blank=False,null=False)
     name = models.CharField(_("Nombre"),max_length=50, blank=False,null=False)
     landline = models.CharField(_("Telefono Fijo"),max_length=11, blank=False,null=False)
+    phone = models.CharField(_("Telefono Movil"),max_length=11, blank=True,null=True)
     municipality =  models.CharField(_("Municipio"),max_length=50, blank=False,null=False)
     state =  models.CharField(_("Estado"),max_length=50, blank=False,null=False)
     parish =  models.CharField(_("Parroquia"),max_length=11, blank=False,null=False)
-
+    operative = models.BooleanField(
+        _('Activa'), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

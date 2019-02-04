@@ -7,8 +7,8 @@ from django.contrib.auth.models import Group
 
 
 class Production__unit_view_admin(admin.ModelAdmin):
-    fields = ('type_document','document','name','landline','municipality','state','parish')
-
+    fields = ('type_document','document','name','landline','phone','operative','municipality','state','parish')
+    ordering_by = ('-id')
 admin.site.register(Production_unit,Production__unit_view_admin)
 
 
