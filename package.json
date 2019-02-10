@@ -25,6 +25,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "sweetalert2": "^8.0.1"
+    "empty-element": "^1.0.0",
+    "sweetalert2": "^8.0.1",
+    "yo-yo": "^1.4.1"
   }
 }

@@ -20,7 +20,7 @@ class Species(models.Model):
 class Production_unit(models.Model):
     type_document = models.CharField(_("Tipo de Documento"),max_length=50, blank=False,null=False,choices= Selects().type_document())
     document = models.CharField(_("Documento"),max_length=10, blank=False,null=False)
-    name = models.CharField(_("Nombre"),max_length=50, blank=False,null=False)
+    name = models.CharField(_("Nombre"),max_length=50, blank=False,null=False,unique=True)
     landline = models.CharField(_("Telefono Fijo"),max_length=11, blank=False,null=False)
     phone = models.CharField(_("Telefono Movil"),max_length=11, blank=True,null=True)
     municipality =  models.CharField(_("Municipio"),max_length=50, blank=False,null=False)
@@ -28,6 +28,8 @@ class Production_unit(models.Model):
     parish =  models.CharField(_("Parroquia"),max_length=11, blank=False,null=False)
     operative = models.BooleanField(
         _('Activa'), default=False)
+    is_delete = models.BooleanField(
+        _('Eliminado'), default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -39,7 +41,7 @@ class Production_unit(models.Model):
 class Repre_unit_productive(models.Model):
     production_unit = models.OneToOneField(Production_unit, on_delete=models.CASCADE)
     type_document_repre = models.CharField(_("Tipo de Documento"),max_length=50, blank=False,null=False,choices= Selects().type_document())
-    document_repre = models.CharField(_("Documento"),max_length=10, blank=False,null=False)
+    document_repre = models.CharField(_("Documento"),max_length=10, blank=False,null=False,unique=True)
     name_repre = models.CharField(_("Nombre"),max_length=50, blank=False,null=False)
     last_name_repre = models.CharField(_("Apellido"),max_length=50,blank=True,null=True)
     landline_repre = models.CharField(_("Telefono Fijo"),max_length=11, blank=False,null=False)
@@ -51,7 +53,7 @@ class Repre_unit_productive(models.Model):
     def __str__(self):
         return str(self.pk)
 
-class Cardinal_points(models.Model):
+class Cardinal_point(models.Model):
     production_unit = models.OneToOneField(Production_unit, on_delete=models.CASCADE)
     north  = models.IntegerField(_("Norte"))
     south = models.IntegerField(_("Sur"))
@@ -64,7 +66,7 @@ class Cardinal_points(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.production_unit.name)
+        return str(self.pk)
 
 
 class Lagoon(models.Model):

@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %} USUARIOS {% endblock %}
+{% load staticfiles %}
+
+{% block sidebar %}
+{% include 'sidebar/authentication.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+Usuarios
+{% endblock pageheader %}
+
+{% block context %}
+<link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/datatables/css/dataTables.bootstrap4.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/datatables/css/buttons.bootstrap4.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/datatables/css/select.bootstrap4.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/vendor/datatables/css/fixedHeader.bootstrap4.css' %}">
+
+<div class="row">
+	<!-- ============================================================== -->
+	<!-- data table  -->
+	<!-- ============================================================== -->
+	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				<h5 class="mb-0">Data Tables - Print, Excel, CSV, PDF Buttons</h5>
+				<p>This example shows DataTables and the Buttons extension being used with the Bootstrap 4 framework providing the styling.</p>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table id="example" class="table table-striped table-bordered second" style="width:100%">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Documento</th>
+								<th>Position</th>
+								<th>Office</th>
+								<th>Age</th>
+								<th>Start date</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+							{% for i in object_list  %}
+							<tr>
+									<td>{{forloop.counter}}</td>
+									<td>{{i.document}}</td>
+									<td>Edinburgh</td>
+									<td>61</td>
+									<td>2011/04/25</td>
+									<td>$320,800</td>
+								</tr>
+									
+							{% endfor %}
+								
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>#</th>
+								<th>Name</th>
+								<th>Position</th>
+								<th>Office</th>
+								<th>Age</th>
+								<th>Start date</th>
+							</tr>
+						</tfoot>
+					</table>
+					<div class="pagination">
+						<span class="step-links">
+							<span class="current">
+								Pagina {{ object_list.number }} de {{ object_list.paginator.num_pages }}.
+							</span>
+
+							{% if object_list.has_previous %}
+								<a href="?page=1">&laquo; Primera</a>
+								<a href="?page={{ object_list.previous_page_number }}">Anterior</a>
+							{% endif %}
+					
+					
+							{% if object_list.has_next %}
+								<a href="?page={{ object_list.next_page_number }}">Siguiente</a>
+								<a href="?page={{ object_list.paginator.num_pages }}">Ultima &raquo;</a>
+							{% endif %}
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- end data table  -->
+	<!-- ============================================================== -->
+</div>
+<script src="{% static 'assets/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
+<script src="http://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="http://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script src="{% static 'assets/vendor/datatables/js/data-table.js' %}"></script>
+<script src="http://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
+<script src="http://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+
+{% endblock %}

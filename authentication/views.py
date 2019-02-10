@@ -145,10 +145,6 @@ class SecurityQuestionCreateView(LoginRequiredMixin, FormView):
         return render(self.request, self.template_name, {'form': form})
 
 
-class HomePageFormView(TemplateView):
-    template_name = "authentication/homepage.html"
-
-
 class LoginFormView(FormView):
     form_class = AuthenticationForm
     template_name = "authentication/login.html"
@@ -210,8 +206,94 @@ class RestoreDataUser(LoginRequiredMixin, View):
                 "msg": e
             }
             return JsonResponse(data, safe=False)
-        
+
 
 class ForgotPassword(FormView):
-    model = models.SecurityQuestion
+    model = models.User
     template_name = "authentication/forgot_password.html"
+    form_class = forms.ForgotPasswordForm
+
+    def post(self, request, *args, **kwargs):
+        try:
+            email = json.loads(str(request.body, 'utf-8')).get('email')
+        except Exception:
+            data = {
+                "status": False,
+                "msg": "Correo Electronico Requerido"
+            }
+            return JsonResponse(data)
+
+        try:
+            user = self.model.objects.get(email=email)
+            questions = models.SecurityQuestion.objects.filter(user=user)
+            user.is_active = False
+            user.save()
+
+            if len(questions) == 0:
+                data = {
+                    "status": False,
+                    "msg": f"Usuario: {user.email} No Tiene Pregunta Registrada. Por Favor Comuniquese Con El Administrador del Sistema"
+                }
+                return JsonResponse(data)
+
+            data = {
+                'status': True,
+                'data': {
+                    'email': user.email,
+                    'questions': []
+                }
+            }
+            for question in questions:
+                data['data']['questions'].append({
+                    'id': question.pk,
+                    'question': question.question
+                })
+            return JsonResponse(data)
+        except self.model.DoesNotExist:
+            return JsonResponse({
+                'status': False,
+                'msg': 'Correo Electronico Incorrecto'
+            })
+
+    def put(self, request, *args, **kwargs):
+        data = json.loads(str(request.body, 'utf-8'))
+        email = data.get('email')
+        answers = data.get('answers')
+        if email == "":
+            return JsonResponse({
+                'status': False,
+                'msg': 'Correo Electronico Requerido'
+            })
+        try:
+            user = self.model.objects.get(email=email)
+        except self.model.DoesNotExist:
+            return JsonResponse({
+                'status': False,
+                'msg': 'Usuario No Existe'
+            })
+
+        for answer in answers:
+            id = answer.get('id')
+            ans = answer.get('answer')
+            if id == "" or ans == "":
+                return JsonResponse({
+                    'status': False,
+                    'msg': 'Faltaron Algunas Respuestas'
+                })
+            answ = models.SecurityQuestion.objects.filter(
+                pk=id, user=user).first()
+            if answ.answer != ans:
+                data = {
+                    "status": False,
+                    "msg": f"Pregunta: {answ.question} Tiene Una Respuesta Invalida"
+                }
+                return JsonResponse(data)
+
+        user.set_password(user.ci)
+        user.is_active = True
+        user.change_pass = False
+        user.save()
+        return JsonResponse({
+            'status': True,
+            'msg': 'Clave Reestablecida Exitosamente Es Su Cedula Recuerde Cambiarla'
+        })

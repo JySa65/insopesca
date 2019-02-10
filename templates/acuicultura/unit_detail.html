@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% block title %} {{ object.name|upper }} {% endblock %}
+{% block sidebar %}
+{% include 'sidebar/authentication.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+{{ object.name }}
+{% endblock pageheader %}
+
+{% block context %}
+<div class="row">
+	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 text-primary"><b>Información Personal</b></span>
+			</div>
+			<div class="card-body">
+				<div class="row p-0">
+					<div class="col-sm-12 mb-3">
+						<label class="h5">
+							<b>Documento:</b>
+						</label>
+						<span class="h5"> {{ object.document }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Telefono Fijo:</b>
+						</label>
+						<span class="h5">{{ object.landline }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Telefono Movil:</b>
+						</label>
+						<span class="h5">{{ object.phone }}</span>
+					</div>
+
+				</div>
+			</div>
+			<hr>
+			<div class="card-header">
+				<span class="h4 text-primary"><b>Localización</b></span>
+			</div>
+			<div class="card-body">
+				<div class="row p-0">
+					<div class="col-sm-6 mb-6">
+						<label class="h5">
+							<b>Municipio: </b>
+						</label>
+						<span class="h5">{{ object.municipality }}</span>
+					</div>
+					<div class="col-sm-5 mb-3">
+						<label class="h5">
+							<b>Parroquia: </b>
+						</label>
+						<span class="h5">{{ object.parish }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Estadi: </b>
+						</label>
+						<span class="h5">{{ object.state }}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 text-primary"><b>Información del Representante Legal</b></span>
+			</div>
+			<div class="card-body">
+				<div class="row p-0">
+					<div class="col-sm-12 mb-3">
+						<label class="h5">
+							<b>Documento:</b>
+						</label>
+						<span class="h5"> {{ representative.document_repre }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Nombres:</b>
+						</label>
+						<span class="h5"> {{ representative.name_repre }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Apellidos:</b>
+						</label>
+						<span class="h5"> {{ representative.last_name_repre }}</span>
+					</div>
+
+                    <div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Telefono Fijo:</b>
+						</label>
+						<span class="h5"> {{ representative.landline_repre }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Telefono Movil:</b>
+						</label>
+						<span class="h5"> {{ representative.phone_repre }}</span>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 text-primary"><b>Puntos Cardinales</b></span>
+			</div>
+			<div class="card-body">
+				<div class="row p-0">
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Norte:</b>
+						</label>
+						<span class="h5"> {{ cardinal.north }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Sur:</b>
+						</label>
+						<span class="h5"> {{ cardinal.south }}</span>
+					</div>
+
+                    <div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Este:</b>
+						</label>
+						<span class="h5"> {{ cardinal.west }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Oeste:</b>
+						</label>
+						<span class="h5"> {{ cardinal.oest }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Altitud:</b>
+						</label>
+						<span class="h5"> {{ cardinal.altitude }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Total de Area del Terreno:</b>
+						</label>
+						<span class="h5"> {{ cardinal.total_area_terr }}</span>
+					</div>
+
+                    
+				</div>
+			</div>
+		</div>
+
+    </div>
+</div>
+{% endblock %}
