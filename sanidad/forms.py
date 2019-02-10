@@ -1,5 +1,5 @@
 from django import forms
-from sanidad.models import Company
+from sanidad.models import Company, Account
 from utils.Select import Selects
 
 
@@ -11,6 +11,21 @@ class CompanyForm(forms.ModelForm):
                   'tlf', 'tlf_house', 'state', 'municipality',
                   'parish', 'address', 'cod_permission',
                   'cod_register_mercantil',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for _, field in self.fields.items():
+            field.widget.attrs.update(
+                {'class': 'form-control', 'autocomplete': 'off'})
+        self.fields['address'].widget.attrs.update(
+            {'rows': '1'})
+
+
+class AccountForm(forms.ModelForm):
+
+    class Meta:
+        model = Account
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

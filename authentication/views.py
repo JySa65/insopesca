@@ -64,7 +64,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
 class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = models.User
-    
+
     def post(self, *args, **kwargs):
         user = self.get_object()
         user.is_delete = True
@@ -147,9 +147,11 @@ class SecurityQuestionCreateView(LoginRequiredMixin, FormView):
                 self.model.objects.create(**security, user=user)
             user.question = True
             user.save()
-            return HttpResponseRedirect(
-                reverse_lazy(
-                    'authentication:detail', args=(self.kwargs['pk'],)))
+            if self.request.user.is_superuser or self.request.user.role == 'is_coordinator':
+                return HttpResponseRedirect(
+                        Selects().level_user_url()['is_admin_or_coordinator'])
+            else:                    
+                return HttpResponseRedirect(Selects().level_user_url()[user.level])
         return render(self.request, self.template_name, {'form': form})
 
 

@@ -107,12 +107,52 @@
           </div>
           {% if request.user.pk != object.pk %}
           <div class="col-sm-6 mb-3">
-            <a href="" class="btn btn-rounded btn-danger">
+            <a href="{% url 'sanidad:company_delete' object.pk %}" class="btn btn-rounded btn-danger">
               <i class="fas fa-user-times"></i>
               Eliminar
             </a>
           </div>
           {% endif %}
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-header clearfix">
+        <span class="h4 text-primary left"><b>Personas Encargadas</b></span>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead class="bg-light">
+              <tr>
+                <th>#</th>
+                <th>Documento</th>
+                <th>Nombre</th>
+                <th>Activo</th>
+                <th>Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for object in object.get_accounts %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ object.get_document }}</td>
+                <td><a href="{% url 'sanidad:company_detail' object.pk %}">{{ object.name }}</a></td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5" class="text-center">
+                  <h1>No tiene Persona Añadida a la Empresa</h1>
+                  <a href="" class="btn btn-primary btn-rounded ">
+                    Añadir Persona
+                    <i class="fas fa-user-plus"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

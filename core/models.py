@@ -59,7 +59,7 @@ class Account(models.Model):
         _('Telefono Casa'), max_length=15, null=True, blank=True)
     birthday = models.DateField(
         null=True, blank=True, verbose_name=_('Fecha de Nacimiento'))
-    address = models.TextField(_('Dirección'), null=True, blank=True)
+    address = models.TextField(_('Dirección'), null=False, blank=False)
     is_active = models.BooleanField(default=True, verbose_name=_('Activo'))
     is_delete = models.BooleanField(default=False, verbose_name=_('Elimanido'))
 
@@ -104,7 +104,7 @@ class Company(models.Model):
         Municipality, on_delete=models.CASCADE, verbose_name=_('Municipio'))
     parish = models.ForeignKey(
         Parish, on_delete=models.CASCADE, verbose_name=_('Parroquia'),)
-    address = models.TextField(_('Direccion'), null=True, blank=True)
+    address = models.TextField(_('Direccion'), null=False, blank=False)
     is_active = models.BooleanField(default=True)
     is_delete = models.BooleanField(default=False)
 

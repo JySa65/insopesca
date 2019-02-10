@@ -43,8 +43,7 @@
                 </td>
                 <td>
                   <a href="{% url 'sanidad:company_detail' object.pk %}" class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
-                  <a href="{% url 'authentication:delete' object.pk %}" class="btn btn-rounded btn-danger"><i class="fas fa-user-times"></i></a>
-                  <a href="{% url 'authentication:detail' object.pk %}" class="btn btn-rounded btn-info"><i class="fas fa-clipboard-list"></i></a>
+                  <a href="{% url 'sanidad:company_delete' object.pk %}" class="btn btn-rounded btn-danger"><i class="fas fa-user-times"></i></a>
                 </td>
               </tr>
               {% empty %}
