@@ -26,6 +26,7 @@ urlpatterns = [
         'authentication.urls', namespace="authentication")),
     path('forgot-password/', ForgotPassword.as_view(), name="forgot_password"),
     path("acuicultura/", include(
-        'acuicultura.urls', namespace="acuicultura"))
+        'acuicultura.urls', namespace="acuicultura")),
+    path('sanidad/', include('sanidad.urls', namespace='sanidad')),
 
 ]
