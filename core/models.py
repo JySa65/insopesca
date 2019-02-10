@@ -7,7 +7,7 @@ import uuid
 
 
 class State(models.Model):
-    uuid = models.UUIDField(
+    id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     name = models.CharField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -18,7 +18,7 @@ class State(models.Model):
 
 
 class Municipality(models.Model):
-    uuid = models.UUIDField(
+    id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     name = models.CharField(max_length=1000)
     state = models.ForeignKey(State, on_delete=models.CASCADE)
@@ -30,7 +30,7 @@ class Municipality(models.Model):
 
 
 class Parish(models.Model):
-    uuid = models.UUIDField(
+    id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     name = models.CharField(max_length=1000)
     municipality = models.ForeignKey(
@@ -43,7 +43,7 @@ class Parish(models.Model):
 
 
 class Account(models.Model):
-    uuid = models.UUIDField(
+    id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     type_document = models.CharField(
         _('Tipo De Documento'), max_length=2, null=False, blank=False)
@@ -87,7 +87,7 @@ class Account(models.Model):
 
 
 class Company(models.Model):
-    uuid = models.UUIDField(
+    id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     type_document = models.CharField(
         _('Tipo De Documento'), max_length=2, null=False, blank=False)

@@ -64,7 +64,14 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
 class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = models.User
-    success_url = reverse_lazy('authentication:list')
+    
+    def post(self, *args, **kwargs):
+        user = self.get_object()
+        user.is_delete = True
+        user.is_active = False
+        user.set_password(user.ci)
+        user.save()
+        return HttpResponseRedirect(reverse_lazy('authentication:list'))
 
 
 class UserAdminDetailView(LoginRequiredMixin, DetailView):

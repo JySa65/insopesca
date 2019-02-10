@@ -1,7 +1,38 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView
+from django.urls import reverse_lazy
+from sanidad import models, forms
 # Create your views here.
 
 
-def sview(request):
-    return render(request, 'hola.html')
+class HomeTemplateView(TemplateView):
+    template_name = 'sanidad/home_view.html'
+
+
+class CompanyListView(ListView):
+    model = models.Company
+
+
+class CompanyDetailView(DetailView):
+    model = models.Company
+
+    # def get_object(self):
+    #     pk = self.kwargs.get('pk')
+    #     print(pk)
+    #     return object
+
+
+class CompanyCreateView(CreateView):
+    model = models.Company
+    form_class = forms.CompanyForm
+
+    def get_success_url(self):
+        return reverse_lazy('sanidad:company_detail', args=(self.object.pk,))
+
+
+class CompanyUpdateView(UpdateView):
+    model = models.Company
+    form_class = forms.CompanyForm
+
+    def get_success_url(self):
+        return reverse_lazy('sanidad:company_detail', args=(self.object.pk,))

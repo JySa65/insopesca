@@ -11,13 +11,12 @@ class Account(core.Account):
 
 
 class Driver(core.Account):
-    
     def __str__(self):
         return self.document
 
 
 class Transport(models.Model):
-    uuid = models.UUIDField(
+    id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     type = models.CharField(_('Tipo'), max_length=20)
 
@@ -48,8 +47,8 @@ class Company(core.Company):
     cod_permission = models.CharField(_('Codigo del Permiso'), max_length=30)
     cod_register_mercantil = models.CharField(
         _('Codigo de Registro Mercantil'), max_length=30)
-    account = models.ManyToManyField(Account, verbose_name=_('Encargados'), related_name="user_work")
-    transport = models.ManyToManyField(Transport, verbose_name='Transporte')
+    account = models.ManyToManyField(Account, verbose_name=_('Encargados'))
+    transport = models.ManyToManyField(Transport, verbose_name=_('Transporte'))
 
     def __str__(self):
         return self.document
