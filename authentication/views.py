@@ -18,6 +18,7 @@ from django.contrib.auth import update_session_auth_hash
 # Model Authentication
 from authentication import models, forms
 import json
+from utils.Select import Selects
 # Create your views here.
 
 
@@ -159,7 +160,10 @@ class LoginFormView(FormView):
             if url_next is not None:
                 return HttpResponseRedirect(url_next)
             else:
-                return HttpResponseRedirect(reverse_lazy("authentication:list"))
+                if user.is_superuser or user.role == 'is_coordinator':
+                    return HttpResponseRedirect(Selects().level_user_url()['is_admin_or_coordinator'])
+                else:                    
+                    return HttpResponseRedirect(Selects().level_user_url()[user.level])
         else:
             msg = "Usuario o Contraseña Incorrecta"
             return render(request, self.template_name, {'form': self.form_class, 'message': msg})
