@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'utils.configSuit.SuitConfig',
     'widget_tweaks',
     'authentication.apps.AuthenticationConfig',
+    'sanidad.apps.SanidadConfig',
+    'core.apps.CoreConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -85,8 +85,12 @@ class Company(models.Model):
         Parish, on_delete=models.CASCADE, verbose_name=_('Parroquia'),)
     address = models.TextField(_('Direccion'), null=True, blank=True)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     class Meta:
-      abstract = True
+        abstract = True
+        ordering = ('-created_at',)
 
     def __str__(self):
         return self.name
