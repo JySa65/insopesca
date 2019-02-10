@@ -62,6 +62,7 @@ class ProductionUnitCreateView(CreateView):
         else:
             return render(request, self.template_name, {'form': unit_form, 'second': cardinal_form, "three": representative_form})
 
+
 class ProductionUnitList(ListView):
     model = Production_unit
     template_name = "acuicultura/product_list.html"
@@ -69,12 +70,11 @@ class ProductionUnitList(ListView):
     def get_context_data(self, **kwargs):
         context = super(ProductionUnitList, self).get_context_data(**kwargs)
         context['data'] = self.model.objects.all()
-        print (context['data'])
-        paginator = Paginator(context['data'], 1)
+        paginator = Paginator(context['data'], 30)
         page = self.request.GET.get('page')
         context['object_list'] = paginator.get_page(page)
         return context
-    
+
 
 class ProductionUnitUpdate(UpdateView):
     model = Production_unit
@@ -130,23 +130,27 @@ class ProductionUnitUpdate(UpdateView):
             print("invalido")
             return render(request, self.template_name, {'form': unit_form, 'second': cardinal_form, "three": representative_form})
 
+
 class ProductionuUnitDetail(DetailView):
     model = Production_unit
     template_name = "acuicultura/unit_detail.html"
 
     def get_context_data(self, **kwargs):
         context = super(ProductionuUnitDetail, self).get_context_data(**kwargs)
-        context['cardinal'] = get_object_or_404(Cardinal_point, production_unit=self.kwargs['pk'])
-        context['representative'] = get_object_or_404(Repre_unit_productive, production_unit=self.kwargs['pk'])
+        context['cardinal'] = get_object_or_404(
+            Cardinal_point, production_unit=self.kwargs['pk'])
+        context['representative'] = get_object_or_404(
+            Repre_unit_productive, production_unit=self.kwargs['pk'])
         return context
-    
+
+
 class ProductionUnitDelete(DeleteView):
     model = Production_unit
     template_name = "acuicultura/product_confirm_delete.html"
 
-    def post(self,request,*args,**kwargs):
+    def post(self, request, *args, **kwargs):
         unit = self.model.objects.get(pk=self.kwargs['pk'])
-        print (unit.is_delete)
+        print(unit.is_delete)
         unit.is_delete = True
         unit.operative = False
 

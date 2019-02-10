@@ -34,7 +34,7 @@ class Selects(object):
         return {
             'is_admin_or_coordinator': reverse('authentication:list'),
             'is_acuicul': reverse('acuicultura:home'),
-            'is_sanid': reverse('sanidad:list'),
+            'is_sanid': reverse('sanidad:home'),
             # 'is_ord_pesque':
             # 'is_tvc',
             # 'is_fomen',
