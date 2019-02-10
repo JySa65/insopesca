@@ -119,7 +119,12 @@
     
     <div class="card">
       <div class="card-header clearfix">
-        <span class="h4 text-primary left"><b>Personas Encargadas</b></span>
+        <span class="h4 text-primary left"><b>Personas Encargadas</b>
+        <a href="{% url 'sanidad:account_create' object.pk %}" class="btn btn-primary btn-rounded ">
+          Añadir Persona
+          <i class="fas fa-user-plus"></i>
+        </a>
+        </span>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -144,7 +149,7 @@
               <tr>
                 <td colspan="5" class="text-center">
                   <h1>No tiene Persona Añadida a la Empresa</h1>
-                  <a href="" class="btn btn-primary btn-rounded ">
+                  <a href="{% url 'sanidad:account_create' object.pk %}" class="btn btn-primary btn-rounded ">
                     Añadir Persona
                     <i class="fas fa-user-plus"></i>
                   </a>

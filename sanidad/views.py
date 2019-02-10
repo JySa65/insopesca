@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.views.generic import TemplateView, ListView, CreateView, \
     DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -57,3 +57,26 @@ class CompanyDeleteView(DeleteView):
         company.is_active = False
         company.save()
         return HttpResponseRedirect(reverse_lazy('sanidad:company_list'))
+
+
+class AccoutCompanyCreateView(CreateView):
+    model = models.Account
+    form_class = forms.AccountForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AccoutCompanyCreateView,
+                        self).get_context_data(**kwargs)
+        context['company'] = get_object_or_404(
+            models.Company, pk=self.kwargs.get('pk'))
+        return context
+
+    def post(self, *args, **kwargs):
+        company = get_object_or_404(models.Company, pk=self.kwargs.get('pk'))
+        form = self.form_class(self.request.POST)
+        print(self.request.POST.get('document'))
+        # if form.is_valid():
+        #   user = form.save(commit=False)
+        #   user.save()
+        #   company.account.add(user)
+        return HttpResponse("si")
+        # return super().post(self.request, *args, **kwargs)
