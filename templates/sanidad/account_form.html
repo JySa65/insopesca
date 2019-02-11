@@ -21,14 +21,22 @@ RESGISTRO
       <div class="card-header">
         <a href="javascript:history.back()" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
       </div>
+      <h2 class="pt-4 pl-4">Buscar Persona</h2>
+      <hr>
       <div class="card-body">
         <form action="" method="get">
           <div class="form-group">
             <label for="">Ingrese Documento</label>
             <input type="search" placeholder="" class="form-control" name="search">
+            <div class="text-center mt-1">
+              <button type="submit" class="btn btn-info btn-rounded">Buscar <i class="fas fa-search"></i></button>
+            </div>
           </div>
         </form>
       </div>
+      <hr>
+      <h2 class="pt-4 pl-4">Registrar Persona</h2>
+      <hr>
       <div class="card-body">
         <form action="" method="post">
           {% csrf_token %}

@@ -63,11 +63,15 @@ class AccoutCompanyCreateView(CreateView):
     model = models.Account
     form_class = forms.AccountForm
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, *args, **kwargs):
         context = super(AccoutCompanyCreateView,
                         self).get_context_data(**kwargs)
         context['company'] = get_object_or_404(
             models.Company, pk=self.kwargs.get('pk'))
+        search = self.request.GET.get('search', '')
+        if search != '':
+            user = self.model.objects.filter(document=search).first()
+            context['user'] = user
         return context
 
     def post(self, *args, **kwargs):
