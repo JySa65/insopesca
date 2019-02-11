@@ -26,13 +26,50 @@ RESGISTRO
       <div class="card-body">
         <form action="" method="get">
           <div class="form-group">
-            <label for="">Ingrese Documento</label>
+            <label for="">Ingrese Documento De La Persona</label>
             <input type="search" placeholder="" class="form-control" name="search">
             <div class="text-center mt-1">
               <button type="submit" class="btn btn-info btn-rounded">Buscar <i class="fas fa-search"></i></button>
             </div>
           </div>
         </form>
+        {% if message %}
+        <h3 class="text-danger">{{ message }}</h3>
+        {% else %}
+        {% if account %}
+        <h1> {{ message }} </h1>
+        <div class="row text-center mt-5">
+          <div class="col-sm-12">
+            <label class="h5">
+              <b>Documento:</b>
+            </label>
+            <span class="h5"> {{ account.get_document }}</span>
+          </div>
+          <div class="col-sm-12">
+            <label class="h5">
+              <b>Nombre y Apellido:</b>
+            </label>
+            <span class="h5"> {{ account.get_full_name }}</span>
+          </div>
+          <div class="col-sm-12">
+            <label class="h5">
+              <b>Telefono</b>
+            </label>
+            <span class="h5"> {{ account.tlf }}</span>
+          </div>
+          <div class="col-sm-12">
+            <form action="" method="post">
+              {% csrf_token %}
+              <input type="text" hidden value="{{ account.pk }}" name="add">
+              <button type="submit" class="btn btn-success btn-rounded">
+                Añadir
+                <i class="fas fa-plus"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+        {% endif %}
+        {% endif %}
       </div>
       <hr>
       <h2 class="pt-4 pl-4">Registrar Persona</h2>
