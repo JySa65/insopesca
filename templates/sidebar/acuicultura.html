@@ -1,0 +1,40 @@
+<li class="nav-item">
+	<a class="nav-link" href="{% url 'acuicultura:home' %}"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+</li>
+
+<ul class="nav flex-column">
+		<li class="nav-item">
+		<a class="nav-link" href="{% url 'acuicultura:list_unit' %}"><i class="fa fa-fw fa-circle"></i>Unidad Productora</a>
+		</li>
+</ul>
+
+<ul class="nav flex-column">
+		<li class="nav-item">
+			<a class="nav-link" href="{% url 'acuicultura:list_specie' %}"  ><i class="fa fa-fw fa-circle"></i>Especies</a>
+		</li>
+</ul>
+
+<ul class="nav flex-column">
+		<li class="nav-item">
+			<a class="nav-link" href="#listado_seguimiento"  ><i class="fa fa-fw fa-circle"></i>Seguimiento</a>
+		</li>
+</ul>
+
+
+
+<li class="nav-item ">
+	<a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-4"><i class="fa fa-fw fa-user-circle"></i>Configuración <span class="badge badge-success">6</span></a>
+	<div id="submenu-4" class="collapse submenu" style="">
+			<ul class="nav flex-column">
+					<li class="nav-item">
+							<a class="nav-link" href="{% url 'authentication:change_password' %}">Cambio De Contraseña</a>
+					</li>
+					<li class="nav-item">
+							<a class="nav-link" href="dashboard-sales.html">Sesiones</a>
+					</li>
+			</ul>
+	</div>
+</li>
+<li class="nav-item">
+	<a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-power-off "></i>Cerrar Sesión</a>
+</li>

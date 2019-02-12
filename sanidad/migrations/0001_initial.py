@@ -41,7 +41,7 @@ class Migration(migrations.Migration):
             name='Company',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False, unique=True)),
-                ('type_document', models.CharField(max_length=2, verbose_name='Tipo De Documento')),
+                ('type_document', models.CharField(choices=[('V', 'V'), ('E', 'E'), ('G', 'G'), ('J', 'J'), ('C', 'C'), ('P', 'P')], max_length=2, verbose_name='Tipo De Documento')),
                 ('document', models.CharField(max_length=15, unique=True, verbose_name='Documento')),
                 ('name', models.CharField(max_length=50, verbose_name='Nombres')),
                 ('tlf', models.CharField(blank=True, max_length=15, null=True, verbose_name='Telefono')),

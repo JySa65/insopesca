@@ -25,9 +25,13 @@ class Selects(object):
 
     def type_document(self):
         return (
-            ('CEDULA', 'CEDULA'),
-            ('PASAPORTE', 'PASAPORTE'),
-            ('RIF', 'RIF')
+            ('V', 'V'),
+            ('E', 'E'),
+            ('G', 'G'),
+            ('J', 'J'),
+            ('C', 'C'),
+            ('P', 'P')
+
         )
 
     def level_user_url(self):

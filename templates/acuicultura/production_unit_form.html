@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block title %}
+{% if object.pk %}
+UNIDAD PRODUCTORA {{ object.name }}
+{% else %}
+UNIDAD PRODUCTORA REGISTRO
+{% endif %}
+{% endblock %}
+{% block sidebar %}
+{% include 'sidebar/acuicultura.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+{% if object.pk %}
+Actualizacion De Unidad Productora: {{object.name}}
+{% else %}
+Registro De Unidad Prductora
+{% endif %}
+{% endblock pageheader %}
+
+
+{% block context %}
+
+<link rel="stylesheet" href="{% static 'assets/vendor/bootstrap-select/css/bootstrap-select.css' %}">
+
+<div class="row">
+	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				{% if object.pk %}
+				<a href="{% url 'acuicultura:detail_unit' object.pk %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				{% else %}
+				<a href="{% url 'acuicultura:list_unit' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				{% endif %}
+			</div>
+			<div class="card-body">
+
+				<form action="" method="post">
+						{% csrf_token %}
+				{% for field in form %}
+				{% if field.errors %}
+				<div class="form-group">
+					<div class="alert alert-danger" role="alert">
+						{{ field.label }}:
+						{% for error in field.errors %}
+						{{ error }}
+						{% endfor %}
+					</div>
+				</div>
+				{% endif %}
+				{% endfor %}
+
+				{% for field in second %}
+				{% if field.errors %}
+				<div class="form-group">
+					<div class="alert alert-danger" role="alert">
+						{{ field.label }}:
+						{% for error in field.errors %}
+						{{ error }}
+						{% endfor %}
+					</div>
+				</div>
+				{% endif %}
+				{% endfor %}
+
+				{% for field in three %}
+				{% if field.errors %}
+				<div class="form-group">
+					<div class="alert alert-danger" role="alert">
+						{{ field.label }}:
+						{% for error in field.errors %}
+						{{ error }}
+						{% endfor %}
+					</div>
+				</div>
+				{% endif %}
+				{% endfor %}
+
+
+
+
+					<div class="form-group">
+						<label for="id_{{ form.type_document.name }}" class="col-form-label">{{form.type_document.label}}</label>
+						{{ form.type_document|add_class:"selectpicker show-tick"|attr:"data-width:100%"}}
+					</div>
+
+
+					<div class="form-group">
+						<label for="id_{{ form.document.name }}" class="col-form-label">Documento</label>
+						{{ form.document|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+					<div class="form-group">
+						<label for="id_{{ form.name.name }}" class="col-form-label">Nombre</label>
+						{{ form.name|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+					<div class="form-group">
+						<label for="id_{{ form.tlf_house.name }}" class="col-form-label">Telefono Fijo</label>
+						{{ form.tlf_house|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+					<div class="form-group">
+						<label for="id_{{ form.tlf.name }}" class="col-form-label">Telefono Movil</label>
+						{{ form.tlf|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+					<div class="form-group">
+						<label for="id_{{ form.municipality.name }}" class="col-form-label">Municipio</label>
+						{{ form.municipality|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+					<div class="form-group">
+						<label for="id_{{ form.state.name }}" class="col-form-label">Estado</label>
+						{{ form.state|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+					<div class="form-group">
+						<label for="id_{{ form.parish.name }}" class="col-form-label">Parroquia</label>
+						{{ form.parish|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+					<div class="form-group">
+							<label for="id_{{ form.address.name }}" class="col-form-label">Dirección</label>
+							{{ form.address|add_class:"form-control"|attr:"autocomplete:off" }}
+						</div>
+	
+
+					<div class="border-top">
+
+						<div class="form-group">
+							<label for="id_{{ second.north.name }}" class="col-form-label">Norte</label>
+							{{ second.north|add_class:"form-control"|attr:"autocomplete:off" }}
+						</div>
+
+						<div class="form-group">
+							<label for="id_{{ second.south.name }}" class="col-form-label">Sur</label>
+							{{ second.south|add_class:"form-control"|attr:"autocomplete:off" }}
+						</div>
+						<div class="form-group">
+							<label for="id_{{ second.west.name }}" class="col-form-label">Este</label>
+							{{ second.west|add_class:"form-control"|attr:"autocomplete:off" }}
+						</div>
+						<div class="form-group">
+							<label for="id_{{ second.oest.name }}" class="col-form-label">Oeste</label>
+							{{ second.oest|add_class:"form-control"|attr:"autocomplete:off" }}
+						</div>
+						<div class="form-group">
+							<label for="id_{{ second.oest.name }}" class="col-form-label">Oeste</label>
+							{{ second.oest|add_class:"form-control"|attr:"autocomplete:off" }}
+						</div>
+
+						<div class="form-group">
+							<label for="id_{{ second.altitude.name }}" class="col-form-label">Altitud</label>
+							{{ second.altitude|add_class:"form-control"|attr:"autocomplete:off" }}
+						</div>
+						<div class="form-group">
+							<label for="id_{{ second.total_area_terr.name }}" class="col-form-label">Total Area del Terreno</label>
+							{{ second.total_area_terr|add_class:"form-control"|attr:"autocomplete:off" }}
+						</div>
+					</div>
+					<div class="border-top">
+
+						<div class="form-group">
+							<label for="id_{{ three.type_document_repre.name }}" class="col-form-label">{{three.type_document_repre.label}}</label>
+							{{ three.type_document_repre|add_class:"selectpicker show-tick"|attr:"data-width:100%" }}
+						</div>
+
+						<div class="form-group">
+							<label for="id_{{ three.document_repre.name }}" class="col-form-label">{{three.document_repre.label}}</label>
+							{{ three.document_repre|add_class:"form-control"|attr:"autocomplete:off" }}
+						</div>
+
+						<div class="form-group">
+								<label for="id_{{ three.last_name_repre.name }}" class="col-form-label">{{three.name_repre.label}}</label>
+								{{ three.name_repre|add_class:"form-control"|attr:"autocomplete:off" }}
+						</div>
+	
+
+
+						<div class="form-group">
+							<label for="id_{{ three.last_name_repre.name }}" class="col-form-label">{{three.last_name_repre.label}}</label>
+							{{ three.last_name_repre|add_class:"form-control"|attr:"autocomplete:off" }}
+						</div>
+
+						<div class="form-group">
+							<label for="id_{{ three.landline_repre.name }}" class="col-form-label">{{three.landline_repre.label}}</label>
+							{{ three.landline_repre|add_class:"form-control"|attr:"autocomplete:off" }}
+						</div>
+
+						<div class="form-group">
+							<label for="id_{{ three.phone_repre.name }}" class="col-form-label">{{three.phone_repre.label}}</label>
+							{{ three.phone_repre|add_class:"form-control"|attr:"autocomplete:off" }}
+						</div>
+	
+					</div>
+					<div class="form-group text-center">
+						<br>
+						<button type="submit" class="btn btn-rounded btn-success">Aceptar</button>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}

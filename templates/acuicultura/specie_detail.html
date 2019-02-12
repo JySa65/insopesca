@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %} {{ object.ordinary_name|upper }} {% endblock %}
+{% block sidebar %}
+{% include 'sidebar/acuicultura.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+{{ object.ordinary_name }}
+{% endblock pageheader %}
+{% block context %}
+<div class="row">
+	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 text-primary"><b>Información</b></span>
+			</div>
+			<div class="card-body">
+				<div class="row p-0">
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Nombre Ordinario:</b>
+						</label>
+						<span class="h5">{{object.ordinary_name}}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Nombre Cientifico:</b>
+						</label>
+						<span class="h5">{{ object.scientific_name }}</span>
+					</div>
+
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
+{% endblock %}

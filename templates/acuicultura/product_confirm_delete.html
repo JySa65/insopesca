@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %} Eliminar {{ object.name|upper }} {% endblock %}
+{% block sidebar %}
+{% include 'sidebar/acuicultura.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+{{ object.get_full_name }}
+{% endblock pageheader %}
+
+{% block context %}
+<div class="row">
+	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				<a href="javascript:window.history.back()" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+			</div>
+			<div class="card-body ">
+				<form action="" method="post">
+					{% csrf_token %}
+					<h1>Esta Seguro de Eliminar a</h1>
+					<div class="row p-0">
+						<div class="col-sm-12 mb-3">
+							<label class="h5">
+								<b>Documento:</b>
+							</label>
+							<span class="h5"> {{ object.document }}</span>
+						</div>
+						<div class="col-sm-6 mb-3">
+							<label class="h5">
+								<b>Nombre:</b>
+							</label>
+							<span class="h5">{{ object.name }}</span>
+						</div>
+					</div>
+					{% if request.user.pk != object.pk %}
+					<div class="col-sm-12 mb-3 mt-3 text-center">
+						<button type="submit" class="btn btn-rounded btn-primary">Aceptar</button>
+					</div>
+					{% endif %}
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

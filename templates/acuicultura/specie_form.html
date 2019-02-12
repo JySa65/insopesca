@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block title %}
+{% if object.pk %}
+ESPECIE {{ object.ordinary_name}}
+{% else %}
+Especie REGISTRO
+{% endif %}
+{% endblock %}
+{% block sidebar %}
+{% include 'sidebar/acuicultura.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+{% if object.pk %}
+Actualizacion De Especie
+{% else %}
+Registro De Especie
+{% endif %}
+{% endblock pageheader %}
+
+
+{% block context %}
+
+<link rel="stylesheet" href="{% static 'assets/vendor/bootstrap-select/css/bootstrap-select.css' %}">
+
+<div class="row">
+	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				{% if not profile %}
+				{% if object.pk %}
+				<a href="{% url 'authentication:detail' object.pk %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				{% else %}
+				<a href="{% url 'authentication:list' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				{% endif %}
+				{% else %}
+				<a href="{% url 'authentication:detail_profile' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				{% endif %}
+			</div>
+			<div class="card-body">
+
+				<form action="" method="post">
+						{% csrf_token %}
+				{% for field in form %}
+				{% if field.errors %}
+				<div class="form-group">
+					<div class="alert alert-danger" role="alert">
+						{{ field.label }}:
+						{% for error in field.errors %}
+						{{ error }}
+						{% endfor %}
+					</div>
+				</div>
+				{% endif %}
+				{% endfor %}
+
+
+
+					<div class="form-group">
+						<label for="id_{{ form.ordinary_name.name }}" class="col-form-label">Nombre Ordinario</label>
+						{{ form.ordinary_name|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+					<div class="form-group">
+						<label for="id_{{ form.scientific_name.name }}" class="col-form-label">Nombre Cientifico</label>
+						{{ form.scientific_name|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+					</div>
+					<div class="form-group text-center">
+						<br>
+						<button type="submit" class="btn btn-rounded btn-success">Aceptar</button>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock %}

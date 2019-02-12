@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block title %} Acuicultura {% endblock %}
+{% load staticfiles %}
+
+{% block sidebar %}
+{% include 'sidebar/acuicultura.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+Listdo Unidad Productora
+{% endblock pageheader %}
+
+{% block context %}
+
+<div class="row">
+	<!-- ============================================================== -->
+	<!-- data table  -->
+	<!-- ============================================================== -->
+	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<div class="card">
+
+			<h5 class="card-header">Listado de las Unidades Productoras</h5>
+			<div class="card-body">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Documento</th>
+							<th scope="col">Nombre</th>
+							<th scope="col">Operativa</th>
+							<th scope="col">Opciones</th>
+						</tr>
+					</thead>
+					<tbody>
+						
+							{% for i in object_list  %}
+							<tr>
+								<th scope="row">{{forloop.counter}}</th>
+								<td>{{i.type_document}}-{{i.document}}</td>
+								<td>{{i.name}}</td>
+
+								{% if i.is_active %}
+								<td><span class="badge badge-success ">Activo</span></td>
+								{% else %}
+								<td><span class="badge badge-danger">Inactivo</span></td> 
+
+								{% endif %}
+								<td>
+									<a href="{% url 'acuicultura:detail_unit' i.pk %}" class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
+									<a href="{% url 'acuicultura:delete_unit' i.pk %}" class="btn btn-rounded btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+
+								</td>
+	
+							{% empty%}
+							<tr>
+								<td></td>
+								<td>No Hay</td>
+								<td>Registros</td>
+								<td>En Estos</td>
+								<td>Momentos</td>
+							  </tr>
+				
+
+							</tr>
+
+							{% endfor %}
+						
+							
+
+					</tbody>
+					<tfoot>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Documento</th>
+							<th scope="col">Nombre</th>
+							<th scope="col">Operativa</th>
+							<th scope="col">Opciones</th>
+						</tr>
+					</tfoot>
+
+				</table>
+				{% if object_list %}
+				<div class="mt-5">
+					<ul class="pagination">
+						{% block paginator %}
+						{% include 'partial/paginator.html' %}
+						{% endblock paginator %}
+					</ul>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- end data table  -->
+	<!-- ============================================================== -->
+</div>
+<script src="{% static 'assets/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
+
+{% endblock %}
