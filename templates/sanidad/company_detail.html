@@ -39,7 +39,7 @@
             <label class="h5">
               <b>Telefono Trabajo:</b>
             </label>
-            <span class="h5">{% if object.tlf %} {{ object.tlf_house }} {% else %} {{ tlf }} {% endif %}</span>
+            <span class="h5">{% if object.tlf_house %} {{ object.tlf_house }} {% else %} {{ tlf }} {% endif %}</span>
           </div>
           <div class="col-sm-6 mb-3">
             <label class="h5">
@@ -139,11 +139,24 @@
               </tr>
             </thead>
             <tbody>
-              {% for object in object.get_accounts %}
+              {% for account in object.get_accounts %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ object.get_document }}</td>
-                <td><a href="{% url 'sanidad:company_detail' object.pk %}">{{ object.name }}</a></td>
+                <td>{{ account.get_document }}</td>
+                <td><a href="{% url 'sanidad:company_detail' account.pk %}">{{ account.name }}</a></td>
+                <td>
+                  {% if account.is_active %}
+                  <span class="badge badge-success">Activo</span>
+                  {% else %}
+                  <span class="badge badge-danger">Inactivo</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{% url 'sanidad:account_detail' object.pk account.pk %}" class="btn btn-rounded btn-secondary"><i
+                      class="fas fa-eye"></i></a>
+                  <a href="{% url 'sanidad:account_detail' object.pk account.pk %}" class="btn btn-rounded btn-danger"><i
+                      class="fas fa-user-times"></i></a>
+                </td>
               </tr>
               {% empty %}
               <tr>

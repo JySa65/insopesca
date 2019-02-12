@@ -6,9 +6,9 @@ import uuid
 
 
 class Account(core.Account):
+
     def __str__(self):
         return self.document
-
 
 class Driver(core.Account):
     def __str__(self):

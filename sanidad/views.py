@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.views.generic import TemplateView, ListView, CreateView, \
     DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
+from utils.check_password import checkPassword
 from sanidad import models, forms
 # Create your views here.
 
@@ -117,3 +118,44 @@ class AccoutCompanyCreateView(CreateView):
                 reverse_lazy('sanidad:company_detail', args=(company.pk,)))
         return render(self.request, self.template_name, {
             'form': form, 'company': company})
+
+
+class AccoutCompanyDetailView(DetailView):
+    model = models.Account
+    pk_url_kwarg = 'account'
+
+    def get_context_data(self, **kwargs):
+        context = super(AccoutCompanyDetailView,
+                        self).get_context_data(**kwargs)
+        context['company'] = self.object.company_set.all().filter(
+            pk=self.kwargs.get('pk')).first()
+        return context
+
+
+class AccountCompanyUpdateView(UpdateView):
+    model = models.Account
+    form_class = forms.AccountForm
+    pk_url_kwarg = 'account'
+    template_name = 'sanidad/account_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(AccountCompanyUpdateView,
+                        self).get_context_data(**kwargs)
+        context['edit'] = True
+        context['company'] = self.getCompany()
+        return context
+
+    def form_valid(self, form):
+        password = self.request.POST.get('password', '')
+        user = checkPassword(self.request.user.email, password)
+        if not user:
+            return render(self.request, self.template_name, {
+                'form': form, 'company': self.getCompany(), 'message': "Contraseña Incorrecta", 'edit': True})
+        return super(AccountCompanyUpdateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('sanidad:account_detail', args=(self.kwargs.get('pk'), self.object.pk))
+
+    def getCompany(self):
+        return self.object.company_set.all().filter(
+            pk=self.kwargs.get('pk')).first()
