@@ -21,15 +21,15 @@
 					<div class="row p-0">
 						<div class="col-sm-12 mb-3">
 							<label class="h5">
-								<b>Documento:</b>
+								<b>Nombre Comun:</b>
 							</label>
-							<span class="h5"> {{ object.document }}</span>
+							<span class="h5"> {{ object.ordinary_name }}</span>
 						</div>
 						<div class="col-sm-6 mb-3">
 							<label class="h5">
-								<b>Nombre:</b>
+								<b>Nombre Cientifico:</b>
 							</label>
-							<span class="h5">{{ object.name }}</span>
+							<span class="h5">{{ object.scientific_name }}</span>
 						</div>
 					</div>
 					{% if request.user.pk != object.pk %}

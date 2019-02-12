@@ -4,9 +4,9 @@
 {% load widget_tweaks %}
 {% block title %}
 {% if object.pk %}
-USUARIO {{ object.email }}
+UNIDAD PRODUCTORA {{ object.name }}
 {% else %}
-USUARIOS REGISTRO
+UNIDAD PRODUCTORA REGISTRO
 {% endif %}
 {% endblock %}
 {% block sidebar %}
@@ -14,7 +14,7 @@ USUARIOS REGISTRO
 {% endblock sidebar %}
 {% block pageheader %}
 {% if object.pk %}
-Actualizacion De Unidad Prductora
+Actualizacion De Unidad Productora: {{object.name}}
 {% else %}
 Registro De Unidad Prductora
 {% endif %}
@@ -29,18 +29,16 @@ Registro De Unidad Prductora
 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 		<div class="card">
 			<div class="card-header">
-				{% if not profile %}
 				{% if object.pk %}
-				<a href="{% url 'authentication:detail' object.pk %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				<a href="{% url 'acuicultura:detail_unit' object.pk %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
 				{% else %}
-				<a href="{% url 'authentication:list' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
-				{% endif %}
-				{% else %}
-				<a href="{% url 'authentication:detail_profile' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				<a href="{% url 'acuicultura:list_unit' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
 				{% endif %}
 			</div>
 			<div class="card-body">
 
+				<form action="" method="post">
+						{% csrf_token %}
 				{% for field in form %}
 				{% if field.errors %}
 				<div class="form-group">
@@ -81,8 +79,6 @@ Registro De Unidad Prductora
 				{% endfor %}
 
 
-				<form action="" method="post" id="form" class="needs-validation" novalidate>
-					{% csrf_token %}
 
 
 					<div class="form-group">
@@ -102,12 +98,12 @@ Registro De Unidad Prductora
 					</div>
 
 					<div class="form-group">
-						<label for="id_{{ form.landline.name }}" class="col-form-label">Telefono Fijo</label>
-						{{ form.landline|add_class:"form-control"|attr:"autocomplete:off" }}
+						<label for="id_{{ form.tlf_house.name }}" class="col-form-label">Telefono Fijo</label>
+						{{ form.tlf_house|add_class:"form-control"|attr:"autocomplete:off" }}
 					</div>
 					<div class="form-group">
-						<label for="id_{{ form.phone.name }}" class="col-form-label">Telefono Movil</label>
-						{{ form.phone|add_class:"form-control"|attr:"autocomplete:off" }}
+						<label for="id_{{ form.tlf.name }}" class="col-form-label">Telefono Movil</label>
+						{{ form.tlf|add_class:"form-control"|attr:"autocomplete:off" }}
 					</div>
 					<div class="form-group">
 						<label for="id_{{ form.municipality.name }}" class="col-form-label">Municipio</label>
@@ -124,13 +120,11 @@ Registro De Unidad Prductora
 						{{ form.parish|add_class:"form-control"|attr:"autocomplete:off" }}
 					</div>
 
-					<div class="form-group text-center">
-						<br>
-						<label class="custom-control custom-checkbox custom-control-inline">
-							{{ form.operative|add_class:"custom-control-input" }}
-							<span class="custom-control-label">Se encuentra Operativo</span>
-						</label>
-					</div>
+					<div class="form-group">
+							<label for="id_{{ form.address.name }}" class="col-form-label">Dirección</label>
+							{{ form.address|add_class:"form-control"|attr:"autocomplete:off" }}
+						</div>
+	
 
 					<div class="border-top">
 
@@ -211,34 +205,6 @@ Registro De Unidad Prductora
 	</div>
 </div>
 
-
-<script src="{% static 'assets/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
-<script src="{% static 'assets/vendor/parsley/parsley.js' %}"></script>
-
-
-<script>
-	$('#form').parsley();
-</script>
-<script>
-	// Example starter JavaScript for disabling form submissions if there are invalid fields
-	(function () {
-		'use strict';
-		window.addEventListener('load', function () {
-			// Fetch all the forms we want to apply custom Bootstrap validation styles to
-			var forms = document.getElementsByClassName('needs-validation');
-			// Loop over them and prevent submission
-			var validation = Array.prototype.filter.call(forms, function (form) {
-				form.addEventListener('submit', function (event) {
-					if (form.checkValidity() === false) {
-						event.preventDefault();
-						event.stopPropagation();
-					}
-					form.classList.add('was-validated');
-				}, false);
-			});
-		}, false);
-	})();
-</script>
 
 
 {% endblock %}

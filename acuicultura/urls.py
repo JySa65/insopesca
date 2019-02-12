@@ -1,6 +1,8 @@
 from django.urls import path
-from acuicultura.views import AcuiculturaHome, ProductionUnitCreateView, ProductionUnitUpdate,\
-    ProductionuUnitDetail, ProductionUnitDelete, ProductionUnitList
+from acuicultura.views import AcuiculturaHome, ProductionUnitCreateView,\
+    ProductionUnitUpdate, ProductionuUnitDetail, ProductionUnitDelete, ProductionUnitList,\
+    SpeciesCreateView, SpeciesList, SpeciesDetail, SpeciesUpdate, SpeciesDelete, TracingCreate, RepreUnitCreate,\
+    TracingDetail
 
 
 # ,Production_unit_CreateView,Production_unit_Update,Production_unit_List, \
@@ -25,18 +27,21 @@ urlpatterns = [
     path('Listado/Unidad/Productora/',
          ProductionUnitList.as_view(), name="list_unit"),
 
+    # Species
+    path('Registrar/Especie/', SpeciesCreateView.as_view(), name="create_specie"),
+    path('Especie/Detalle/<pk>/', SpeciesDetail.as_view(), name="detail_specie"),
+    path('Especie/Actualizar/<pk>/', SpeciesUpdate.as_view(), name="update_specie"),
+    path('Especie/Eliminar/<pk>/', SpeciesDelete.as_view(), name="delete_specie"),
+    path('Listado/Especie/', SpeciesList.as_view(), name="list_specie"),
 
-    # path('create/', SpeciesCreateView.as_view(), name="create_specie"),
-    # path('detail/<pk>/', SpeciesDetail.as_view(), name="detail_specie"),
-    # path('update/<pk>/', SpeciesUpdate.as_view(), name="update_specie"),
-    # path('delete/<pk>/', SpeciesDelete.as_view(), name="delete_specie"),
-    # path('list/', SpeciesList.as_view(), name="list_specie"),
-
-    # path('create/', TracingCreate.as_view(), name="create"),
-    # path('detail/<pk>/', TracingDetail.as_view(), name="detail_tracing"),
+    path('Registro/Seguimiento/<pk>',
+         TracingCreate.as_view(), name="create_tracing"),
+    path('Seguimiento/Detalles/<pk>/', TracingDetail.as_view(), name="detail_tracing"),
     # path('update/<pk>/', TracingUpdate.as_view(), name="update_tracing"),
     # path('delete/<pk>/', Tracingdelete.as_view(), name="delete_tracing"),
     # path('list/', TracingList.as_view(), name="list_tracing"),
 
+    path('Representante/Legal/<pk>/',
+         RepreUnitCreate.as_view(), name="repre_create"),
 
 ]

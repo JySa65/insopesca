@@ -1,19 +1,47 @@
 from django import forms
-from acuicultura.models import Production_unit,Cardinal_point,Repre_unit_productive
+from acuicultura.models import ProductionUnit, CardinalPoint, RepreUnitProductive,Specie,Tracing
 
 
 class UnitCreateForm(forms.ModelForm):
-    class Meta:
-        model = Production_unit
-        fields = ('type_document','document','name','landline','phone','operative','municipality','state','parish')
+    tlf = forms.CharField(max_length=11,required=True,)
+    tlf_house = forms.CharField(max_length=11,required=True)
 
+    class Meta:
+        model = ProductionUnit
+        fields = ('type_document', 'document', 'name',
+                  'tlf', 'tlf_house', 'state', 'municipality',
+                  'parish', 'address')
 
 class CardinaPointForm(forms.ModelForm):
+
     class Meta:
-        model = Cardinal_point
-        fields =  ("north", "south", "west", "oest", "altitude","total_area_terr")
+        model = CardinalPoint
+        fields = ("north", "south", "west", "oest",
+                  "altitude", "total_area_terr")
+
 
 class RepreUnitForm(forms.ModelForm):
+    phone_repre = forms.CharField(max_length=11,required=True,label="Telefono")
+    landline_repre = forms.CharField(max_length=11,required=True,label="Telefono Casa")
+
     class Meta:
-        model = Repre_unit_productive
+        model = RepreUnitProductive
+        fields = ("type_document_repre", "document_repre", "name_repre",
+                  "last_name_repre", "landline_repre", "phone_repre")
+
+class EspecieForm(forms.ModelForm):
+    class Meta:
+        model = Specie
+        fields = ('__all__')
+
+
+class TracingForm(forms.ModelForm):
+    class Meta:
+        model = Tracing
+        fields = ('number_lagoon','new_number_lagoon','number_well','new_number_well','illegal_superfaces','irregular_superfaces','permise_superfaces','regular_superfaces')
+
+class RepresentativeForm(forms.ModelForm):
+    class Meta:
+        model = RepreUnitProductive
         fields = ("type_document_repre","document_repre","name_repre","last_name_repre","landline_repre","phone_repre")
+        

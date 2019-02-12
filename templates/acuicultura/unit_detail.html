@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %} {{ object.name|upper }} {% endblock %}
 {% block sidebar %}
-{% include 'sidebar/authentication.html' %}
+{% include 'sidebar/acuicultura.html' %}
 {% endblock sidebar %}
 {% block pageheader %}
 {{ object.name }}
@@ -20,19 +20,26 @@
 						<label class="h5">
 							<b>Documento:</b>
 						</label>
-						<span class="h5"> {{ object.document }}</span>
+						<span class="h5">{{object.type_document}}-{{ object.document }}</span>
 					</div>
+					<div class="col-sm-12 mb-3">
+							<label class="h5">
+								<b>Nombre:</b>
+							</label>
+							<span class="h5">{{ object.name }}</span>
+						</div>
+	
 					<div class="col-sm-6 mb-3">
 						<label class="h5">
 							<b>Telefono Fijo:</b>
 						</label>
-						<span class="h5">{{ object.landline }}</span>
+						<span class="h5">{{ object.tlf_house }}</span>
 					</div>
 					<div class="col-sm-6 mb-3">
 						<label class="h5">
 							<b>Telefono Movil:</b>
 						</label>
-						<span class="h5">{{ object.phone }}</span>
+						<span class="h5">{{ object.tlf }}</span>
 					</div>
 
 				</div>
@@ -57,51 +64,27 @@
 					</div>
 					<div class="col-sm-6 mb-3">
 						<label class="h5">
-							<b>Estadi: </b>
+							<b>Estado: </b>
 						</label>
 						<span class="h5">{{ object.state }}</span>
 					</div>
-				</div>
-			</div>
-		</div>
-		<div class="card">
-			<div class="card-header">
-				<span class="h4 text-primary"><b>Información del Representante Legal</b></span>
-			</div>
-			<div class="card-body">
-				<div class="row p-0">
-					<div class="col-sm-12 mb-3">
-						<label class="h5">
-							<b>Documento:</b>
-						</label>
-						<span class="h5"> {{ representative.document_repre }}</span>
-					</div>
-					<div class="col-sm-6 mb-3">
-						<label class="h5">
-							<b>Nombres:</b>
-						</label>
-						<span class="h5"> {{ representative.name_repre }}</span>
-					</div>
-					<div class="col-sm-6 mb-3">
-						<label class="h5">
-							<b>Apellidos:</b>
-						</label>
-						<span class="h5"> {{ representative.last_name_repre }}</span>
-					</div>
+					<div class="col-sm-10 mb-10">
+							<label class="h5">
+								<b>Dirección: </b>
+							</label>
+							<span class="h5">{{ object.address }}</span>
+						</div>
+					<div class="card-body">
+						<div class="row text-center">
+							<div class="col-sm-7 mb-7">
+								<a href="{% if not profile %} {% url 'acuicultura:update_unit' object.pk %} {% else %} {% url 'authentication:update_profile' %} {% endif %} " class="btn btn-rounded btn-info">
+									<i class="far fa-edit"></i>
+									Actualizar
+								</a>
+							</div>
 
-                    <div class="col-sm-6 mb-3">
-						<label class="h5">
-							<b>Telefono Fijo:</b>
-						</label>
-						<span class="h5"> {{ representative.landline_repre }}</span>
-					</div>
-					<div class="col-sm-6 mb-3">
-						<label class="h5">
-							<b>Telefono Movil:</b>
-						</label>
-						<span class="h5"> {{ representative.phone_repre }}</span>
-					</div>
-
+						</div>
+					</div>				
 				</div>
 			</div>
 		</div>
@@ -149,12 +132,132 @@
 						</label>
 						<span class="h5"> {{ cardinal.total_area_terr }}</span>
 					</div>
-
-                    
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<div class="card">
+					<div class="card-header clearfix">
+						<span class="h4 text-primary"><b>Representantes Legales </b></span>
+						{% if representative.count > 0 %}
 
-    </div>
+						{% else %}
+							<a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-rounded btn-primary">Nueva Unidades Productoras <i class="fas fa-user-plus"></i></a>
+						{% endif %}
+
+					</div>
+						
+
+					<div class="card-body p-0">
+						<div class="table-responsive">
+							<table class="table table-hover">
+								<thead class="bg-light">
+									<tr>
+										<th>#</th>
+										<th>Rif</th>
+										<th>Nombre</th>
+										<th>Apellido</th>
+										<th>Opciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									
+									{% for repre in representative %}
+									<tr>
+										<td>{{ forloop.counter }}</td>
+										<td>{{repre.type_document_repre}}-{{ repre.document_repre }}</td>
+										<td>{{ repre.name_repre }}</td>
+										<td>{{repre.last_name_repre}}</td>
+		
+										<td>
+											<a href="{% url 'acuicultura:detail_unit' object.pk %}" class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
+											<a href="{% url 'authentication:delete' object.pk %}" class="btn btn-rounded btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+										</td>
+									</tr>
+									{% empty %}
+		
+									<tr>
+										<td colspan="5" class="text-center">
+											<h1>No tiene Representante Asignado a la Empresa</h1>
+											<a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-primary btn-rounded ">
+											Añadir Representante
+											<i class="fas fa-user-plus"></i>
+											</a>
+										</td>
+									</tr>
+		
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<div class="card">
+					<div class="card-header clearfix">
+						<span class="h4 text-primary"><b>Seguimientos </b></span>
+							<a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-rounded btn-primary">Nueva Unidades Productoras <i class="fas fa-user-plus"></i></a>
+
+					</div>
+						
+
+					<div class="card-body p-0">
+						<div class="table-responsive">
+							<table class="table table-hover">
+								<thead class="bg-light">
+									<tr>
+										<th>#</th>
+										<th>Lagunas Actuales</th>
+										<th>Lagunas Nuevas</th>
+										<th>Pozos Actuales</th>
+										<th>Pozos Nuevos</th>
+										<th>Responsable</th>
+										<th>Opciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									
+									{% for tracings in tracing %}
+									<tr>
+										<td>{{ forloop.counter }}</td>
+										<td>{{ tracings.number_lagoon }}</td>
+										<td>{{ tracings.new_number_lagoon }}</td>
+										<td>{{ tracings.number_well }}</td>
+
+										<td>{{ tracings.new_number_well }}</td>
+										<td>{{tracings.responsible.name}} {{tracings.responsible.last_name}} </td>
+		
+										<td>
+											<a href="{% url 'acuicultura:detail_tracing' tracings.pk %}" class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
+											<a href="{% url 'authentication:delete' object.pk %}" class="btn btn-rounded btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+										</td>
+									</tr>
+									{% empty %}
+		
+									<tr>
+										<td colspan="5" class="text-center">
+											<h1>No tiene Seguimientoss realizados a la Empresa</h1>
+											<a href="{% url 'acuicultura:create_tracing' object.pk %}" class="btn btn-primary btn-rounded ">
+											Añadir Seguimiento
+											<i class="fas fa-user-plus"></i>
+											</a>
+										</td>
+									</tr>
+		
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
 </div>
 {% endblock %}

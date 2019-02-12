@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block title %}
+{% if object.pk %}
+ESPECIE {{ object.ordinary_name}}
+{% else %}
+Especie REGISTRO
+{% endif %}
+{% endblock %}
+{% block sidebar %}
+{% include 'sidebar/acuicultura.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+{% if object.pk %}
+Actualizacion De Especie
+{% else %}
+Registro De Especie
+{% endif %}
+{% endblock pageheader %}
+
+
+{% block context %}
+
+<link rel="stylesheet" href="{% static 'assets/vendor/bootstrap-select/css/bootstrap-select.css' %}">
+
+<div class="row">
+	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				{% if not profile %}
+				{% if object.pk %}
+				<a href="{% url 'authentication:detail' object.pk %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				{% else %}
+				<a href="{% url 'authentication:list' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				{% endif %}
+				{% else %}
+				<a href="{% url 'authentication:detail_profile' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				{% endif %}
+			</div>
+			<div class="card-body">
+
+				<form action="" method="post">
+						{% csrf_token %}
+				{% for field in form %}
+				{% if field.errors %}
+				<div class="form-group">
+					<div class="alert alert-danger" role="alert">
+						{{ field.label }}:
+						{% for error in field.errors %}
+						{{ error }}
+						{% endfor %}
+					</div>
+				</div>
+				{% endif %}
+				{% endfor %}
+
+
+
+					<div class="form-group">
+						<label for="id_{{ form.number_lagoon.name }}" class="col-form-label">Numero de Lagunas</label>
+						{{ form.number_lagoon|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+					<div class="form-group">
+						<label for="id_{{ form.new_number_lagoon.name }}" class="col-form-label">Numero de Lagunas Nuevas</label>
+						{{ form.new_number_lagoon|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+					<div id="multinew_lagoon">
+					</div>
+	
+					<div class="form-group">
+						<label for="id_{{ form.number_well.name }}" class="col-form-label">Numero de Pozos</label>
+						{{ form.number_well|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+					<div class="form-group">
+						<label for="id_{{ form.new_number_well.name }}" class="col-form-label">Numero de Pozos Nuevos</label>
+						{{ form.new_number_well|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+					<div id="multinew_wells">
+					</div>
+	
+						
+	
+					<div class="form-group">
+						<label for="id_{{ form.illegal_superfaces.name }}" class="col-form-label">Superficies ilegales</label>
+						{{ form.illegal_superfaces|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+                    
+					<div class="form-group">
+						<label for="id_{{ form.irregular_superfaces.name }}" class="col-form-label">Superficies Regulares</label>
+						{{ form.irregular_superfaces|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+
+					<div class="form-group">
+						<label for="id_{{ form.permise_superfaces.name }}" class="col-form-label">Superficies Permisadas</label>
+						{{ form.permise_superfaces|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+                    <div class="form-group">
+						<label for="id_{{ form.regular_superfaces.name }}" class="col-form-label">Superficies Regulares</label>
+						{{ form.regular_superfaces|add_class:"form-control"|attr:"autocomplete:off" }}
+                    </div>
+	
+                    <div class="form-group text-center">
+						<br>
+						<button type="submit" class="btn btn-rounded btn-success">Aceptar</button>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+
+let lagoon_function =() =>{
+	
+	const new_lagoon = document.querySelector("#id_new_number_lagoon")
+	const multilagoon = document.querySelector("#multinew_lagoon")
+	data_new_lagoon_d = {{new_lagoon_deepth|safe}}
+	data_new_lagoon_p = {{new_lagoon_diameter|safe}}
+	let input = ""
+	var cont = 0
+	const html = (name,value_diameter,value_deepth,number) => `
+			<div id="multinew_wells">
+					Diametro del Pozo Nro° `+number+`
+            <input class="form-control" name=new_lagoon_diameter_${name} id=new_lagoon_diameter_${number} value=${value_diameter}>
+            Profundidad del Pozo Nro° `+number+`
+			<input class="form-control" name=new_lagoon_deepth_${name} id=new_lagoon_deepth_${number} value=${value_deepth}>
+			<div>`
+
+	for (let i = 0; i < new_wells.value; i++) {
+		cont = i+1
+		input += html(i,data_new_lagoon_d[i],data_new_lagoon_p[i],cont)
+	}
+	multiwells.innerHTML = input
+}
+window.onload = lagoon_function
+
+// 
+let wells_function =() =>{
+	
+	const new_wells = document.querySelector("#id_new_number_well")
+	const multiwells = document.querySelector("#multinew_wells")
+	data_new_well_d = {{new_well_diameter|safe}}
+	data_new_well_p = {{new_well_deepth|safe}}
+	let input = ""
+	var cont = 0
+	const html = (name,value_diameter,value_deepth,number) => `
+			<div id="multinew_wells">
+					Diametro del Pozo Nro° `+number+`
+            <input class="form-control" name=new_wells_diameter_${name} id=new_wells_diameter_${number} value=${value_diameter}>
+            Profundidad del Pozo Nro° `+number+`
+			<input class="form-control" name=new_wells_deepth_${name} id=new_wells_deepth_${number} value=${value_deepth}>
+			<div>`
+
+	for (let i = 0; i < new_wells.value; i++) {
+		cont = i+1
+		input += html(i,data_new_well_d[i],data_new_well_p[i],cont)
+	}
+	multiwells.innerHTML = input
+}
+window.onload = wells_function
+
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block title %} {{ object.name|upper }} {% endblock %}
+{% block sidebar %}
+{% include 'sidebar/acuicultura.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+{{ object.name }}
+{% endblock pageheader %}
+
+{% block context %}
+<div class="row">
+	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 text-primary"><b>Seguiemiento  realizado a : {{object.producion_unit.name}}</b></span>
+			</div>
+			<div class="card-body">
+				<div class="row p-0">
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Numero de Pozos Actuales:</b>
+						</label>
+						<span class="h5">{{ object.number_well }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Numero de Pozos Nuevos:</b>
+						</label>
+						<span class="h5">{{ object.new_number_well }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Numero de Lagunas Actuales:</b>
+						</label>
+						<span class="h5">{{ object.number_lagoon }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Numero de Lagunas Nuevas:</b>
+						</label>
+						<span class="h5">{{ object.new_number_lagoon }}</span>
+					</div>
+
+				</div>
+			</div>
+			<hr>
+        </div>
+		<div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card">
+                    <div class="card-header clearfix">
+                        <span class="h4 text-primary"><b>Pozos</b></span>
+                            <a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-rounded btn-primary">Nueva Unidades Productoras <i class="fas fa-user-plus"></i></a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Diametro</th>
+                                        <th>Profundidad</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    {% for tracings in well_tracing %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ tracings.well.well_diameter }}</td>
+                                        <td>{{ tracings.well.well_deepth }}</td>
+										<td>
+                                                <a href="{% url 'acuicultura:detail_tracing' tracings.pk %}" class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
+                                                <a href="{% url 'authentication:delete' object.pk %}" class="btn btn-rounded btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                            </td>
+    
+        
+                                    </tr>
+                                    {% empty %}
+        
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            <h1>No tiene  Pozos agregados</h1>
+                                            <a href="{% url 'acuicultura:create_tracing' object.pk %}" class="btn btn-primary btn-rounded ">
+                                            Añadir Seguimiento
+                                            <i class="fas fa-user-plus"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+        
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	
+		<div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <div class="card-header clearfix">
+                            <span class="h4 text-primary"><b>Lagunas</b></span>
+                                <a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-rounded btn-primary">Nueva Unidades Productoras <i class="fas fa-user-plus"></i></a>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Diametro</th>
+                                            <th>Profundidad</th>
+                                            <th>Opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        {% for tracings in lagoon_tracing %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ tracings.lagoon.lagoon_diameter }}</td>
+                                            <td>{{ tracings.lagoon.lagoon_deepth }}</td>
+                                            <td>
+                                                    <a href="{% url 'acuicultura:detail_tracing' tracings.pk %}" class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
+                                                    <a href="{% url 'authentication:delete' object.pk %}" class="btn btn-rounded btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                </td>
+        
+            
+                                        </tr>
+                                        {% empty %}
+            
+                                        <tr>
+                                            <td colspan="5" class="text-center">
+                                                <h1>No tiene  Lagunas agregadas</h1>
+                                                <a href="{% url 'acuicultura:create_tracing' object.pk %}" class="btn btn-primary btn-rounded ">
+                                                Añadir Lagunas
+                                                <i class="fas fa-user-plus"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+            
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}

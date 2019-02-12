@@ -17,6 +17,10 @@ jQuery(document).ready(function($) {
                 lengthChange: false,
                 "paging": false,
                 "info":false,
+                "search": false,
+                "searching": false,
+                "filter": false,
+
                 language: {
                     "decimal": "",
                     "emptyTable": "No hay información",
