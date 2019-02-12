@@ -65,15 +65,18 @@ class AccoutCompanyCreateView(CreateView):
     form_class = forms.AccountForm
     template_name = 'sanidad/account_form.html'
 
+    def get_object(self):
+        return get_object_or_404(models.Company, pk=self.kwargs.get('pk'))
+
     def get_context_data(self, *args, **kwargs):
         context = super(AccoutCompanyCreateView,
                         self).get_context_data(**kwargs)
-        context['company'] = get_object_or_404(
-            models.Company, pk=self.kwargs.get('pk'))
+        company = self.get_object()
+        print(company.account_set.all())
+        context['company'] = company
         search = self.request.GET.get('search', '')
         if search != '':
-            user = self.model.objects.filter(
-                document=search, is_delete=False).first()
+            user = self.model.objects.filter(document=search)
             user_exists = models.Company.objects.filter(
                 pk=self.kwargs.get('pk'), account=user).exists()
             if user_exists:
@@ -82,42 +85,42 @@ class AccoutCompanyCreateView(CreateView):
                 context['account'] = user
         return context
 
-    def post(self, *args, **kwargs):
-        company = get_object_or_404(models.Company, pk=self.kwargs.get('pk'))
-        form = self.form_class(self.request.POST)
-        add = self.request.POST.get('add', "")
-        ci = self.request.POST.get('document', "")
-        if add != "":
-            try:
-                user = self.model.objects.get(pk=add)
-                user_exists = models.Company.objects.filter(
-                    account=user, pk=company.pk).exists()
-                if not user_exists:
-                    company.account.add(user)
-                    return HttpResponseRedirect(
-                        reverse_lazy('sanidad:company_detail', args=(company.pk,)))
-            except self.model.DoesNotExist:
-                return HttpResponseRedirect(
-                    reverse_lazy('sanidad:company_detail', args=(company.pk,)))
-        user = self.model.objects.filter(document=ci)
-        if user.exists():
-            user_exists = models.Company.objects.filter(
-                account=user.first(), pk=company.pk).exists()
-            if not user_exists:
-                company.add(user.first())
-                return HttpResponseRedirect(
-                    reverse_lazy('sanidad:company_detail', args=(company.pk,)))
-            return render(self.request, self.template_name, {
-                'form': form, 'company': company})
+    # def post(self, *args, **kwargs):
+    #     company = get_object_or_404(models.Company, pk=self.kwargs.get('pk'))
+    #     form = self.form_class(self.request.POST)
+    #     add = self.request.POST.get('add', "")
+    #     ci = self.request.POST.get('document', "")
+    #     if add != "":
+    #         try:
+    #             user = self.model.objects.get(pk=add)
+    #             user_exists = models.Company.objects.filter(
+    #                 account=user, pk=company.pk).exists()
+    #             if not user_exists:
+    #                 company.account.add(user)
+    #                 return HttpResponseRedirect(
+    #                     reverse_lazy('sanidad:company_detail', args=(company.pk,)))
+    #         except self.model.DoesNotExist:
+    #             return HttpResponseRedirect(
+    #                 reverse_lazy('sanidad:company_detail', args=(company.pk,)))
+    #     user = self.model.objects.filter(document=ci)
+    #     if user.exists():
+    #         user_exists = models.Company.objects.filter(
+    #             account=user.first(), pk=company.pk).exists()
+    #         if not user_exists:
+    #             company.add(user.first())
+    #             return HttpResponseRedirect(
+    #                 reverse_lazy('sanidad:company_detail', args=(company.pk,)))
+    #         return render(self.request, self.template_name, {
+    #             'form': form, 'company': company})
 
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.save()
-            company.account.add(user)
-            return HttpResponseRedirect(
-                reverse_lazy('sanidad:company_detail', args=(company.pk,)))
-        return render(self.request, self.template_name, {
-            'form': form, 'company': company})
+    #     if form.is_valid():
+    #         user = form.save(commit=False)
+    #         user.save()
+    #         company.account.add(user)
+    #         return HttpResponseRedirect(
+    #             reverse_lazy('sanidad:company_detail', args=(company.pk,)))
+    #     return render(self.request, self.template_name, {
+    #         'form': form, 'company': company})
 
 
 class AccoutCompanyDetailView(DetailView):
@@ -159,3 +162,15 @@ class AccountCompanyUpdateView(UpdateView):
     def getCompany(self):
         return self.object.company_set.all().filter(
             pk=self.kwargs.get('pk')).first()
+
+
+class AccountCompanyDeleteView(DeleteView):
+    model = models.Account
+    pk_url_kwarg = 'account'
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_delete = True
+        self.object.save()
+        return HttpResponseRedirect(
+            reverse_lazy('sanidad:company_detail', args=(self.kwargs.get('pk'),)))

@@ -61,7 +61,6 @@ class Account(models.Model):
         null=True, blank=True, verbose_name=_('Fecha de Nacimiento'))
     address = models.TextField(_('Dirección'), null=False, blank=False)
     is_active = models.BooleanField(default=True, verbose_name=_('Activo'))
-    is_delete = models.BooleanField(default=False, verbose_name=_('Eliminado'))
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

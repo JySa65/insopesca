@@ -2,7 +2,7 @@ from django.urls import path
 from sanidad.views import HomeTemplateView, \
     CompanyListView, CompanyCreateView, CompanyDetailView, \
     CompanyUpdateView, CompanyDeleteView, AccoutCompanyCreateView, \
-    AccoutCompanyDetailView, AccountCompanyUpdateView
+    AccoutCompanyDetailView, AccountCompanyUpdateView, AccountCompanyDeleteView
 
 app_name = 'sanidad'
 
@@ -19,5 +19,9 @@ urlpatterns = [
     path('company/detail/<pk>/account/detail/<account>',
          AccoutCompanyDetailView.as_view(), name="account_detail"),
     path('company/detail/<pk>/account/update/<account>',
-         AccountCompanyUpdateView.as_view(), name="account_update")
+         AccountCompanyUpdateView.as_view(), name="account_update"),
+    path('company/detail/<pk>/account/update/<account>',
+         AccountCompanyUpdateView.as_view(), name="account_update"),
+    path('company/detail/<pk>/account/delete/<account>',
+         AccountCompanyDeleteView.as_view(), name="account_delete")
 ]

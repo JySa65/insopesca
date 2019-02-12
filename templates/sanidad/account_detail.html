@@ -13,7 +13,7 @@
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="card">
             <div class="card-header clearfix">
-                <span class="h4 text-primary left"><b>Información Empresa</b></span>
+                <span class="h4 text-primary left"><b>Información De la Persona</b></span>
             </div>
             <div class="card-body">
                 <div class="row p-0">
@@ -70,7 +70,7 @@
                     </div>
                     {% if request.user.pk != object.pk %}
                     <div class="col-sm-6 mb-3">
-                        <a href="{% url 'sanidad:company_delete' object.pk %}" class="btn btn-rounded btn-danger">
+                        <a href="{% url 'sanidad:account_delete' company.pk  object.pk %}" class="btn btn-rounded btn-danger">
                             <i class="fas fa-user-times"></i>
                             Eliminar
                         </a>
