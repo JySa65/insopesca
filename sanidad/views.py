@@ -72,17 +72,18 @@ class AccoutCompanyCreateView(CreateView):
         context = super(AccoutCompanyCreateView,
                         self).get_context_data(**kwargs)
         company = self.get_object()
-        print(company.account_set.all())
         context['company'] = company
         search = self.request.GET.get('search', '')
         if search != '':
             user = self.model.objects.filter(document=search)
-            user_exists = models.Company.objects.filter(
-                pk=self.kwargs.get('pk'), account=user).exists()
-            if user_exists:
-                context['message'] = "Persona Ya Existe En La Empresa"
-            else:
-                context['account'] = user
+            user_exists = models.AccountHasCompany.objects.filter(
+                company__pk=self.kwargs.get('pk'))
+            
+            print(user_exists)
+            # if user_exists:
+                # context['message'] = "Persona Ya Existe En La Empresa"
+            # else:
+                # context['account'] = user
         return context
 
     # def post(self, *args, **kwargs):

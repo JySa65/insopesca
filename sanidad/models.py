@@ -47,27 +47,14 @@ class Company(core.Company):
     cod_permission = models.CharField(_('Codigo del Permiso'), max_length=30)
     cod_register_mercantil = models.CharField(
         _('Codigo de Registro Mercantil'), max_length=30)
-    transport = models.ManyToManyField(Transport, verbose_name=_('Transporte'))
-    account = models.ManyToManyField(Account, through='AccountHasCompany',
-                                     through_fields=('company', 'account'),)
+    transport = models.ManyToManyField(Transport, verbose_name=_('Transportes'))
+    account = models.ManyToManyField(Account, verbose_name=_('Personas'))
 
     def __str__(self):
         return self.document
 
     def get_transport(self):
         return self.transport.all().order_by('-created_at')
-
-
-class AccountHasCompany(models.Model):
-    is_delete = models.BooleanField(default=False)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.account.document
-
 
 # CompanyInspection
 # FishInspection
