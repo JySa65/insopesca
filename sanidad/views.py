@@ -30,7 +30,7 @@ class CompanyDetailView(DetailView):
             object = get_object_or_404(self.model, pk=pk)
         elif not object:
             raise Http404
-        return object
+        return object    
 
 
 class CompanyCreateView(CreateView):
@@ -162,12 +162,13 @@ class AccountCompanyUpdateView(UpdateView):
 
 
 class AccountCompanyDeleteView(DeleteView):
-    model = models.Account
-    pk_url_kwarg = 'account'
+    model = models.Company
+    # pk_url_kwarg = 'account'
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
-        self.object.is_delete = True
+        account = get_object_or_404(models.Account, pk=self.kwargs.get('account'))
+        self.object.account.remove(account)
         self.object.save()
         return HttpResponseRedirect(
             reverse_lazy('sanidad:company_detail', args=(self.kwargs.get('pk'),)))
