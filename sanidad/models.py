@@ -53,8 +53,11 @@ class Company(core.Company):
     def __str__(self):
         return self.document
 
-    def get_transport(self):
+    def get_transports(self):
         return self.transport.all().order_by('-created_at')
+
+    def get_accounts(self):
+        return self.account.all().order_by('-created_at')
 
 # CompanyInspection
 # FishInspection

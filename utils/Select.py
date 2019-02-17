@@ -34,6 +34,12 @@ class Selects(object):
 
         )
 
+    def type_document_user(self):
+        return (
+            ('V', 'V'),
+            ('E', 'E'),
+        )
+
     def level_user_url(self):
         return {
             'is_admin_or_coordinator': reverse('authentication:list'),

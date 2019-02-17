@@ -46,7 +46,7 @@ class Account(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     type_document = models.CharField(
-        _('Tipo De Documento'), max_length=2, null=False, blank=False)
+        _('Tipo De Documento'), max_length=2, null=False, blank=False, choices=Selects().type_document_user())
     document = models.CharField(
         _('Documento'), max_length=15, null=False, blank=False, unique=True)
     name = models.CharField(_('Nombres'), max_length=50,
@@ -89,7 +89,7 @@ class Company(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     type_document = models.CharField(
-        _('Tipo De Documento'), max_length=2, null=False, blank=False,choices= Selects().type_document())
+        _('Tipo De Documento'), max_length=2, null=False, blank=False, choices=Selects().type_document())
     document = models.CharField(
         _('Documento'), max_length=15, null=False, blank=False, unique=True)
     name = models.CharField(_('Nombres'), max_length=50,

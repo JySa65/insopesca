@@ -68,14 +68,6 @@
                             Actualizar
                         </a>
                     </div>
-                    {% if request.user.pk != object.pk %}
-                    <div class="col-sm-6 mb-3">
-                        <a href="{% url 'sanidad:account_delete' company.pk  object.pk %}" class="btn btn-rounded btn-danger">
-                            <i class="fas fa-user-times"></i>
-                            Eliminar
-                        </a>
-                    </div>
-                    {% endif %}
                 </div>
             </div>
         </div>
