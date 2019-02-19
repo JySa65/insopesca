@@ -14,9 +14,9 @@ Especie REGISTRO
 {% endblock sidebar %}
 {% block pageheader %}
 {% if object.pk %}
-Actualizacion De Especie
+Actualizacion De Seguimiento
 {% else %}
-Registro De Especie
+Registro De Seguimiento
 {% endif %}
 {% endblock pageheader %}
 
@@ -122,25 +122,26 @@ let lagoon_function =() =>{
 	
 	const new_lagoon = document.querySelector("#id_new_number_lagoon")
 	const multilagoon = document.querySelector("#multinew_lagoon")
+
 	data_new_lagoon_d = {{new_lagoon_deepth|safe}}
 	data_new_lagoon_p = {{new_lagoon_diameter|safe}}
 	let input = ""
 	var cont = 0
 	const html = (name,value_diameter,value_deepth,number) => `
-			<div id="multinew_wells">
-					Diametro del Pozo Nro° `+number+`
+			<div id="multinew_lagoon">
+					Diametro de la Laguna Nro° `+number+`
             <input class="form-control" name=new_lagoon_diameter_${name} id=new_lagoon_diameter_${number} value=${value_diameter}>
-            Profundidad del Pozo Nro° `+number+`
+            Profundidad de la Laguna Nro° `+number+`
 			<input class="form-control" name=new_lagoon_deepth_${name} id=new_lagoon_deepth_${number} value=${value_deepth}>
 			<div>`
 
-	for (let i = 0; i < new_wells.value; i++) {
+	for (let i = 0; i < new_lagoon.value; i++) {
 		cont = i+1
 		input += html(i,data_new_lagoon_d[i],data_new_lagoon_p[i],cont)
 	}
-	multiwells.innerHTML = input
+	multilagoon.innerHTML = input
 }
-window.onload = lagoon_function
+window.onload = lagoon_function()
 
 // 
 let wells_function =() =>{
@@ -165,7 +166,7 @@ let wells_function =() =>{
 	}
 	multiwells.innerHTML = input
 }
-window.onload = wells_function
+window.onload = wells_function()
 
 
 

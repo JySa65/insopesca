@@ -201,7 +201,7 @@
 				<div class="card">
 					<div class="card-header clearfix">
 						<span class="h4 text-primary"><b>Seguimientos </b></span>
-							<a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-rounded btn-primary">Nueva Unidades Productoras <i class="fas fa-user-plus"></i></a>
+							<a href="{% url 'acuicultura:create_tracing' object.pk %}" class="btn btn-rounded btn-primary">Nuevo Seguimiento <i class="fas fa-thumbtack"></i></a>
 
 					</div>
 						
@@ -240,12 +240,12 @@
 									{% empty %}
 		
 									<tr>
-										<td colspan="5" class="text-center">
+										<td colspan="7" class="text-center">
 											<h1>No tiene Seguimientoss realizados a la Empresa</h1>
 											<a href="{% url 'acuicultura:create_tracing' object.pk %}" class="btn btn-primary btn-rounded ">
 											Añadir Seguimiento
-											<i class="fas fa-user-plus"></i>
-											</a>
+
+											<i class="fas fa-thumbtack"></i>											</a>
 										</td>
 									</tr>
 		

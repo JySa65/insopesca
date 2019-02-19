@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View, TemplateView, DetailView
-from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint,Well,WellTracing,Lagoon,LagoonTracing
-from acuicultura.forms import UnitCreateForm, CardinaPointForm, RepreUnitForm, EspecieForm, TracingForm,RepresentativeForm
+from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing
+from acuicultura.forms import UnitCreateForm, CardinaPointForm, RepreUnitForm, EspecieForm, TracingForm, RepresentativeForm
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
@@ -16,7 +16,7 @@ class AcuiculturaHome(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(AcuiculturaHome, self).get_context_data(**kwargs)
-        context['object_list'] = self.model.objects.all()
+        context['object_list'] = self.model.objects.all()[:5]
         return context
 
 
@@ -41,7 +41,6 @@ class ProductionUnitCreateView(CreateView):
 
         if 'second' not in context:
             context["second"] = self.second_form()
-
 
         return context
 
@@ -84,7 +83,6 @@ class ProductionUnitUpdate(UpdateView):
         if 'second' not in context:
             context["second"] = self.second_form(instance=cardinal)
 
-
         return context
 
     def post(self, request, *args, **kwargs):
@@ -93,7 +91,6 @@ class ProductionUnitUpdate(UpdateView):
             production_unit=self.kwargs['pk']).first()
         unit_form = self.form_class(request.POST, instance=unit)
         cardinal_form = self.second_form(request.POST, instance=cardinal)
-       
 
         if unit_form.is_valid() and cardinal_form.is_valid():
             unit_form.save()
@@ -105,15 +102,17 @@ class ProductionUnitUpdate(UpdateView):
 
 class ProductionuUnitDetail(DetailView):
     model = ProductionUnit
-    
+
     template_name = "acuicultura/unit_detail.html"
 
     def get_context_data(self, **kwargs):
         context = super(ProductionuUnitDetail, self).get_context_data(**kwargs)
         context['cardinal'] = get_object_or_404(
             CardinalPoint, production_unit=self.kwargs['pk'])
-        context['representative'] = RepreUnitProductive.objects.filter(production_unit=self.kwargs['pk'])
-        context['tracing'] = Tracing.objects.filter(producion_unit=self.kwargs['pk'])
+        context['representative'] = RepreUnitProductive.objects.filter(
+            production_unit=self.kwargs['pk'])
+        context['tracing'] = Tracing.objects.filter(
+            producion_unit=self.kwargs['pk'])
         return context
 
 
@@ -203,14 +202,12 @@ class TracingCreate(CreateView):
         context['new_well_deepth'] = 0
         context['new_lagoon_diameter'] = 0
         context['new_lagoon_deepth'] = 0
-
         return context
 
     def post(self, request, *args, **kwargs):
         new_wells = request.POST.get("new_number_well", '')
         new_lagoon = request.POST.get("new_number_lagoon", '')
         unit = ProductionUnit.objects.filter(pk=self.kwargs['pk']).first()
-        print (unit.pk)
 
         form = self.form_class(request.POST)
         c_new_well_deepth = []
@@ -238,40 +235,55 @@ class TracingCreate(CreateView):
 
             json_new_lagoon_diameter = json.dumps(c_new_lagoon_diameter)
             json_new_lagoon_deepth = json.dumps(c_new_lagoon_deepth)
-        
+
         if form.is_valid():
+            tracing = form.save(commit=False)
+            tracing.producion_unit = unit
+            tracing.responsible = request.user
+            tracing.save()
             if request.POST.get("new_number_lagoon") != "0" and request.POST.get("new_number_well") == "0":
-                tracing = form.save(commit=False)
-                tracing.producion_unit = unit
-                tracing.responsible = request.user
-                tracing.save()
-                
-                for i in range(int(request.POST.get("new_number_lagoon"))):
-                    wells=Well.objects.create(producion_unit=unit,well_diameter=c_new_well_diameter[i],well_deepth=c_new_well_deepth[i] )
-                    print (wells.pk)
-                    print (tracing.pk)
-    
-                    wells_tracing = WellTracing.objects.create(tracing=tracing,well=wells)
-                return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit_save.pk,)))
-            elif request.POST.get("new_number_well") != "0" and request.POST.get("new_number_lagoon") == "0":
-                tracing = form.save(commit=False)
-                tracing.producion_unit = unit
-                tracing.responsible = request.user
-                tracing.save()
-                
+
                 for i in range(int(request.POST.get("new_number_well"))):
-                    lagoon=Lagoon.objects.create(producion_unit=unit,lagoon_diameter=c_new_lagoon_diameter[i],well_deepth=c_new_well_deepth[i] )
-                    print (lagoon.pk)
-                    print (tracing.pk)
-    
-                    lagoon_tracing = WellTracing.objects.create(tracing=tracing,well=lagoon)
-                return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit_save.pk,)))
-                
+                    wells = Well.objects.create(
+                        producion_unit=unit, well_diameter=c_new_well_diameter[i], well_deepth=c_new_well_deepth[i])
+                    print(wells.pk)
+                    print(tracing.pk)
+
+                    wells_tracing = WellTracing.objects.create(
+                        tracing=tracing, well=wells)
+                return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit.pk,)))
+            elif request.POST.get("new_number_well") != "0" and request.POST.get("new_number_lagoon") == "0":
+
+                for i in range(int(request.POST.get("new_number_lagoon"))):
+                    lagoon = Lagoon.objects.create(
+                        producion_unit=unit, lagoon_diameter=c_new_lagoon_diameter[i], lagoon_deepth=c_ne[i])
+                    print(lagoon.pk)
+                    print(tracing.pk)
+
+                    lagoon_tracing = WellTracing.objects.create(
+                        tracing=tracing, well=lagoon)
+                return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit.pk,)))
+
             elif request.POST.get("new_number_well") != "0" and request.POST.get("new_number_lagoon") != "0":
-                print ("ambos")
+
+                for i in range(int(request.POST.get("new_number_well"))):
+                    wells = Well.objects.create(
+                        producion_unit=unit, well_diameter=c_new_well_diameter[i], well_deepth=c_new_well_deepth[i])
+                    wells_tracing = WellTracing.objects.create(
+                        tracing=tracing, well=wells)
+
+                for i in range(int(request.POST.get("new_number_lagoon"))):
+                    print(c_new_lagoon_diameter)
+                    print(c_new_lagoon_deepth)
+                    lagoon = Lagoon.objects.create(
+                        producion_unit=unit, lagoon_diameter=c_new_lagoon_diameter[i], lagoon_deepth=c_new_lagoon_deepth[i])
+                    lagoon_tracing = LagoonTracing.objects.create(
+                        tracing=tracing, lagoon=lagoon)
+
+                return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit.pk,)))
+                print("ambos")
             else:
                 return render(request, self.tempalte_name, {'form': form, 'new_well_diameter': json_new_well_diameter, 'new_well_deepth': json_new_well_deepth, 'new_lagoon_deepth': json_new_lagoon_deepth, 'new_lagoon_diameter': json_new_lagoon_diameter})
-            
 
         else:
             return render(request, self.tempalte_name, {'form': form, 'new_well_diameter': json_new_well_diameter, 'new_well_deepth': json_new_well_deepth, 'new_lagoon_deepth': json_new_lagoon_deepth, 'new_lagoon_diameter': json_new_lagoon_diameter})
@@ -281,9 +293,98 @@ class TracingCreate(CreateView):
 #     tempalte_name = "acuicultura/tracing_form.html"
 
 
-# class TracingUpdate(TemplateView):
-#     model = Tracing
-#     tempalte_name = "acuicultura/tracing_form.html"
+class TracingUpdate(UpdateView):
+    model = Tracing
+    form_class = TracingForm
+
+    tempalte_name = "acuicultura/tracing_form.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(TracingUpdate, self).get_context_data(**kwargs)
+        tracing = self.model.objects.filter(pk=self.kwargs['pk']).first()
+        well_data = WellTracing.objects.filter(
+            tracing=self.kwargs['pk']).order_by('-id')
+        lagoon_data = LagoonTracing.objects.filter(
+            tracing=self.kwargs['pk']).order_by('-id')
+        print(lagoon_data, "jajaja")
+        if len(well_data) == 0:
+            context['new_well_diameter'] = 0
+            context['new_well_deepth'] = 0
+
+        if len(lagoon_data) == 0:
+            context['new_lagoon_diameter'] = 0
+            context['new_lagoon_deepth'] = 0
+        c_new_well_deepth = []
+        c_new_well_diameter = []
+        c_new_lagoon_deepth = []
+        c_new_lagoon_diameter = []
+
+        if 'form' not in context:
+            context['form'] = self.form_class(instance=tracing)
+
+        for i_well in well_data:
+            c_new_well_diameter.append(i_well.well.well_diameter)
+            c_new_well_deepth.append(i_well.well.well_deepth)
+
+        for i_lagoon in lagoon_data:
+            c_new_lagoon_diameter.append(i_lagoon.lagoon.lagoon_diameter)
+            c_new_lagoon_deepth.append(i_lagoon.lagoon.lagoon_deepth)
+
+        context['new_well_diameter'] = json.dumps(c_new_well_diameter)
+        context['new_well_deepth'] = json.dumps(c_new_well_deepth)
+        context['new_lagoon_diameter'] = json.dumps(c_new_lagoon_diameter)
+        context['new_lagoon_deepth'] = json.dumps(c_new_lagoon_deepth)
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        new_wells = request.POST.get("new_number_well", '')
+        new_lagoon = request.POST.get("new_number_lagoon", '')
+        unit = ProductionUnit.objects.filter(pk=self.kwargs['pk']).first()
+
+        form = self.form_class(request.POST)
+
+        c_new_well_deepth = []
+        c_new_well_diameter = []
+        c_new_lagoon_deepth = []
+        c_new_lagoon_diameter = []
+
+        for i in range(int(new_wells)):
+            new_wells_diameter = request.POST.get(
+                "new_wells_diameter_%s" % (i))
+            new_wells_deepth = request.POST.get("new_wells_deepth_%s" % (i))
+            if new_wells_diameter != None:
+                c_new_well_diameter.append(new_wells_diameter)
+                c_new_well_deepth.append(new_wells_deepth)
+
+            json_new_well_diameter = json.dumps(c_new_well_diameter)
+            json_new_well_deepth = json.dumps(c_new_well_deepth)
+
+        for i in range(int(new_lagoon)):
+            new_lagoon_diameter = request.POST.get(
+                "new_lagoon_diameter_%s" % (i))
+            new_lagoon_deepth = request.POST.get("new_lagoon_deepth_%s" % (i))
+            if new_lagoon_diameter != None and new_lagoon_diameter != None:
+                c_new_lagoon_deepth.append(new_lagoon_diameter)
+                c_new_lagoon_diameter.append(new_lagoon_deepth)
+
+            json_new_lagoon_diameter = json.dumps(c_new_lagoon_diameter)
+            json_new_lagoon_deepth = json.dumps(c_new_lagoon_deepth)
+
+        if form.is_valid():
+            tracing = self.model.objects.get(pk=self.kwargs['pk'])
+
+            tracing_form = self.form_class(request.POST, instance=tracing)
+
+            if tracing_form.is_valid():
+                tracing_form.save()
+                return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(tracing.producion_unit.pk,)))
+
+            else:
+                return render(request, self.tempalte_name, {'form': form, 'new_well_diameter': json_new_well_diameter, 'new_well_deepth': json_new_well_deepth, 'new_lagoon_deepth': json_new_lagoon_deepth, 'new_lagoon_diameter': json_new_lagoon_diameter})
+
+        else:
+            return render(request, self.tempalte_name, {'form': form, 'new_well_diameter': json_new_well_diameter, 'new_well_deepth': json_new_well_deepth, 'new_lagoon_deepth': json_new_lagoon_deepth, 'new_lagoon_diameter': json_new_lagoon_diameter})
 
 
 class TracingDetail(DetailView):
@@ -292,12 +393,20 @@ class TracingDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(TracingDetail, self).get_context_data(**kwargs)
-        context['well_tracing'] = WellTracing.objects.filter(tracing=self.kwargs['pk'])
-        context['lagoon_tracing'] = LagoonTracing.objects.filter(tracing=self.kwargs['pk'])
-        
-        
+        context['well_tracing'] = WellTracing.objects.filter(
+            tracing=self.kwargs['pk'])
+        context['lagoon_tracing'] = LagoonTracing.objects.filter(
+            tracing=self.kwargs['pk'])
+
         return context
-        
+
+class WellDetail(DetailView):
+    model = Well
+    template_name = "acuicultura/detail_well.html"
+
+class LagoonDetail(DetailView):
+    model = Lagoon
+    template_name = "acuicultura/detail_lagoon.html"
 
 
 # class Tracingdelete(TemplateView):
@@ -311,39 +420,62 @@ class RepreUnitCreate(CreateView):
     second_model = RepreUnitProductive
     template_name = "acuicultura/representative_form.html"
     form_class = RepresentativeForm
+
     def form_valid(self, form):
         _object = form.save(commit=False)
         self.object = _object.save()
         return super(ProductionUnitUpdate, self).form_valid(form)
 
-    def post(self,request,*args,**kwargs):
+    def post(self, request, *args, **kwargs):
         unit = self.model.objects.filter(pk=self.kwargs['pk']).first()
-        repre = self.second_model.objects.filter(production_unit=self.kwargs['pk'])
+        repre = self.second_model.objects.filter(
+            production_unit=self.kwargs['pk'])
         form = self.form_class(request.POST)
-                
+
         if form.is_valid():
             repre = form.save(commit=False)
             repre.production_unit_id = unit.pk
             repre.save()
-            return HttpResponseRedirect(reverse("acuicultura:detail_unit",args=(unit.pk,)))
+            return HttpResponseRedirect(reverse("acuicultura:detail_unit", args=(unit.pk,)))
         else:
-            return render(self.request,self.template_name,{'form':form})
+            return render(self.request, self.template_name, {'form': form})
 
 
+class RepresentativeUnitProduction(UpdateView):
+    model = RepreUnitProductive
+    second_model = RepreUnitProductive
+    form_class = RepresentativeForm
+    template_name = "acuicultura/representative_form.html"
 
-# class Representative_unit_production_update(TemplateView):
-#     model = RepreUnitProductive
-#     template_name = "acuicultura/representative_form.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super(RepresentativeUnitProduction, self).get_context_data(**kwargs)
+        repre = self.model.objects.filter(production_unit=self.kwargs['pk']).first()
+        if 'form' not in context:
+            context['form'] = self.form_class(instance=repre)
+        return context
+    
 
+    def post(self, request, *args, **kwargs):
+        tracing = self.model.objects.get(pk=self.kwargs['pk'])
+
+        tracing_form = self.form_class(request.POST, instance=tracing)
+
+        if tracing_form.is_valid():
+            tracing_form.save()
+            return HttpResponseRedirect(reverse("acuicultura:detail_unit", args=(unit.pk,)))
+        else:
+            return render(self.request, self.template_name, {'form': form})
+
+
+class Representative_unit_production_detail(TemplateView):
+    model = RepreUnitProductive
+    template_name = "acuicultura/representative_form.html"
 
 # class Representative_unit_production_delete(TemplateView):
 #     model = RepreUnitProductive
 #     template_name = "acuicultura/representative_form.html"
 
 # class Representative_unit_production_list(TemplateView):
-#     model = RepreUnitProductive
-#     template_name = "acuicultura/representative_form.html"
-
-# class Representative_unit_production_detail(TemplateView):
 #     model = RepreUnitProductive
 #     template_name = "acuicultura/representative_form.html"

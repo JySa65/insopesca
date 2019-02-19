@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %} {{ object.ordinary_name|upper }} {% endblock %}
+{% block sidebar %}
+{% include 'sidebar/acuicultura.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+{{ object.ordinary_name }}
+{% endblock pageheader %}
+{% block context %}
+<div class="row">
+	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 text-primary"><b>Información de la Laguna: {{object.pk}} </b></span>
+			</div>
+			<div class="card-body">
+				<div class="row p-0">
+					<div class="col-sm-12 mb-4">
+						<label class="h5">
+							<b>Nombre de la Unidad Productora:</b>
+						</label>
+						<span class="h5">{{object.producion_unit.name}}</span>
+					</div>
+					<div class="col-sm-6 mb-4">
+						<label class="h5">
+							<b>Diametro:</b>
+						</label>
+						<span class="h5">{{ object.lagoon_diameter }}</span>
+					</div>
+					<div class="col-sm-6 mb-4">
+						<label class="h5">
+							<b>Profundidad:</b>
+						</label>
+						<span class="h5">{{ object.lagoon_diameter }}</span>
+					</div>
+
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
+{% endblock %}

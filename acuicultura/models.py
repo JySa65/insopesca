@@ -22,7 +22,7 @@ class Specie(models.Model):
 
 class ProductionUnit(core.Company):
     def __str__(self):
-        return self.document
+        return str(self.pk)
         
 
 
@@ -70,7 +70,7 @@ class Lagoon(models.Model):
     producion_unit = models.ForeignKey(ProductionUnit,on_delete= models.CASCADE)
     lagoon_diameter = models.IntegerField(_("Diametro de la Laguna"),blank=False,null=False)
     lagoon_deepth = models.IntegerField(_("Profundidad de la Laguna "),blank=False,null=False)
-    total_area_mirror_guater = models.IntegerField(_("Area total de Terreno"),blank=False,null=False)
+    total_area_mirror_guater = models.IntegerField(_("Area total de Terreno"),blank=True,null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
