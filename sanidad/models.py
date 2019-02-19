@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext, ugettext_lazy as _
 from core import models as core
+from utils.Select import Selects
 import uuid
 # Create your models here.
 
@@ -23,10 +24,10 @@ class Company(core.Company):
         return self.transport_set.all()
 
     def get_transports_all_land(self):
-        return self.transport_set.all().filter(type='land')
+        return self.transport_set.all().filter(type='is_land')
 
     def get_transports_all_maritime(self):
-        return self.transport_set.all().filter(type='maritime')
+        return self.transport_set.all().filter(type='is_maritime')
 
     def get_accounts(self):
         return self.account.all().order_by('-created_at')
@@ -37,7 +38,8 @@ class Transport(models.Model):
 
     id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
-    type = models.CharField(_('Tipo'), max_length=20)
+    type = models.CharField(_('Tipo'), max_length=20,
+                            choices=Selects().type_transport())
 
     # land
     registration = models.CharField(

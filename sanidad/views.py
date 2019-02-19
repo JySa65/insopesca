@@ -30,7 +30,7 @@ class CompanyDetailView(DetailView):
             object = get_object_or_404(self.model, pk=pk)
         elif not object:
             raise Http404
-        return object    
+        return object
 
 
 class CompanyCreateView(CreateView):
@@ -167,8 +167,45 @@ class AccountCompanyDeleteView(DeleteView):
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
-        account = get_object_or_404(models.Account, pk=self.kwargs.get('account'))
+        account = get_object_or_404(
+            models.Account, pk=self.kwargs.get('account'))
         self.object.account.remove(account)
         self.object.save()
         return HttpResponseRedirect(
             reverse_lazy('sanidad:company_detail', args=(self.kwargs.get('pk'),)))
+
+
+class TransportCompanyCreateView(CreateView):
+    model = models.Transport
+    # form_class = forms.TransportLandForm
+    # second_form_class = forms.TransportMaritimeForm
+    template_name = 'sanidad/transport_form.html'
+
+    def get_object(self):
+        return get_object_or_404(models.Company, pk=self.kwargs.get('pk'))
+
+    def get_context_data(self, **kwargs):
+        context = super(TransportCompanyCreateView,
+                        self).get_context_data(**kwargs)
+        context['company'] = self.get_object()
+        type_transport = self.kwargs.get('type')
+        if type_transport != 'land' and type_transport != 'maritime':
+            raise Http404
+        return context
+
+    def form_valid(self, form):
+        _object = form.save(commit=False)
+        _object.type = f'is_{self.kwargs.get("type")}'
+        self.object = _object.save()
+        return super(TransportCompanyCreateView, self).form_valid(form)
+
+    def get_form(self, form_class=None):
+        form_class = forms.TransportLandForm
+        if self.kwargs.get("type") != 'land':
+            form_class = forms.TransportMaritimeForm
+        return form_class(**self.get_form_kwargs())
+
+    def get_success_url(self):
+        self.object.company.add(self.get_object())
+        return reverse_lazy('sanidad:company_detail', args=(
+            self.kwargs.get('pk'),))

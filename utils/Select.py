@@ -2,6 +2,12 @@ from django.urls import reverse
 
 
 class Selects(object):
+    def type_transport(self):
+        return(
+            ('is_land', 'Terrestre'),
+            ('is_maritime', 'Maritimo'),
+        )
+
     def sex(self):
         return(
             ('is_male', 'Masculino'),
