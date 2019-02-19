@@ -2,6 +2,12 @@ from django.urls import reverse
 
 
 class Selects(object):
+    def type_transport(self):
+        return(
+            ('is_land', 'Terrestre'),
+            ('is_maritime', 'Maritimo'),
+        )
+
     def sex(self):
         return(
             ('is_male', 'Masculino'),
@@ -32,6 +38,12 @@ class Selects(object):
             ('C', 'C'),
             ('P', 'P')
 
+        )
+
+    def type_document_user(self):
+        return (
+            ('V', 'V'),
+            ('E', 'E'),
         )
 
     def level_user_url(self):

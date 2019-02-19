@@ -4,7 +4,8 @@
 {% include 'sidebar/sanidad.html' %}
 {% endblock sidebar %}
 {% block pageheader %}
-<a href="{% url 'sanidad:home' %}">Sanidad</a> / <a href="{% url 'sanidad:company_list'  %}">Empresas</a> / Detalle {{ object.name }}
+<a href="{% url 'sanidad:home' %}">Sanidad</a> / <a href="{% url 'sanidad:company_list'  %}">Empresas</a> / Detalle
+{{ object.name }}
 {% endblock pageheader %}
 
 {% block context %}
@@ -39,7 +40,7 @@
             <label class="h5">
               <b>Telefono Trabajo:</b>
             </label>
-            <span class="h5">{% if object.tlf %} {{ object.tlf_house }} {% else %} {{ tlf }} {% endif %}</span>
+            <span class="h5">{% if object.tlf_house %} {{ object.tlf_house }} {% else %} {{ tlf }} {% endif %}</span>
           </div>
           <div class="col-sm-6 mb-3">
             <label class="h5">
@@ -116,17 +117,16 @@
         </div>
       </div>
     </div>
-    
+    <!-- accounts -->
     <div class="card">
       <div class="card-header clearfix">
-        <span class="h4 text-primary left"><b>Personas Encargadas</b>
-        <a href="{% url 'sanidad:account_create' object.pk %}" class="btn btn-primary btn-rounded ">
-          Añadir Persona
-          <i class="fas fa-user-plus"></i>
-        </a>
+        <span class="h4 text-primary left"><b>Personas Encargada</b>
+          <a href="{% url 'sanidad:account_create' object.pk %}" class="btn btn-primary btn-rounded ">
+            Añadir Persona
+            <i class="fas fa-user-plus"></i>
+          </a>
         </span>
       </div>
-      {% if not user %}
       <div class="card-body">
         <div class="table-responsive">
           <table class="table table-hover">
@@ -140,12 +140,34 @@
               </tr>
             </thead>
             <tbody>
-              {% for object in object.get_accounts %}
+              {% for account in object.get_accounts %}
+              {% if forloop.first %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ object.get_document }}</td>
-                <td><a href="{% url 'sanidad:company_detail' object.pk %}">{{ object.name }}</a></td>
+                <td>{{ account.get_document }}</td>
+                <td><a href="{% url 'sanidad:account_detail' object.pk account.pk %}">{{ account.name }}</a></td>
+                <td>
+                  {% if account.is_active %}
+                  <span class="badge badge-success">Activo</span>
+                  {% else %}
+                  <span class="badge badge-danger">Inactivo</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{% url 'sanidad:account_detail' object.pk account.pk %}"
+                    class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
+                </td>
               </tr>
+              {% else %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ account.get_document }}</td>
+                <td colspan="2">{{ account.get_full_name }}</td>
+                <td>
+                  <span class="badge badge-danger">Inactivo</span>
+                </td>
+              </tr>
+              {% endif %}
               {% empty %}
               <tr>
                 <td colspan="5" class="text-center">
@@ -161,10 +183,115 @@
           </table>
         </div>
       </div>
-      {% else %}
-      <div class="card-body"></div>
-      {% endif %}
     </div>
+    <!-- end account -->
+
+    <!-- transports -->
+    <div class="card">
+      <div class="card-header clearfix">
+        <span class="h4 text-primary left">
+          <b>Transporte De la Empresa</b>
+        </span>
+        <div class="btn-group">
+          <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button">
+            Añadir Transporte
+            <span class="caret"></span>
+          </button>
+          <div class="dropdown-menu" role="menu">
+            <a class="dropdown-item" href="{% url 'sanidad:transport_create' pk=company.pk type='land' %}">Terrestre</a>
+            <a class="dropdown-item" href="{% url 'sanidad:transport_create' pk=company.pk type='maritime' %}">Maritimo</a>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="col-12 mb-5">
+          <div class="tab-regular">
+            <ul class="nav nav-tabs nav-fill" id="myTab7" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="home-tab-justify" data-toggle="tab" href="#home-justify" role="tab"
+                  aria-controls="home" aria-selected="true">Terrestre</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="profile-tab-justify" data-toggle="tab" href="#profile-justify" role="tab"
+                  aria-controls="profile" aria-selected="false">Maritimo</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="myTabContent7">
+              <div class="tab-pane fade show active" id="home-justify" role="tabpanel" aria-labelledby="home-tab-justify">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead class="bg-light">
+                      <tr>
+                        <th>#</th>
+                        <th>Matricula</th>
+                        <th>Modelo</th>
+                        <th>Marca</th>
+                        <th>Capacidad de Carga</th>
+                        <th>Opciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for land in object.get_transports_all_land %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ land.registration }}</td>
+                        <td>{{ land.model }}</td>
+                        <td>{{ land.brand }}</td>
+                        <td>{{ land.load_capacity }}</td>
+                        <td></td>
+                      </tr>
+                      {% empty %}
+                      <tr>
+                        <td colspan="6" class="text-center">
+                          <h1>No tiene Transporte Terrestre Añadido a la Empresa</h1>
+                          <a href="{% url 'sanidad:transport_create' pk=company.pk type='land' %}" class="btn btn-primary btn-rounded ">
+                            Añadir Transporte
+                          </a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="profile-justify" role="tabpanel" aria-labelledby="profile-tab-justify">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead class="bg-light">
+                      <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Año De Embarcación</th>
+                        <th>Opciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for maritime in object.get_transports_all_maritime %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ maritime.name }}</td>
+                        <td>{{ maritime.year_vessel }}</td>
+                      </tr>
+                      {% empty %}
+                      <tr>
+                        <td colspan="4" class="text-center">
+                          <h1>No tiene Transporte Martitimo Añadido a la Empresa</h1>
+                          <a href="{% url 'sanidad:transport_create' pk=company.pk type='maritime' %}" class="btn btn-primary btn-rounded ">
+                            Añadir Transporte
+                          </a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end transports -->
   </div>
 </div>
 {% endwith %}

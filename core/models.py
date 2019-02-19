@@ -46,7 +46,7 @@ class Account(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     type_document = models.CharField(
-        _('Tipo De Documento'), max_length=2, null=False, blank=False)
+        _('Tipo De Documento'), max_length=2, null=False, blank=False, choices=Selects().type_document_user())
     document = models.CharField(
         _('Documento'), max_length=15, null=False, blank=False, unique=True)
     name = models.CharField(_('Nombres'), max_length=50,
@@ -61,7 +61,6 @@ class Account(models.Model):
         null=True, blank=True, verbose_name=_('Fecha de Nacimiento'))
     address = models.TextField(_('Dirección'), null=False, blank=False)
     is_active = models.BooleanField(default=True, verbose_name=_('Activo'))
-    is_delete = models.BooleanField(default=False, verbose_name=_('Eliminado'))
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -90,7 +89,7 @@ class Company(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     type_document = models.CharField(
-        _('Tipo De Documento'), max_length=2, null=False, blank=False,choices= Selects().type_document())
+        _('Tipo De Documento'), max_length=2, null=False, blank=False, choices=Selects().type_document())
     document = models.CharField(
         _('Documento'), max_length=15, null=False, blank=False, unique=True)
     name = models.CharField(_('Nombres'), max_length=50,
