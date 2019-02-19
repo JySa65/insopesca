@@ -177,8 +177,6 @@ class AccountCompanyDeleteView(DeleteView):
 
 class TransportCompanyCreateView(CreateView):
     model = models.Transport
-    # form_class = forms.TransportLandForm
-    # second_form_class = forms.TransportMaritimeForm
     template_name = 'sanidad/transport_form.html'
 
     def get_object(self):
