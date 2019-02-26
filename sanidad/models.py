@@ -12,17 +12,22 @@ class Account(core.Account):
 
 
 class TypeCompany(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.name = self.name.lower()
+        super().save(*args, **kwargs)
+
 
 class Company(core.Company):
-    speg = models.PositiveSmallIntegerField(verbose_name=_('SPEG'))
-    type_company = models.ForeignKey(TypeCompany, on_delete=models.CASCADE)
+    speg = models.CharField(max_length=4, verbose_name=_('SPEG'))
+    type_company = models.ForeignKey(TypeCompany, 
+            on_delete=models.CASCADE, verbose_name=_('Tipo De Compañia'))
 
     def __str__(self):
         return self.document
@@ -36,8 +41,8 @@ class Company(core.Company):
     def get_transports_all_maritime(self):
         return self.transport_set.all().filter(type='is_maritime')
 
-    def get_accounts(self):
-        return self.account_set.all().order_by('-created_at')
+    # def get_accounts(self):
+    #     return self.account_set.all().order_by('-created_at')
 
 
 class CompanyHasAccount(models.Model):

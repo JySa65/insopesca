@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, Http404, HttpResponse
+from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.views.generic import TemplateView, ListView, CreateView, \
-    DetailView, UpdateView, DeleteView
+    DetailView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy, reverse
 from utils.check_password import checkPassword
 from sanidad import models, forms
+import json
 # Create your views here.
 
 
@@ -18,6 +19,45 @@ class CompanyListView(ListView):
     def get_queryset(self):
         super(CompanyListView, self).get_queryset()
         return self.model.objects.filter(is_delete=False)
+
+
+class TypeCompanyView(View):
+    model = models.TypeCompany
+
+    def post(self, *args, **kwargs):
+        try:
+            name = json.loads(str(self.request.body, 'utf-8')).get('data', "")
+            if name == "":
+                data = dict(
+                    status=False,
+                    msg="Tipo De Compañia Requerido"
+                )
+                return JsonResponse(data)
+
+            check_data = self.model.objects.filter(name=name.lower()).exists()
+            if check_data:
+                data = dict(
+                    status=False,
+                    msg="Tipo De Compañia Existe"
+                )
+                return JsonResponse(data)
+
+            save_name = self.model.objects.create(name=name.lower())
+            data = dict(
+                status=True,
+                msg="Tipo De Compañia Registrado",
+                data=dict(
+                    id=save_name.pk,
+                    name=save_name.name
+                )
+            )
+            return JsonResponse(data)
+        except Exception as e:
+            data = dict(
+                status=False,
+                data=e
+            )
+            return JsonResponse(data)
 
 
 class CompanyDetailView(DetailView):

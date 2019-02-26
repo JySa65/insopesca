@@ -22,7 +22,7 @@ RESGISTRO
         <a href="javascript:history.back()" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>  
       </div>
       <div class="card-body">
-        <form action="" method="post">
+        <form action="" method="post" id="id_form_company">
           {% csrf_token %}
           {% for field in form %}
           {% if field.errors %}
@@ -41,14 +41,24 @@ RESGISTRO
             {% for i in form %}
             <div class="{% if i.name == 'name' or i.name == 'address' %} col-md-12 {% else %} col-md-6 {% endif %}col-sm-12">
               <div class="form-group">
-                <label for="id_{{ i.name }}" class="col-form-label">{{ i.label }}</label>
+                <label for="id_{{ i.name }}" class="col-form-label"><b>{{ i.label }}</b></label>
+                {% if i.name == 'type_company' %}
+                <div class="input-group mb-3">
+                  {{ i }}
+                  <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" style="padding-top: 0px; padding-bottom: 0px;" id="btn_add_type_company">
+                      <i class="fas fa-plus" ></i>
+                    </button>
+                  </div>
+                </div>
+                {% else %}
                 {{ i }}
+                {% endif %}
               </div>
             </div>
             {% endfor %}
           </div>
-
-
+          
           <div class="form-group text-center">
             <br>
             <button type="submit" class="btn btn-rounded btn-success">Aceptar</button>

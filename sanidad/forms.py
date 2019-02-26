@@ -4,7 +4,8 @@ from utils.Select import Selects
 
 
 class CompanyForm(forms.ModelForm):
-    tlf = forms.IntegerField(label='Telefono')
+    speg = forms.CharField(label='SPEG')
+    
     class Meta:
         model = Company
         fields = ('type_document', 'document', 'speg', 'type_company',

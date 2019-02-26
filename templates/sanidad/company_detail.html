@@ -38,21 +38,15 @@
           </div>
           <div class="col-sm-6 mb-3">
             <label class="h5">
-              <b>Telefono Trabajo:</b>
+              <b>SPEG:</b>
             </label>
-            <span class="h5">{% if object.tlf_house %} {{ object.tlf_house }} {% else %} {{ tlf }} {% endif %}</span>
+            <span class="h5">{{ object.speg }}</span>
           </div>
           <div class="col-sm-6 mb-3">
             <label class="h5">
-              <b>Codigo Del Permiso:</b>
+              <b>Tipo De Compañia: </b>
             </label>
-            <span class="h5">{{ object.cod_permission }}</span>
-          </div>
-          <div class="col-sm-6 mb-3">
-            <label class="h5">
-              <b>Codigo De Registro Mercantil:</b>
-            </label>
-            <span class="h5">{{ object.cod_register_mercantil }}</span>
+            <span class="h5">{{ object.type_company.name }}</span>
           </div>
           <div class="col-sm-12">
             <label class="h5">
@@ -106,17 +100,16 @@
               Actualizar
             </a>
           </div>
-          {% if request.user.pk != object.pk %}
           <div class="col-sm-6 mb-3">
             <a href="{% url 'sanidad:company_delete' object.pk %}" class="btn btn-rounded btn-danger">
               <i class="fas fa-user-times"></i>
               Eliminar
             </a>
           </div>
-          {% endif %}
         </div>
       </div>
     </div>
+    
     <!-- accounts -->
     <div class="card">
       <div class="card-header clearfix">
