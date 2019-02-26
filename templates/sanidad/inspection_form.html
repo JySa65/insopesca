@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}
+{% if object.pk %}
+EMPRESA {{ object.name }}
+{% else %}
+RESGISTRO
+{% endif %}
+{% endblock %}
+{% block sidebar %}
+{% include 'sidebar/sanidad.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+<a href="{% url 'sanidad:home' %}">Sanidad</a> / Inspección /
+{% if object.pk %} Actualización {% else %} Añadir {% endif %}
+{% endblock pageheader %}
+
+
+{% block context %}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <a href="javascript:history.back()" class="btn btn-rounded btn-primary">Regresar <i
+                        class="fas fa-reply"></i></a>
+            </div>
+            <div class="card-body">
+                <form action="" method="post" id="id_form_inspection">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    {% if field.errors %}
+                    <div class="form-group">
+                        <div class="alert alert-danger" role="alert">
+                            {{ field.label }}:
+                            {% for error in field.errors %}
+                            {{ error }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+
+                    <div class="row">
+                        {% for i in form %}
+                        <div
+                            class="{% if i.name == 'name' or i.name == 'address' %} col-md-12 {% else %} col-md-6 {% endif %}col-sm-12">
+                            <div class="form-group">
+                                <label for="id_{{ i.name }}" class="col-form-label"><b>{{ i.label }}</b></label>
+                                {% if i.name == 'type_company' %}
+                                <div class="input-group mb-3">
+                                    {{ i }}
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary"
+                                            style="padding-top: 0px; padding-bottom: 0px;" id="btn_add_type_company">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                {% else %}
+                                {{ i }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group text-center">
+                        <br>
+                        <button type="submit" class="btn btn-rounded btn-success">Aceptar</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

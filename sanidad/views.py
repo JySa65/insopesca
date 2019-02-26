@@ -318,3 +318,9 @@ class TransportCompanyCreateView(CreateView):
         self.object.company.add(self.get_object())
         return reverse_lazy('sanidad:company_detail', args=(
             self.kwargs.get('pk'),))
+
+
+class InspectionCreateView(CreateView):
+    model = models.Inspection
+    form_class = forms.InspectionForm
+    

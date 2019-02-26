@@ -32,7 +32,7 @@ class Company(core.Company):
                                      on_delete=models.CASCADE, verbose_name=_('Tipo De Compañia'))
 
     def __str__(self):
-        return self.document
+        return f"{self.get_document()} {self.name}"
 
     def get_accounts(self):
         return CompanyHasAccount.objects.filter(company__id=self.id)
@@ -98,16 +98,19 @@ class Driver(core.Account):
 
 
 class Inspection(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE,
+                                verbose_name=_('Compañia'))
     date = models.DateField(verbose_name=_('Fecha de la Inspección'))
-    next_date = models.DateField(verbose_name=_('Fecha de la siguiente Inspección'))
     result = models.CharField(
-        max_length=15, choices=Selects().inspection_result(), 
+        max_length=15, choices=Selects().inspection_result(),
         verbose_name=_('Resultados'))
-    notes = models.TextField(null=True, blank=True, verbose_name=_('Observaciones'))
+    next_date = models.DateField(verbose_name=_(
+        'Fecha de la siguiente Inspección'))
+    notes = models.TextField(null=True, blank=True,
+                             verbose_name=_('Observaciones'))
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.company
+        return self.company.name
