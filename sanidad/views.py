@@ -117,7 +117,8 @@ class AccoutCompanyCreateView(CreateView):
         if search != '':
             user = self.model.objects.filter(document=search).first()
             if user:
-                user_exists = company.account.all().filter(pk=user.pk).exists()
+                user_exists = models.CompanyHasAccount.objects.filter(
+                    account=user).exists()
                 if user_exists:
                     context['message'] = "Persona Ya Existe En La Empresa"
                 else:

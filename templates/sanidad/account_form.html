@@ -126,6 +126,10 @@ RESGISTRO
   </div>
 </div>
 <script>
-  document.getElementById('id_birthday').setAttribute('type', 'date')
+  document.addEventListener('load', function() {
+    document.getElementById('id_birthday').setAttribute('type', 'date')
+    $('.datepicker').datepicker()
+
+  })
 </script>
 {% endblock %}

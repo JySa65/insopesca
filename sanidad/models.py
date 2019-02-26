@@ -41,8 +41,6 @@ class Company(core.Company):
     def get_transports_all_maritime(self):
         return self.transport_set.all().filter(type='is_maritime')
 
-    # def get_accounts(self):
-    #     return self.account_set.all().order_by('-created_at')
 
 
 class CompanyHasAccount(models.Model):
@@ -92,8 +90,3 @@ class Driver(core.Account):
 
     def __str__(self):
         return self.document
-
-# CompanyInspection
-# FishInspection
-# CannedInspection
-# VehicleInspection

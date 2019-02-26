@@ -25,7 +25,7 @@ class AccountForm(forms.ModelForm):
 
     class Meta:
         model = Account
-        exclude = ('is_active', 'is_delete')
+        exclude = ('is_active', 'is_delete', 'tlf_house')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
