@@ -4,7 +4,7 @@ from utils.Select import Selects
 
 
 class CompanyForm(forms.ModelForm):
-    tlf = forms.IntegerField()
+    tlf = forms.IntegerField(label='Telefono')
     class Meta:
         model = Company
         fields = ('type_document', 'document', 'speg', 'type_company',
@@ -17,7 +17,7 @@ class CompanyForm(forms.ModelForm):
             field.widget.attrs.update(
                 {'class': 'form-control', 'autocomplete': 'off'})
         self.fields['address'].widget.attrs.update(
-            {'rows': '1'})
+            {'rows': '2'})
 
 
 class AccountForm(forms.ModelForm):

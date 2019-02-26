@@ -112,3 +112,4 @@ media
 #docker
 .docker
 .vscode
+node_modules
