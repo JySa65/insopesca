@@ -1,7 +1,8 @@
 import swal from 'sweetalert2';
 import axios from 'axios';
-import getCookie from '../utils/get_cookie.js';
-import validInput from '../utils/validInput.js';
+import getCookie from '../../utils/get_cookie.js';
+import validInput from '../../utils/validInput.js';
+import deleteSwalCompany from '../../utils/delete_with_swal.js'
 
 const saveData = (data) => {
     const config = {
@@ -73,4 +74,35 @@ if (id_form_company) {
 
     document.querySelector("#id_tlf").addEventListener(
         "keypress", (event) => validInput('n', 11, event))
+}
+
+const deleteCompany = (password, company) => {
+    
+    const config = {
+        headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+        }
+    }
+    return axios.post(company, { password }, config)
+}
+
+const btn_delete_company = document.querySelector("#btn_delete_company")
+if (btn_delete_company) {
+    btn_delete_company.addEventListener('click', (e) => {
+        e.preventDefault()
+        const url = btn_delete_company.getAttribute("href")
+        deleteSwalCompany(url, deleteCompany)
+            .then((result) => {
+                if (result.value) {
+                    const data = result.value
+                    swal.fire({
+                        type: "success",
+                        titleText: data.msg,
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                    window.location.href = "http://localhost:8000/sanidad/company/"
+                }
+            })
+    })
 }

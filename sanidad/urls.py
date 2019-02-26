@@ -10,7 +10,7 @@ app_name = 'sanidad'
 urlpatterns = [
     path('', HomeTemplateView.as_view(), name="home"),
     path('type-company/', TypeCompanyView.as_view(), name="type_company"),
-    
+
     path('company/', CompanyListView.as_view(), name="company_list"),
     path('company/add/', CompanyCreateView.as_view(), name="company_create"),
     path('company/detail/<pk>/', CompanyDetailView.as_view(), name="company_detail"),
@@ -20,13 +20,13 @@ urlpatterns = [
 
     path('company/detail/<pk>/account/',
          AccoutCompanyCreateView.as_view(), name="account_create"),
-    path('company/detail/<pk>/account/detail/<account>',
+    path('company/detail/<pk>/account/detail/<account>/',
          AccoutCompanyDetailView.as_view(), name="account_detail"),
-    path('company/detail/<pk>/account/update/<account>',
+    path('company/detail/<pk>/account/update/<account>/',
          AccountCompanyUpdateView.as_view(), name="account_update"),
-    path('company/detail/<pk>/account/update/<account>',
+    path('company/detail/<pk>/account/update/<account>/',
          AccountCompanyUpdateView.as_view(), name="account_update"),
-    path('company/detail/<pk>/account/delete/<account>',
+    path('company/detail/<pk>/account/delete/<account>/',
          AccountCompanyDeleteView.as_view(), name="account_delete"),
 
     # transport

@@ -55,3 +55,10 @@ class Selects(object):
             # 'is_tvc',
             # 'is_fomen',
         }
+
+    def inspection_result(self):
+        return(
+            ('is_verygood', 'Muy Bueno'),
+            ('is_good', 'Bueno'),
+            ('is_bad', 'Malo')
+        )

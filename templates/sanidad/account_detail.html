@@ -72,13 +72,13 @@
                     {% endif %}
                     {% if account_has.account_active %}
                     <div class="col-sm-6 mb-3">
-                        <a href="{% url 'sanidad:account_delete' company.pk object.pk %}" class="btn btn-rounded btn-danger">
+                        <a href="{% url 'sanidad:account_delete' company.pk object.pk %}" class="btn btn-rounded btn-danger" id="btn_toggle_account" data="{{ company.pk }},{{ object.pk }}">
                             Desactivar
                         </a>
                     </div>
                     {% else %}
                     <div class="col-sm-6 mb-3">
-                        <a href="{% url 'sanidad:account_delete' company.pk object.pk %}" class="btn btn-rounded btn-success">
+                        <a href="{% url 'sanidad:account_delete' company.pk object.pk %}" class="btn btn-rounded btn-success" id="btn_toggle_account" data="{{ company.pk }},{{ object.pk }}">
                             Activar
                         </a>
                     </div>

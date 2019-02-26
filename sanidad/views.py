@@ -89,15 +89,42 @@ class CompanyUpdateView(UpdateView):
         return reverse_lazy('sanidad:company_detail', args=(self.object.pk,))
 
 
-class CompanyDeleteView(DeleteView):
+class CompanyDeleteView(View):
     model = models.Company
 
-    def post(self, *args, **kwargs):
+    def get_object(self):
+        return get_object_or_404(
+            models.Company, pk=self.kwargs.get('pk'))
+
+    def delete(self, request, *args, **kwargs):
         company = self.get_object()
         company.is_delete = True
         company.is_active = False
         company.save()
-        return HttpResponseRedirect(reverse_lazy('sanidad:company_list'))
+        data = dict(
+            status=True,
+            msg="Empresa Eliminada"
+        )
+        return JsonResponse(data)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            password = json.loads(
+                str(self.request.body, 'utf-8')).get('password', "")
+            user = checkPassword(self.request.user.email, password)
+            if not user:
+                data = dict(
+                    status=False,
+                    msg="Contraseña Incorrecta"
+                )
+                return JsonResponse(data)
+            return self.delete(request, *args, **kwargs)
+        except Exception as e:
+            data = dict(
+                status=False,
+                data=e
+            )
+            return JsonResponse(data)
 
 
 class AccoutCompanyCreateView(CreateView):
@@ -219,19 +246,44 @@ class AccountCompanyUpdateView(UpdateView):
             pk=self.kwargs.get('pk')).first()
 
 
-class AccountCompanyDeleteView(DeleteView):
+class AccountCompanyDeleteView(View):
     model = models.Company
+
+    def get_object(self):
+        return get_object_or_404(
+            models.Company, pk=self.kwargs.get('pk'))
 
     def delete(self, request, *args, **kwargs):
         company = self.get_object()
         account = models.CompanyHasAccount.objects.filter(
-            company=company, 
+            company=company,
             account__id=self.kwargs.get('account')).first()
         account.account_active = not account.account_active
         account.save()
-        return HttpResponseRedirect(
-            reverse_lazy('sanidad:account_detail', args=(
-                self.kwargs.get('pk'), self.kwargs.get('account'))))
+        data = dict(
+            status=True,
+            msg="Usuario Desactivado" if not account.account_active else "Usuario Activado"
+        )
+        return JsonResponse(data)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            password = json.loads(
+                str(self.request.body, 'utf-8')).get('password', "")
+            user = checkPassword(self.request.user.email, password)
+            if not user:
+                data = dict(
+                    status=False,
+                    msg="Contraseña Incorrecta"
+                )
+                return JsonResponse(data)
+            return self.delete(request, *args, **kwargs)
+        except Exception as e:
+            data = dict(
+                status=False,
+                data=e
+            )
+            return JsonResponse(data)
 
 
 class TransportCompanyCreateView(CreateView):
