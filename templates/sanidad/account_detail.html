@@ -52,7 +52,7 @@
                         <label class="h5">
                             <b>Activa: </b>
                         </label>
-                        {% if object.is_active %}
+                        {% if account_has.account_active %}
                         <span class="badge badge-success">Activo</span>
                         {% else %}
                         <span class="badge badge-danger">Inactivo</span>
@@ -62,12 +62,27 @@
             </div>
             <div class="card-body">
                 <div class="row text-center">
+                    {% if account_has.account_active %}
                     <div class="col-sm-6 mb-3">
                         <a href="{% url 'sanidad:account_update' company.pk  object.pk %}" class="btn btn-rounded btn-info">
                             <i class="far fa-edit"></i>
                             Actualizar
                         </a>
                     </div>
+                    {% endif %}
+                    {% if account_has.account_active %}
+                    <div class="col-sm-6 mb-3">
+                        <a href="{% url 'sanidad:account_delete' company.pk object.pk %}" class="btn btn-rounded btn-danger" id="btn_toggle_account" data="{{ company.pk }},{{ object.pk }}">
+                            Desactivar
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="col-sm-6 mb-3">
+                        <a href="{% url 'sanidad:account_delete' company.pk object.pk %}" class="btn btn-rounded btn-success" id="btn_toggle_account" data="{{ company.pk }},{{ object.pk }}">
+                            Activar
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

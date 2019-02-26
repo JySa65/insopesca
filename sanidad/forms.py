@@ -1,15 +1,15 @@
 from django import forms
-from sanidad.models import Company, Account, Transport
+from sanidad.models import Company, Account, Transport, Inspection
 from utils.Select import Selects
 
 
 class CompanyForm(forms.ModelForm):
     speg = forms.CharField(label='SPEG')
-    
+
     class Meta:
         model = Company
         fields = ('type_document', 'document', 'speg', 'type_company',
-                'name', 'tlf','state', 'municipality',
+                  'name', 'tlf', 'state', 'municipality',
                   'parish', 'address',)
 
     def __init__(self, *args, **kwargs):
@@ -46,7 +46,7 @@ class TransportLandForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for _, field in self.fields.items():
             field.widget.attrs.update(
-                {'class': 'form-control', 'autocomplete': 'off', 'required':'required'})
+                {'class': 'form-control', 'autocomplete': 'off', 'required': 'required'})
 
 
 class TransportMaritimeForm(forms.ModelForm):
@@ -59,5 +59,23 @@ class TransportMaritimeForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for _, field in self.fields.items():
             field.widget.attrs.update(
-                {'class': 'form-control', 'autocomplete': 'off', 
-                'required': 'required'})
+                {'class': 'form-control', 'autocomplete': 'off',
+                 'required': 'required'})
+
+
+class InspectionForm(forms.ModelForm):
+
+    class Meta:
+        model = Inspection
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for _, field in self.fields.items():
+            field.widget.attrs.update(
+                {'class': 'form-control', 'autocomplete': 'off'})
+        self.fields['notes'].widget.attrs.update(
+            {'rows': '1'})
+        self.fields['company'].widget.attrs.update(
+            {'class': 'form-control', 'data-live-search': 'true', 
+             'data-width': "100%", 'data-show-subtext':"true"})
