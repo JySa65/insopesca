@@ -1,6 +1,6 @@
 from django.contrib import admin
-from acuicultura.models import ProductionUnit, Specie, CardinalPoint,RepreUnitProductive,Lagoon,LagoonTracing,Well,WellTracing,Tracing
-from django.utils.translation import ugettext_lazy as _
+from acuicultura.models import ProductionUnit, Specie, CardinalPoint,RepreUnitProductive,Lagoon,LagoonTracing,Well,WellTracing,Tracing,Lagoon_has_especies
+# from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Group
 
 # Register your models here.
@@ -15,7 +15,7 @@ admin.site.register(Well)
 admin.site.register(LagoonTracing)
 admin.site.register(WellTracing)
 admin.site.register(Tracing)
-
+admin.site.register(Lagoon_has_especies)
 class CardinaPointAdmin(admin.ModelAdmin):
     fields = ("north", "south", "west", "oest", "altitude","total_area_terr", "production_unit")
 

@@ -55,10 +55,8 @@ Registro De Seguimiento
 				</div>
 				{% endif %}
 				{% endfor %}
-
-
-
-					<div class="form-group">
+	
+				<div class="form-group">
 						<label for="id_{{ form.number_lagoon.name }}" class="col-form-label">Numero de Lagunas</label>
 						{{ form.number_lagoon|add_class:"form-control"|attr:"autocomplete:off" }}
 					</div>
@@ -68,8 +66,12 @@ Registro De Seguimiento
 						{{ form.new_number_lagoon|add_class:"form-control"|attr:"autocomplete:off" }}
 					</div>
 					<div id="multinew_lagoon">
-					</div>
 	
+					</div>
+					<div id="multinew_lagoon2">
+					</div>
+			
+
 					<div class="form-group">
 						<label for="id_{{ form.number_well.name }}" class="col-form-label">Numero de Pozos</label>
 						{{ form.number_well|add_class:"form-control"|attr:"autocomplete:off" }}
@@ -81,7 +83,6 @@ Registro De Seguimiento
 					</div>
 					<div id="multinew_wells">
 					</div>
-	
 						
 	
 					<div class="form-group">
@@ -117,9 +118,82 @@ Registro De Seguimiento
 	</div>
 </div>
 <script>
+const new_lagoon = document.querySelector("#id_new_number_lagoon")
+const multilagoon = document.querySelector("#multinew_lagoon")
+const multilagoon2 = document.querySelector("#multinew_lagoon2")
+
+function sistems_cultivation() {
+
+	const html = (name, number) => `
+			Especie de la Laguna  Nro° 
+			<select name="data__${name}" id="data__${name}" >
+				<option>{{especie}}
+				</option>
+			</select>
+			<div>`
+
+				for (let e = 0; e < new_lagoon.value;e++){
+					dataa = document.getElementById("sistem_cultive"+e)
+					dataa.onchange = () => {
+					const value = dataa.value
+					a = 0 
+					let input = ""
+					cont = 0
+
+					if (value == "Mono Cultivo"){
+						a =1
+					}else{
+						a =2
+
+					}
+					for (let i = 0; i < a; i++) {
+						cont = i+1
+						console.log(i)
+						input += html(i,cont)
+					}
+					multilagoon2.innerHTML = input
+
+					}
+		}
+}
+
+
+
+if (new_lagoon){
+    const html = (name, number) => `
+            <div id="multinew_lagoon">
+                Ancho de la Laguna Nro° `+number+`
+            <input class="form-control" type="number" name=new_lagoon_diameter_${name} id=new_lagoon_diameter_${number}>
+
+            Largo de la Laguna Nro° `+number+`
+            <input class="form-control" type="number" name=new_lagoon_deepth_${name} id=new_lagoon_deepth_${number}>
+           
+			<div>`
+				
+			// 	Sistema de Cultivo Nro° `+number+`
+			// <select name="sistem_cultive${name}" id="sistem_cultive${name}" onchange=sistems_cultivation() >
+			// 	<option>------</option>
+			// 	<option>Mono Cultivo</option>
+			// 	<option>Otro Cultivo</option>
+			// </select>
+
+            new_lagoon.onkeyup = (e) => {
+                const value = e.target.value
+                let input = ""
+                cont = 0
+                for (let i = 0; i < value; i++) {
+                    cont = i+1
+                    input += html(i,cont)
+                }
+                multilagoon.innerHTML = input
+                    
+            }
+
+
+    }
 
 let lagoon_function =() =>{
-	
+
 	const new_lagoon = document.querySelector("#id_new_number_lagoon")
 	const multilagoon = document.querySelector("#multinew_lagoon")
 
@@ -129,11 +203,15 @@ let lagoon_function =() =>{
 	var cont = 0
 	const html = (name,value_diameter,value_deepth,number) => `
 			<div id="multinew_lagoon">
-					Diametro de la Laguna Nro° `+number+`
+					Ancho de la Laguna Nro° `+number+`
             <input class="form-control" name=new_lagoon_diameter_${name} id=new_lagoon_diameter_${number} value=${value_diameter}>
-            Profundidad de la Laguna Nro° `+number+`
+            Largo de la Laguna Nro° `+number+`
 			<input class="form-control" name=new_lagoon_deepth_${name} id=new_lagoon_deepth_${number} value=${value_deepth}>
 			<div>`
+			
+			
+
+
 
 	for (let i = 0; i < new_lagoon.value; i++) {
 		cont = i+1

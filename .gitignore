@@ -113,3 +113,4 @@ media
 .docker
 .vscode
 node_modules
+/static/main.js

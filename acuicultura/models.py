@@ -68,8 +68,8 @@ class Lagoon(models.Model):
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
 
     producion_unit = models.ForeignKey(ProductionUnit,on_delete= models.CASCADE)
-    lagoon_diameter = models.IntegerField(_("Diametro de la Laguna"),blank=False,null=False)
-    lagoon_deepth = models.IntegerField(_("Profundidad de la Laguna "),blank=False,null=False)
+    lagoon_diameter = models.IntegerField(_("Ancho de la Laguna"),blank=False,null=False)
+    lagoon_deepth = models.IntegerField(_("Largo de la Laguna "),blank=False,null=False)
     total_area_mirror_guater = models.IntegerField(_("Area total de Terreno"),blank=True,null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -138,3 +138,12 @@ class LagoonTracing(models.Model):
 
     def __str__(self):
         return str(self.tracing)
+
+class Lagoon_has_especies(models.Model):
+    lagoon = models.ForeignKey(Lagoon,on_delete= models.CASCADE)
+    especies = models.ForeignKey(Specie,on_delete= models.CASCADE)
+    number_specie = models.IntegerField()
+    def __str__(self):
+        return str(self.pk)
+
+
