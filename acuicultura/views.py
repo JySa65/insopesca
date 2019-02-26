@@ -6,11 +6,12 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 import json
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
 
-class AcuiculturaHome(ListView):
+class AcuiculturaHome(LoginRequiredMixin,ListView):
     model = ProductionUnit
     template_name = "acuicultura/home.html"
 
@@ -22,7 +23,7 @@ class AcuiculturaHome(ListView):
 
 # Views Production = Create,detail,update,delete
 
-class ProductionUnitCreateView(CreateView):
+class ProductionUnitCreateView(LoginRequiredMixin,CreateView):
     model = ProductionUnit
     second_model = CardinalPoint
     form_class = UnitCreateForm
@@ -59,7 +60,7 @@ class ProductionUnitCreateView(CreateView):
             return render(request, self.template_name, {'form': unit_form, 'second': cardinal_form})
 
 
-class ProductionUnitUpdate(UpdateView):
+class ProductionUnitUpdate(LoginRequiredMixin,UpdateView):
     model = ProductionUnit
     second_model = CardinalPoint
     form_class = UnitCreateForm
@@ -100,7 +101,7 @@ class ProductionUnitUpdate(UpdateView):
             return render(request, self.template_name, {'form': unit_form, 'second': cardinal_form})
 
 
-class ProductionuUnitDetail(DetailView):
+class ProductionuUnitDetail(LoginRequiredMixin,DetailView):
     model = ProductionUnit
 
     template_name = "acuicultura/unit_detail.html"
@@ -116,7 +117,7 @@ class ProductionuUnitDetail(DetailView):
         return context
 
 
-class ProductionUnitList(ListView):
+class ProductionUnitList(LoginRequiredMixin,ListView):
     model = ProductionUnit
     template_name = "acuicultura/product_list.html"
 
@@ -129,7 +130,7 @@ class ProductionUnitList(ListView):
         return context
 
 
-class ProductionUnitDelete(DeleteView):
+class ProductionUnitDelete(LoginRequiredMixin,DeleteView):
     model = ProductionUnit
     template_name = "acuicultura/product_confirm_delete.html"
 
@@ -143,7 +144,7 @@ class ProductionUnitDelete(DeleteView):
 # # Views Species = Create,detail,update,delete
 
 
-class SpeciesCreateView(CreateView):
+class SpeciesCreateView(LoginRequiredMixin,CreateView):
     model = Specie
     form_class = EspecieForm
     template_name = "acuicultura/specie_form.html"
@@ -152,7 +153,7 @@ class SpeciesCreateView(CreateView):
         return reverse_lazy('acuicultura:detail_specie', args=(self.object.id,))
 
 
-class SpeciesList(ListView):
+class SpeciesList(LoginRequiredMixin,ListView):
     model = Specie
     template_name = "acuicultura/specie_list.html"
 
@@ -165,7 +166,7 @@ class SpeciesList(ListView):
         return context
 
 
-class SpeciesUpdate(UpdateView):
+class SpeciesUpdate(LoginRequiredMixin,UpdateView):
     model = Specie
     form_class = EspecieForm
     template_name = "acuicultura/specie_form.html"
@@ -174,23 +175,22 @@ class SpeciesUpdate(UpdateView):
         return reverse_lazy('acuicultura:detail_specie', args=(self.object.id,))
 
 
-class SpeciesDetail(DetailView):
+class SpeciesDetail(LoginRequiredMixin,DetailView):
     model = Specie
     template_name = "acuicultura/specie_detail.html"
 
 
-class SpeciesDelete(DeleteView):
+class SpeciesDelete(LoginRequiredMixin,DeleteView):
     model = Specie
     template_name = "acuicultura/specie_delete.html"
     success_url = reverse_lazy('acuicultura:list_specie')
 
 
 # # Views Tracing = Create,detail,update,delete
-class TracingCreate(CreateView):
+class TracingCreate(LoginRequiredMixin,CreateView):
     model = Tracing
     form_class = TracingForm
     tempalte_name = "acuicultura/tracing_form.html"
-
     def form_valid(self, form):
         _object = form.save(commit=False)
         self.object = _object.save()
@@ -198,10 +198,16 @@ class TracingCreate(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(TracingCreate, self).get_context_data(**kwargs)
+        data =[]
+
         context['new_well_diameter'] = 0
         context['new_well_deepth'] = 0
         context['new_lagoon_diameter'] = 0
         context['new_lagoon_deepth'] = 0
+        for i in Specie.objects.all():
+            data.append(i.ordinary_name)
+
+        context['especie'] = json.dumps(data)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -241,8 +247,14 @@ class TracingCreate(CreateView):
             tracing.producion_unit = unit
             tracing.responsible = request.user
             tracing.save()
-            if request.POST.get("new_number_lagoon") != "0" and request.POST.get("new_number_well") == "0":
+            if request.POST.get("new_number_well") != "0" and request.POST.get("new_number_lagoon") == "0":
+                tracing = form.save(commit=False)
+                tracing.producion_unit = unit
+                tracing.responsible = request.user
+                tracing.save()
 
+                print ("aqui vamos")
+                print (int(request.POST.get("new_number_well")))
                 for i in range(int(request.POST.get("new_number_well"))):
                     wells = Well.objects.create(
                         producion_unit=unit, well_diameter=c_new_well_diameter[i], well_deepth=c_new_well_deepth[i])
@@ -252,19 +264,27 @@ class TracingCreate(CreateView):
                     wells_tracing = WellTracing.objects.create(
                         tracing=tracing, well=wells)
                 return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit.pk,)))
-            elif request.POST.get("new_number_well") != "0" and request.POST.get("new_number_lagoon") == "0":
+            elif request.POST.get("new_number_lagoon") != "0" and request.POST.get("new_number_well") == "0":
+                tracing = form.save(commit=False)
+                tracing.producion_unit = unit
+                tracing.responsible = request.user
+                tracing.save()
 
                 for i in range(int(request.POST.get("new_number_lagoon"))):
                     lagoon = Lagoon.objects.create(
-                        producion_unit=unit, lagoon_diameter=c_new_lagoon_diameter[i], lagoon_deepth=c_ne[i])
+                        producion_unit=unit, lagoon_diameter=c_new_lagoon_diameter[i], lagoon_deepth=c_new_lagoon_deepth[i])
                     print(lagoon.pk)
                     print(tracing.pk)
 
-                    lagoon_tracing = WellTracing.objects.create(
-                        tracing=tracing, well=lagoon)
+                    lagoon_tracing = LagoonTracing.objects.create(
+                        tracing=tracing, lagoon=lagoon)
                 return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit.pk,)))
 
             elif request.POST.get("new_number_well") != "0" and request.POST.get("new_number_lagoon") != "0":
+                tracing = form.save(commit=False)
+                tracing.producion_unit = unit
+                tracing.responsible = request.user
+                tracing.save()
 
                 for i in range(int(request.POST.get("new_number_well"))):
                     wells = Well.objects.create(
@@ -293,7 +313,7 @@ class TracingCreate(CreateView):
 #     tempalte_name = "acuicultura/tracing_form.html"
 
 
-class TracingUpdate(UpdateView):
+class TracingUpdate(LoginRequiredMixin,UpdateView):
     model = Tracing
     form_class = TracingForm
 
@@ -387,7 +407,7 @@ class TracingUpdate(UpdateView):
             return render(request, self.tempalte_name, {'form': form, 'new_well_diameter': json_new_well_diameter, 'new_well_deepth': json_new_well_deepth, 'new_lagoon_deepth': json_new_lagoon_deepth, 'new_lagoon_diameter': json_new_lagoon_diameter})
 
 
-class TracingDetail(DetailView):
+class TracingDetail(LoginRequiredMixin,DetailView):
     model = Tracing
     tempalte_name = "acuicultura/tracing_detail.html"
 
@@ -400,11 +420,11 @@ class TracingDetail(DetailView):
 
         return context
 
-class WellDetail(DetailView):
+class WellDetail(LoginRequiredMixin,DetailView):
     model = Well
     template_name = "acuicultura/detail_well.html"
 
-class LagoonDetail(DetailView):
+class LagoonDetail(LoginRequiredMixin,DetailView):
     model = Lagoon
     template_name = "acuicultura/detail_lagoon.html"
 
@@ -415,7 +435,7 @@ class LagoonDetail(DetailView):
 
 # # Views Representative Unit
 
-class RepreUnitCreate(CreateView):
+class RepreUnitCreate(LoginRequiredMixin,CreateView):
     model = ProductionUnit
     second_model = RepreUnitProductive
     template_name = "acuicultura/representative_form.html"
@@ -441,7 +461,7 @@ class RepreUnitCreate(CreateView):
             return render(self.request, self.template_name, {'form': form})
 
 
-class RepresentativeUnitProduction(UpdateView):
+class RepresentativeUnitProduction(LoginRequiredMixin,UpdateView):
     model = RepreUnitProductive
     second_model = RepreUnitProductive
     form_class = RepresentativeForm
@@ -468,7 +488,7 @@ class RepresentativeUnitProduction(UpdateView):
             return render(self.request, self.template_name, {'form': form})
 
 
-class Representative_unit_production_detail(TemplateView):
+class Representative_unit_production_detail(DetailView):
     model = RepreUnitProductive
     template_name = "acuicultura/representative_form.html"
 
