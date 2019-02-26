@@ -4,13 +4,12 @@ from utils.Select import Selects
 
 
 class CompanyForm(forms.ModelForm):
-
+    tlf = forms.IntegerField()
     class Meta:
         model = Company
-        fields = ('type_document', 'document', 'name',
-                  'tlf', 'tlf_house', 'state', 'municipality',
-                  'parish', 'address', 'cod_permission',
-                  'cod_register_mercantil',)
+        fields = ('type_document', 'document', 'speg', 'type_company',
+                'name', 'tlf','state', 'municipality',
+                  'parish', 'address',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

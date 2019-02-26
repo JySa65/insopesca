@@ -92,7 +92,7 @@ class Company(models.Model):
         _('Tipo De Documento'), max_length=2, null=False, blank=False, choices=Selects().type_document())
     document = models.CharField(
         _('Documento'), max_length=15, null=False, blank=False, unique=True)
-    name = models.CharField(_('Nombres'), max_length=50,
+    name = models.CharField(_('Nombre'), max_length=50,
                             null=False, blank=False)
     tlf = models.CharField(_('Telefono'), max_length=15, null=True, blank=True)
     tlf_house = models.CharField(

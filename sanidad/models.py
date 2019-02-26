@@ -11,11 +11,18 @@ class Account(core.Account):
         return self.document
 
 
+class TypeCompany(models.Model):
+    name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Company(core.Company):
-    cod_permission = models.CharField(_('Codigo del Permiso'), max_length=30)
-    cod_register_mercantil = models.CharField(
-        _('Codigo de Registro Mercantil'), max_length=30)
-    account = models.ManyToManyField(Account, verbose_name=_('Personas'))
+    speg = models.PositiveSmallIntegerField(verbose_name=_('SPEG'))
+    type_company = models.ForeignKey(TypeCompany, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.document
@@ -30,7 +37,19 @@ class Company(core.Company):
         return self.transport_set.all().filter(type='is_maritime')
 
     def get_accounts(self):
-        return self.account.all().order_by('-created_at')
+        return self.account_set.all().order_by('-created_at')
+
+
+class CompanyHasAccount(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    account_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.company.name
+
 
 
 class Transport(models.Model):

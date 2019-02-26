@@ -1,24 +1,14 @@
 version: '3'
 
 services:
-  db:
-    image: postgres
-    env_file: ./.env
-    volumes:
-      - ./.docker/postgres:/var/lib/postgresql/data
-    networks:
-      - insopesca
-
   web:
     build: .
     env_file: ./.env
-    command: ./manage.py runserver 0.0.0.0:8000
+    command: ./manage.py runserver 0.0.0.0:8000 --settings=insopesca.local_settings
     volumes:
       - .:/webapp
     ports:
       - "8000:8000"
-    depends_on:
-      - db
     networks:
       - insopesca
 
