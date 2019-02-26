@@ -12,6 +12,8 @@ class Account(core.Account):
 
 
 class TypeCompany(models.Model):
+    id = models.UUIDField(
+        default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     name = models.CharField(max_length=100, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -32,6 +34,9 @@ class Company(core.Company):
     def __str__(self):
         return self.document
 
+    def get_accounts(self):
+        return CompanyHasAccount.objects.filter(company__id=self.id)
+
     def get_transports_all(self):
         return self.transport_set.all()
 
@@ -44,6 +49,8 @@ class Company(core.Company):
 
 
 class CompanyHasAccount(models.Model):
+    id = models.UUIDField(
+        default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     account_active = models.BooleanField(default=True)

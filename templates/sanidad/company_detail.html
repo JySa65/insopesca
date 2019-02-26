@@ -134,33 +134,22 @@
             </thead>
             <tbody>
               {% for account in object.get_accounts %}
-              {% if forloop.first %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ account.get_document }}</td>
-                <td><a href="{% url 'sanidad:account_detail' object.pk account.pk %}">{{ account.name }}</a></td>
+                <td>{{ account.account.get_document }}</td>
+                <td><a href="{% url 'sanidad:account_detail' object.pk account.pk %}">{{ account.account.name }}</a></td>
                 <td>
-                  {% if account.is_active %}
+                  {% if account.account_active %}
                   <span class="badge badge-success">Activo</span>
                   {% else %}
                   <span class="badge badge-danger">Inactivo</span>
                   {% endif %}
                 </td>
                 <td>
-                  <a href="{% url 'sanidad:account_detail' object.pk account.pk %}"
+                  <a href="{% url 'sanidad:account_detail' object.pk account.account.pk %}"
                     class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
                 </td>
               </tr>
-              {% else %}
-              <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ account.get_document }}</td>
-                <td colspan="2">{{ account.get_full_name }}</td>
-                <td>
-                  <span class="badge badge-danger">Inactivo</span>
-                </td>
-              </tr>
-              {% endif %}
               {% empty %}
               <tr>
                 <td colspan="5" class="text-center">

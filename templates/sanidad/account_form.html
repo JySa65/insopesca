@@ -100,7 +100,7 @@ RESGISTRO
           {% endif %}
           <div class="row">
             {% for i in form %}
-            <div class="{% if i.name == 'address' %} col-md-12 {% else %} col-md-6 {% endif %}col-sm-12">
+            <div class="col-md-6 col-sm-12">
               <div class="form-group">
                 <label for="id_{{ i.name }}" class="col-form-label">{{ i.label }}</label>
                 {{ i }}
@@ -125,11 +125,4 @@ RESGISTRO
     </div>
   </div>
 </div>
-<script>
-  document.addEventListener('load', function() {
-    document.getElementById('id_birthday').setAttribute('type', 'date')
-    $('.datepicker').datepicker()
-
-  })
-</script>
 {% endblock %}

@@ -47,7 +47,7 @@ class TypeCompanyView(View):
                 status=True,
                 msg="Tipo De Compañia Registrado",
                 data=dict(
-                    id=save_name.pk,
+                    id=save_name.id,
                     name=save_name.name
                 )
             )
@@ -133,9 +133,14 @@ class AccoutCompanyCreateView(CreateView):
         if add != "":
             try:
                 user = self.model.objects.get(pk=add)
-                user_exists = company.account.all().filter(pk=user.pk).exists()
+                user_exists = models.CompanyHasAccount.objects.filter(
+                    account=user).exists()
                 if not user_exists:
-                    company.account.add(user)
+                    data = dict(
+                        company=company,
+                        account=user
+                    )
+                    models.CompanyHasAccount.objects.create(**data)
                     return HttpResponseRedirect(
                         reverse_lazy('sanidad:company_detail', args=(company.pk,)))
             except self.model.DoesNotExist:
@@ -143,9 +148,14 @@ class AccoutCompanyCreateView(CreateView):
                     reverse_lazy('sanidad:company_detail', args=(company.pk,)))
         user = self.model.objects.filter(document=ci)
         if user.exists():
-            user_exists = company.account.all().filter(pk=user.first().pk).exists()
+            user_exists = models.CompanyHasAccount.objects.filter(
+                account=user.first()).exists()
             if not user_exists:
-                company.account.add(user.first())
+                data = dict(
+                    company=company,
+                    account=user
+                )
+                models.CompanyHasAccount.objects.create(**data)
                 return HttpResponseRedirect(
                     reverse_lazy('sanidad:company_detail', args=(company.pk,)))
             return render(self.request, self.template_name, {
@@ -154,7 +164,11 @@ class AccoutCompanyCreateView(CreateView):
         if form.is_valid():
             user = form.save(commit=False)
             user.save()
-            company.account.add(user)
+            data = dict(
+                company=company,
+                account=user
+            )
+            models.CompanyHasAccount.objects.create(**data)
             return HttpResponseRedirect(
                 reverse_lazy('sanidad:company_detail', args=(company.pk,)))
         return render(self.request, self.template_name, {
@@ -168,8 +182,11 @@ class AccoutCompanyDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(AccoutCompanyDetailView,
                         self).get_context_data(**kwargs)
-        context['company'] = self.object.company_set.all().filter(
+        context['company'] = models.Company.objects.filter(
             pk=self.kwargs.get('pk')).first()
+        context['account_has'] = models.CompanyHasAccount.objects.filter(
+            company__pk=self.kwargs.get('pk'),
+            account__pk=self.kwargs.get('account')).first()
         return context
 
 
@@ -198,22 +215,23 @@ class AccountCompanyUpdateView(UpdateView):
         return reverse_lazy('sanidad:account_detail', args=(self.kwargs.get('pk'), self.object.pk))
 
     def getCompany(self):
-        return self.object.company_set.all().filter(
+        return models.Company.objects.filter(
             pk=self.kwargs.get('pk')).first()
 
 
 class AccountCompanyDeleteView(DeleteView):
     model = models.Company
-    # pk_url_kwarg = 'account'
 
     def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        account = get_object_or_404(
-            models.Account, pk=self.kwargs.get('account'))
-        self.object.account.remove(account)
-        self.object.save()
+        company = self.get_object()
+        account = models.CompanyHasAccount.objects.filter(
+            company=company, 
+            account__id=self.kwargs.get('account')).first()
+        account.account_active = not account.account_active
+        account.save()
         return HttpResponseRedirect(
-            reverse_lazy('sanidad:company_detail', args=(self.kwargs.get('pk'),)))
+            reverse_lazy('sanidad:account_detail', args=(
+                self.kwargs.get('pk'), self.kwargs.get('account'))))
 
 
 class TransportCompanyCreateView(CreateView):

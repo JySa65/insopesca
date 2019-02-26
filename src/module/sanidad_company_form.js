@@ -47,7 +47,7 @@ if (btn_add_type_company) {
             if (result.value) {
                 const data = result.value
                 document.querySelector("#id_type_company").innerHTML += `
-                    <option value="${data.data.pk}" selected="">${data.data.name.replace(/\b[a-z]/g, c => c.toUpperCase())}</option>
+                    <option value="${data.data.id}" selected="">${data.data.name.replace(/\b[a-z]/g, c => c.toUpperCase())}</option>
                 `
                 swal.fire({
                     type: "success",
