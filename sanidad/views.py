@@ -323,4 +323,5 @@ class TransportCompanyCreateView(CreateView):
 class InspectionCreateView(CreateView):
     model = models.Inspection
     form_class = forms.InspectionForm
+    success_url = reverse_lazy('sanidad:home')
     
