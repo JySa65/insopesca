@@ -135,17 +135,23 @@ class AccoutCompanyCreateView(CreateView):
     def get_object(self):
         return get_object_or_404(models.Company, pk=self.kwargs.get('pk'))
 
+    def get_account_company(self, **data):
+        company = data.get('company')
+        user = data.get('user')
+        return models.CompanyHasAccount.objects.filter(
+            account=user, company=company).exists()
+
     def get_context_data(self, *args, **kwargs):
         context = super(AccoutCompanyCreateView,
                         self).get_context_data(**kwargs)
         company = self.get_object()
+        
         context['company'] = company
         search = self.request.GET.get('search', '')
         if search != '':
             user = self.model.objects.filter(document=search).first()
             if user:
-                user_exists = models.CompanyHasAccount.objects.filter(
-                    account=user).exists()
+                user_exists = self.get_account_company(user=user, company=company)
                 if user_exists:
                     context['message'] = "Persona Ya Existe En La Empresa"
                 else:
@@ -160,8 +166,8 @@ class AccoutCompanyCreateView(CreateView):
         if add != "":
             try:
                 user = self.model.objects.get(pk=add)
-                user_exists = models.CompanyHasAccount.objects.filter(
-                    account=user).exists()
+                user_exists = self.get_account_company(
+                    user=user, company=company)
                 if not user_exists:
                     data = dict(
                         company=company,
@@ -175,8 +181,8 @@ class AccoutCompanyCreateView(CreateView):
                     reverse_lazy('sanidad:company_detail', args=(company.pk,)))
         user = self.model.objects.filter(document=ci)
         if user.exists():
-            user_exists = models.CompanyHasAccount.objects.filter(
-                account=user.first()).exists()
+            user_exists = self.get_account_company(
+                user=user.first(), company=company)
             if not user_exists:
                 data = dict(
                     company=company,
@@ -324,10 +330,10 @@ class InspectionCreateView(CreateView):
     model = models.Inspection
     form_class = forms.InspectionForm
     success_url = reverse_lazy('sanidad:inspection_list')
-    
 
 class InspectionListView(ListView):
     model = models.Inspection
+
 
 class InspectionDetailView(DetailView):
     model = models.Inspection
