@@ -4,7 +4,7 @@ from sanidad.views import HomeTemplateView, \
     CompanyUpdateView, CompanyDeleteView, AccoutCompanyCreateView, \
     AccoutCompanyDetailView, AccountCompanyUpdateView, AccountCompanyDeleteView, \
     TransportCompanyCreateView, TypeCompanyView, \
-    InspectionCreateView
+    InspectionCreateView, InspectionListView
 
 app_name = 'sanidad'
 
@@ -35,6 +35,9 @@ urlpatterns = [
          TransportCompanyCreateView.as_view(), name="transport_create"),
 
      # Inspection
+     path('inspection/',
+          InspectionListView.as_view(), name="inspection_list"),
+     # Inspection
      path('inspection/create/',
-           InspectionCreateView.as_view(), name="inspection_create")
+           InspectionCreateView.as_view(), name="inspection_create"),
 ]
