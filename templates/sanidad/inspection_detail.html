@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %} EMPRESAS {% endblock %}
+
+
+{% block sidebar %}
+{% include 'sidebar/sanidad.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+<a href="{% url 'sanidad:home' %}">Sanidad</a> / <a href="{% url 'sanidad:inspection_list' %}">Inspecciones</a>
+{% endblock pageheader %}
+
+{% block context %}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header clearfix">
+                <span class="h4 text-primary left"><b>Información Inspección</b></span>
+            </div>
+            <div class="card-body">
+                <div class="row p-0">
+                    <div class="col-sm-6 mb-3">
+                        <label class="h5">
+                            <b>Empresa:</b>
+                        </label>
+                        <span class="h5"> {{ object.company }}</span>
+                    </div>
+                    <div class="col-sm-12 mb-3">
+                        <label class="h5">
+                            <b>Fecha:</b>
+                        </label>
+                        <span class="h5">{{ object.date }}</span>
+                    </div>
+                    <div class="col-sm-12 mb-3">
+                        <label class="h5">
+                            <b>Siguiente:</b>
+                        </label>
+                        <span class="h5">{{ object.next_date }}</span>
+                    </div>
+                    <div class="col-sm-12 mb-3">
+                        <label class="h5">
+                            <b>Resultado:</b>
+                        </label>
+                        <span class="h5">
+                            {% if object.result == 'is_verygood' %}
+                            Muy Bueno
+                            {% elif object.result == 'is_good' %}
+                            Bueno
+                            {% else %}
+                            Malo
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="col-sm-12 mb-3">
+                        <label class="h5">
+                            <b>Observaciones: </b>
+                        </label>
+                        <span class="h5">{{ object.notes }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
