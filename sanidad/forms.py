@@ -77,6 +77,7 @@ def get_company_not_check():
         print(result)
         if result.count() != 0:
             a.append((company.pk, company.name))
+            
     return a
 
 
