@@ -23,6 +23,23 @@ RESGISTRO
                 <a href="javascript:history.back()" class="btn btn-rounded btn-primary">Regresar <i
                         class="fas fa-reply"></i></a>
             </div>
+            
+            <div class="text-center mt-5 mb-4 p-5">
+                <form action="" method="get">
+                    <div class="form-group">
+                        <label for="id_q" class="text-danger h4">Busque Por Cedula o Nombre De La Empresa o Cedula de la Persona</label>
+                        <div class="input-group mb-3">
+                            <input type="search" id="id_q" name="q" class="form-control text-center">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary" style="padding-top: 0px; padding-bottom: 0px;">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
             <div class="card-body">
                 <form action="" method="post" id="id_form_inspection">
                     {% csrf_token %}
@@ -40,26 +57,19 @@ RESGISTRO
                     {% endfor %}
 
                     <div class="row">
+                        {% if company %}
+                        <input type="hidden" value="{{company}}" name="company" id="id_company">
+                        {% endif %}
                         {% for i in form %}
+                        {% if i.name != 'company' %}
                         <div
                             class="{% if i.name == 'name' or i.name == 'address' %} col-md-12 {% else %} col-md-6 {% endif %}col-sm-12">
                             <div class="form-group">
                                 <label for="id_{{ i.name }}" class="col-form-label"><b>{{ i.label }}</b></label>
-                                {% if i.name == 'type_company' %}
-                                <div class="input-group mb-3">
-                                    {{ i }}
-                                    <div class="input-group-append">
-                                        <button type="button" class="btn btn-primary"
-                                            style="padding-top: 0px; padding-bottom: 0px;" id="btn_add_type_company">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                {% else %}
                                 {{ i }}
-                                {% endif %}
                             </div>
                         </div>
+                        {% endif %}
                         {% endfor %}
                     </div>
 

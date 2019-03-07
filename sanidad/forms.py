@@ -66,25 +66,8 @@ class TransportMaritimeForm(forms.ModelForm):
                  'required': 'required'})
 
 
-def get_company_not_check():
-    date = timezone.now()-timedelta(days=365)
-    companys = Company.objects.all()
-    a = []
-    for company in companys:
-        result = company.inspection_set.all().exclude(
-            created_at__lte=(date)).filter(
-            next_date__lte=timezone.now())
-        print(result)
-        if result.count() != 0:
-            a.append((company.pk, company.name))
-            
-    return a
-
-
 class InspectionForm(forms.ModelForm):
-    company = forms.ChoiceField(
-        choices=get_company_not_check()
-    )
+    company = forms.UUIDField()
 
     class Meta:
         model = Inspection
@@ -92,15 +75,13 @@ class InspectionForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # self.get_company_not_check()
         for _, field in self.fields.items():
             field.widget.attrs.update(
                 {'class': 'form-control', 'autocomplete': 'off'})
         self.fields['notes'].widget.attrs.update(
             {'rows': '1'})
         self.fields['company'].widget.attrs.update(
-            {'class': 'form-control', 'data-live-search': 'true',
-             'data-width': "100%", 'data-show-subtext': "true"})
+            {'class': 'form-control', 'hidden': 'hidden',})
 
     def clean_company(self):
         data = self.cleaned_data['company']
