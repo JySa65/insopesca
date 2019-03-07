@@ -3,7 +3,10 @@ from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.views.generic import TemplateView, ListView, CreateView, \
     DetailView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy, reverse
+from django.db.models import Q
 from utils.check_password import checkPassword
+from django.utils import timezone
+from datetime import timedelta
 from sanidad import models, forms
 import json
 # Create your views here.
@@ -145,13 +148,14 @@ class AccoutCompanyCreateView(CreateView):
         context = super(AccoutCompanyCreateView,
                         self).get_context_data(**kwargs)
         company = self.get_object()
-        
+
         context['company'] = company
         search = self.request.GET.get('search', '')
         if search != '':
             user = self.model.objects.filter(document=search).first()
             if user:
-                user_exists = self.get_account_company(user=user, company=company)
+                user_exists = self.get_account_company(
+                    user=user, company=company)
                 if user_exists:
                     context['message'] = "Persona Ya Existe En La Empresa"
                 else:
@@ -330,6 +334,34 @@ class InspectionCreateView(CreateView):
     model = models.Inspection
     form_class = forms.InspectionForm
     success_url = reverse_lazy('sanidad:inspection_list')
+
+    def get_context_data(self, **kwargs):
+        context = super(InspectionCreateView, self).get_context_data(**kwargs)
+        q = self.request.GET.get('q', '')
+        if q != '':
+            company = models.Company.objects.filter(
+                Q(name__iexact=q) | Q(document=q)).first()
+            if company:
+                inspection = models.Inspection.objects.filter(
+                    company_account_id=company.pk).exclude(
+                        created_at__lte=timezone.now() - timedelta(365)
+                ).exclude(next_date__gte=timezone.now()
+                    ).first()
+                if not inspection:
+                    context['data'] = company
+                    context['data_type'] = 'company'
+                else:
+                    context['message'] = f'{company.name} Ya Fue Inspeccionado(a)' 
+                    
+        return context
+    
+    def form_valid(self, form):
+        pk = self.request.POST.get('token')
+        data = get_object_or_404(models.Company, pk=pk)
+        _object = form.save(commit=False)
+        _object.company_account = data
+        self.object = _object.save()
+        return super(InspectionCreateView, self).form_valid(form)
 
 class InspectionListView(ListView):
     model = models.Inspection

@@ -1,8 +1,10 @@
-from django.db import models
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext, ugettext_lazy as _
+from django.db import models
 from core import models as core
-from utils.Select import Selects
 import uuid
+from utils.Select import Selects
 # Create your models here.
 
 
@@ -98,8 +100,11 @@ class Driver(core.Account):
 
 
 class Inspection(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE,
-                                verbose_name=_('Compañia'))
+    company_account_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE)
+    company_account_id = models.UUIDField()
+    company_account = GenericForeignKey(
+        'company_account_type', 'company_account_id')
     date = models.DateField(verbose_name=_('Fecha de la Inspección'))
     result = models.CharField(
         max_length=15, choices=Selects().inspection_result(),
@@ -116,4 +121,4 @@ class Inspection(models.Model):
         ordering = ('-created_at',)
 
     def __str__(self):
-        return self.company.name
+        return str(self.company_account)

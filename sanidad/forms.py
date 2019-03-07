@@ -67,11 +67,11 @@ class TransportMaritimeForm(forms.ModelForm):
 
 
 class InspectionForm(forms.ModelForm):
-    company = forms.UUIDField()
 
     class Meta:
         model = Inspection
-        fields = '__all__'
+        exclude = ('company_account_type', 'company_account_id',
+                   'company_account')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -80,9 +80,7 @@ class InspectionForm(forms.ModelForm):
                 {'class': 'form-control', 'autocomplete': 'off'})
         self.fields['notes'].widget.attrs.update(
             {'rows': '1'})
-        self.fields['company'].widget.attrs.update(
-            {'class': 'form-control', 'hidden': 'hidden',})
 
-    def clean_company(self):
-        data = self.cleaned_data['company']
-        return get_object_or_404(Company, pk=data)
+    # def clean_company(self):
+    #     data = self.cleaned_data['company']
+    #     return get_object_or_404(Company, pk=data)

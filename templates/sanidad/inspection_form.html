@@ -24,12 +24,12 @@ RESGISTRO
                         class="fas fa-reply"></i></a>
             </div>
             
-            <div class="text-center mt-5 mb-4 p-5">
+            <div class="text-center {% if data %} pl-5 pr-5 pt-5 {% else %} p-5 {% endif %}">
                 <form action="" method="get">
                     <div class="form-group">
-                        <label for="id_q" class="text-danger h4">Busque Por Cedula o Nombre De La Empresa o Cedula de la Persona</label>
+                        <label for="id_q" class="text-danger h4">Busque Por Rif o Nombre De La Empresa o Cedula de la Persona</label>
                         <div class="input-group mb-3">
-                            <input type="search" id="id_q" name="q" class="form-control text-center">
+                            <input type="search" id="id_q" name="q" class="form-control text-center" value="{{ request.GET.q }}">
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-primary" style="padding-top: 0px; padding-bottom: 0px;">
                                     <i class="fas fa-search"></i>
@@ -39,10 +39,21 @@ RESGISTRO
                     </div>
                 </form>
             </div>
-
+            <div class="text-center">
+                <h2 class="text-danger">{{ message }}</h2>
+            </div>
+            {% if data %}
             <div class="card-body">
+                {% if data_type == "company"%}
+                    <h4>
+                        <b>Rif: </b>{{ data.get_document }}
+                        <b>Empresa: </b>{{ data.name }}
+                    </h4>
+                {% endif %}
+                <hr>
                 <form action="" method="post" id="id_form_inspection">
                     {% csrf_token %}
+                    <input type="hidden" name="token" value="{{ data.pk }}">
                     {% for field in form %}
                     {% if field.errors %}
                     <div class="form-group">
@@ -57,11 +68,8 @@ RESGISTRO
                     {% endfor %}
 
                     <div class="row">
-                        {% if company %}
                         <input type="hidden" value="{{company}}" name="company" id="id_company">
-                        {% endif %}
                         {% for i in form %}
-                        {% if i.name != 'company' %}
                         <div
                             class="{% if i.name == 'name' or i.name == 'address' %} col-md-12 {% else %} col-md-6 {% endif %}col-sm-12">
                             <div class="form-group">
@@ -69,7 +77,6 @@ RESGISTRO
                                 {{ i }}
                             </div>
                         </div>
-                        {% endif %}
                         {% endfor %}
                     </div>
 
@@ -80,6 +87,7 @@ RESGISTRO
 
                 </form>
             </div>
+            {% endif %} 
         </div>
     </div>
 </div>
