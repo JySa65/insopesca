@@ -310,11 +310,15 @@ class TransportCompanyCreateView(CreateView):
         type_transport = self.kwargs.get('type')
         if type_transport != 'land' and type_transport != 'maritime':
             raise Http404
+        context['type_transport'] = type_transport
         return context
 
     def form_valid(self, form):
         _object = form.save(commit=False)
+        pk = self.kwargs.get('pk')
+        data = get_object_or_404(models.Company, pk=pk)
         _object.type = f'is_{self.kwargs.get("type")}'
+        _object.company_driver = data
         self.object = _object.save()
         return super(TransportCompanyCreateView, self).form_valid(form)
 
@@ -325,7 +329,6 @@ class TransportCompanyCreateView(CreateView):
         return form_class(**self.get_form_kwargs())
 
     def get_success_url(self):
-        self.object.company.add(self.get_object())
         return reverse_lazy('sanidad:company_detail', args=(
             self.kwargs.get('pk'),))
 

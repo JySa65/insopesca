@@ -43,10 +43,16 @@ class Company(core.Company):
         return self.transport_set.all()
 
     def get_transports_all_land(self):
-        return self.transport_set.all().filter(type='is_land')
+        return Transport.objects.filter(
+            company_driver_id=self.id,
+            type='is_land'
+        )
 
     def get_transports_all_maritime(self):
-        return self.transport_set.all().filter(type='is_maritime')
+        return Transport.objects.filter(
+            company_driver_id=self.id,
+            type='is_maritime'
+        )
 
 
 class CompanyHasAccount(models.Model):
@@ -62,8 +68,18 @@ class CompanyHasAccount(models.Model):
         return self.company.name
 
 
+class Driver(core.Account):
+
+    def __str__(self):
+        return self.document
+
+
 class Transport(models.Model):
-    company = models.ManyToManyField(Company, verbose_name=_('Empresas'))
+    company_driver_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE)
+    company_driver_id = models.UUIDField()
+    company_driver = GenericForeignKey(
+        'company_driver_type', 'company_driver_id')
 
     id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
@@ -90,13 +106,6 @@ class Transport(models.Model):
 
     def __str__(self):
         return self.type
-
-
-class Driver(core.Account):
-    transport = models.ManyToManyField(Transport, verbose_name="Conductor")
-
-    def __str__(self):
-        return self.document
 
 
 class Inspection(models.Model):

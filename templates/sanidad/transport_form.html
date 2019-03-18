@@ -12,7 +12,7 @@ RESGISTRO
 {% block pageheader %}
 <a href="{% url 'sanidad:home' %}">Sanidad</a> / <a href="{% url 'sanidad:company_list'  %}">Empresas</a> / <a
     href="{% url 'sanidad:company_detail' company.pk %}">{{ company.name }}</a> / {% if edit %}
-{{ object.get_full_name }} {% else %} Transporte {% if type == 'land' %} Terrestre {% else %} Maritimo {% endif %} {% endif %}
+{{ object.get_full_name }} {% else %} Transporte {% if type_transport == 'land' %} Terrestre {% else %} Maritimo {% endif %} {% endif %}
 {% endblock %}
 
 
