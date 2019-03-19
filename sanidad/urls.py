@@ -4,7 +4,9 @@ from sanidad.views import HomeTemplateView, \
     CompanyUpdateView, CompanyDeleteView, AccoutCompanyCreateView, \
     AccoutCompanyDetailView, AccountCompanyUpdateView, AccountCompanyDeleteView, \
     TransportCompanyCreateView, TypeCompanyView, \
-    InspectionCreateView, InspectionListView, InspectionDetailView
+    InspectionCreateView, InspectionListView, InspectionDetailView, \
+    DriverListView, DriverDetailView, DriverCreateView, DriverUpdateView, \
+    DriverDeleteView
 
 app_name = 'sanidad'
 
@@ -34,11 +36,17 @@ urlpatterns = [
     path('company/detail/<pk>/transport/<str:type>',
          TransportCompanyCreateView.as_view(), name="transport_create"),
 
-     # Inspection
-     path('inspection/',
-          InspectionListView.as_view(), name="inspection_list"),
-     path('inspection/create/',
-           InspectionCreateView.as_view(), name="inspection_create"),
-     path('inspection/<int:pk>/',
-          InspectionDetailView.as_view(), name="inspection_detail"),
+    # Inspection
+    path('inspection/',
+         InspectionListView.as_view(), name="inspection_list"),
+    path('inspection/create/',
+         InspectionCreateView.as_view(), name="inspection_create"),
+    path('inspection/<int:pk>/',
+         InspectionDetailView.as_view(), name="inspection_detail"),
+
+    path('driver/', DriverListView.as_view(), name="driver_list"),
+    path('driver/create/', DriverCreateView.as_view(), name="driver_create"),
+    path('driver/detail/<pk>/', DriverDetailView.as_view(), name="driver_detail"),
+    path('driver/update/<pk>/', DriverUpdateView.as_view(), name="driver_update"),
+    path('driver/delete/<pk>/', DriverDeleteView.as_view(), name="driver_delete"),
 ]

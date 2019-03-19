@@ -1,6 +1,6 @@
 from django import forms
 from django.shortcuts import get_object_or_404
-from sanidad.models import Company, Account, Transport, Inspection
+from sanidad.models import Company, Account, Transport, Inspection, Driver
 from utils.Select import Selects
 from django.utils import timezone
 from datetime import timedelta
@@ -28,6 +28,21 @@ class AccountForm(forms.ModelForm):
 
     class Meta:
         model = Account
+        exclude = ('is_active', 'is_delete', 'tlf_house')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for _, field in self.fields.items():
+            field.widget.attrs.update(
+                {'class': 'form-control', 'autocomplete': 'off'})
+        self.fields['address'].widget.attrs.update(
+            {'rows': '1'})
+
+
+class DriverForm(forms.ModelForm):
+
+    class Meta:
+        model = Driver
         exclude = ('is_active', 'is_delete', 'tlf_house')
 
     def __init__(self, *args, **kwargs):

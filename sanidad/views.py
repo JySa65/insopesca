@@ -349,15 +349,15 @@ class InspectionCreateView(CreateView):
                     company_account_id=company.pk).exclude(
                         created_at__lte=timezone.now() - timedelta(365)
                 ).exclude(next_date__gte=timezone.now()
-                    ).first()
+                          ).first()
                 if not inspection:
                     context['data'] = company
                     context['data_type'] = 'company'
                 else:
-                    context['message'] = f'{company.name} Ya Fue Inspeccionado(a)' 
-                    
+                    context['message'] = f'{company.name} Ya Fue Inspeccionado(a)'
+
         return context
-    
+
     def form_valid(self, form):
         pk = self.request.POST.get('token')
         data = get_object_or_404(models.Company, pk=pk)
@@ -366,9 +366,82 @@ class InspectionCreateView(CreateView):
         self.object = _object.save()
         return super(InspectionCreateView, self).form_valid(form)
 
+
 class InspectionListView(ListView):
     model = models.Inspection
 
 
 class InspectionDetailView(DetailView):
     model = models.Inspection
+
+
+class DriverListView(ListView):
+    model = models.Driver
+
+
+class DriverDetailView(DetailView):
+    model = models.Driver
+
+
+class DriverCreateView(CreateView):
+    model = models.Driver
+    form_class = forms.DriverForm
+    success_url = reverse_lazy('sanidad:driver_list')
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(DriverCreateView,
+                        self).get_context_data(**kwargs)
+        search = self.request.GET.get('search', '')
+        try:
+            context['account'] = self.model.objects.get(document=search)
+        except self.model.DoesNotExist:
+            pass
+        return context
+
+
+class DriverUpdateView(UpdateView):
+    model = models.Driver
+    form_class = forms.DriverForm
+
+    def get_context_data(self, **kwargs):
+        context = super(DriverUpdateView,
+                        self).get_context_data(**kwargs)
+        context['edit'] = True
+        return context
+    
+    def get_success_url(self):
+        return reverse_lazy('sanidad:driver_detail', args=(self.object.pk,))
+
+
+class DriverDeleteView(View):
+    model = models.Driver
+
+    def delete(self, request, *args, **kwargs):
+        user = get_object_or_404(self.model, pk=self.kwargs.get('pk'))
+        user.is_active = not user.is_active 
+        user.save()
+        data = {}
+        data = dict(
+            status=True,
+            msg="Usuario Desactivado" if not user.is_active else "Usuario Activado"
+        )
+        return JsonResponse(data)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            password = json.loads(
+                str(self.request.body, 'utf-8')).get('password', "")
+            user = checkPassword(self.request.user.email, password)
+            if not user:
+                data = dict(
+                    status=False,
+                    msg="Contraseña Incorrecta"
+                )
+                return JsonResponse(data)
+            return self.delete(request, *args, **kwargs)
+        except Exception as e:
+            data = dict(
+                status=False,
+                data=e
+            )
+        return JsonResponse(data)

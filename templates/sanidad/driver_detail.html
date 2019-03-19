@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %} {{ object.name|upper }} {% endblock %}
+{% block sidebar %}
+{% include 'sidebar/sanidad.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+<a href="{% url 'sanidad:home' %}">Sanidad</a> / <a href="{% url 'sanidad:company_list'  %}">Empresas</a> / {{ object.get_full_name }}
+{% endblock pageheader %}
+
+{% block context %}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header clearfix">
+                <span class="h4 text-primary left"><b>Información De la Persona</b></span>
+            </div>
+            <div class="card-body">
+                <div class="row p-0">
+                    <div class="col-sm-6 mb-3">
+                        <label class="h5">
+                            <b>Documento:</b>
+                        </label>
+                        <span class="h5"> {{ object.get_document }}</span>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <label class="h5">
+                            <b>Nombre:</b>
+                        </label>
+                        <span class="h5">{{ object.get_full_name }}</span>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <label class="h5">
+                            <b>Telefono Movil:</b>
+                        </label>
+                        <span class="h5">{% if object.tlf %} {{ object.tlf }} {% else %} {{ tlf }} {% endif %}</span>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <label class="h5">
+                            <b>Telefono Trabajo:</b>
+                        </label>
+                        <span class="h5">{% if object.tlf %} {{ object.tlf_house }} {% else %} {{ tlf }}
+                            {% endif %}</span>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <label class="h5">
+                            <b>Sexo:</b>
+                        </label>
+                        <span class="h5">{% if object.sex == 'is_male' %} Masculino {% else %} Femenino
+                            {% endif %}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="h5">
+                            <b>Activa: </b>
+                        </label>
+                        {% if object.is_active %}
+                        <span class="badge badge-success">Activo</span>
+                        {% else %}
+                        <span class="badge badge-danger">Inactivo</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    {% if object.is_active %}
+                    <div class="col-sm-6 mb-3">
+                        <a href="{% url 'sanidad:driver_update' object.pk %}"
+                            class="btn btn-rounded btn-info">
+                            <i class="far fa-edit"></i>
+                            Actualizar
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% if object.is_active %}
+                    <div class="col-sm-6 mb-3">
+                        <a href="{% url 'sanidad:driver_delete' object.pk %}"
+                            class="btn btn-rounded btn-danger" id="btn_toggle_driver"
+                            data="{{ object.pk }}">
+                            Desactivar
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="col-sm-6 mb-3">
+                        <a href="{% url 'sanidad:driver_delete' object.pk %}"
+                            class="btn btn-rounded btn-success" id="btn_toggle_driver"
+                            data="{{ object.pk }}">
+                            Activar
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
