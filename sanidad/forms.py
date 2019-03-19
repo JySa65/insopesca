@@ -4,10 +4,11 @@ from sanidad.models import Company, Account, Transport, Inspection, Driver
 from utils.Select import Selects
 from django.utils import timezone
 from datetime import timedelta
+from utils.users_exists import sanidad_user_exists, sanidad_company_exists
 
 
 class CompanyForm(forms.ModelForm):
-    speg = forms.CharField(label='SPEG')
+    speg = forms.CharField(label='SPES')
 
     class Meta:
         model = Company
@@ -22,6 +23,13 @@ class CompanyForm(forms.ModelForm):
                 {'class': 'form-control', 'autocomplete': 'off'})
         self.fields['address'].widget.attrs.update(
             {'rows': '2'})
+
+    def clean_document(self):
+        document = self.cleaned_data['document']
+        if sanidad_user_exists(document):
+            raise forms.ValidationError(
+                "Un Usuario No Se Puede Registrar Como Empresa")
+        return document
 
 
 class AccountForm(forms.ModelForm):
@@ -38,6 +46,12 @@ class AccountForm(forms.ModelForm):
         self.fields['address'].widget.attrs.update(
             {'rows': '1'})
 
+    def clean_document(self):
+        document = self.cleaned_data['document']
+        if sanidad_company_exists(document):
+            raise forms.ValidationError(
+                'Una Empresa No Se Puede Registrar Como Un Usuario Encargado De Una Empresa')
+
 
 class DriverForm(forms.ModelForm):
 
@@ -53,6 +67,11 @@ class DriverForm(forms.ModelForm):
         self.fields['address'].widget.attrs.update(
             {'rows': '1'})
 
+    def clean_document(self):
+        document = self.cleaned_data['document']
+        if sanidad_company_exists(document):
+            raise forms.ValidationError(
+                'Una Empresa No Se Puede Regitrar Como Un Conductor')
 
 class TransportLandForm(forms.ModelForm):
 
