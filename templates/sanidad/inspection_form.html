@@ -50,6 +50,12 @@ RESGISTRO
                         <b>Empresa: </b>{{ data.name }}
                     </h4>
                 {% endif %}
+                {% if data_type == "driver"%}
+                    <h4>
+                        <b>Documento: </b>{{ data.get_document }}
+                        <b>Nombre: </b>{{ data.get_full_name }}
+                    </h4>
+                {% endif %}
                 <hr>
                 <form action="" method="post" id="id_form_inspection">
                     {% csrf_token %}

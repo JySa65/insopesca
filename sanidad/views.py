@@ -344,25 +344,35 @@ class InspectionCreateView(CreateView):
         if q != '':
             company = models.Company.objects.filter(
                 Q(name__iexact=q) | Q(document=q)).first()
-            if company:
+            driver = models.Driver.objects.filter(
+                document=q).first()
+            if company or driver:
                 inspection = models.Inspection.objects.filter(
-                    company_account_id=company.pk).exclude(
-                        created_at__lte=timezone.now() - timedelta(365)
-                ).exclude(next_date__gte=timezone.now()
-                          ).first()
+                    company_account_id=company.pk if company else driver.pk if driver else None
+                    ).exclude(created_at__lte=timezone.now() - timedelta(365)
+                    ).filter(next_date__gte=timezone.now())
                 if not inspection:
-                    context['data'] = company
-                    context['data_type'] = 'company'
+                    context['data'] = company if company else driver
+                    context['data_type'] = 'company' if company else 'driver'
                 else:
-                    context['message'] = f'{company.name} Ya Fue Inspeccionado(a)'
-
+                    msg = company if company else driver                    
+                    context['message'] = f'{msg.get_full_name()} Ya Fue Inspeccionado(a)'
+            else:
+                context['message'] = 'No existe lo que esta buscando'
         return context
 
     def form_valid(self, form):
         pk = self.request.POST.get('token')
-        data = get_object_or_404(models.Company, pk=pk)
         _object = form.save(commit=False)
-        _object.company_account = data
+        try:
+            data = models.Company.objects.get(pk=pk)
+            _object.company_account = data
+        except Exception:
+            try:
+                data = models.Driver.objects.get(pk=pk)
+                _object.company_account = data
+            except Exception:
+                raise Http404
         self.object = _object.save()
         return super(InspectionCreateView, self).form_valid(form)
 
@@ -408,7 +418,7 @@ class DriverUpdateView(UpdateView):
                         self).get_context_data(**kwargs)
         context['edit'] = True
         return context
-    
+
     def get_success_url(self):
         return reverse_lazy('sanidad:driver_detail', args=(self.object.pk,))
 
@@ -418,7 +428,7 @@ class DriverDeleteView(View):
 
     def delete(self, request, *args, **kwargs):
         user = get_object_or_404(self.model, pk=self.kwargs.get('pk'))
-        user.is_active = not user.is_active 
+        user.is_active = not user.is_active
         user.save()
         data = {}
         data = dict(

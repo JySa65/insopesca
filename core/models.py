@@ -119,3 +119,6 @@ class Company(models.Model):
 
     def get_document(self):
         return f'{self.type_document}-{self.document}'
+
+    def get_full_name(self):
+        return self.name
