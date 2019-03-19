@@ -54,6 +54,12 @@ class Company(core.Company):
             type='is_maritime'
         )
 
+    def get_transports_all_fluvial(self):
+        return Transport.objects.filter(
+            company_driver_id=self.id,
+            type='is_fluvial'
+        )
+
 
 class CompanyHasAccount(models.Model):
     id = models.UUIDField(
@@ -73,6 +79,23 @@ class Driver(core.Account):
     def __str__(self):
         return self.document
 
+    def get_transports_all_land(self):
+        return Transport.objects.filter(
+            company_driver_id=self.id,
+            type='is_land'
+        )
+
+    def get_transports_all_maritime(self):
+        return Transport.objects.filter(
+            company_driver_id=self.id,
+            type='is_maritime'
+        )
+
+    def get_transports_all_fluvial(self):
+        return Transport.objects.filter(
+            company_driver_id=self.id,
+            type='is_fluvial'
+        )
 
 class Transport(models.Model):
     company_driver_type = models.ForeignKey(
@@ -98,6 +121,16 @@ class Transport(models.Model):
     name = models.CharField(_('Nombre'), max_length=20, null=True, blank=True)
     year_vessel = models.CharField(
         _('Año De Embarcación'), max_length=20, null=True, blank=True)
+
+    # fluvial
+    name_fluvial = models.CharField(
+        _('Nombre'), max_length=20, null=True, blank=True)
+    type_vessel = models.CharField(
+        _('Tipo De Embarcación'), max_length=20,
+        null=True, blank=True,
+        choices=Selects().type_vissel())
+    result = models.CharField(
+        _('Resultado'), max_length=9999, null=True, blank=True)
 
     is_active = models.BooleanField(default=True, verbose_name=_('Activo'))
     is_delete = models.BooleanField(default=False, verbose_name=_('Eliminado'))

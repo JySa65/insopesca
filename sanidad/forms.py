@@ -73,6 +73,7 @@ class DriverForm(forms.ModelForm):
             raise forms.ValidationError(
                 'Una Empresa No Se Puede Regitrar Como Un Conductor')
 
+
 class TransportLandForm(forms.ModelForm):
 
     class Meta:
@@ -91,6 +92,19 @@ class TransportMaritimeForm(forms.ModelForm):
     class Meta:
         model = Transport
         fields = ('name', 'year_vessel')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for _, field in self.fields.items():
+            field.widget.attrs.update(
+                {'class': 'form-control', 'autocomplete': 'off',
+                 'required': 'required'})
+
+
+class TransportFluvialForm(forms.ModelForm):
+    class Meta:
+        model = Transport
+        fields = ('name_fluvial', 'type_vessel', 'result')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

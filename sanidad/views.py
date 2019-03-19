@@ -303,14 +303,21 @@ class TransportCompanyCreateView(CreateView):
     def get_object(self):
         return get_object_or_404(models.Company, pk=self.kwargs.get('pk'))
 
+    def dispatch(self, request, *args, **kwargs):
+        type_transport = self.kwargs.get('type')
+        if (type_transport != 'land' and
+            type_transport != 'maritime' and
+                type_transport != 'fluvial'):
+            raise Http404
+        return super(
+            TransportCompanyCreateView, self).dispatch(
+                request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(TransportCompanyCreateView,
                         self).get_context_data(**kwargs)
         context['company'] = self.get_object()
-        type_transport = self.kwargs.get('type')
-        if type_transport != 'land' and type_transport != 'maritime':
-            raise Http404
-        context['type_transport'] = type_transport
+        context['type_transport'] = self.kwargs.get('type')
         return context
 
     def form_valid(self, form):
@@ -324,8 +331,10 @@ class TransportCompanyCreateView(CreateView):
 
     def get_form(self, form_class=None):
         form_class = forms.TransportLandForm
-        if self.kwargs.get("type") != 'land':
+        if self.kwargs.get("type") == 'maritime':
             form_class = forms.TransportMaritimeForm
+        if self.kwargs.get('type') == 'fluvial':
+            form_class = forms.TransportFluvialForm
         return form_class(**self.get_form_kwargs())
 
     def get_success_url(self):
@@ -349,13 +358,13 @@ class InspectionCreateView(CreateView):
             if company or driver:
                 inspection = models.Inspection.objects.filter(
                     company_account_id=company.pk if company else driver.pk if driver else None
-                    ).exclude(created_at__lte=timezone.now() - timedelta(365)
-                    ).filter(next_date__gte=timezone.now())
+                ).exclude(created_at__lte=timezone.now() - timedelta(365)
+                          ).filter(next_date__gte=timezone.now())
                 if not inspection:
                     context['data'] = company if company else driver
                     context['data_type'] = 'company' if company else 'driver'
                 else:
-                    msg = company if company else driver                    
+                    msg = company if company else driver
                     context['message'] = f'{msg.get_full_name()} Ya Fue Inspeccionado(a)'
             else:
                 context['message'] = 'No existe lo que esta buscando'
@@ -456,3 +465,48 @@ class DriverDeleteView(View):
                 data=e
             )
         return JsonResponse(data)
+
+
+class TransportDriverCreateView(CreateView):
+    model = models.Transport
+    template_name = 'sanidad/transport_form.html'
+
+    def get_object(self):
+        return get_object_or_404(models.Driver, pk=self.kwargs.get('pk'))
+
+    def dispatch(self, request, *args, **kwargs):
+        type_transport = self.kwargs.get('type')
+        if (type_transport != 'land' and
+            type_transport != 'maritime' and
+                type_transport != 'fluvial'):
+            raise Http404
+        return super(
+            TransportDriverCreateView, self).dispatch(
+                request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(TransportDriverCreateView,
+                        self).get_context_data(**kwargs)
+        context['company'] = self.get_object()
+        context['type_transport'] = self.kwargs.get('type')
+        return context
+
+    def form_valid(self, form):
+        _object = form.save(commit=False)
+        data = self.get_object()
+        _object.type = f'is_{self.kwargs.get("type")}'
+        _object.company_driver = data
+        self.object = _object.save()
+        return super(TransportDriverCreateView, self).form_valid(form)
+
+    def get_form(self, form_class=None):
+        form_class = forms.TransportLandForm
+        if self.kwargs.get("type") == 'maritime':
+            form_class = forms.TransportMaritimeForm
+        if self.kwargs.get('type') == 'fluvial':
+            form_class = forms.TransportFluvialForm
+        return form_class(**self.get_form_kwargs())
+
+    def get_success_url(self):
+        return reverse_lazy('sanidad:driver_detail', args=(
+            self.kwargs.get('pk'),))

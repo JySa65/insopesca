@@ -4,7 +4,7 @@
 {% include 'sidebar/sanidad.html' %}
 {% endblock sidebar %}
 {% block pageheader %}
-<a href="{% url 'sanidad:home' %}">Sanidad</a> / <a href="{% url 'sanidad:company_list'  %}">Empresas</a> / {{ object.get_full_name }}
+<a href="{% url 'sanidad:home' %}">Sanidad</a> / <a href="{% url 'sanidad:driver_list'  %}">Conductores</a> / {{ object.get_full_name }}
 {% endblock pageheader %}
 
 {% block context %}
@@ -91,6 +91,161 @@
                 </div>
             </div>
         </div>
+
+        <!-- transports -->
+        <div class="card">
+            <div class="card-header clearfix">
+                <span class="h4 text-primary left">
+                    <b>Transporte Del Conductor</b>
+                </span>
+                <div class="btn-group">
+                    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button">
+                        Añadir Transporte
+                        <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                        <a class="dropdown-item"
+                            href="{% url 'sanidad:transport_driver' pk=object.pk type='land' %}">Terrestre</a>
+                        <a class="dropdown-item"
+                            href="{% url 'sanidad:transport_driver' pk=object.pk type='maritime' %}">Maritimo</a>
+                        <a class="dropdown-item"
+                            href="{% url 'sanidad:transport_driver' pk=object.pk type='fluvial' %}">Fluvial</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="col-12 mb-5">
+                    <div class="tab-regular">
+                        <ul class="nav nav-tabs nav-fill" id="myTab7" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab-justify" data-toggle="tab" href="#home-justify"
+                                    role="tab" aria-controls="home" aria-selected="true">Terrestre</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab-justify" data-toggle="tab" href="#profile-justify"
+                                    role="tab" aria-controls="profile" aria-selected="false">Maritimo</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="fluvial-tab-justify" data-toggle="tab" href="#fluvial-justify"
+                                    role="tab" aria-controls="fluvial" aria-selected="false">Fluvial</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent7">
+                            <div class="tab-pane fade show active" id="home-justify" role="tabpanel"
+                                aria-labelledby="home-tab-justify">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Matricula</th>
+                                                <th>Modelo</th>
+                                                <th>Marca</th>
+                                                <th>Capacidad de Carga</th>
+                                                <th>Opciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for land in object.get_transports_all_land %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ land.registration }}</td>
+                                                <td>{{ land.model }}</td>
+                                                <td>{{ land.brand }}</td>
+                                                <td>{{ land.load_capacity }}</td>
+                                                <td></td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="6" class="text-center">
+                                                    <h1>No tiene Transporte Terrestre Añadido</h1>
+                                                    <a href="{% url 'sanidad:transport_driver' pk=object.pk type='land' %}"
+                                                        class="btn btn-primary btn-rounded ">
+                                                        Añadir Transporte
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="profile-justify" role="tabpanel"
+                                aria-labelledby="profile-tab-justify">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Nombre</th>
+                                                <th>Año De Embarcación</th>
+                                                <th>Opciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for maritime in object.get_transports_all_maritime %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ maritime.name }}</td>
+                                                <td>{{ maritime.year_vessel }}</td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="4" class="text-center">
+                                                    <h1>No tiene Transporte Martitimo Añadido</h1>
+                                                    <a href="{% url 'sanidad:transport_driver' pk=object.pk type='maritime' %}"
+                                                        class="btn btn-primary btn-rounded ">
+                                                        Añadir Transporte
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="fluvial-justify" role="tabpanel"
+                                aria-labelledby="fluvial-tab-justify">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Nombre</th>
+                                                <th>Tipo De Embarcación</th>
+                                                <th>Resultado</th>
+                                                <th>Opciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for maritime in object.get_transports_all_fluvial %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ maritime.name_fluvial }}</td>
+                                                <td>{{ maritime.type_vessel }}</td>
+                                                <td>{{ maritime.result }}</td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="5" class="text-center">
+                                                    <h1>No tiene Transporte Fluvial Añadido</h1>
+                                                    <a href="{% url 'sanidad:transport_driver' pk=object.pk type='fluvial' %}"
+                                                        class="btn btn-primary btn-rounded ">
+                                                        Añadir Transporte
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end transports -->
     </div>
 </div>
 {% endblock %}

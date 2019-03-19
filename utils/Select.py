@@ -6,6 +6,13 @@ class Selects(object):
         return(
             ('is_land', 'Terrestre'),
             ('is_maritime', 'Maritimo'),
+            ('is_fluvial', 'Fluvial'),
+        )
+
+    def type_vissel(self):
+        return(
+            ('Curiara', 'Curiara'),
+            ('Canoa', 'Canoa')
         )
 
     def sex(self):

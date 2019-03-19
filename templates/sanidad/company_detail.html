@@ -137,7 +137,7 @@
               <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ account.account.get_document }}</td>
-                <td><a href="{% url 'sanidad:account_detail' object.pk account.pk %}">{{ account.account.name }}</a></td>
+                <td><a href="{% url 'sanidad:account_detail' object.pk account.account.pk  %}">{{ account.account.name }}</a></td>
                 <td>
                   {% if account.account_active %}
                   <span class="badge badge-success">Activo</span>
@@ -182,6 +182,7 @@
           <div class="dropdown-menu" role="menu">
             <a class="dropdown-item" href="{% url 'sanidad:transport_create' pk=company.pk type='land' %}">Terrestre</a>
             <a class="dropdown-item" href="{% url 'sanidad:transport_create' pk=company.pk type='maritime' %}">Maritimo</a>
+            <a class="dropdown-item" href="{% url 'sanidad:transport_create' pk=company.pk type='fluvial' %}">Fluvial</a>
           </div>
         </div>
       </div>
@@ -196,6 +197,10 @@
               <li class="nav-item">
                 <a class="nav-link" id="profile-tab-justify" data-toggle="tab" href="#profile-justify" role="tab"
                   aria-controls="profile" aria-selected="false">Maritimo</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="fluvial-tab-justify" data-toggle="tab" href="#fluvial-justify" role="tab"
+                  aria-controls="fluvial" aria-selected="false">Fluvial</a>
               </li>
             </ul>
             <div class="tab-content" id="myTabContent7">
@@ -259,6 +264,40 @@
                         <td colspan="4" class="text-center">
                           <h1>No tiene Transporte Martitimo Añadido a la Empresa</h1>
                           <a href="{% url 'sanidad:transport_create' pk=company.pk type='maritime' %}" class="btn btn-primary btn-rounded ">
+                            Añadir Transporte
+                          </a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="fluvial-justify" role="tabpanel" aria-labelledby="fluvial-tab-justify">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead class="bg-light">
+                      <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Tipo De Embarcación</th>
+                        <th>Resultado</th>
+                        <th>Opciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for maritime in object.get_transports_all_fluvial %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ maritime.name_fluvial }}</td>
+                        <td>{{ maritime.type_vessel }}</td>
+                        <td>{{ maritime.result }}</td>
+                      </tr>
+                      {% empty %}
+                      <tr>
+                        <td colspan="5" class="text-center">
+                          <h1>No tiene Transporte Fluvial Añadido a la Empresa</h1>
+                          <a href="{% url 'sanidad:transport_create' pk=company.pk type='fluvial' %}" class="btn btn-primary btn-rounded ">
                             Añadir Transporte
                           </a>
                         </td>
