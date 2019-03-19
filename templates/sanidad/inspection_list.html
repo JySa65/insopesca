@@ -18,6 +18,9 @@
                     Nuevo Inspección 
                 </a>
             </div>
+            <div class="card-header">
+                <h3>Empresa</h3>
+            </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover">
@@ -33,6 +36,7 @@
                         </thead>
                         <tbody>
                             {% for object in object_list %}
+                            {% if object.company_account_type.name == 'company' %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
                                 <td>{{ object.company_account.name }}</td>
@@ -55,6 +59,7 @@
                                     </a>
                                 </td>
                             </tr>
+                            {% endif %}
                             {% empty %}
 
                             <tr>
@@ -71,7 +76,66 @@
                     </table>
                 </div>
             </div>
+            <hr>
+            <div class="card-header">
+                <h3>Conductores</h3>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre Y Apellido</th>
+                                <th>Fecha De Inspeccion</th>
+                                <th>Proxima Inspeccion</th>
+                                <th>Resultado</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for object in object_list %}
+                            {% if object.company_account_type.name == 'driver' %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ object.company_account.get_full_name }}</td>
+                                <td>{{ object.date }}</td>
+                                <td>{{ object.next_date }}</td>
+                                <td>
+                                    {% if object.result == 'is_verygood' %}
+                                    Muy Bueno
+                                    {% elif object.result == 'is_good' %}
+                                    Bueno
+                                    {% else %}
+                                    Malo
+                                    {% endif %}
+                                </td>
+                                
+                                <td>
+                                    <a href="{% url 'sanidad:inspection_detail' object.pk %}"
+                                        class="btn btn-rounded btn-secondary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% empty %}
+                            <tr>
+                                <td></td>
+                                <td>No Hay</td>
+                                <td>Registros</td>
+                                <td>En Esto</td>
+                                <td>Momento</td>
+                                <td></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
+        {% include 'partial/paginator.html' %}
     </div>
 </div>
 {% endblock %}

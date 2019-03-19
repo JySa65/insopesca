@@ -379,6 +379,7 @@ class InspectionCreateView(CreateView):
 
 class InspectionListView(ListView):
     model = models.Inspection
+    paginate_by = 30
 
 
 class InspectionDetailView(DetailView):

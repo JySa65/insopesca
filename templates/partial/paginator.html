@@ -1,28 +1,38 @@
-{% if object_list.has_previous %}
-<li class="page-item">
-  <a class="page-link" href="?page={{ object_list.previous_page_number }}"><<</a>
-</li>
-{% else %} 
-<li class="disabled page-item">
-  <a href="#" class="page-link"><< </a> 
-</li> 
-{% endif %} 
-{% for page in paginator.page_range %}
-<li class="page-item {% if page == object_list.number %}active{% endif %}">
-  <a class="page-link" href="?page={{ page }}">{{ page }}</a>
-</li>
-{% endfor %}
+{% if is_paginated %}
+<div class="row">
+  <div class="col-sm-12">
+    <div class="text-center">
+      <ul class="pagination">
+        {% if object_list.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ object_list.previous_page_number }}"><<</a>
+          </li>
+          {% else %} 
+          <li class="disabled page-item">
+            <a href="#" class="page-link"><< </a> 
+          </li> 
+          {% endif %} 
+          {% for page in paginator.page_range %}
+          <li class="page-item {% if page == object_list.number %} active {% endif %}">
+            <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+          </li>
+          {% endfor %}
 
-{% if object_list.has_next %}
-<li class="page-item">
-  <a class="page-link" href="?page={{ object_list.next_page_number }}">
-    >>
-  </a>
-</li>
-{% else %}
-<li class="page-item disabled">
-  <a class="page-link" href="#">
-    >>
-  </a>
-</li>
+          {% if object_list.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ object_list.next_page_number }}">
+              >>
+            </a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#">
+              >>
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
 {% endif %}
