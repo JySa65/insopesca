@@ -97,6 +97,7 @@ class Driver(core.Account):
             type='is_fluvial'
         )
 
+
 class Transport(models.Model):
     company_driver_type = models.ForeignKey(
         ContentType, on_delete=models.CASCADE)
