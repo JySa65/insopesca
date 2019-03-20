@@ -64,8 +64,6 @@ if (calendarEl) {
             })},
         eventClick: (info) => {
             salert(info.event.id)
-            console.log(info.event)
-            // alert("hola")
         },
     });
     calendar.render();
