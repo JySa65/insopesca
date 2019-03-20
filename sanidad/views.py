@@ -14,7 +14,7 @@ import json
 # Create your views here.
 
 
-class InspectionDetailApiView(View):
+class InspectionDetailApiView(LoginRequiredMixin, View):
     model = models.Inspection
 
     def get(self, *args, **kwargs):
@@ -30,7 +30,7 @@ class InspectionDetailApiView(View):
         return JsonResponse(data)
 
 
-class InspectionListApiView(View):
+class InspectionListApiView(LoginRequiredMixin, View):
     model = models.Inspection
 
     def get(self, *args, **kwargs):
