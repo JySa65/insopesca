@@ -143,6 +143,8 @@ class Transport(models.Model):
 
 
 class Inspection(models.Model):
+    id = models.UUIDField(
+        default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     company_account_type = models.ForeignKey(
         ContentType, on_delete=models.CASCADE)
     company_account_id = models.UUIDField()

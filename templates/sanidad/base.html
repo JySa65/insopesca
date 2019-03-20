@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load sanidad %}
+{% block title %} SANIDAD {% endblock %}
+
+{% block sidebar %}
+{% include 'sidebar/sanidad.html' %}
+{% endblock sidebar %}
+
+{% block pageheader %}
+Sanidad
+{% endblock pageheader %}
+
+{% block context %}
+{% endblock %}
+
+{% block notify %}
+{%filter_inspection as inspections %}
+
+<li class="nav-item dropdown notification">
+    <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        <i class="fas fa-fw fa-bell"></i>
+        <span class="text-danger">{{ inspections.count }}</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
+        <li>
+            <div class="notification-title"> Notificación</div>
+            <div class="notification-list">
+                <div class="list-group">
+                    {% for inspection in inspections %}
+                        <a href="{% url 'sanidad:inspection_detail' inspection.pk %}" class="list-group-item list-group-item-action active">
+                            <div class="notification-info">
+                                <div class="notification-list-user-img">
+                                    <img src="" alt="" class="user-avatar-md rounded-circle">
+                                </div>
+                                <div class="notification-list-user-block">
+                                    <span class="notification-list-user-name">
+                                        {{ inspection.notification.company_account.get_full_name }}
+                                    </span>
+                                    Esta Proximo A Una Nueva Inspección.
+                                    <div class="notification-date">{{ inspection.notification.next_date }}</div>
+                                </div>
+                            </div>
+                        </a>
+                    {% empty %}
+                        <a class="list-group-item list-group-item-action active">
+                            <div class="notification-info">
+                                <div class="notification-list-user-img">
+                                    <img src="" alt="" class="user-avatar-md rounded-circle">
+                                </div>
+                                <div class="notification-list-user-block">
+                                    No Hay Notificaciones.
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="list-footer"> <a href="#">View all notifications</a></div>
+        </li>
+    </ul>
+</li>
+{% endblock %}

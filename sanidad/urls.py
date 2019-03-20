@@ -50,7 +50,7 @@ urlpatterns = [
          InspectionListView.as_view(), name="inspection_list"),
     path('inspection/create/',
          InspectionCreateView.as_view(), name="inspection_create"),
-    path('inspection/<int:pk>/',
+    path('inspection/<pk>/',
          InspectionDetailView.as_view(), name="inspection_detail"),
 
     path('driver/', DriverListView.as_view(), name="driver_list"),

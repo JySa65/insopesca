@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import timedelta, datetime
 from sanidad import models, forms
+from core.models import Notification
 import json
 # Create your views here.
 
@@ -424,6 +425,11 @@ class InspectionCreateView(LoginRequiredMixin, CreateView):
                 raise Http404
         self.object = _object.save()
         return super(InspectionCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        Notification.objects.create(
+            notification=self.object, data={})
+        return self.success_url
 
 
 class InspectionListView(LoginRequiredMixin, ListView):

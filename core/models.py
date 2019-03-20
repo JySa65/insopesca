@@ -12,13 +12,16 @@ import uuid
 class Notification(models.Model):
     notification_type = models.ForeignKey(
         ContentType, on_delete=models.CASCADE)
-    notification_id = models.PositiveIntegerField()
+    notification_id = models.UUIDField()
     notification = GenericForeignKey(
         'notification_type', 'notification_id')
     is_active = models.BooleanField(default=True)
     data = JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.notification)
 
 
 class State(models.Model):
