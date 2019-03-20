@@ -18,22 +18,8 @@ class HomeTemplateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeTemplateView, self).get_context_data(**kwargs)
-        now = timezone.now()
-        start = now - timedelta(days=15)
-
-        inspection_company = models.Inspection.objects.filter(
-            company_account_type__model="company", 
-            next_date__lte=start)
-
-        inspection_driver = models.Inspection.objects.filter(
-            company_account_type__model="driver",
-            next_date__lte=start)
-        
-        
-        print(inspection_company)
-        print(inspection_driver)
-        print(now)
-        print(start)
+       
+       
         return context
 
 
