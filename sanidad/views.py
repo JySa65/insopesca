@@ -8,27 +8,47 @@ from django.db.models import Q
 from utils.check_password import checkPassword
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
-from datetime import timedelta
+from datetime import timedelta, datetime
 from sanidad import models, forms
 import json
 # Create your views here.
+
+
+class InspectionDetailApiView(View):
+    model = models.Inspection
+
+    def get(self, *args, **kwargs):
+        pk = self.request.GET.get('pk')
+        queryset = get_object_or_404(self.model, pk=pk)
+        data = dict(
+            name=queryset.company_account.get_full_name(),
+            date=queryset.date,
+            result=queryset.result,
+            next_date=queryset.next_date,
+            notes=queryset.notes
+        )
+        return JsonResponse(data)
 
 
 class InspectionListApiView(View):
     model = models.Inspection
 
     def get(self, *args, **kwargs):
-        queryset = self.model.objects.all()
+        start = self.request.GET.get('start', '')
+        end = self.request.GET.get('end', '')
+        queryset = self.model.objects.filter(
+            next_date__range=(start, end))
         data = []
-        for i in queryset:
-            data.append(
-                dict(
-                    pk=i.pk,
-                    next_date=i.next_date,
-                    result=i.result,
-                    name=i.company_account.get_full_name()
+        if queryset.count() != 0:
+            for i in queryset:
+                data.append(
+                    dict(
+                        pk=i.pk,
+                        next_date=i.next_date,
+                        result=i.result,
+                        name=i.company_account.get_full_name()
+                    )
                 )
-            )
         return JsonResponse(data, safe=False)
 
 
