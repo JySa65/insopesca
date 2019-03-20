@@ -1,6 +1,14 @@
 version: '3'
 
 services:
+  db:
+    image: postgres
+    env_file: ./.env
+    volumes:
+      - ./.docker/postgres:/var/lib/postgresql/data
+    networks:
+      - insopesca
+
   web:
     build: .
     env_file: ./.env
@@ -9,6 +17,8 @@ services:
       - .:/webapp
     ports:
       - "8000:8000"
+    depends_on:
+      - db
     networks:
       - insopesca
 

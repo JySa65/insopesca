@@ -1,9 +1,24 @@
 from django.db import models
 from django.utils.translation import ugettext, ugettext_lazy as _
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.postgres.fields import JSONField
 from utils.Select import Selects
 from datetime import datetime
 import uuid
 # Create your models here.
+
+
+class Notification(models.Model):
+    notification_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE)
+    notification_id = models.PositiveIntegerField()
+    notification = GenericForeignKey(
+        'notification_type', 'notification_id')
+    is_active = models.BooleanField(default=True)
+    data = JSONField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class State(models.Model):
