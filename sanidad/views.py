@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core import serializers
 from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.views.generic import TemplateView, ListView, CreateView, \
     DetailView, UpdateView, DeleteView, View
@@ -13,14 +14,26 @@ import json
 # Create your views here.
 
 
+class InspectionListApiView(View):
+    model = models.Inspection
+
+    def get(self, *args, **kwargs):
+        queryset = self.model.objects.all()
+        data = []
+        for i in queryset:
+            data.append(
+                dict(
+                    pk=i.pk,
+                    next_date=i.next_date,
+                    result=i.result,
+                    name=i.company_account.get_full_name()
+                )
+            )
+        return JsonResponse(data, safe=False)
+
+
 class HomeTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'sanidad/home_view.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(HomeTemplateView, self).get_context_data(**kwargs)
-       
-       
-        return context
 
 
 class CompanyListView(LoginRequiredMixin, ListView):

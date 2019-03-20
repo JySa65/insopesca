@@ -6,7 +6,7 @@ from sanidad.views import HomeTemplateView, \
     TransportCompanyCreateView, TypeCompanyView, \
     InspectionCreateView, InspectionListView, InspectionDetailView, \
     DriverListView, DriverDetailView, DriverCreateView, DriverUpdateView, \
-    DriverDeleteView, TransportDriverCreateView
+    DriverDeleteView, TransportDriverCreateView, InspectionListApiView
 
 app_name = 'sanidad'
 
@@ -35,6 +35,10 @@ urlpatterns = [
     # transport
     path('company/detail/<pk>/transport/<str:type>',
          TransportCompanyCreateView.as_view(), name="transport_create"),
+
+    path('inspection/api/list/', 
+          InspectionListApiView.as_view(),
+          name="inspection_api_list"),
 
     # Inspection
     path('inspection/',
