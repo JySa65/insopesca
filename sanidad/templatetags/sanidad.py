@@ -9,7 +9,7 @@ register = template.Library()
 def filter_inspection():
     date = timezone.now()
     start = date - timedelta(days=15)
-    end = date + timedelta(days=15)
+    end = date + timedelta(days=10)
     data = Notification.objects.filter(
-        created_at__range=(start, end), is_active=True)
+        created_at__range=(start, end))
     return data

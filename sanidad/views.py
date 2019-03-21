@@ -41,15 +41,12 @@ class InspectionListApiView(LoginRequiredMixin, View):
             next_date__range=(start, end))
         data = []
         if queryset.count() != 0:
-            for i in queryset:
-                data.append(
-                    dict(
-                        pk=i.pk,
-                        next_date=i.next_date,
-                        result=i.result,
-                        name=i.company_account.get_full_name()
-                    )
-                )
+            data = [dict(
+                pk=i.pk,
+                next_date=i.next_date,
+                result=i.result,
+                name=i.company_account.get_full_name()
+            ) for i in queryset]
         return JsonResponse(data, safe=False)
 
 
@@ -430,6 +427,19 @@ class InspectionCreateView(LoginRequiredMixin, CreateView):
         Notification.objects.create(
             notification=self.object, data={})
         return self.success_url
+
+
+class InspectionListNotificationView(LoginRequiredMixin, ListView):
+    model = Notification
+    template_name = "sanidad/notification_list.html"
+
+    def get_queryset(self):
+        super(InspectionListNotificationView, self).get_queryset()
+        date = timezone.now()
+        start = date - timedelta(days=15)
+        end = date + timedelta(days=10)
+        return self.model.objects.filter(
+            created_at__range=(start, end))
 
 
 class InspectionListView(LoginRequiredMixin, ListView):

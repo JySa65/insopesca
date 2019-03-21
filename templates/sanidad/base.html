@@ -14,13 +14,13 @@ Sanidad
 {% endblock %}
 
 {% block notify %}
-{%filter_inspection as inspections %}
+{% filter_inspection as inspections %}
 
 <li class="nav-item dropdown notification">
     <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fas fa-fw fa-bell"></i>
-        <span class="text-danger">{{ inspections.count }}</span>
+        <span class="text-danger">{% if inspections.count != 0 %} {{ inspections.count }}{% endif %}</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
         <li>
@@ -28,11 +28,8 @@ Sanidad
             <div class="notification-list">
                 <div class="list-group">
                     {% for inspection in inspections %}
-                        <a href="{% url 'sanidad:inspection_detail' inspection.pk %}" class="list-group-item list-group-item-action active">
+                        <a href="{% url 'sanidad:inspection_detail' inspection.notification.pk %}" class="list-group-item list-group-item-action active">
                             <div class="notification-info">
-                                <div class="notification-list-user-img">
-                                    <img src="" alt="" class="user-avatar-md rounded-circle">
-                                </div>
                                 <div class="notification-list-user-block">
                                     <span class="notification-list-user-name">
                                         {{ inspection.notification.company_account.get_full_name }}
@@ -58,7 +55,7 @@ Sanidad
             </div>
         </li>
         <li>
-            <div class="list-footer"> <a href="#">View all notifications</a></div>
+            <div class="list-footer"> <a href="{% url 'sanidad:notification' %}">Ver Todas Las Notificaciones</a></div>
         </li>
     </ul>
 </li>
