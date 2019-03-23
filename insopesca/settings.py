@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'simple_history.middleware.HistoryRequestMiddleware',
     'authentication.middlewares.VerifyChagePassword',
     'authentication.middlewares.VerifyQuestion',
-    'authentication.middlewares.RequestUserValidUrl',
+    'sanidad.middlewares.CheckInspectionCompaniesBeat',
 ]
 
 ROOT_URLCONF = 'insopesca.urls'

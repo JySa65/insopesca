@@ -58,7 +58,7 @@ class DriverForm(forms.ModelForm):
 
     class Meta:
         model = Driver
-        exclude = ('is_active', 'is_delete', 'tlf_house')
+        exclude = ('is_active', 'is_delete', 'tlf_house', 'is_inspection')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -73,6 +73,7 @@ class DriverForm(forms.ModelForm):
         if sanidad_company_exists(document):
             raise forms.ValidationError(
                 'Una Empresa No Se Puede Regitrar Como Un Conductor')
+        return document
 
 
 class TransportLandForm(forms.ModelForm):

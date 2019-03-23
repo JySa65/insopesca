@@ -6,6 +6,7 @@ from django.views.generic import TemplateView, ListView, CreateView, \
 from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 from utils.check_password import checkPassword
+from utils.get_driver_or_company import get_drivers_or_company
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import timedelta, datetime
@@ -57,7 +58,6 @@ class HomeTemplateView(LoginRequiredMixin, TemplateView):
         context = super(HomeTemplateView, self).get_context_data(**kwargs)
         # inspection = models.Inspection.objects.filter()
         return context
-    
 
 
 class CompanyListView(LoginRequiredMixin, ListView):
@@ -400,11 +400,8 @@ class InspectionCreateView(LoginRequiredMixin, CreateView):
             driver = models.Driver.objects.filter(
                 document=q).first()
             if company or driver:
-                inspection = models.Inspection.objects.filter(
-                    company_account_id=company.pk if company else driver.pk if driver else None
-                ).exclude(created_at__lte=timezone.now() - timedelta(365)
-                          ).filter(next_date__gte=timezone.now())
-                if not inspection:
+                if (company and not company.is_inspection or 
+                        driver and not driver.is_inspection):
                     context['data'] = company if company else driver
                     context['data_type'] = 'company' if company else 'driver'
                 else:
@@ -417,22 +414,9 @@ class InspectionCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         pk = self.request.POST.get('token')
         _object = form.save(commit=False)
-        try:
-            data = models.Company.objects.get(pk=pk)
-            _object.company_account = data
-        except Exception:
-            try:
-                data = models.Driver.objects.get(pk=pk)
-                _object.company_account = data
-            except Exception:
-                raise Http404
+        _object.company_account = get_drivers_or_company(pk)
         self.object = _object.save()
         return super(InspectionCreateView, self).form_valid(form)
-
-    def get_success_url(self):
-        Notification.objects.create(
-            notification=self.object, data={})
-        return self.success_url
 
 
 class InspectionListNotificationView(LoginRequiredMixin, ListView):

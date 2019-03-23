@@ -32,16 +32,3 @@ class VerifyQuestion(MiddlewareMixin):
                 request.META.get('PATH_INFO') != route_question and
                     logout != 'logout'):
                 return HttpResponseRedirect(route_question)
-
-
-class RequestUserValidUrl(MiddlewareMixin):
-    """
-    This middleware expire token pass the 5 hours
-    """
-
-    def process_view(self, request, view, *args, **kwargs):
-        # if request.user.is_authenticated:
-        #     return None
-        return None
-        # print(request.META.get('PATH_INFO').split("/")[1].lower())
-        # raise Http404

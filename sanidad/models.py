@@ -31,7 +31,8 @@ class TypeCompany(models.Model):
 class Company(core.Company):
     speg = models.CharField(max_length=4, verbose_name=_('SPES'))
     type_company = models.ForeignKey(TypeCompany,
-                                     on_delete=models.CASCADE, verbose_name=_('Tipo De Compañia'))
+                                     on_delete=models.CASCADE, 
+                                     verbose_name=_('Tipo De Compañia'))
     is_inspection = models.BooleanField(default=False)
 
     def __str__(self):
@@ -76,6 +77,7 @@ class CompanyHasAccount(models.Model):
 
 
 class Driver(core.Account):
+    is_inspection = models.BooleanField(default=False)
 
     def __str__(self):
         return self.document
