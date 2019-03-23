@@ -57,10 +57,12 @@ class HomeTemplateView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomeTemplateView, self).get_context_data(**kwargs)
         today = datetime.now()
-        inspections = models.Inspection.objects.exclude(
-            next_date__year__lte=(today.year - 1))
+        start = today - timedelta(days=10)
+        end = today + timedelta(days=10)
         context['company'] = models.Company.objects.filter(is_inspection=True)
         context['driver'] = models.Driver.objects.filter(is_inspection=True)
+        context['inspection'] = models.Inspection.objects.filter(
+                                        next_date__range=(start, end))
         return context
 
 
@@ -404,7 +406,7 @@ class InspectionCreateView(LoginRequiredMixin, CreateView):
             driver = models.Driver.objects.filter(
                 document=q).first()
             if company or driver:
-                if (company and not company.is_inspection or 
+                if (company and not company.is_inspection or
                         driver and not driver.is_inspection):
                     context['data'] = company if company else driver
                     context['data_type'] = 'company' if company else 'driver'
