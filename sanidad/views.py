@@ -53,6 +53,12 @@ class InspectionListApiView(LoginRequiredMixin, View):
 class HomeTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'sanidad/home_view.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(HomeTemplateView, self).get_context_data(**kwargs)
+        # inspection = models.Inspection.objects.filter()
+        return context
+    
+
 
 class CompanyListView(LoginRequiredMixin, ListView):
     model = models.Company
