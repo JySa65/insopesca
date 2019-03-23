@@ -1,7 +1,6 @@
 from django.utils.deprecation import MiddlewareMixin
-from django.utils import timezone
-from datetime import timedelta, date, datetime
-from sanidad.models import Inspection, Company, Driver
+from datetime import datetime
+from sanidad.models import Inspection
 from utils.get_driver_or_company import get_drivers_or_company
 
 

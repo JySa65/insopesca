@@ -16,7 +16,12 @@ Sanidad
 {% block notify %}
 {% filter_inspection as inspections %}
 
-<li class="nav-item dropdown notification">
+
+{% comment %}
+    
+    
+
+<!-- <li class="nav-item dropdown notification">
     <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fas fa-fw fa-bell"></i>
@@ -58,5 +63,6 @@ Sanidad
             <div class="list-footer"> <a href="{% url 'sanidad:notification' %}">Ver Todas Las Notificaciones</a></div>
         </li>
     </ul>
-</li>
+</li> -->
+{% endcomment %}
 {% endblock %}

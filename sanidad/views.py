@@ -56,7 +56,11 @@ class HomeTemplateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeTemplateView, self).get_context_data(**kwargs)
-        # inspection = models.Inspection.objects.filter()
+        today = datetime.now()
+        inspections = models.Inspection.objects.exclude(
+            next_date__year__lte=(today.year - 1))
+        context['company'] = models.Company.objects.filter(is_inspection=True)
+        context['driver'] = models.Driver.objects.filter(is_inspection=True)
         return context
 
 
@@ -413,9 +417,12 @@ class InspectionCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         pk = self.request.POST.get('token')
+        data = get_drivers_or_company(pk)
         _object = form.save(commit=False)
-        _object.company_account = get_drivers_or_company(pk)
+        _object.company_account = data
         self.object = _object.save()
+        data.is_inspection = True
+        data.save()
         return super(InspectionCreateView, self).form_valid(form)
 
 
