@@ -62,7 +62,7 @@ class HomeTemplateView(LoginRequiredMixin, TemplateView):
         context['company'] = models.Company.objects.filter(is_inspection=True)
         context['driver'] = models.Driver.objects.filter(is_inspection=True)
         context['inspection'] = models.Inspection.objects.filter(
-                                        next_date__range=(start, end))
+            next_date__range=(start, end))
         return context
 
 
@@ -444,6 +444,34 @@ class InspectionListNotificationView(LoginRequiredMixin, ListView):
 class InspectionListView(LoginRequiredMixin, ListView):
     model = models.Inspection
     paginate_by = 30
+
+
+class InspectionDriversCompanyListView(LoginRequiredMixin, ListView):
+    template_name_suffix = '_list_inspection'
+
+    def get_data_list(self):
+        return ['drivers', 'companies', 'end']
+
+    def dispatch(self, request, *args, **kwargs):
+        data = self.kwargs.get('type')
+        if data not in self.get_data_list():
+            raise Http404
+        return super(
+            InspectionDriversCompanyListView, self).dispatch(
+                request, *args, **kwargs)
+
+    def get_queryset(self):
+        data = self.kwargs.get('type')
+        if data == "drivers":
+            return models.Driver.objects.filter(is_inspection=True)
+        if data == 'companies':
+            return models.Company.objects.filter(is_inspection=True)
+        if data == 'end':
+            today = datetime.now()
+            start = today - timedelta(days=10)
+            end = today + timedelta(days=10)
+            return models.Inspection.objects.filter(
+                                next_date__range=(start, end))
 
 
 class InspectionDetailView(LoginRequiredMixin, DetailView):

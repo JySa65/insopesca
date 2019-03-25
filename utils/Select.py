@@ -8,6 +8,12 @@ class Selects(object):
             ('is_maritime', 'Maritimo'),
             ('is_fluvial', 'Fluvial'),
         )
+    
+    def type_ice(self):
+        return(
+            ('is_iceplant', 'Platas de Hielo'),
+            ('is_refrigeratedcavas', 'Cavas Refrigeradas')
+        )
 
     def type_vissel(self):
         return(

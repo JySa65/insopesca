@@ -145,6 +145,14 @@ class Transport(models.Model):
         return self.type
 
 
+class PlantIce(models.Model):
+    type_ice = models.CharField(max_length=20, choices=Selects().type_ice())
+    state = models.ForeignKey(core.State, on_delete=models.CASCADE)
+    name = models.CharField(max_length=500)
+    capacity_ton = models.DecimalField(max_digits=5, decimal_places=2)
+    capacity_ton_mes = models.DecimalField(max_digits=5, decimal_places=2)
+
+
 class Inspection(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)

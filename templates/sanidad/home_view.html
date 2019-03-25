@@ -6,43 +6,49 @@
     <div class="col-sm-12">
         <div class="row">
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-inline-block">
-                            <h5 class="text-muted">Conductores <br> Inspeccionadas</h5>
-                            <h2 class="mb-0">{{ driver.count }}</h2>
-                        </div>
-                        <div class="float-right icon-circle-medium  icon-box-lg  bg-primary-light mt-1">
-                            <i class="fa fa-user fa-fw fa-sm text-primary"></i>
+                <a href="{% url 'sanidad:inspection_drivers_company' type='drivers' %}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-inline-block">
+                                <h5 class="text-muted">Conductores <br> Inspeccionadas</h5>
+                                <h2 class="mb-0">{{ driver.count }}</h2>
+                            </div>
+                            <div class="float-right icon-circle-medium  icon-box-lg  bg-primary-light mt-1">
+                                <i class="fa fa-user fa-fw fa-sm text-primary"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-inline-block">
-                            <h5 class="text-muted">Empresas <br> Inspeccionadas</h5>
-                            <h2 class="mb-0">{{ company.count }}</h2>
-                        </div>
-                        <div class="float-right icon-circle-medium  icon-box-lg  bg-secondary-light mt-1">
-                            <i class="fa fa-building fa-fw fa-sm text-secondary"></i>
+                <a href="{% url 'sanidad:inspection_drivers_company' type='companies' %}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-inline-block">
+                                <h5 class="text-muted">Empresas <br> Inspeccionadas</h5>
+                                <h2 class="mb-0">{{ company.count }}</h2>
+                            </div>
+                            <div class="float-right icon-circle-medium  icon-box-lg  bg-secondary-light mt-1">
+                                <i class="fa fa-building fa-fw fa-sm text-secondary"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-inline-block">
-                            <h5 class="text-muted">Inspecciones <br> a Vencer</h5>
-                            <h2 class="mb-0">{{ inspection.count }}</h2>
-                        </div>
-                        <div class="float-right icon-circle-medium  icon-box-lg  bg-info-light mt-1">
-                            <i class="fa fa-eye fa-fw fa-sm text-info"></i>
+                <a href="{% url 'sanidad:inspection_drivers_company' type='end' %}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-inline-block">
+                                <h5 class="text-muted">Inspecciones <br> a Vencer</h5>
+                                <h2 class="mb-0">{{ inspection.count }}</h2>
+                            </div>
+                            <div class="float-right icon-circle-medium  icon-box-lg  bg-info-light mt-1">
+                                <i class="fa fa-eye fa-fw fa-sm text-info"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <!-- <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
                 <div class="card">
