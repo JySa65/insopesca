@@ -14,7 +14,8 @@ class CheckInspectionCompaniesBeat(MiddlewareMixin):
         if inspections.count() != 0:
             for inspection in inspections:
                 next_date = datetime.strftime(inspection.next_date, "%Y-%m-%d")
-                if str(next_date) == str(today):
+                if (str(next_date) <= str(today) and
+                 inspection.company_account.is_inspection):
                     data = get_drivers_or_company(inspection.company_account_id)
                     data.is_inspection = False
                     data.save()

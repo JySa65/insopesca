@@ -61,8 +61,13 @@ class HomeTemplateView(LoginRequiredMixin, TemplateView):
         end = today + timedelta(days=10)
         context['company'] = models.Company.objects.filter(is_inspection=True)
         context['driver'] = models.Driver.objects.filter(is_inspection=True)
-        context['inspection'] = models.Inspection.objects.filter(
+        inspection = models.Inspection.objects.filter(
             next_date__range=(start, end))
+        inspection_list = []
+        for i in inspection:
+            if i.company_account.is_inspection:
+                inspection_list.append(i)
+        context['inspection'] = inspection_list
         return context
 
 
@@ -422,9 +427,9 @@ class InspectionCreateView(LoginRequiredMixin, CreateView):
         data = get_drivers_or_company(pk)
         _object = form.save(commit=False)
         _object.company_account = data
-        self.object = _object.save()
         data.is_inspection = True
         data.save()
+        self.object = _object.save()
         return super(InspectionCreateView, self).form_valid(form)
 
 
@@ -447,10 +452,9 @@ class InspectionListView(LoginRequiredMixin, ListView):
 
 
 class InspectionDriversCompanyListView(LoginRequiredMixin, ListView):
-    template_name_suffix = '_list_inspection'
 
     def get_data_list(self):
-        return ['drivers', 'companies', 'end']
+        return ['driver', 'company', 'end']
 
     def dispatch(self, request, *args, **kwargs):
         data = self.kwargs.get('type')
@@ -460,18 +464,40 @@ class InspectionDriversCompanyListView(LoginRequiredMixin, ListView):
             InspectionDriversCompanyListView, self).dispatch(
                 request, *args, **kwargs)
 
+    def get_template_names(self):
+        template_type = self.kwargs.get('type')
+        return [f'sanidad/{template_type}_list_inspection.html']
+
     def get_queryset(self):
         data = self.kwargs.get('type')
-        if data == "drivers":
-            return models.Driver.objects.filter(is_inspection=True)
-        if data == 'companies':
-            return models.Company.objects.filter(is_inspection=True)
+        if data == "driver":
+            driver_list = []
+            drivers = models.Driver.objects.filter(is_inspection=True)
+            for driver in drivers:
+                inspection = models.Inspection.objects.filter(
+                    company_account_id=driver.pk).first()
+                driver_list.append(dict(
+                    driver=driver,
+                    inspection=inspection
+                ))
+            return driver_list
+        if data == 'company':
+            company_list = []
+            companies = models.Company.objects.filter(is_inspection=True)
+            for company in companies:
+                inspection = models.Inspection.objects.filter(
+                    company_account_id=company.pk).first()
+                company_list.append(dict(
+                    driver=company,
+                    inspection=inspection
+                ))
+            return company_list
         if data == 'end':
             today = datetime.now()
             start = today - timedelta(days=10)
             end = today + timedelta(days=10)
             return models.Inspection.objects.filter(
-                                next_date__range=(start, end))
+                next_date__range=(start, end))
 
 
 class InspectionDetailView(LoginRequiredMixin, DetailView):

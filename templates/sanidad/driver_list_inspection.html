@@ -6,121 +6,60 @@
 {% include 'sidebar/sanidad.html' %}
 {% endblock sidebar %}
 {% block pageheader %}
-<a href="{% url 'sanidad:home' %}">Sanidad</a> / Inspecciones Conductores
-{% endblock pageheader %}
+<a href="{% url 'sanidad:home' %}">Sanidad</a> / Lista De Conductores Inspeccionados{% endblock pageheader %}
 
 {% block context %}
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        {% for object in object_list %}
         <div class="card">
-            <div class="card-header">
-                
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="bg-light">
-                            <tr>
-                                <th>#</th>
-                                <th>Documento</th>
-                                <th>Nombre y Apellido</th>
-                                <th>Telefono</th>
-                                <th>Activo</th>
-                                <th>Opciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for object in object_list %}
-                            <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td>{{ object.get_document }}</td>
-                                <td>{{ object.get_full_name }}</td>
-                                <td>{{ object.tlf }}</td>
-                                <td>
-                                    {% if object.is_active %}
-                                    <span class="badge badge-success">Activo</span>
-                                    {% else %}
-                                    <span class="badge badge-danger">Inactivo</span>
-                                    {% endif %}
-                                </td>
-
-                                <td>
-                                    <a href="{% url 'sanidad:driver_detail' object.pk %}"
-                                        class="btn btn-rounded btn-secondary">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            {% empty %}
-
-                            <tr>
-                                <td></td>
-                                <td>No Hay</td>
-                                <td>Registros</td>
-                                <td>En Esto</td>
-                                <td>Momento</td>
-                                <td>:'c</td>
-                            </tr>
-
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="section-block">
-    <h3 class="section-title">Listado de Conductores Inspeccionados</h3>
-</div>
-<div class="card">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="media influencer-profile-data d-flex align-items-center p-2">
-                    <div class="mr-4">
-                    </div>
-                    <div class="media-body ">
-                        <div class="influencer-profile-data">
-                            <h3 class="m-b-10">name fo companies</h3>
-                            <p>
-                                <span class="m-r-20 d-inline-block">Draft Due Date
-                                    <span class="m-l-10 text-primary">24 Jan 2018</span>
-                                </span>
-                                <span class="m-r-20 d-inline-block"> Publish Date
-                                    <span class="m-l-10 text-secondary">30 Feb 2018</span>
-                                </span>
-                                <span class="m-r-20 d-inline-block">Ends <span class="m-l-10  text-info">30 May,
-                                        2018</span>
-                                </span>
-                            </p>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="media influencer-profile-data d-flex align-items-center p-2">
+                            <div class="mr-4">
+                                <h1 style="border: 3px solid #5969ff !important;border-radius: 100%; color: #2b3590 !important;     padding: 0px 15px;">{{ forloop.counter }}</h1>
+                            </div>
+                            <div class="media-body ">
+                                <div class="influencer-profile-data">
+                                    <h3 class="m-b-10">{{ object.driver.get_full_name }}</h3>
+                                    <p>
+                                        <span class="m-r-20 d-inline-block"><b>Documento</b>
+                                            <span class="m-l-10 text-primary">{{ object.driver.get_document }}</span>
+                                        </span>
+                                        <span class="m-r-20 d-inline-block"> <b>Telefono</b>
+                                            <span class="m-l-10 text-secondary">{% if object.driver.tlf %}{{ object.driver.tlf }}{% else %} No Posee {% endif %}</span>
+                                        </span>
+                                        <span class="m-r-20 d-inline-block"><b>Activo</b> <span class="m-l-10  text-info">{% if object.driver.is_active %} Si {% else %} No {% endif %}</span>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="border-top card-footer p-0">
+                <div class="campaign-metrics d-xl-inline-block">
+                    <h4 class="mb-0">{{ object.inspection.date }}</h4>
+                    <p>Fecha de Inspección</p>
+                </div>
+                <div class="campaign-metrics d-xl-inline-block">
+                    <h4 class="mb-0">{{ object.inspection.next_date }}</h4>
+                    <p>Proxima Inspección</p>
+                </div>
+                <div class="campaign-metrics d-xl-inline-block">
+                    <h4 class="mb-0">{{ object.inspection.notes }}</h4>
+                    <p>Observación</p>
+                </div>
+            </div>
         </div>
+        {% empty %}
+        <div class="alert-warning text-center">
+            <h1>No Hay Registro</h1>
+        </div>
+        {% endfor %}
     </div>
-    <div class="border-top card-footer p-0">
-        <div class="campaign-metrics d-xl-inline-block">
-            <h4 class="mb-0">45k</h4>
-            <p>Total Reach</p>
-        </div>
-        <div class="campaign-metrics d-xl-inline-block">
-            <h4 class="mb-0">29k</h4>
-            <p>Total Views</p>
-        </div>
-        <div class="campaign-metrics d-xl-inline-block">
-            <h4 class="mb-0">5k</h4>
-            <p>Total Click</p>
-        </div>
-        <div class="campaign-metrics d-xl-inline-block">
-            <h4 class="mb-0">4k</h4>
-            <p>Engagement</p>
-        </div>
-        <div class="campaign-metrics d-xl-inline-block">
-            <h4 class="mb-0">2k</h4>
-            <p>Conversion</p>
-        </div>
-    </div>
+    {% include 'partial/paginator.html' %}
 </div>
 {% endblock %}
