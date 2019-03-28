@@ -496,8 +496,13 @@ class InspectionDriversCompanyListView(LoginRequiredMixin, ListView):
             today = datetime.now()
             start = today - timedelta(days=10)
             end = today + timedelta(days=10)
-            return models.Inspection.objects.filter(
+            inspection = models.Inspection.objects.filter(
                 next_date__range=(start, end))
+            inspection_list = []
+            for i in inspection:
+                if i.company_account.is_inspection:
+                    inspection_list.append(i)
+            return inspection_list
 
 
 class InspectionDetailView(LoginRequiredMixin, DetailView):

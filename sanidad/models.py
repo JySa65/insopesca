@@ -169,6 +169,7 @@ class Inspection(models.Model):
         'Fecha de la siguiente Inspección'))
     notes = models.TextField(null=True, blank=True,
                              verbose_name=_('Observaciones'))
+    pass_inspection = models.BooleanField(default=False) 
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
