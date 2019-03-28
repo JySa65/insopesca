@@ -62,7 +62,7 @@ class HomeTemplateView(LoginRequiredMixin, TemplateView):
         context['company'] = models.Company.objects.filter(is_inspection=True)
         context['driver'] = models.Driver.objects.filter(is_inspection=True)
         inspection = models.Inspection.objects.filter(
-            next_date__range=(start, end))
+            next_date__range=(start, end), pass_inspection=False)
         inspection_list = []
         for i in inspection:
             if i.company_account.is_inspection:
@@ -453,56 +453,59 @@ class InspectionListView(LoginRequiredMixin, ListView):
 
 class InspectionDriversCompanyListView(LoginRequiredMixin, ListView):
 
-    def get_data_list(self):
-        return ['driver', 'company', 'end']
-
     def dispatch(self, request, *args, **kwargs):
-        data = self.kwargs.get('type')
-        if data not in self.get_data_list():
-            raise Http404
+        if (self.kwargs.get('type')
+                not in ['driver', 'company', 'end']):
+                    raise Http404
         return super(
             InspectionDriversCompanyListView, self).dispatch(
                 request, *args, **kwargs)
 
     def get_template_names(self):
-        template_type = self.kwargs.get('type')
-        return [f'sanidad/{template_type}_list_inspection.html']
+        return f'sanidad/{self.kwargs.get("type")}_list_inspection.html'
 
     def get_queryset(self):
-        data = self.kwargs.get('type')
-        if data == "driver":
-            driver_list = []
-            drivers = models.Driver.objects.filter(is_inspection=True)
-            for driver in drivers:
-                inspection = models.Inspection.objects.filter(
-                    company_account_id=driver.pk).first()
-                driver_list.append(dict(
-                    driver=driver,
-                    inspection=inspection
-                ))
-            return driver_list
-        if data == 'company':
-            company_list = []
-            companies = models.Company.objects.filter(is_inspection=True)
-            for company in companies:
-                inspection = models.Inspection.objects.filter(
-                    company_account_id=company.pk).first()
-                company_list.append(dict(
-                    driver=company,
-                    inspection=inspection
-                ))
-            return company_list
-        if data == 'end':
-            today = datetime.now()
-            start = today - timedelta(days=10)
-            end = today + timedelta(days=10)
+        return dict(
+            driver=self.get_drivers,
+            company=self.get_companies,
+            end=self.get_end
+        )[self.kwargs.get('type')]()
+
+    def get_drivers(self):
+        driver_list = []
+        drivers = models.Driver.objects.filter(is_inspection=True)
+        for driver in drivers:
             inspection = models.Inspection.objects.filter(
-                next_date__range=(start, end))
-            inspection_list = []
-            for i in inspection:
-                if i.company_account.is_inspection:
-                    inspection_list.append(i)
-            return inspection_list
+                company_account_id=driver.pk).first()
+            driver_list.append(dict(
+                driver=driver,
+                inspection=inspection
+            ))
+        return driver_list
+
+    def get_companies(self):
+        company_list = []
+        companies = models.Company.objects.filter(is_inspection=True)
+        for company in companies:
+            inspection = models.Inspection.objects.filter(
+                company_account_id=company.pk).first()
+            company_list.append(dict(
+                driver=company,
+                inspection=inspection
+            ))
+        return company_list
+
+    def get_end(self):
+        today = datetime.now()
+        start = today - timedelta(days=10)
+        end = today + timedelta(days=10)
+        inspection = models.Inspection.objects.filter(
+            next_date__range=(start, end), pass_inspection=False)
+        inspection_list = []
+        for i in inspection:
+            if i.company_account.is_inspection:
+                inspection_list.append(i)
+        return inspection_list
 
 
 class InspectionDetailView(LoginRequiredMixin, DetailView):
