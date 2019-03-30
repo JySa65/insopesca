@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'authentication.apps.AuthenticationConfig',
     'sanidad.apps.SanidadConfig',
+    'reports.apps.ReportsConfig',
     'core.apps.CoreConfig',
     'django.contrib.admin',
     'django.contrib.auth',

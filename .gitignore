@@ -114,3 +114,4 @@ media
 .vscode
 node_modules
 /static/main.js
+*.pdf

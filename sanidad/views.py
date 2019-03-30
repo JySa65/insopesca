@@ -453,6 +453,12 @@ class InspectionListView(LoginRequiredMixin, ListView):
 
 class InspectionDriversCompanyListView(LoginRequiredMixin, ListView):
 
+    def get_context_data(self, **kwargs):
+        context = super(
+            InspectionDriversCompanyListView, self).get_context_data(**kwargs)
+        context['type'] = self.kwargs.get("type")
+        return context
+
     def dispatch(self, request, *args, **kwargs):
         if (self.kwargs.get('type')
                 not in ['driver', 'company', 'end']):
@@ -501,7 +507,7 @@ class InspectionDriversCompanyListView(LoginRequiredMixin, ListView):
 
     def get_drivers(self, date1, date2):
         return self.get_data_query(
-            models.Driver, 
+            models.Driver,
             date1, date2)
 
     def get_companies(self, date1, date2):

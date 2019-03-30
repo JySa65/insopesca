@@ -1,4 +1,4 @@
-<div class="container" style="padding-left: 10%; width: 100%; padding-right: 10%;">
+<div class="container" style="padding-left: 8%; width: 100%; padding-right: 8%;">
     <div class="card">
         <div class="row">
             <div class="col-sm-12">
@@ -9,7 +9,7 @@
                     <form action="" method="get" class="form-inline">
                         <div class="form-group mx-sm-3 mb-3 text">
                             <label for="id_date1" class="pr-2"><b>Desde:</b></label>
-                            <input type="date" class="form-control" name="date1" id="id_date1" required>
+                            <input type="date" class="form-control" name="date1" id="id_date1" required value="{{ request.GET.date1 }}">
                         </div>
                         <div class="form-group mx-sm-3 mb-3">
                             <label for="id_date2" class="pr-2"><b>Hasta:</b></label>
@@ -18,6 +18,11 @@
                         <div class="form-group mx-sm-3 mb-3 text-center">
                             <button type="search" class="btn btn-success btn-block">Buscar</button>
                         </div>
+                        {% if object_list %}
+                        <div class="form-group mx-sm-3 mb-3 text-center">
+                            <a href="{% url 'reports:sanidad_inspection_list' %}?date1={{ request.GET.date1 }}&date2={{ request.GET.date2 }}&type={{ type }}" class="btn btn-info btn-block" target="_blank">Generar Resporte</a>
+                        </div>
+                        {% endif %}
                     </form>
                 </div>
             </div>

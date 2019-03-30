@@ -6,10 +6,4 @@ psycopg2-binary==2.7.5
 django-extensions==2.1.0
 django-widget-tweaks==1.4.3
 django-simple-history==2.7.0
-
-
-# inspecciones diaria
-#    ==        semana 
-#    ==        mes
-#    ==         año
-#    ==        feria
+fpdf==1.7.2
