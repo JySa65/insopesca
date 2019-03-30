@@ -1,6 +1,6 @@
 {% extends 'sanidad/base.html' %}
 {% block title %} EMPRESAS {% endblock %}
-
+{% load staticfiles %}
 
 {% block sidebar %}
 {% include 'sidebar/sanidad.html' %}
@@ -31,6 +31,16 @@
                                             <span class="m-l-10 text-secondary">{% if object.driver.tlf %}{{ object.driver.tlf }}{% else %} No Posee {% endif %}</span>
                                         </span>
                                         <span class="m-r-20 d-inline-block"><b>Activo</b> <span class="m-l-10  text-info">{% if object.driver.is_active %} Si {% else %} No {% endif %}</span>
+                                        </span>
+                                        <span class="m-r-20 d-inline-block" style="margin-left: 6%;">
+                                            <b>Resultado</b> 
+                                            <span
+                                                class="m-l-10  text-info">
+                                                <img src="{% if object.inspection.result == 'is_verygood' %}{% static 'assets/images/verygood.jpg' %}{% elif object.inspection.result == 'is_good' %}{% static 'assets/images/good.jpg' %}{% else %}{% static 'assets/images/bad.jpg' %}{% endif %}" 
+                                                alt="User Avatar" 
+                                                class="user-avatar-lg" 
+                                                title="{% if object.inspection.result == 'is_verygood' %}Muy Bueno {% elif object.inspection.result == 'is_good' %}Bueno{% else %}Malo{% endif %}">
+                                            </span>
                                         </span>
                                     </p>
                                 </div>

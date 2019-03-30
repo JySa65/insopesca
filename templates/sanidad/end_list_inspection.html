@@ -1,0 +1,81 @@
+{% extends 'sanidad/base.html' %}
+{% block title %} EMPRESAS {% endblock %}
+{% load staticfiles %}
+
+{% block sidebar %}
+{% include 'sidebar/sanidad.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+<a href="{% url 'sanidad:home' %}">Sanidad</a> / Lista De Inspecciones A Vencer{% endblock pageheader %}
+
+{% block context %}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        {% for object in object_list %}
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="media influencer-profile-data d-flex align-items-center p-2">
+                            <div class="mr-4">
+                                <h1
+                                    style="border: 3px solid #5969ff !important;border-radius: 100%; color: #2b3590 !important;     padding: 0px 15px;">
+                                    {{ forloop.counter }}</h1>
+                            </div>
+                            <div class="media-body ">
+                                <div class="influencer-profile-data">
+                                    <h3 class="m-b-10">{{ object.company_account.get_full_name }}</h3>
+                                    <p>
+                                        <span class="m-r-20 d-inline-block"><b>Documento</b>
+                                            <span class="m-l-10 text-primary">{{ object.company_account.get_document }}</span>
+                                        </span>
+                                        <span class="m-r-20 d-inline-block"> <b>Telefono</b>
+                                            <span
+                                                class="m-l-10 text-secondary">{% if object.company_account.tlf %}{{ object.company_account.tlf }}{% else %}
+                                                No Posee {% endif %}</span>
+                                        </span>
+                                        <span class="m-r-20 d-inline-block"><b>Activo</b> <span
+                                                class="m-l-10  text-info">{% if object.company_account.is_active %} Si {% else %}
+                                                No {% endif %}</span>
+                                        </span>
+                                        <span class="m-r-20 d-inline-block" style="margin-left: 6%;">
+                                            <b>Resultado</b> 
+                                            <span
+                                                class="m-l-10  text-info">
+                                                <img src="{% if object.result == 'is_verygood' %}{% static 'assets/images/verygood.jpg' %}{% elif object.result == 'is_good' %}{% static 'assets/images/good.jpg' %}{% else %}{% static 'assets/images/bad.jpg' %}{% endif %}" 
+                                                alt="User Avatar" 
+                                                class="user-avatar-lg" 
+                                                title="{% if object.result == 'is_verygood' %}Muy Bueno {% elif object.result == 'is_good' %}Bueno{% else %}Malo{% endif %}">
+                                            </span>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-top card-footer p-0">
+                <div class="campaign-metrics d-xl-inline-block">
+                    <h4 class="mb-0">{{ object.date }}</h4>
+                    <p>Fecha de Inspección</p>
+                </div>
+                <div class="campaign-metrics d-xl-inline-block">
+                    <h4 class="mb-0">{{ object.next_date }}</h4>
+                    <p>Proxima Inspección</p>
+                </div>
+                <div class="campaign-metrics d-xl-inline-block">
+                    <h4 class="mb-0">{{ object.notes }}</h4>
+                    <p>Observación</p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="alert-warning text-center">
+            <h1>No Hay Registro</h1>
+        </div>
+        {% endfor %}
+    </div>
+    {% include 'partial/paginator.html' %}
+</div>
+{% endblock %}

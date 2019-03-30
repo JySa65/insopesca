@@ -1,4 +1,5 @@
 {% extends 'sanidad/base.html' %}
+{% load staticfiles %}
 {% block title %} EMPRESAS {% endblock %}
 
 
@@ -23,22 +24,35 @@
                                     {{ forloop.counter }}</h1>
                             </div>
                             <div class="media-body ">
-                                <div class="influencer-profile-data">
-                                    <h3 class="m-b-10">{{ object.driver.get_full_name }}</h3>
-                                    <p>
-                                        <span class="m-r-20 d-inline-block"><b>Documento</b>
-                                            <span class="m-l-10 text-primary">{{ object.driver.get_document }}</span>
-                                        </span>
-                                        <span class="m-r-20 d-inline-block"> <b>Telefono</b>
-                                            <span
-                                                class="m-l-10 text-secondary">{% if object.driver.tlf %}{{ object.driver.tlf }}{% else %}
-                                                No Posee {% endif %}</span>
-                                        </span>
-                                        <span class="m-r-20 d-inline-block"><b>Activo</b> <span
-                                                class="m-l-10  text-info">{% if object.driver.is_active %} Si {% else %}
-                                                No {% endif %}</span>
-                                        </span>
-                                    </p>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="influencer-profile-data">
+                                            <h3 class="m-b-10">{{ object.driver.get_full_name }}</h3>
+                                            <p>
+                                                <span class="m-r-20 d-inline-block"><b>Documento</b>
+                                                    <span class="m-l-10 text-primary">{{ object.driver.get_document }}</span>
+                                                </span>
+                                                <span class="m-r-20 d-inline-block"> <b>Telefono</b>
+                                                    <span class="m-l-10 text-secondary">{% if object.driver.tlf %}{{ object.driver.tlf }}{% else %}
+                                                        No Posee {% endif %}</span>
+                                                </span>
+                                                <span class="m-r-20 d-inline-block"><b>Activo</b> <span
+                                                        class="m-l-10  text-info">{% if object.driver.is_active %} Si {% else %}
+                                                        No {% endif %}</span>
+                                                </span>
+                                                <span class="m-r-20 d-inline-block" style="margin-left: 6%;">
+                                                    <b>Resultado</b> 
+                                                    <span
+                                                        class="m-l-10  text-info">
+                                                        <img src="{% if object.inspection.result == 'is_verygood' %}{% static 'assets/images/verygood.jpg' %}{% elif object.inspection.result == 'is_good' %}{% static 'assets/images/good.jpg' %}{% else %}{% static 'assets/images/bad.jpg' %}{% endif %}" 
+                                                        alt="User Avatar" 
+                                                        class="user-avatar-lg" 
+                                                        title="{% if object.inspection.result == 'is_verygood' %}Muy Bueno {% elif object.inspection.result == 'is_good' %}Bueno{% else %}Malo{% endif %}">
+                                                    </span>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
