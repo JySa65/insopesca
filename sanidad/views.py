@@ -456,7 +456,7 @@ class InspectionDriversCompanyListView(LoginRequiredMixin, ListView):
     def dispatch(self, request, *args, **kwargs):
         if (self.kwargs.get('type')
                 not in ['driver', 'company', 'end']):
-                    raise Http404
+            raise Http404
         return super(
             InspectionDriversCompanyListView, self).dispatch(
                 request, *args, **kwargs)
@@ -464,38 +464,52 @@ class InspectionDriversCompanyListView(LoginRequiredMixin, ListView):
     def get_template_names(self):
         return f'sanidad/{self.kwargs.get("type")}_list_inspection.html'
 
+    def valid_date(self, date1, date2):
+        if date1 == "" and date2 == "":
+            return False, None, None
+        if date1 > date2:
+            return False, None, None
+        return True, date1, date2
+
     def get_queryset(self):
+        date1 = self.request.GET.get('date1', "")
+        date2 = self.request.GET.get('date2', "")
         return dict(
             driver=self.get_drivers,
             company=self.get_companies,
             end=self.get_end
-        )[self.kwargs.get('type')]()
+        )[self.kwargs.get('type')](date1, date2)
 
-    def get_drivers(self):
-        driver_list = []
-        drivers = models.Driver.objects.filter(is_inspection=True)
-        for driver in drivers:
-            inspection = models.Inspection.objects.filter(
-                company_account_id=driver.pk).first()
-            driver_list.append(dict(
-                driver=driver,
-                inspection=inspection
-            ))
-        return driver_list
+    def get_data_query(self, model, date1, date2):
+        data_list = []
+        status, date1, date2 = self.valid_date(date1, date2)
+        datas = model.objects.filter(is_inspection=True)
+        for data in datas:
+            if status:
+                inspection = models.Inspection.objects.filter(
+                    company_account_id=data.pk,
+                    date__range=(date1, date2)).first()
+            else:
+                inspection = models.Inspection.objects.filter(
+                    company_account_id=data.pk).first()
+            if inspection:
+                data_list.append(dict(
+                    driver=data,
+                    inspection=inspection
+                ))
+        return data_list
 
-    def get_companies(self):
-        company_list = []
-        companies = models.Company.objects.filter(is_inspection=True)
-        for company in companies:
-            inspection = models.Inspection.objects.filter(
-                company_account_id=company.pk).first()
-            company_list.append(dict(
-                driver=company,
-                inspection=inspection
-            ))
-        return company_list
+    def get_drivers(self, date1, date2):
+        return self.get_data_query(
+            models.Driver, 
+            date1, date2)
 
-    def get_end(self):
+    def get_companies(self, date1, date2):
+        return self.get_data_query(
+            models.Company,
+            date1, date2)
+
+    def get_end(self, date1, date2):
         today = datetime.now()
         start = today - timedelta(days=10)
         end = today + timedelta(days=10)

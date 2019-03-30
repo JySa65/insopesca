@@ -12,6 +12,7 @@
 {% block context %}
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        {% include 'partial/search_date.html' %}
         {% for object in object_list %}
         <div class="card">
             <div class="card-body">
