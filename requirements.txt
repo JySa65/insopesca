@@ -7,3 +7,7 @@ django-extensions==2.1.0
 django-widget-tweaks==1.4.3
 django-simple-history==2.7.0
 fpdf==1.7.2
+
+
+
+#corregir al añadir un usuario existe en la compañia mme da error cuando existe uni
