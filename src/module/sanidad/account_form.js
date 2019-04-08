@@ -2,6 +2,7 @@ import axios from 'axios'
 import swal from 'sweetalert2';
 import deleteSwalUser from '../../utils/delete_with_swal.js'
 import getCookie from '../../utils/get_cookie.js'
+import validInput from "../../utils/validInput.js";
 
 const date = new Date().getFullYear();
 const endDate = new Date(date - 18, 1,1)
@@ -44,4 +45,16 @@ if (btn_toggle_account) {
                 }
             })
     })
+}
+
+const formAccount = document.querySelector("#form_account");
+if(formAccount) {
+    document.querySelector("#id_document").addEventListener(
+        "keypress", (event) => validInput('n', 8, event))
+    document.querySelector("#id_name").addEventListener(
+        "keypress", (event) => validInput('l', 50, event))
+    document.querySelector("#id_last_name").addEventListener(
+        "keypress", (event) => validInput('l', 50, event))
+    document.querySelector("#id_tlf").addEventListener(
+        "keypress", (event) => validInput('n', 11, event))
 }
