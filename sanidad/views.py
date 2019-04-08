@@ -245,7 +245,7 @@ class AccoutCompanyCreateView(LoginRequiredMixin, CreateView):
             if not user_exists:
                 data = dict(
                     company=company,
-                    account=user
+                    account=user.first()
                 )
                 models.CompanyHasAccount.objects.create(**data)
                 return HttpResponseRedirect(

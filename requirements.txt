@@ -11,3 +11,9 @@ fpdf==1.7.2
 
 
 #corregir al añadir un usuario existe en la compañia mme da error cuando existe uni
+
+
+# x = time
+# y = number of data 
+# de como fue las inspecciones mensuales
+# 
