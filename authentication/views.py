@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 # generic View
 from django.views.generic import CreateView, ListView, UpdateView, \
     DeleteView, DetailView, FormView, TemplateView, View
@@ -149,8 +151,8 @@ class SecurityQuestionCreateView(LoginRequiredMixin, FormView):
             user.save()
             if self.request.user.is_superuser or self.request.user.role == 'is_coordinator':
                 return HttpResponseRedirect(
-                        Selects().level_user_url()['is_admin_or_coordinator'])
-            else:                    
+                    Selects().level_user_url()['is_admin_or_coordinator'])
+            else:
                 return HttpResponseRedirect(Selects().level_user_url()[user.level])
         return render(self.request, self.template_name, {'form': form})
 
@@ -171,7 +173,7 @@ class LoginFormView(FormView):
             else:
                 if user.is_superuser or user.role == 'is_coordinator':
                     return HttpResponseRedirect(Selects().level_user_url()['is_admin_or_coordinator'])
-                else:                    
+                else:
                     return HttpResponseRedirect(Selects().level_user_url()[user.level])
         else:
             msg = "Usuario o Contraseña Incorrecta"
@@ -199,6 +201,7 @@ class ChangePassword(LoginRequiredMixin, FormView):
         return super(ChangePassword, self).form_valid(form)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class RestoreDataUser(LoginRequiredMixin, View):
     model = models.User
 
@@ -221,6 +224,7 @@ class RestoreDataUser(LoginRequiredMixin, View):
             return JsonResponse(data, safe=False)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class ForgotPassword(FormView):
     model = models.User
     template_name = "authentication/forgot_password.html"
