@@ -2,7 +2,8 @@ from django.urls import path
 from acuicultura.views import AcuiculturaHome, ProductionUnitCreateView,\
     ProductionUnitUpdate, ProductionuUnitDetail, ProductionUnitDelete, ProductionUnitList,\
     SpeciesCreateView, SpeciesList, SpeciesDetail, SpeciesUpdate, SpeciesDelete, TracingCreate, RepreUnitCreate,\
-    TracingDetail, TracingUpdate,WellDetail,LagoonDetail
+    TracingDetail, TracingUpdate,WellDetail,LagoonDetail,Tracingdelete,Representative_unit_production_delete, Representative_unit_production_detail, \
+         RepresentativeUnitProductionUpdate
 
 
 # ,Production_unit_CreateView,Production_unit_Update,Production_unit_List, \
@@ -38,13 +39,20 @@ urlpatterns = [
          TracingCreate.as_view(), name="create_tracing"),
     path('tracing/detail/<pk>/', TracingDetail.as_view(), name="detail_tracing"),
     path('tracing/update/<pk>/', TracingUpdate.as_view(), name="update_tracing"),
-    # path('delete/<pk>/', Tracingdelete.as_view(), name="delete_tracing"),
+    path('tracing/delete/<pk>/', Tracingdelete.as_view(), name="delete_tracing"),
     # path('list/', TracingList.as_view(), name="list_tracing"),
     path('well/detail/<pk>/', WellDetail.as_view(), name="well_detail"),
     path('lagoon/detail/<pk>/', LagoonDetail.as_view(), name="lagoon_detail"),
 
-
     path('legal/representative/<pk>/',
          RepreUnitCreate.as_view(), name="repre_create"),
+         
+    path('legal/representative/detail/<pk>/',
+     Representative_unit_production_detail.as_view(), name="repre_detail"),
+
+    path('legal/representative/delete/<pk>/',
+     Representative_unit_production_delete.as_view(), name="repre_delete"),
+    path('legal/representative/update/<pk>/',
+     RepresentativeUnitProductionUpdate.as_view(), name="repre_update"),
 
 ]

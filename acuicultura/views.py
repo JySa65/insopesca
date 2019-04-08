@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View, TemplateView, DetailView
 from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing
-from acuicultura.forms import UnitCreateForm, CardinaPointForm, RepreUnitForm, EspecieForm, TracingForm, RepresentativeForm
+from acuicultura.forms import UnitCreateForm, CardinaPointForm, RepreUnitForm, EspecieForm, TracingCreateForm,TracingUpdateForm, RepresentativeForm
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
@@ -189,7 +189,7 @@ class SpeciesDelete(LoginRequiredMixin,DeleteView):
 # # Views Tracing = Create,detail,update,delete
 class TracingCreate(LoginRequiredMixin,CreateView):
     model = Tracing
-    form_class = TracingForm
+    form_class = TracingCreateForm
     tempalte_name = "acuicultura/tracing_form.html"
     def form_valid(self, form):
         _object = form.save(commit=False)
@@ -315,7 +315,7 @@ class TracingCreate(LoginRequiredMixin,CreateView):
 
 class TracingUpdate(LoginRequiredMixin,UpdateView):
     model = Tracing
-    form_class = TracingForm
+    form_class = TracingUpdateForm
 
     tempalte_name = "acuicultura/tracing_form.html"
 
@@ -326,7 +326,6 @@ class TracingUpdate(LoginRequiredMixin,UpdateView):
             tracing=self.kwargs['pk']).order_by('-id')
         lagoon_data = LagoonTracing.objects.filter(
             tracing=self.kwargs['pk']).order_by('-id')
-        print(lagoon_data, "jajaja")
         if len(well_data) == 0:
             context['new_well_diameter'] = 0
             context['new_well_deepth'] = 0
@@ -361,7 +360,6 @@ class TracingUpdate(LoginRequiredMixin,UpdateView):
         new_wells = request.POST.get("new_number_well", '')
         new_lagoon = request.POST.get("new_number_lagoon", '')
         unit = ProductionUnit.objects.filter(pk=self.kwargs['pk']).first()
-
         form = self.form_class(request.POST)
 
         c_new_well_deepth = []
@@ -393,11 +391,15 @@ class TracingUpdate(LoginRequiredMixin,UpdateView):
 
         if form.is_valid():
             tracing = self.model.objects.get(pk=self.kwargs['pk'])
-
             tracing_form = self.form_class(request.POST, instance=tracing)
+            lagoons = LagoonTracing.objects.filter(tracing=self.kwargs['pk'])               
 
             if tracing_form.is_valid():
                 tracing_form.save()
+                cont = 0
+                for j in lagoons:
+                    a = Lagoon.objects.filter(pk=j.lagoon.pk).update(lagoon_diameter=c_new_lagoon_diameter[cont],lagoon_deepth=c_new_lagoon_deepth[cont])
+                    cont += 1
                 return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(tracing.producion_unit.pk,)))
 
             else:
@@ -429,9 +431,11 @@ class LagoonDetail(LoginRequiredMixin,DetailView):
     template_name = "acuicultura/detail_lagoon.html"
 
 
-# class Tracingdelete(TemplateView):
-#     model = Tracing
-#     tempalte_name = "acuicultura/tracing_form.html"
+class Tracingdelete(DeleteView):
+    model = Tracing
+    success_url = reverse_lazy('acuicultura:home')
+
+    
 
 # # Views Representative Unit
 
@@ -459,9 +463,27 @@ class RepreUnitCreate(LoginRequiredMixin,CreateView):
             return HttpResponseRedirect(reverse("acuicultura:detail_unit", args=(unit.pk,)))
         else:
             return render(self.request, self.template_name, {'form': form})
+class Representative_unit_production_detail(DetailView):
+    model = RepreUnitProductive
+    template_name = "acuicultura/representative_detail.html"
 
+class Representative_unit_production_delete(DeleteView):
+    model = RepreUnitProductive
 
-class RepresentativeUnitProduction(LoginRequiredMixin,UpdateView):
+    def post(self,request,*args,**kwargs):
+        repre = self.model.objects.get(pk=self.kwargs['pk'])
+        repre.is_active = False
+
+        repre.save()
+        return redirect("acuicultura:home")
+
+        print ("eliminando representante")
+    
+# class Representative_unit_production_list(TemplateView):
+#     model = RepreUnitProductive
+#     template_name = "acuicultura/representative_form.html"
+
+class RepresentativeUnitProductionUpdate(LoginRequiredMixin,UpdateView):
     model = RepreUnitProductive
     second_model = RepreUnitProductive
     form_class = RepresentativeForm
@@ -469,7 +491,7 @@ class RepresentativeUnitProduction(LoginRequiredMixin,UpdateView):
 
     
     def get_context_data(self, **kwargs):
-        context = super(RepresentativeUnitProduction, self).get_context_data(**kwargs)
+        context = super(RepresentativeUnitProductionUpdate, self).get_context_data(**kwargs)
         repre = self.model.objects.filter(production_unit=self.kwargs['pk']).first()
         if 'form' not in context:
             context['form'] = self.form_class(instance=repre)
@@ -488,14 +510,3 @@ class RepresentativeUnitProduction(LoginRequiredMixin,UpdateView):
             return render(self.request, self.template_name, {'form': form})
 
 
-class Representative_unit_production_detail(DetailView):
-    model = RepreUnitProductive
-    template_name = "acuicultura/representative_form.html"
-
-# class Representative_unit_production_delete(TemplateView):
-#     model = RepreUnitProductive
-#     template_name = "acuicultura/representative_form.html"
-
-# class Representative_unit_production_list(TemplateView):
-#     model = RepreUnitProductive
-#     template_name = "acuicultura/representative_form.html"

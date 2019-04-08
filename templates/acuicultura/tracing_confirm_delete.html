@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %} Eliminar {{ object.name|upper }} {% endblock %}
+{% block sidebar %}
+{% include 'sidebar/acuicultura.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+Acuicultura / Seguimiento / Eliminar / {{object.pk}}
+{% endblock pageheader %}
+
+{% block context %}
+<div class="row">
+	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				<a href="javascript:window.history.back()" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+			</div>
+			<div class="card-body ">
+				<form action="" method="post">
+					{% csrf_token %}
+					<h1>Esta Seguro de Eliminar el Seguimiento</h1>
+						
+				
+					<div class="col-sm-12 mb-3 mt-3 text-center">
+						<button type="submit" class="btn btn-rounded btn-primary">Aceptar</button>
+					</div>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -4,7 +4,7 @@
 {% include 'sidebar/acuicultura.html' %}
 {% endblock sidebar %}
 {% block pageheader %}
-{{ object.name }}
+Acuicultura / Unida Productora /{{ object.name }}
 {% endblock pageheader %}
 
 {% block context %}
@@ -68,7 +68,7 @@
 						</label>
 						<span class="h5">{{ object.state }}</span>
 					</div>
-					<div class="col-sm-10 mb-10">
+					<div class="col-sm-12 mb-3">
 							<label class="h5">
 								<b>Dirección: </b>
 							</label>
@@ -77,7 +77,7 @@
 					<div class="card-body">
 						<div class="row text-center">
 							<div class="col-sm-7 mb-7">
-								<a href="{% if not profile %} {% url 'acuicultura:update_unit' object.pk %} {% else %} {% url 'authentication:update_profile' %} {% endif %} " class="btn btn-rounded btn-info">
+								<a href="{% url 'acuicultura:update_unit' object.pk %} " class="btn btn-rounded btn-info">
 									<i class="far fa-edit"></i>
 									Actualizar
 								</a>
@@ -143,7 +143,7 @@
 						{% if representative.count > 0 %}
 
 						{% else %}
-							<a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-rounded btn-primary">Nueva Unidades Productoras <i class="fas fa-user-plus"></i></a>
+							<a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-rounded btn-primary">Añadir Representate <i class="fas fa-user-plus"></i></a>
 						{% endif %}
 
 					</div>
@@ -162,19 +162,31 @@
 									</tr>
 								</thead>
 								<tbody>
-									
 									{% for repre in representative %}
-									<tr>
-										<td>{{ forloop.counter }}</td>
-										<td>{{repre.type_document_repre}}-{{ repre.document_repre }}</td>
-										<td>{{ repre.name_repre }}</td>
-										<td>{{repre.last_name_repre}}</td>
-		
-										<td>
-											<a href="{% url 'acuicultura:detail_unit' object.pk %}" class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
-											<a href="{% url 'authentication:delete' object.pk %}" class="btn btn-rounded btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
-										</td>
-									</tr>
+										{% if repre.is_active == True %}
+										
+										<tr>
+											<td>{{ forloop.counter }}</td>
+											<td>{{repre.type_document_repre}}-{{ repre.document_repre }}</td>
+											<td>{{ repre.name_repre }}</td>
+											<td>{{repre.last_name_repre}}</td>
+			
+											<td>
+												<a href="{% url 'acuicultura:repre_detail' repre.pk %}" class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
+												<a href="{% url 'acuicultura:repre_delete' repre.pk %}" class="btn btn-rounded btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+											</td>
+										</tr>
+										{%else %}
+											<tr>
+												<td colspan="5" class="text-center">
+													<h1>No tiene Representante Asignado a la Empresa</h1>
+													<a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-primary btn-rounded ">
+													Añadir Representante
+													<i class="fas fa-user-plus"></i>
+													</a>
+												</td>
+											</tr>
+										{% endif %}
 									{% empty %}
 		
 									<tr>
@@ -234,7 +246,7 @@
 		
 										<td>
 											<a href="{% url 'acuicultura:detail_tracing' tracings.pk %}" class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
-											<a href="{% url 'authentication:delete' object.pk %}" class="btn btn-rounded btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+											<a href="{% url 'acuicultura:delete_tracing' tracings.pk %}" class="btn btn-rounded btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
 										</td>
 									</tr>
 									{% empty %}
