@@ -30,15 +30,27 @@ const multilagoon = document.querySelector("#multinew_lagoon")
 
 if (new_wells){
     const html = (name, number) => `
-            <div id="multinew_wells">
-                Diametro del Pozo Nro°`+number+`
-            <input class="form-control" name=new_wells_diameter_${name} id=new_wells_diameter_${number}>
+    <h5>Pozo Nro° ${number}</h5>
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label for="new_well_diameter${number}" 
+                    class="col-form-label">Diametro del Pozo Nro° ${number}</label>
+                    <input class="form-control" name=new_wells_diameter_${name} id=new_wells_diameter_${number}>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                    <label for="new_well_deepth${number}" 
+                    class="col-form-label">Profundidad del Pozo Nro° ${number}</label>
+                    <input class="form-control" name=new_wells_deepth_${name} id=new_wells_deepth_${number}>
+                </div>
+            </div>
 
-            Profundidad del Pozo Nro°`+number+`
-            <input class="form-control" name=new_wells_deepth_${name} id=new_wells_deepth_${number}>
+        </div>
 
+    `;
 
-            <div>`
 
     new_wells.onkeyup = (e) => {
         const value = e.target.value

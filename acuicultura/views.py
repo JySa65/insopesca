@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View, TemplateView, DetailView
-from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing
+from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, Lagoon_has_especies
 from acuicultura.forms import UnitCreateForm, CardinaPointForm, RepreUnitForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
@@ -205,21 +205,33 @@ class TracingCreate(LoginRequiredMixin, CreateView):
         context['new_lagoon_diameter'] = 0
         context['new_lagoon_deepth'] = 0
         for i in Specie.objects.all():
-            data.append(i.ordinary_name)
+            data.append(dict(
+                id=i.pk,
+                name=f"{i.scientific_name} - {i.ordinary_name}",
+            ))
 
-        context['especie'] = json.dumps(data)
+        context['especie'] = data
         return context
 
     def post(self, request, *args, **kwargs):
         new_wells = request.POST.get("new_number_well", '')
         new_lagoon = request.POST.get("new_number_lagoon", '')
         unit = ProductionUnit.objects.filter(pk=self.kwargs['pk']).first()
-
         form = self.form_class(request.POST)
+        print ("-------------------")
+        print ("REQUEST:",request.POST)
+        print ("-------------------")
         c_new_well_deepth = []
         c_new_well_diameter = []
         c_new_lagoon_deepth = []
         c_new_lagoon_diameter = []
+        json_new_well_diameter = []
+        json_new_well_deepth = []
+        lagoons_duo = []
+        lagoons_mono = []
+        contador = 0
+        contador_lagunas = 0
+
         for i in range(int(new_wells)):
             new_wells_diameter = request.POST.get(
                 "new_wells_diameter_%s" % (i))
@@ -238,7 +250,9 @@ class TracingCreate(LoginRequiredMixin, CreateView):
             if new_lagoon_diameter != None and new_lagoon_diameter != None:
                 c_new_lagoon_deepth.append(new_lagoon_diameter)
                 c_new_lagoon_diameter.append(new_lagoon_deepth)
+            
 
+            
             json_new_lagoon_diameter = json.dumps(c_new_lagoon_diameter)
             json_new_lagoon_deepth = json.dumps(c_new_lagoon_deepth)
 
@@ -247,14 +261,13 @@ class TracingCreate(LoginRequiredMixin, CreateView):
             tracing.producion_unit = unit
             tracing.responsible = request.user
             tracing.save()
+            
             if request.POST.get("new_number_well") != "0" and request.POST.get("new_number_lagoon") == "0":
                 tracing = form.save(commit=False)
                 tracing.producion_unit = unit
                 tracing.responsible = request.user
                 tracing.save()
 
-                print("aqui vamos")
-                print(int(request.POST.get("new_number_well")))
                 for i in range(int(request.POST.get("new_number_well"))):
                     wells = Well.objects.create(
                         producion_unit=unit, well_diameter=c_new_well_diameter[i], well_deepth=c_new_well_deepth[i])
@@ -269,15 +282,84 @@ class TracingCreate(LoginRequiredMixin, CreateView):
                 tracing.producion_unit = unit
                 tracing.responsible = request.user
                 tracing.save()
-
                 for i in range(int(request.POST.get("new_number_lagoon"))):
                     lagoon = Lagoon.objects.create(
-                        producion_unit=unit, lagoon_diameter=c_new_lagoon_diameter[i], lagoon_deepth=c_new_lagoon_deepth[i])
-                    print(lagoon.pk)
-                    print(tracing.pk)
-
+                        producion_unit=unit, lagoon_diameter=c_new_lagoon_diameter[i], lagoon_deepth=c_new_lagoon_deepth[i],)
+                    
                     lagoon_tracing = LagoonTracing.objects.create(
                         tracing=tracing, lagoon=lagoon)
+                    
+                    if request.POST.get("sistem_cultive%s" % (i)) == "mono":
+                        lagoons_mono.append(lagoon)
+                    elif request.POST.get("sistem_cultive%s" % (i)) == "duo":
+                        lagoons_duo.append(lagoon)
+
+                   
+                # for i in range(int(request.POST.get("new_number_lagoon"))):
+                    # print (request.POST.get("sistem_cultive%s" % (i)))
+                    if request.POST.get("sistem_cultive%s" % (i)) == "mono" :
+
+                        print("mono")
+                        while contador < i:
+                            print("contador:", contador)
+
+                            print ("procedimiento")
+                            contador +=1      
+                            if contador == 1:
+                                print ("fin mono")                      
+
+                    elif request.POST.get("sistem_cultive%s" % (i)) == "duo":
+
+                        while contador < i:
+                            print ("------------")
+                            print("duo")
+                            print ("animal:",(request.POST.get("data__%s" % (contador))))
+                            # busqueda = Specie.objects.filter(pk=int(request.POST.get("data__%s" % (contador))))
+                            print (lagoons_duo[i-1])
+                            # print (busqueda.pk)
+                            # Lagoon_has_especies.objects.create(lagoon=lagoons_duo[i-1],especies_id=busqueda.pk,number_specie=1)
+                            contador+=1
+
+                            print ("fin duo")
+                            print("------------")
+
+                        # if request.POST.get("sistem_cultive%s" % (i)) == "duo":
+                        #     for a in str(i):
+                        #         print( "es duo:",a)
+                            #     Lagoon_has_especies.objects.create(lagoon=lagoons[i],especies_id=busqueda.pk,number_specie=1)
+                            # contador_lagunas += 1
+
+
+
+                        #     busqueda = Specie.objects.filter(pk=int(request.POST.get(
+                        #         "data__%s" % (contador))))
+                        
+                        # for i in request.POST.get("data__%s" % (contador)):
+                        #     print("i:",i)
+                        # while contador < 2:
+                        #     # print ("contador:",contador)
+                        #     print ("________________")
+                        #     print ("Inicio procedimiento")
+                        #     # print (request.POST.get("data__%s" % (contador)))
+                        #     busqueda = Specie.objects.filter(pk=int(request.POST.get(
+                        #         "data__%s" % (contador))))
+                        #     # print("busqueda:", busqueda.pk)
+                        #     # print("especie:", (request.POST.get(
+                        #         # "data__%s" % (contador+1))))
+                        #     # print (request.POST.get("data__%s" % (contador)))
+                        #     # print(lagoons[i])
+                        #     print ("busqueda:",busqueda)
+                        #     # for i in busqueda:
+                        #     #     print("ii:",i.pk) 
+                        #     # Lagoon_has_especies.objects.create(lagoon=lagoons[i],especies_id=busqueda.pk,number_specie=1)
+                        #     # print ("lagoons:",lagoons[i])
+                        #     # print ("lagonss:",lagoons[contador])
+                        #     print ("________________")
+                        #     print ("Fin procedimiento")
+                        #     contador +=1
+ 
+                        #     if contador == 2:
+                        #         print ("fin duo")
                 return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit.pk,)))
 
             elif request.POST.get("new_number_well") != "0" and request.POST.get("new_number_lagoon") != "0":

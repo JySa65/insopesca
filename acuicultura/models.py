@@ -16,7 +16,7 @@ class Specie(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return (self.ordinary_name)
+        return str(self.pk)
 
 #    type_document = models.CharField(_("Tipo de Documento"),max_length=50, blank=False,null=False,choices= Selects().type_document())
 
@@ -144,6 +144,6 @@ class Lagoon_has_especies(models.Model):
     especies = models.ForeignKey(Specie,on_delete= models.CASCADE)
     number_specie = models.IntegerField()
     def __str__(self):
-        return str(self.pk)
+        return str(self.especies)
 
 
