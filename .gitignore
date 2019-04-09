@@ -115,3 +115,4 @@ media
 node_modules
 /static/main.js
 *.pdf
+staticfiles
