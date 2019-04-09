@@ -12,7 +12,7 @@ services:
   web:
     build: .
     env_file: ./.env
-    command: ./manage.py runserver 0.0.0.0:8000
+    command: ./run_server.sh
     volumes:
       - .:/webapp
     ports:
@@ -21,6 +21,19 @@ services:
       - db
     networks:
       - insopesca
+
+  server:
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./.nginx/conf.d:/etc/nginx/conf.d
+      - ./static:/opt/services/web/static
+      - ./media:/opt/services/web/media
+    networks:
+      - insopesca
+    depends_on:
+      - web
 
 
 networks:
