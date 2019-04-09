@@ -22,3 +22,7 @@ gevent==1.4.0
 
 
 # as user watn  singn one user and logout user
+#  add memesage after redirect change password
+#  acomodar el mixin del user actual
+#  añadir unico nombre de la empresa
+# añadir validacion del user
