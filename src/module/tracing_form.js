@@ -1,7 +1,7 @@
-const new_wells = document.querySelector("#id_new_number_well")
-const new_lagoon = document.querySelector("#id_new_number_lagoon")
-const multiwells = document.querySelector("#multinew_wells")
-const multilagoon = document.querySelector("#multinew_lagoon")
+const new_wells = document.querySelector("#id_new_number_well");
+const new_lagoon = document.querySelector("#id_new_number_lagoon");
+const multiwells = document.querySelector("#multinew_wells");
+const multilagoon = document.querySelector("#multinew_lagoon");
 
 // if (new_lagoon){
 //     const html = (name, number) => `
@@ -21,15 +21,13 @@ const multilagoon = document.querySelector("#multinew_lagoon")
 //                     input += html(i,cont)
 //                 }
 //                 multilagoon.innerHTML = input
-                    
-//             }
 
+//             }
 
 //     }
 
-
-if (new_wells){
-    const html = (name, number) => `
+if (new_wells) {
+  const html = (name, number) => `
     <h5>Pozo Nro° ${number}</h5>
         <div class="row">
             <div class="col-md-6 col-sm-12">
@@ -51,15 +49,14 @@ if (new_wells){
 
     `;
 
-
-    new_wells.onkeyup = (e) => {
-        const value = e.target.value
-        let input = ""
-        cont = 0
-        for (let i = 0; i < value; i++) {
-            cont = i+1
-            input += html(i,cont)
-        }
-        multiwells.innerHTML = input
+  new_wells.onkeyup = e => {
+    const value = e.target.value;
+    let input = "";
+    cont = 0;
+    for (let i = 0; i < value; i++) {
+      cont = i + 1;
+      input += html(i, cont);
     }
-} 
+    multiwells.innerHTML = input;
+  };
+}
