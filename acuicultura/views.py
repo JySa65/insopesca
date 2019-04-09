@@ -476,8 +476,6 @@ class Representative_unit_production_delete(DeleteView):
 
         repre.save()
         return redirect("acuicultura:home")
-
-        print ("eliminando representante")
     
 # class Representative_unit_production_list(TemplateView):
 #     model = RepreUnitProductive
