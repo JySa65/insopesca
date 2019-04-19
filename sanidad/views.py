@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import timedelta, datetime
 from sanidad import models, forms
 from core.models import Notification
+from utils.permissions import UserUrlCorrectMixin
 import json
 # Create your views here.
 
@@ -51,7 +52,7 @@ class InspectionListApiView(LoginRequiredMixin, View):
         return JsonResponse(data, safe=False)
 
 
-class HomeTemplateView(LoginRequiredMixin, TemplateView):
+class HomeTemplateView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
     template_name = 'sanidad/home_view.html'
 
     def get_context_data(self, **kwargs):
@@ -71,7 +72,7 @@ class HomeTemplateView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class CompanyListView(LoginRequiredMixin, ListView):
+class CompanyListView(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
     model = models.Company
 
     def get_queryset(self):
@@ -79,7 +80,7 @@ class CompanyListView(LoginRequiredMixin, ListView):
         return self.model.objects.filter(is_delete=False)
 
 
-class TypeCompanyView(LoginRequiredMixin, View):
+class TypeCompanyView(LoginRequiredMixin, UserUrlCorrectMixin, View):
     model = models.TypeCompany
 
     def post(self, *args, **kwargs):
@@ -118,7 +119,7 @@ class TypeCompanyView(LoginRequiredMixin, View):
             return JsonResponse(data)
 
 
-class CompanyDetailView(LoginRequiredMixin, DetailView):
+class CompanyDetailView(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
     model = models.Company
 
     def get_object(self):
@@ -131,7 +132,7 @@ class CompanyDetailView(LoginRequiredMixin, DetailView):
         return object
 
 
-class CompanyCreateView(LoginRequiredMixin, CreateView):
+class CompanyCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
     model = models.Company
     form_class = forms.CompanyForm
 
@@ -139,7 +140,7 @@ class CompanyCreateView(LoginRequiredMixin, CreateView):
         return reverse_lazy('sanidad:company_detail', args=(self.object.pk,))
 
 
-class CompanyUpdateView(LoginRequiredMixin, UpdateView):
+class CompanyUpdateView(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):
     model = models.Company
     form_class = forms.CompanyForm
 
@@ -147,7 +148,7 @@ class CompanyUpdateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('sanidad:company_detail', args=(self.object.pk,))
 
 
-class CompanyDeleteView(LoginRequiredMixin, View):
+class CompanyDeleteView(LoginRequiredMixin, UserUrlCorrectMixin, View):
     model = models.Company
 
     def get_object(self):
@@ -185,7 +186,7 @@ class CompanyDeleteView(LoginRequiredMixin, View):
             return JsonResponse(data)
 
 
-class AccoutCompanyCreateView(LoginRequiredMixin, CreateView):
+class AccoutCompanyCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
     model = models.Account
     form_class = forms.AccountForm
     template_name = 'sanidad/account_form.html'
@@ -267,7 +268,7 @@ class AccoutCompanyCreateView(LoginRequiredMixin, CreateView):
             'form': form, 'company': company})
 
 
-class AccoutCompanyDetailView(LoginRequiredMixin, DetailView):
+class AccoutCompanyDetailView(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
     model = models.Account
     pk_url_kwarg = 'account'
 
@@ -282,7 +283,7 @@ class AccoutCompanyDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class AccountCompanyUpdateView(LoginRequiredMixin, UpdateView):
+class AccountCompanyUpdateView(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):
     model = models.Account
     form_class = forms.AccountForm
     pk_url_kwarg = 'account'
@@ -311,7 +312,7 @@ class AccountCompanyUpdateView(LoginRequiredMixin, UpdateView):
             pk=self.kwargs.get('pk')).first()
 
 
-class AccountCompanyDeleteView(LoginRequiredMixin, View):
+class AccountCompanyDeleteView(LoginRequiredMixin, UserUrlCorrectMixin, View):
     model = models.Company
 
     def get_object(self):
@@ -351,7 +352,7 @@ class AccountCompanyDeleteView(LoginRequiredMixin, View):
             return JsonResponse(data)
 
 
-class TransportCompanyCreateView(LoginRequiredMixin, CreateView):
+class TransportCompanyCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
     model = models.Transport
     template_name = 'sanidad/transport_form.html'
 
@@ -397,7 +398,7 @@ class TransportCompanyCreateView(LoginRequiredMixin, CreateView):
             self.kwargs.get('pk'),))
 
 
-class InspectionCreateView(LoginRequiredMixin, CreateView):
+class InspectionCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
     model = models.Inspection
     form_class = forms.InspectionForm
     success_url = reverse_lazy('sanidad:inspection_list')
@@ -433,7 +434,7 @@ class InspectionCreateView(LoginRequiredMixin, CreateView):
         return super(InspectionCreateView, self).form_valid(form)
 
 
-class InspectionListNotificationView(LoginRequiredMixin, ListView):
+class InspectionListNotificationView(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
     model = Notification
     template_name = "sanidad/notification_list.html"
 
@@ -446,12 +447,12 @@ class InspectionListNotificationView(LoginRequiredMixin, ListView):
             created_at__range=(start, end))
 
 
-class InspectionListView(LoginRequiredMixin, ListView):
+class InspectionListView(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
     model = models.Inspection
     paginate_by = 30
 
 
-class InspectionDriversCompanyListView(LoginRequiredMixin, ListView):
+class InspectionDriversCompanyListView(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(
@@ -528,19 +529,19 @@ class InspectionDriversCompanyListView(LoginRequiredMixin, ListView):
         return inspection_list
 
 
-class InspectionDetailView(LoginRequiredMixin, DetailView):
+class InspectionDetailView(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
     model = models.Inspection
 
 
-class DriverListView(LoginRequiredMixin, ListView):
+class DriverListView(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
     model = models.Driver
 
 
-class DriverDetailView(LoginRequiredMixin, DetailView):
+class DriverDetailView(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
     model = models.Driver
 
 
-class DriverCreateView(LoginRequiredMixin, CreateView):
+class DriverCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
     model = models.Driver
     form_class = forms.DriverForm
     success_url = reverse_lazy('sanidad:driver_list')
@@ -556,7 +557,7 @@ class DriverCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
-class DriverUpdateView(LoginRequiredMixin, UpdateView):
+class DriverUpdateView(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):
     model = models.Driver
     form_class = forms.DriverForm
 
@@ -570,7 +571,7 @@ class DriverUpdateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('sanidad:driver_detail', args=(self.object.pk,))
 
 
-class DriverDeleteView(LoginRequiredMixin, View):
+class DriverDeleteView(LoginRequiredMixin, UserUrlCorrectMixin, View):
     model = models.Driver
 
     def delete(self, request, *args, **kwargs):
@@ -604,7 +605,7 @@ class DriverDeleteView(LoginRequiredMixin, View):
         return JsonResponse(data)
 
 
-class TransportDriverCreateView(LoginRequiredMixin, CreateView):
+class TransportDriverCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
     model = models.Transport
     template_name = 'sanidad/transport_form.html'
 

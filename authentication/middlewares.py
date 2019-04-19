@@ -1,7 +1,7 @@
 from django.utils.deprecation import MiddlewareMixin
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
-from utils.Select import Selects
+
 
 class VerifyChagePassword(MiddlewareMixin):
     """
@@ -32,17 +32,3 @@ class VerifyQuestion(MiddlewareMixin):
                 request.META.get('PATH_INFO') != route_question and
                     logout != 'logout'):
                 return HttpResponseRedirect(route_question)
-
-
-class VerifyRoleUser(MiddlewareMixin):
-    pass
-#     def process_request(self, request, *args, **kwargs):
-#         url = f'/{request.META.get("PATH_INFO").split("/")[1].lower()}/'
-#         user = request.user
-#         url_user = Selects().level_user_url()
-#         if (user.is_superuser or user.role == "is_coordinator"):
-#             k_url = 'is_admin_or_coordinator'
-
-#         print(role_user.role,
-#               role_user.level)
-#         pass

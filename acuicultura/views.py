@@ -7,11 +7,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 import json
 from django.contrib.auth.mixins import LoginRequiredMixin
+from utils.permissions import UserUrlCorrectMixin
 
 # Create your views here.
 
 
-class AcuiculturaHome(LoginRequiredMixin, ListView):
+class AcuiculturaHome(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
     model = ProductionUnit
     template_name = "acuicultura/home.html"
 

@@ -60,7 +60,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
-    'authentication.middlewares.VerifyRoleUser',
     'authentication.middlewares.VerifyChagePassword',
     'authentication.middlewares.VerifyQuestion',
     'sanidad.middlewares.CheckInspectionCompaniesBeat',
