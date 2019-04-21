@@ -179,12 +179,16 @@ class LoginFormView(FormView):
         password = request.POST['password']
         user = authenticate(email=username, password=password)
         if user is not None:
+            from django.contrib.sites.shortcuts import get_current_site
+            current_site = get_current_site(request)
+            user.ip = current_site.domain
+            user.save()
             login(request, user)
             url_next = request.GET.get('next')
             if url_next is not None:
                 return HttpResponseRedirect(url_next)
             else:
-                self.render_user(user)         
+                self.render_user(user)     
 
         msg = "Usuario o Contraseña Incorrecta"
         messages.add_message(self.request, messages.INFO, msg)

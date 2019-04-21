@@ -24,6 +24,7 @@ class VerifyQuestion(MiddlewareMixin):
     """
 
     def process_view(self, request, view, *args, **kwargs):
+        # request.session.flush()
         route_question = reverse(
             "authentication:security_question", args=[request.user.pk])
         logout = request.META.get('PATH_INFO').split("/")[1].lower()
@@ -32,3 +33,12 @@ class VerifyQuestion(MiddlewareMixin):
                 request.META.get('PATH_INFO') != route_question and
                     logout != 'logout'):
                 return HttpResponseRedirect(route_question)
+
+
+class VerifyUserSingleSession(MiddlewareMixin):
+    """
+    verify that the user does not have an active session elsewhere
+    """
+
+    def process_request(self, request, *args, **kwargs):
+        pass

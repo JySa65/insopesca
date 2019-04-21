@@ -20,7 +20,7 @@ class UserAdmin(BaseUserAdmin):
         (_('Personal info'), {'fields': ('ci', 'name', 'last_name',)}),
         (_('Permissions'), {
          'fields': ('is_superuser', 'is_active', 'is_staff')}),
-        (_('Security'), {'fields': ('uuid', 'change_pass', 'question')}),
+        (_('Security'), {'fields': ('uuid', 'change_pass', 'question', 'ip')}),
         (_('Imaginary Elimination'), {'fields': ('is_delete',)}),
         (_('Market Stall'), {'fields': ('role', 'level',)}),
         (_('Join'), {'fields': ('date_joined', 'created_at', 'updated_at')}),

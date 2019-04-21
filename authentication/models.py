@@ -48,6 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(
         _('Es Super Usuario'), default=False)
     is_delete = models.BooleanField(_('Eliminado'), default=False)
+    ip = models.CharField(_('Direccion IP'), max_length=20)
     role = models.CharField(_('Rol'), max_length=500,
                             null=True, blank=True, choices=Selects().role())
     level = models.CharField(_('Level'), max_length=50,
