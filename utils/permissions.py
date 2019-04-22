@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import AccessMixin
 from django.http import Http404
 from utils.Select import Selects
 
+
 class AdminRequiredMixin(AccessMixin):
     """Verify that the current user is superuser or coordinator."""
     login_url = '/'
@@ -21,6 +22,3 @@ class UserUrlCorrectMixin(AccessMixin):
         if url_user.get(request.user.level) != url:
             raise Http404
         return super().dispatch(request, *args, **kwargs)
-
-
-

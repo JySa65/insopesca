@@ -1,6 +1,7 @@
 from django.utils.deprecation import MiddlewareMixin
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
+from django.contrib.sites.shortcuts import get_current_site
 
 
 class VerifyChagePassword(MiddlewareMixin):
@@ -35,10 +36,15 @@ class VerifyQuestion(MiddlewareMixin):
                 return HttpResponseRedirect(route_question)
 
 
-class VerifyUserSingleSession(MiddlewareMixin):
-    """
-    verify that the user does not have an active session elsewhere
-    """
+# class VerifyUserSingleSession(MiddlewareMixin):
+#     """
+#     verify that the user does not have an active session elsewhere
+#     """
 
-    def process_request(self, request, *args, **kwargs):
-        pass
+#     def process_request(self, request, *args, **kwargs):
+#         if request.user.is_authenticated:
+#             current_site = get_current_site(request)
+#             user = request.user
+#             if user
+#             print(user)
+#         pass

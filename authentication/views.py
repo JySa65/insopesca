@@ -1,3 +1,5 @@
+from django.contrib.sessions.models import Session
+from django.db import transaction
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -180,6 +182,17 @@ class LoginFormView(FormView):
         user = authenticate(email=username, password=password)
         if user is not None:
             login(request, user)
+            session = Session.objects.get(session_key=request.session.session_key)
+            user_session = models.SessionUser.objects.filter(user=user).first()
+            try:
+                with transaction.atomic():
+                    models.SessionUser.objects.create(user=user, session=session)
+                self.fail('Duplicate Session')
+            except Exception:
+                if user_session:
+                    Session.objects.get(
+                        session_key=user_session.session.session_key).delete()
+                    models.SessionUser.objects.create(user=user, session=session)
             url_next = request.GET.get('next')
             if url_next is not None:
                 return HttpResponseRedirect(url_next)
