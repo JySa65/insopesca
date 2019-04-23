@@ -1,3 +1,5 @@
+from django.contrib.sessions.models import Session
+from django.db import transaction
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -21,10 +23,12 @@ from django.contrib.auth import update_session_auth_hash
 from authentication import models, forms
 import json
 from utils.Select import Selects
+from utils.permissions import AdminRequiredMixin
+from django.contrib import messages
 # Create your views here.
 
 
-class UserListView(LoginRequiredMixin, ListView):
+class UserListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
     model = models.User
 
     def get_queryset(self):
@@ -34,7 +38,7 @@ class UserListView(LoginRequiredMixin, ListView):
         )
 
 
-class UserDetailView(LoginRequiredMixin, DetailView):
+class UserDetailView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
     model = models.User
 
     def get_context_data(self, *args, **kwargs):
@@ -44,7 +48,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class UserCreateView(LoginRequiredMixin, CreateView):
+class UserCreateView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
     model = models.User
     form_class = forms.UserCreateForm
 
@@ -58,13 +62,13 @@ class UserCreateView(LoginRequiredMixin, CreateView):
         return reverse_lazy('authentication:detail', args=(self.object.pk,))
 
 
-class UserUpdateView(LoginRequiredMixin, UpdateView):
+class UserUpdateView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
     model = models.User
     form_class = forms.UserUpdateForm
     success_url = reverse_lazy('authentication:list')
 
 
-class UserDeleteView(LoginRequiredMixin, DeleteView):
+class UserDeleteView(LoginRequiredMixin, AdminRequiredMixin, DeleteView):
     model = models.User
 
     def post(self, *args, **kwargs):
@@ -76,7 +80,7 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
         return HttpResponseRedirect(reverse_lazy('authentication:list'))
 
 
-class UserAdminDetailView(LoginRequiredMixin, DetailView):
+class UserAdminDetailView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
     model = models.User
 
     def get_object(self):
@@ -93,7 +97,7 @@ class UserAdminDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class UserAdminUpdateView(LoginRequiredMixin, UpdateView):
+class UserAdminUpdateView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
     model = models.User
     form_class = forms.UserUpdateForm
 
@@ -161,24 +165,41 @@ class LoginFormView(FormView):
     form_class = AuthenticationForm
     template_name = "authentication/login.html"
 
+    def render_user(self, user):
+        if user.is_superuser or user.role == 'is_coordinator':
+            return HttpResponseRedirect(Selects().level_user_url()['is_admin_or_coordinator'])
+        else:
+            return HttpResponseRedirect(Selects().level_user_url()[user.level])
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return self.render_user(request.user)
+        return super(LoginFormView, self).dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(email=username, password=password)
         if user is not None:
             login(request, user)
+            session = Session.objects.get(session_key=request.session.session_key)
+            user_session = models.SessionUser.objects.filter(user=user).first()
+            try:
+                with transaction.atomic():
+                    models.SessionUser.objects.create(user=user, session=session)
+                self.fail('Duplicate Session')
+            except Exception:
+                if user_session:
+                    Session.objects.get(
+                        session_key=user_session.session.session_key).delete()
+                    models.SessionUser.objects.create(user=user, session=session)
             url_next = request.GET.get('next')
             if url_next is not None:
                 return HttpResponseRedirect(url_next)
             else:
-                if user.is_superuser or user.role == 'is_coordinator':
-                    return HttpResponseRedirect(Selects().level_user_url()['is_admin_or_coordinator'])
-                else:
-                    return HttpResponseRedirect(Selects().level_user_url()[user.level])
-        else:
-            msg = "Usuario o Contraseña Incorrecta"
-            return render(request, self.template_name, {'form': self.form_class, 'message': msg})
-
+                return self.render_user(user)     
+        msg = "Usuario o Contraseña Incorrecta"
+        messages.add_message(self.request, messages.INFO, msg)
         return render(request, self.template_name, {'form': self.form_class})
 
 
@@ -196,6 +217,9 @@ class ChangePassword(LoginRequiredMixin, FormView):
         _object = form.save(commit=False)
         _object.change_pass = True
         user = _object.save()
+        messages.add_message(self.request, 
+                            messages.INFO, 
+                            'Contraseña Cambiada Exitosamente')
         update_session_auth_hash(self.request, user)
         logout(self.request)
         return super(ChangePassword, self).form_valid(form)
@@ -302,7 +326,7 @@ class ForgotPassword(FormView):
             if answ.answer != ans:
                 data = {
                     "status": False,
-                    "msg": f"Pregunta: {answ.question} Tiene Una Respuesta Invalida"
+                    "msg": f"Algunas Preguntas Tienen Una Respuesta Invalida"
                 }
                 return JsonResponse(data)
 

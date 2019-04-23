@@ -1,9 +1,11 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields import JSONField
 from utils.Select import Selects
+from utils.users_exists import user_exists
 from datetime import datetime
 import uuid
 # Create your models here.
@@ -64,9 +66,11 @@ class Account(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     type_document = models.CharField(
-        _('Tipo De Documento'), max_length=2, null=False, blank=False, choices=Selects().type_document_user())
+        _('Tipo De Documento'), max_length=2, null=False, blank=False, 
+        choices=Selects().type_document_user())
     document = models.CharField(
-        _('Documento'), max_length=15, null=False, blank=False, unique=True)
+        _('Documento'), max_length=15, null=False, blank=False, 
+        unique=True, validators=[user_exists])
     name = models.CharField(_('Nombres'), max_length=50,
                             null=False, blank=False)
     last_name = models.CharField(
@@ -84,7 +88,6 @@ class Account(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        abstract = True
         ordering = ('-created_at',)
 
     def __str__(self):
@@ -111,7 +114,7 @@ class Company(models.Model):
     document = models.CharField(
         _('Documento'), max_length=15, null=False, blank=False, unique=True)
     name = models.CharField(_('Nombre'), max_length=50,
-                            null=False, blank=False)
+                            null=False, blank=False, unique=True)
     tlf = models.CharField(_('Telefono'), max_length=15, null=True, blank=True)
     tlf_house = models.CharField(
         _('Telefono Casa'), max_length=15, null=True, blank=True)
@@ -129,7 +132,6 @@ class Company(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        abstract = True
         ordering = ('-created_at',)
 
     def __str__(self):

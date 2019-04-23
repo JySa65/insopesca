@@ -60,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
+    # 'authentication.middlewares.VerifyUserSingleSession',
     'authentication.middlewares.VerifyChagePassword',
     'authentication.middlewares.VerifyQuestion',
     'sanidad.middlewares.CheckInspectionCompaniesBeat',
@@ -164,3 +165,8 @@ LOGOUT_REDIRECT_URL='/'
 
 CORS_ORIGIN_ALLOW_ALL=True
 # CORS_ALLOW_CREDENTIALS=True
+
+# seccion expire
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 60 * 5

@@ -20,10 +20,12 @@ Iniciar Sesión
 		</div>
 		<div class="card-body">
 			<form method="post"> {% csrf_token %}
-				{% if message %}
+				{% if messages %}
 					<div class="form-group text-center">
-						<div class="alert alert-danger" role="alert">
-								{{ message }}
+						<div class="alert alert-warning" role="alert">
+							{% for message in messages %}
+							<p>{{ message }}
+							{% endfor %}
 						</div>
 					</div>
 				{% endif %}

@@ -1,3 +1,4 @@
+from django.contrib.sessions.models import Session
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, \
     PermissionsMixin, BaseUserManager
@@ -48,6 +49,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(
         _('Es Super Usuario'), default=False)
     is_delete = models.BooleanField(_('Eliminado'), default=False)
+    ip = models.CharField(_('Direccion IP'), max_length=20)
+    is_login = models.BooleanField(_('Tiene Una Sesion Activa'), default=False)
     role = models.CharField(_('Rol'), max_length=500,
                             null=True, blank=True, choices=Selects().role())
     level = models.CharField(_('Level'), max_length=50,
@@ -98,3 +101,14 @@ class SecurityQuestion(models.Model):
     @_history_user.setter
     def _history_user(self, value):
         self.changed_by = value
+
+
+class SessionUser(models.Model):
+    session = models.OneToOneField(Session, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.user.get_full_name()
+
