@@ -1,3 +1,4 @@
+import validInput from '../../utils/validInput.js';
 const new_wells = document.querySelector("#id_new_number_well");
 const new_lagoon = document.querySelector("#id_new_number_lagoon");
 const multiwells = document.querySelector("#multinew_wells");
@@ -60,3 +61,25 @@ if (new_wells) {
     multiwells.innerHTML = input;
   };
 }
+
+
+const id_tracing_form = document.querySelector("#id_representative_form")
+if (id_tracing_form) {
+    document.querySelector("#id_document_repre").addEventListener(
+        "keypress", (event) => validInput('n', 12, event))
+
+    document.querySelector("#id_name_repre").addEventListener(
+        "keypress", (event) => validInput('g', 50, event))
+
+    document.querySelector("#id_last_name_repre").addEventListener(
+        "keypress", (event) => validInput('g', 50, event))
+    
+
+    document.querySelector("#id_phone_repre").addEventListener(
+        "keypress", (event) => validInput('n', 11, event))
+
+    document.querySelector("#id_landline_repre").addEventListener(
+        "keypress", (event) => validInput('n', 11, event))
+    
+}
+

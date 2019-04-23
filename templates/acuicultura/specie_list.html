@@ -17,14 +17,15 @@ Especies
 	<!-- ============================================================== -->
 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 		<div class="card">
-
-			<h5 class="card-header">Listado de los Peces</h5>
-			<div class="card-body">
+			<div class="card-header clearfix">
+				<span class="h4 text-primary"><b>Especies</b></span>
+				<a href="{% url 'acuicultura:create_specie'  %}" class="btn btn-rounded btn-primary">Nueva Especie <i class=""></i></a>
+			</div>
 				<table class="table table-striped">
 					<thead>
 						<tr>
 							<th scope="col">#</th>
-							<th scope="col">Documento Comun</th>
+							<th scope="col">Nombre Comun</th>
 							<th scope="col">Nombre Cientifico</th>
 							<th scope="col">Opciones</th>
 						</tr>

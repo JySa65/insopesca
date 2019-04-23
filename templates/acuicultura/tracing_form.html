@@ -122,7 +122,7 @@ Registro De Seguimiento
 		</div>
 	</div>
 </div>
-<input type="text" class="form-control">
+
 <script>
 const new_lagoon = document.querySelector("#id_new_number_lagoon")
 const multilagoon = document.querySelector("#multinew_lagoon")
@@ -142,7 +142,7 @@ function sistems_cultivation() {
 	const html = (name, number,t) => `
 		<h5>Especie   Nro° ${number}</h5>
 		<div class="row">
-			<div class="col-md-6 col-sm-12">
+			<div class="col-md-6 ">
 				<div class = "form-group">
 					<select name="data__${t}" id="data__${t}" class="form-control" >
 						${especies()}

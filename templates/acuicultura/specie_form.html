@@ -29,19 +29,15 @@ Registro De Especie
 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 		<div class="card">
 			<div class="card-header">
-				{% if not profile %}
 				{% if object.pk %}
-				<a href="{% url 'authentication:detail' object.pk %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				<a href="{% url 'acuicultura:detail_specie' object.pk %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
 				{% else %}
-				<a href="{% url 'authentication:list' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
-				{% endif %}
-				{% else %}
-				<a href="{% url 'authentication:detail_profile' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				<a href="{% url 'acuicultura:list_specie' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
 				{% endif %}
 			</div>
 			<div class="card-body">
 
-				<form action="" method="post">
+				<form action="" method="post" id="id_species_form">
 						{% csrf_token %}
 				{% for field in form %}
 				{% if field.errors %}

@@ -18,8 +18,6 @@ class Specie(models.Model):
     def __str__(self):
         return str(self.pk)
 
-#    type_document = models.CharField(_("Tipo de Documento"),max_length=50, blank=False,null=False,choices= Selects().type_document())
-
 class ProductionUnit(core.Company):
     def __str__(self):
         return str(self.pk)

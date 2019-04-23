@@ -3,10 +3,14 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, V
 from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, Lagoon_has_especies
 from acuicultura.forms import UnitCreateForm, CardinaPointForm, RepreUnitForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm
 from django.core.paginator import Paginator
-from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse, reverse_lazy
-import json
+from django.http import HttpResponseRedirect, Http404, JsonResponse
+from django.views.generic import TemplateView, ListView, CreateView, \
+    DetailView, UpdateView, DeleteView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from utils.check_password import checkPassword
+from django.urls import reverse, reverse_lazy
+
+import json
 
 # Create your views here.
 
@@ -515,6 +519,20 @@ class LagoonDetail(LoginRequiredMixin, DetailView):
     model = Lagoon
     template_name = "acuicultura/detail_lagoon.html"
 
+    def get_context_data(self, **kwargs):
+        context = super(LagoonDetail, self).get_context_data(**kwargs)
+        area = Lagoon.objects.filter(pk=self.kwargs['pk']).first()
+        context['species_has_lagoon'] = Lagoon_has_especies.objects.filter(
+            lagoon=self.kwargs['pk'])
+        # # context['total_number_species'] = Lagoon_has_especies.objects.filter(
+        # #     lagoon=self.kwargs['pk']).aggregate(total__sum=Sum('number_specie'))
+        # context['square_meter'] = (area.lagoon_diameter*area.lagoon_deepth)
+        # context['food'] = int((context['square_meter'])*1.5)
+        # context['food_sacks'] = int((context['food'])/25)
+        # context['percentage_60'] = (context['food_sacks'])*60/100
+        # context['percentage_40'] = (context['food_sacks'])*40/100
+        return context
+
 
 class Tracingdelete(DeleteView):
     model = Tracing
@@ -554,15 +572,43 @@ class Representative_unit_production_detail(DetailView):
     template_name = "acuicultura/representative_detail.html"
 
 
-class Representative_unit_production_delete(DeleteView):
+
+class Representative_unit_production_delete(LoginRequiredMixin, View):
     model = RepreUnitProductive
 
-    def post(self, request, *args, **kwargs):
-        repre = self.model.objects.get(pk=self.kwargs['pk'])
-        repre.is_active = False
+    def get_object(self):
+        return get_object_or_404(
+            self.model, pk=self.kwargs.get('pk'))
 
+    def delete(self, request, *args, **kwargs):
+        repre = self.get_object()
+        print(repre)
+        repre.is_active = False
         repre.save()
-        return redirect("acuicultura:home")
+        data = dict(
+            status=True,
+            msg="Representante Desactivado"
+        )
+        return JsonResponse(data)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            password = json.loads(
+                str(self.request.body, 'utf-8')).get('password', "")
+            user = checkPassword(self.request.user.email, password)
+            if not user:
+                data = dict(
+                    status=False,
+                    msg="Contraseña Incorrecta"
+                )
+                return JsonResponse(data)
+            return self.delete(request, *args, **kwargs)
+        except Exception as e:
+            data = dict(
+                status=False,
+                data=e
+            )
+            return JsonResponse(data)
 
 # class Representative_unit_production_list(TemplateView):
 #     model = RepreUnitProductive
@@ -571,7 +617,6 @@ class Representative_unit_production_delete(DeleteView):
 
 class RepresentativeUnitProductionUpdate(LoginRequiredMixin, UpdateView):
     model = RepreUnitProductive
-    second_model = RepreUnitProductive
     form_class = RepresentativeForm
     template_name = "acuicultura/representative_form.html"
 
@@ -585,12 +630,11 @@ class RepresentativeUnitProductionUpdate(LoginRequiredMixin, UpdateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        tracing = self.model.objects.get(pk=self.kwargs['pk'])
+        repre = self.model.objects.get(pk=self.kwargs['pk'])
+        repre_form = self.form_class(request.POST, instance=repre)
 
-        tracing_form = self.form_class(request.POST, instance=tracing)
-
-        if tracing_form.is_valid():
-            tracing_form.save()
-            return HttpResponseRedirect(reverse("acuicultura:detail_unit", args=(unit.pk,)))
+        if repre_form.is_valid():
+            repre_form.save()
+            return HttpResponseRedirect(reverse("acuicultura:detail_unit", args=(repre.production_unit.pk,)))
         else:
             return render(self.request, self.template_name, {'form': form})

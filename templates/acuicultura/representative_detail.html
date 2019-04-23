@@ -66,12 +66,26 @@ Acuicultura / Unida Productora / Representante / {{ object.pk }}
                               Actualizar
                             </a>
                           </div>
+                          
+                          {% if object.is_active == False %}
+                            
+                          {% else %}
+                            
                           <div class="col-sm-6 mb-3">
+                            <a href="{% url 'acuicultura:repre_delete' object.pk %}" class="btn btn-rounded btn-danger" id="btn_delete_repre_company">
+                              <i class="fas fa-user-times"></i>
+                              Desactivar
+                            </a>
+                          </div>
+                            
+                          {% endif %}
+                
+                          <!-- <div class="col-sm-6 mb-3">
                             <a href="{% url 'acuicultura:repre_delete' object.pk %}" class="btn btn-rounded btn-danger">
                               <i class="fas fa-user-times"></i>
                               Eliminar
                             </a>
-                          </div>
+                          </div> -->
                         </div>
                       </div>
 			</div>

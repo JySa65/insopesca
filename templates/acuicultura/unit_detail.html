@@ -140,11 +140,7 @@ Acuicultura / Unida Productora /{{ object.name }}
 				<div class="card">
 					<div class="card-header clearfix">
 						<span class="h4 text-primary"><b>Representantes Legales </b></span>
-						{% if representative.count > 0 %}
-
-						{% else %}
-							<a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-rounded btn-primary">Añadir Representate <i class="fas fa-user-plus"></i></a>
-						{% endif %}
+						<a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-rounded btn-primary">Añadir Representate <i class="fas fa-user-plus"></i></a>
 
 					</div>
 						
@@ -158,35 +154,27 @@ Acuicultura / Unida Productora /{{ object.name }}
 										<th>Rif</th>
 										<th>Nombre</th>
 										<th>Apellido</th>
+										<th>Estatus</th>
 										<th>Opciones</th>
 									</tr>
 								</thead>
 								<tbody>
 									{% for repre in representative %}
-										{% if repre.is_active == True %}
 										
 										<tr>
 											<td>{{ forloop.counter }}</td>
 											<td>{{repre.type_document_repre}}-{{ repre.document_repre }}</td>
 											<td>{{ repre.name_repre }}</td>
-											<td>{{repre.last_name_repre}}</td>
-			
+											<td>{{repre.last_name_repre}}</td>											
+											{% if repre.is_active == True %}
+												<td>Activo</td>												
+											{% else %}
+												<td>Inactivo</td>
+											{% endif %}
 											<td>
 												<a href="{% url 'acuicultura:repre_detail' repre.pk %}" class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
-												<a href="{% url 'acuicultura:repre_delete' repre.pk %}" class="btn btn-rounded btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
 											</td>
 										</tr>
-										{%else %}
-											<tr>
-												<td colspan="5" class="text-center">
-													<h1>No tiene Representante Asignado a la Empresa</h1>
-													<a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-primary btn-rounded ">
-													Añadir Representante
-													<i class="fas fa-user-plus"></i>
-													</a>
-												</td>
-											</tr>
-										{% endif %}
 									{% empty %}
 		
 									<tr>

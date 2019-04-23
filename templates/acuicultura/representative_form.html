@@ -14,7 +14,7 @@ UNIDAD PRODUCTORA REGISTRO
 {% endblock sidebar %}
 {% block pageheader %}
 {% if object.pk %}
-Actualizacion De Unidad Productora: {{object.name}}
+Actualizar Representate De Unidad Productora: {{object.production_unit.name}}
 {% else %}
 Registro De Unidad Prductora
 {% endif %}
@@ -37,7 +37,7 @@ Registro De Unidad Prductora
 			</div>
 			<div class="card-body">
 
-				<form action="" method="post">
+				<form action="" method="post" id="id_representative_form">
 						{% csrf_token %}
 				{% for field in form %}
 				{% if field.errors %}

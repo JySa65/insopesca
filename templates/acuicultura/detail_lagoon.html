@@ -4,7 +4,7 @@
 {% include 'sidebar/acuicultura.html' %}
 {% endblock sidebar %}
 {% block pageheader %}
-{{ object.ordinary_name }}
+Acuicultura / Seguimiento / Laguna / {{ object.pk }}
 {% endblock pageheader %}
 {% block context %}
 <div class="row">
@@ -23,20 +23,119 @@
 					</div>
 					<div class="col-sm-6 mb-4">
 						<label class="h5">
-							<b>Diametro:</b>
+							<b>Ancho de la Laguna:</b>
 						</label>
-						<span class="h5">{{ object.lagoon_diameter }}</span>
+						<span class="h5">{{ object.lagoon_diameter }}m</span>
 					</div>
 					<div class="col-sm-6 mb-4">
 						<label class="h5">
-							<b>Profundidad:</b>
+							<b>Largo de la Laguna:</b>
 						</label>
-						<span class="h5">{{ object.lagoon_diameter }}</span>
+						<span class="h5">{{ object.lagoon_deepth }}m</span>
 					</div>
-
+					<!-- <div class="col-sm-6 mb-4">
+						<label class="h5">
+							<b>Area total de Terreno:</b>
+						</label>
+						<span class="h5">{{ object.total_area_mirror_guater }}</span>
+					</div> -->
 				</div>
 			</div>
 		</div>
-    </div>
+	</div>
 </div>
+<!-- 
+<div class="section-block" id="basicform">
+	<h3 class="section-title">Especies en la laguna</h3>
+</div>
+
+{% for specie_lagoon in species_has_lagoon %}
+
+<div class="row">
+	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 text-primary"><b>Especie Nro° {{forloop.counter}} </b></span>
+			</div>
+			<div class="card-body">
+				<div class="row p-0">
+					<div class="col-sm-12 mb-4">
+
+						<label class="h5">
+							<b>Nombre Ordinario:</b>
+						</label>
+						<span class="h5">{{ specie_lagoon.especies.ordinary_name }}</span>
+					</div>
+					<div class="col-sm-6 mb-4">
+						<label class="h5">
+							<b>Nombre Cientifico:</b>
+						</label>
+						<span class="h5">{{ specie_lagoon.especies.scientific_name }}</span>
+					</div>
+					<div class="col-sm-6 mb-4">
+						<label class="h5">
+							<b>Cantidad de Especies:</b>
+						</label>
+						<span class="h5">{{ specie_lagoon.number_specie }}</span>
+					</div>
+				</div>
+			</div>
+			{% if forloop.last  %}
+			<div class="card-body border-top">
+				<h3>Total de las Especies: {{total_number_species.total__sum}}</h3>
+
+			</div>
+			{% else %}
+
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endfor %} -->
+
+<!-- 
+<div class="row">
+	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 text-primary"><b>Algun texto</b></span>
+			</div>
+			<div class="card-body">
+				<h3>Densidad de Animales</h3>
+				<div class="col-sm-12 mb-4">
+					<label class="h5">
+						<b>1 ( Pez ) x {{square_meter}}m<sup>2</sup>: </b>
+					</label>
+					<span class="h5"> {{square_meter}} Alubines</span>
+				</div>
+			</div>
+			<hr>
+			<div class="card-body">
+				<h3>Calculo del Alimento</h3>
+				<div class="col-sm-12 mb-4">
+					<label class="h5">
+						<b>{{square_meter}} Alubines x 1,5 Kg:</b>
+					</label>
+					<span class="h5">{{food}} Kg / 25 = {{food_sacks}} Sacos de Alimento</span>
+				</div>
+			</div>
+			<hr>
+			<div class="card-body">
+				<h3>Proporción</h3>
+				<div class="col-sm-12 mb-4">
+					<label class="h5">
+						<b>{{food_sacks}} Sacos de Alimento * 60% /100 =</b>
+					</label>
+					<span class="h5"> {{percentage_60}}</span>
+				</div>
+				<div class="col-sm-12 mb-4">
+					<label class="h5">
+						<b>{{food_sacks}} Sacos de Alimento * 40% /100=</b>
+					</label>
+					<span class="h5"> {{percentage_40}} </span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> -->
 {% endblock %}
