@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View, TemplateView, DetailView
 from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, Lagoon_has_especies
 from acuicultura.forms import UnitCreateForm, CardinaPointForm, RepreUnitForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm
 from django.core.paginator import Paginator
@@ -9,13 +8,11 @@ from django.views.generic import TemplateView, ListView, CreateView, \
 from django.contrib.auth.mixins import LoginRequiredMixin
 from utils.check_password import checkPassword
 from django.urls import reverse, reverse_lazy
-
 import json
 from django.contrib.auth.mixins import LoginRequiredMixin
 from utils.permissions import UserUrlCorrectMixin
 
 # Create your views here.
-
 
 class AcuiculturaHome(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
     model = ProductionUnit
