@@ -21,8 +21,6 @@ class Specie(models.Model):
 class ProductionUnit(core.Company):
     def __str__(self):
         return str(self.pk)
-        
-
 
 class RepreUnitProductive(models.Model):
     id = models.UUIDField(
@@ -69,7 +67,7 @@ class Lagoon(models.Model):
     lagoon_diameter = models.IntegerField(_("Ancho de la Laguna"),blank=False,null=False)
     lagoon_deepth = models.IntegerField(_("Largo de la Laguna "),blank=False,null=False)
     total_area_mirror_guater = models.IntegerField(_("Area total de Terreno"),blank=True,null=True)
-
+    sistem_cultivate = models.CharField(_("Sistema de Cultivo"),max_length=50, blank=True,null=True,choices= Selects().type_cultive())
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

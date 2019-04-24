@@ -75,3 +75,9 @@ class Selects(object):
             ('is_good', 'Bueno'),
             ('is_bad', 'Malo')
         )
+
+    def type_cultive(self):
+        return(
+            ('is_mono', 'Mono Cultivo'),
+            ('is_duo', 'Duo Cultivo')
+        )
