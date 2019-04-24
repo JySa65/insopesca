@@ -36,9 +36,15 @@ class EspecieForm(forms.ModelForm):
 
 
 class TracingCreateForm(forms.ModelForm):
+
     class Meta:
         model = Tracing
         fields = ('number_lagoon','new_number_lagoon','number_well','new_number_well','illegal_superfaces','irregular_superfaces','permise_superfaces','regular_superfaces')
+
+    # def __init__(self, *args, **kwargs):
+        # super().__init__(*args, **kwargs)
+        # self.fields['number_lagoon'].widget.attrs['readonly'] = 'readonly'
+
 
 class TracingUpdateForm(forms.ModelForm):
     class Meta:
@@ -47,8 +53,7 @@ class TracingUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
 
         super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields['new_number_lagoon'].widget.attrs['readonly'] = 'readonly'
+        self.fields['new_number_lagoon'].widget.attrs['readonly'] = 'readonly'
 
 class RepresentativeForm(forms.ModelForm):
     class Meta:

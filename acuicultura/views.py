@@ -182,6 +182,7 @@ class SpeciesCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
 class SpeciesList(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
     model = Specie
     template_name = "acuicultura/specie_list.html"
+    paginate_by = 30
 
     def get_context_data(self, **kwargs):
         context = super(SpeciesList, self).get_context_data(**kwargs)
@@ -255,6 +256,9 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(TracingCreate, self).get_context_data(**kwargs)
+        context['tracing'] = LagoonTracing.objects.filter(
+            tracing__producion_unit=self.get_object())
+
         data = []
 
         context['new_well_diameter'] = 0
@@ -274,8 +278,6 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
         new_wells = int(request.POST.get("new_number_well", 0))
         new_lagoon = int(request.POST.get("new_number_lagoon", 0))
         unit = self.get_object()
-        print(unit)
-        return HttpResponse("hola")
         form = self.form_class(request.POST)
         c_new_well_deepth = []
         c_new_well_diameter = []
@@ -287,12 +289,12 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
         lagoons_mono = []
         especies = []
         cantidad_especies = []
-        
 
-        for i in range(int(new_wells)):
-            new_wells_diameter = request.POST.get(
+        request_post = request.POST
+        for i in range(new_wells):
+            new_wells_diameter = request_post.get(
                 "new_wells_diameter_%s" % (i))
-            new_wells_deepth = request.POST.get("new_wells_deepth_%s" % (i))
+            new_wells_deepth = request_post.get("new_wells_deepth_%s" % (i))
             if new_wells_diameter != None:
                 c_new_well_diameter.append(new_wells_diameter)
                 c_new_well_deepth.append(new_wells_deepth)
@@ -301,17 +303,17 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
             json_new_well_deepth = json.dumps(c_new_well_deepth)
 
         for i in range(int(new_lagoon)):
-            new_lagoon_diameter = request.POST.get(
+            new_lagoon_diameter = request_post.get(
                 "new_lagoon_diameter_%s" % (i))
-            new_lagoon_deepth = request.POST.get("new_lagoon_deepth_%s" % (i))
+            new_lagoon_deepth = request_post.get("new_lagoon_deepth_%s" % (i))
             if new_lagoon_diameter != None and new_lagoon_diameter != None:
                 c_new_lagoon_deepth.append(new_lagoon_diameter)
                 c_new_lagoon_diameter.append(new_lagoon_deepth)
 
             json_new_lagoon_diameter = json.dumps(c_new_lagoon_diameter)
             json_new_lagoon_deepth = json.dumps(c_new_lagoon_deepth)
-
-        print (request.POST)
+        # return HttpResponse("Su")
+        print(request.POST)
         if form.is_valid():
             tracing = form.save(commit=False)
             tracing.producion_unit = unit
@@ -346,7 +348,7 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
                         lagoons_mono.append(lagoon)
                     elif request.POST.get("sistem_cultive%s" % (i)) == "duo":
                         lagoons_duo.append(lagoon)
-                
+
                 return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit.pk,)))
             elif request.POST.get("new_number_well") != "0" and request.POST.get("new_number_lagoon") != "0":
                 tracing = form.save(commit=False)
@@ -585,7 +587,8 @@ class Representative_unit_production_detail(DetailView, UserUrlCorrectMixin):
     template_name = "acuicultura/representative_detail.html"
 
 
-class Representative_unit_production_delete(LoginRequiredMixin, UserUrlCorrectMixin, View):
+class Representative_unit_production_delete(LoginRequiredMixin,
+                                            UserUrlCorrectMixin, View):
     model = RepreUnitProductive
 
     def get_object(self):
@@ -626,7 +629,8 @@ class Representative_unit_production_delete(LoginRequiredMixin, UserUrlCorrectMi
 #     template_name = "acuicultura/representative_form.html"
 
 
-class RepresentativeUnitProductionUpdate(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):
+class RepresentativeUnitProductionUpdate(LoginRequiredMixin,
+                                         UserUrlCorrectMixin, UpdateView):
     model = RepreUnitProductive
     form_class = RepresentativeForm
     template_name = "acuicultura/representative_form.html"
