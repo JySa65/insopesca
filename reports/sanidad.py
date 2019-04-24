@@ -91,3 +91,6 @@ class ReportSanidadListInpections(View):
             response['Content-type'] = 'application/pdf'
             response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
         return response
+
+
+# class 
