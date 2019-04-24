@@ -7,7 +7,7 @@ from simple_history.admin import SimpleHistoryAdmin
 
 
 @admin.register(User)
-class UserAdmin(BaseUserAdmin):
+class UserAdmin(BaseUserAdmin, SimpleHistoryAdmin):
     readonly_fields = ('email', 'created_at', 'date_joined',
                        'updated_at', 'last_login')
     list_display = ('email', 'name', 'last_name')
@@ -25,6 +25,7 @@ class UserAdmin(BaseUserAdmin):
         (_('Market Stall'), {'fields': ('role', 'level',)}),
         (_('Join'), {'fields': ('date_joined', 'created_at', 'updated_at')}),
         (_('Login'), {'fields': ('last_login',)}),
+        # (_('History'), {'fields': ('history',)}),
     )
     add_fieldsets = (
         (None, {

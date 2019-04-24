@@ -155,6 +155,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 AUTH_USER_MODEL = 'authentication.User'
 
+# history django
+SIMPLE_HISTORY_EDIT = True
+
 
 # shell python
 SHELL_PLUS = "bpython"
@@ -169,4 +172,4 @@ CORS_ORIGIN_ALLOW_ALL=True
 # seccion expire
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 60 * 5
+SESSION_COOKIE_AGE = 3600
