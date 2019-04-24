@@ -59,6 +59,7 @@ Acuicultura / Unida Productora / Representante / {{ object.pk }}
                     </div>
                 </div>
                 <div class="card-body">
+                  
                         <div class="row text-center">
                           <div class="col-sm-6 mb-3">
                             <a href="{% url 'acuicultura:repre_update' object.pk %}" class="btn btn-rounded btn-info">
@@ -83,15 +84,8 @@ Acuicultura / Unida Productora / Representante / {{ object.pk }}
                               Desactivar
                             </a>
                           </div>
-                            
                           {% endif %}
                 
-                          <!-- <div class="col-sm-6 mb-3">
-                            <a href="{% url 'acuicultura:repre_delete' object.pk %}" class="btn btn-rounded btn-danger">
-                              <i class="fas fa-user-times"></i>
-                              Eliminar
-                            </a>
-                          </div> -->
                         </div>
                       </div>
 			</div>
