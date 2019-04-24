@@ -25,7 +25,7 @@ class AcuiculturaHome(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
 # Views Production = Create,detail,update,delete
 
 
-class ProductionUnitCreateView(LoginRequiredMixin, CreateView):
+class ProductionUnitCreateView(LoginRequiredMixin,UserUrlCorrectMixin, CreateView):
     model = ProductionUnit
     second_model = CardinalPoint
     form_class = UnitCreateForm
@@ -62,7 +62,7 @@ class ProductionUnitCreateView(LoginRequiredMixin, CreateView):
             return render(request, self.template_name, {'form': unit_form, 'second': cardinal_form})
 
 
-class ProductionUnitUpdate(LoginRequiredMixin, UpdateView):
+class ProductionUnitUpdate(LoginRequiredMixin,UserUrlCorrectMixin, UpdateView):
     model = ProductionUnit
     second_model = CardinalPoint
     form_class = UnitCreateForm
@@ -98,12 +98,12 @@ class ProductionUnitUpdate(LoginRequiredMixin, UpdateView):
         if unit_form.is_valid() and cardinal_form.is_valid():
             unit_form.save()
             cardinal_form.save()
-            return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit_save.pk,)))
+            return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit.pk,)))
         else:
             return render(request, self.template_name, {'form': unit_form, 'second': cardinal_form})
 
 
-class ProductionuUnitDetail(LoginRequiredMixin, DetailView):
+class ProductionuUnitDetail(LoginRequiredMixin,UserUrlCorrectMixin, DetailView):
     model = ProductionUnit
 
     template_name = "acuicultura/unit_detail.html"
@@ -119,7 +119,7 @@ class ProductionuUnitDetail(LoginRequiredMixin, DetailView):
         return context
 
 
-class ProductionUnitList(LoginRequiredMixin, ListView):
+class ProductionUnitList(LoginRequiredMixin,UserUrlCorrectMixin, ListView):
     model = ProductionUnit
     template_name = "acuicultura/product_list.html"
 
@@ -132,21 +132,44 @@ class ProductionUnitList(LoginRequiredMixin, ListView):
         return context
 
 
-class ProductionUnitDelete(LoginRequiredMixin, DeleteView):
+class ProductionUnitDelete(LoginRequiredMixin,UserUrlCorrectMixin, View):
     model = ProductionUnit
-    template_name = "acuicultura/product_confirm_delete.html"
+
+    def get_object(self):
+        return get_object_or_404(
+            self.model, pk=self.kwargs.get('pk'))
+
+    def delete(self, request, *args, **kwargs):
+        unit_production = self.get_object()
+        unit_production.delete()
+        data = dict(
+            status=True,
+            msg="Unidad Productora Eliminada"
+        )
+        return JsonResponse(data)
 
     def post(self, request, *args, **kwargs):
-        unit = self.model.objects.get(pk=self.kwargs['pk'])
-        unit.is_delete = True
-        unit.operative = False
-
-        unit.save()
-        return redirect("acuicultura:home")
+        try:
+            password = json.loads(
+                str(self.request.body, 'utf-8')).get('password', "")
+            user = checkPassword(self.request.user.email, password)
+            if not user:
+                data = dict(
+                    status=False,
+                    msg="Contraseña Incorrecta"
+                )
+                return JsonResponse(data)
+            return self.delete(request, *args, **kwargs)
+        except Exception as e:
+            data = dict(
+                status=False,
+                data=e
+            )
+            return JsonResponse(data)
 # # Views Species = Create,detail,update,delete
 
 
-class SpeciesCreateView(LoginRequiredMixin, CreateView):
+class SpeciesCreateView(LoginRequiredMixin,UserUrlCorrectMixin, CreateView):
     model = Specie
     form_class = EspecieForm
     template_name = "acuicultura/specie_form.html"
@@ -155,7 +178,7 @@ class SpeciesCreateView(LoginRequiredMixin, CreateView):
         return reverse_lazy('acuicultura:detail_specie', args=(self.object.id,))
 
 
-class SpeciesList(LoginRequiredMixin, ListView):
+class SpeciesList(LoginRequiredMixin,UserUrlCorrectMixin, ListView):
     model = Specie
     template_name = "acuicultura/specie_list.html"
 
@@ -168,7 +191,7 @@ class SpeciesList(LoginRequiredMixin, ListView):
         return context
 
 
-class SpeciesUpdate(LoginRequiredMixin, UpdateView):
+class SpeciesUpdate(LoginRequiredMixin,UserUrlCorrectMixin ,UpdateView):
     model = Specie
     form_class = EspecieForm
     template_name = "acuicultura/specie_form.html"
@@ -177,19 +200,48 @@ class SpeciesUpdate(LoginRequiredMixin, UpdateView):
         return reverse_lazy('acuicultura:detail_specie', args=(self.object.id,))
 
 
-class SpeciesDetail(LoginRequiredMixin, DetailView):
+class SpeciesDetail(LoginRequiredMixin,UserUrlCorrectMixin, DetailView):
     model = Specie
     template_name = "acuicultura/specie_detail.html"
 
 
-class SpeciesDelete(LoginRequiredMixin, DeleteView):
+class SpeciesDelete(LoginRequiredMixin,UserUrlCorrectMixin ,View):
     model = Specie
-    template_name = "acuicultura/specie_delete.html"
-    success_url = reverse_lazy('acuicultura:list_specie')
+    def get_object(self):
+        return get_object_or_404(
+            self.model, pk=self.kwargs.get('pk'))
+
+    def delete(self, request, *args, **kwargs):
+        species = self.get_object()
+        species.delete()
+        data = dict(
+            status=True,
+            msg="Especie Eliminada"
+        )
+        return JsonResponse(data)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            password = json.loads(
+                str(self.request.body, 'utf-8')).get('password', "")
+            user = checkPassword(self.request.user.email, password)
+            if not user:
+                data = dict(
+                    status=False,
+                    msg="Contraseña Incorrecta"
+                )
+                return JsonResponse(data)
+            return self.delete(request, *args, **kwargs)
+        except Exception as e:
+            data = dict(
+                status=False,
+                data=e
+            )
+            return JsonResponse(data)
 
 
 # # Views Tracing = Create,detail,update,delete
-class TracingCreate(LoginRequiredMixin, CreateView):
+class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin,CreateView):
     model = Tracing
     form_class = TracingCreateForm
     tempalte_name = "acuicultura/tracing_form.html"
@@ -298,8 +350,6 @@ class TracingCreate(LoginRequiredMixin, CreateView):
                         lagoons_duo.append(lagoon)
 
                    
-                # for i in range(int(request.POST.get("new_number_lagoon"))):
-                    # print (request.POST.get("sistem_cultive%s" % (i)))
                     if request.POST.get("sistem_cultive%s" % (i)) == "mono" :
 
                         print("mono")
@@ -312,57 +362,25 @@ class TracingCreate(LoginRequiredMixin, CreateView):
                                 print ("fin mono")                      
 
                     elif request.POST.get("sistem_cultive%s" % (i)) == "duo":
-
                         while contador < i:
-                            print ("------------")
-                            print("duo")
-                            print ("animal:",(request.POST.get("data__%s" % (contador))))
-                            # busqueda = Specie.objects.filter(pk=int(request.POST.get("data__%s" % (contador))))
-                            print (lagoons_duo[i-1])
-                            # print (busqueda.pk)
-                            # Lagoon_has_especies.objects.create(lagoon=lagoons_duo[i-1],especies_id=busqueda.pk,number_specie=1)
+
+                            print ("____________________________")
+                            print ("Laguna Nro",contador,":",lagoons_duo[contador])
+                            print ("____________________________")
+
                             contador+=1
+
+                                # print ("------------")
+                                # print("duo")
+                                # print ("animal:",(request.POST.get("data__%s" % (contador))))
+                                # busqueda = Specie.objects.filter(pk=int(request.POST.get("data__%s" % (contador))))
+                                # print (lagoons_duo[i-1])
+                                # print (busqueda.pk)
+                                # Lagoon_has_especies.objects.create(lagoon=lagoons_duo[i-1],especies_id=busqueda.pk,number_specie=1)
 
                             print ("fin duo")
                             print("------------")
 
-                        # if request.POST.get("sistem_cultive%s" % (i)) == "duo":
-                        #     for a in str(i):
-                        #         print( "es duo:",a)
-                            #     Lagoon_has_especies.objects.create(lagoon=lagoons[i],especies_id=busqueda.pk,number_specie=1)
-                            # contador_lagunas += 1
-
-
-
-                        #     busqueda = Specie.objects.filter(pk=int(request.POST.get(
-                        #         "data__%s" % (contador))))
-                        
-                        # for i in request.POST.get("data__%s" % (contador)):
-                        #     print("i:",i)
-                        # while contador < 2:
-                        #     # print ("contador:",contador)
-                        #     print ("________________")
-                        #     print ("Inicio procedimiento")
-                        #     # print (request.POST.get("data__%s" % (contador)))
-                        #     busqueda = Specie.objects.filter(pk=int(request.POST.get(
-                        #         "data__%s" % (contador))))
-                        #     # print("busqueda:", busqueda.pk)
-                        #     # print("especie:", (request.POST.get(
-                        #         # "data__%s" % (contador+1))))
-                        #     # print (request.POST.get("data__%s" % (contador)))
-                        #     # print(lagoons[i])
-                        #     print ("busqueda:",busqueda)
-                        #     # for i in busqueda:
-                        #     #     print("ii:",i.pk) 
-                        #     # Lagoon_has_especies.objects.create(lagoon=lagoons[i],especies_id=busqueda.pk,number_specie=1)
-                        #     # print ("lagoons:",lagoons[i])
-                        #     # print ("lagonss:",lagoons[contador])
-                        #     print ("________________")
-                        #     print ("Fin procedimiento")
-                        #     contador +=1
- 
-                        #     if contador == 2:
-                        #         print ("fin duo")
                 return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit.pk,)))
 
             elif request.POST.get("new_number_well") != "0" and request.POST.get("new_number_lagoon") != "0":
@@ -398,7 +416,7 @@ class TracingCreate(LoginRequiredMixin, CreateView):
 #     tempalte_name = "acuicultura/tracing_form.html"
 
 
-class TracingUpdate(LoginRequiredMixin, UpdateView):
+class TracingUpdate(LoginRequiredMixin,UserUrlCorrectMixin, UpdateView):
     model = Tracing
     form_class = TracingUpdateForm
 
@@ -495,7 +513,7 @@ class TracingUpdate(LoginRequiredMixin, UpdateView):
             return render(request, self.tempalte_name, {'form': form, 'new_well_diameter': json_new_well_diameter, 'new_well_deepth': json_new_well_deepth, 'new_lagoon_deepth': json_new_lagoon_deepth, 'new_lagoon_diameter': json_new_lagoon_diameter})
 
 
-class TracingDetail(LoginRequiredMixin, DetailView):
+class TracingDetail(LoginRequiredMixin,UserUrlCorrectMixin ,DetailView):
     model = Tracing
     tempalte_name = "acuicultura/tracing_detail.html"
 
@@ -509,12 +527,12 @@ class TracingDetail(LoginRequiredMixin, DetailView):
         return context
 
 
-class WellDetail(LoginRequiredMixin, DetailView):
+class WellDetail(LoginRequiredMixin,UserUrlCorrectMixin, DetailView):
     model = Well
     template_name = "acuicultura/detail_well.html"
 
 
-class LagoonDetail(LoginRequiredMixin, DetailView):
+class LagoonDetail(LoginRequiredMixin,UserUrlCorrectMixin, DetailView):
     model = Lagoon
     template_name = "acuicultura/detail_lagoon.html"
 
@@ -533,14 +551,44 @@ class LagoonDetail(LoginRequiredMixin, DetailView):
         return context
 
 
-class Tracingdelete(DeleteView):
+class TracingdeleteView(View,UserUrlCorrectMixin,LoginRequiredMixin):
     model = Tracing
-    success_url = reverse_lazy('acuicultura:home')
+    def get_object(self):
+        return get_object_or_404(
+            self.model, pk=self.kwargs.get('pk'))
+
+    def delete(self, request, *args, **kwargs):
+        tracing = self.get_object()
+        tracing.delete()
+        data = dict(
+            status=True,
+            msg="Seguimiento Eliminado"
+        )
+        return JsonResponse(data)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            password = json.loads(
+                str(self.request.body, 'utf-8')).get('password', "")
+            user = checkPassword(self.request.user.email, password)
+            if not user:
+                data = dict(
+                    status=False,
+                    msg="Contraseña Incorrecta"
+                )
+                return JsonResponse(data)
+            return self.delete(request, *args, **kwargs)
+        except Exception as e:
+            data = dict(
+                status=False,
+                data=e
+            )
+            return JsonResponse(data)
 
 
 # # Views Representative Unit
 
-class RepreUnitCreate(LoginRequiredMixin, CreateView):
+class RepreUnitCreate(LoginRequiredMixin,UserUrlCorrectMixin, CreateView):
     model = ProductionUnit
     second_model = RepreUnitProductive
     template_name = "acuicultura/representative_form.html"
@@ -566,13 +614,13 @@ class RepreUnitCreate(LoginRequiredMixin, CreateView):
             return render(self.request, self.template_name, {'form': form})
 
 
-class Representative_unit_production_detail(DetailView):
+class Representative_unit_production_detail(DetailView,UserUrlCorrectMixin):
     model = RepreUnitProductive
     template_name = "acuicultura/representative_detail.html"
 
 
 
-class Representative_unit_production_delete(LoginRequiredMixin, View):
+class Representative_unit_production_delete(LoginRequiredMixin,UserUrlCorrectMixin, View):
     model = RepreUnitProductive
 
     def get_object(self):
@@ -581,7 +629,6 @@ class Representative_unit_production_delete(LoginRequiredMixin, View):
 
     def delete(self, request, *args, **kwargs):
         repre = self.get_object()
-        print(repre)
         repre.is_active = False
         repre.save()
         data = dict(
@@ -614,7 +661,7 @@ class Representative_unit_production_delete(LoginRequiredMixin, View):
 #     template_name = "acuicultura/representative_form.html"
 
 
-class RepresentativeUnitProductionUpdate(LoginRequiredMixin, UpdateView):
+class RepresentativeUnitProductionUpdate(LoginRequiredMixin,UserUrlCorrectMixin, UpdateView):
     model = RepreUnitProductive
     form_class = RepresentativeForm
     template_name = "acuicultura/representative_form.html"

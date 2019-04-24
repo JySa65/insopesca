@@ -12,7 +12,7 @@ import "./module/acuicultura/tracing_form.js"
 import "./module/acuicultura/company_form.js"
 import "./module/acuicultura/species_form.js"
 import "./module/acuicultura/repre_form.js"
-
+import "./module/acuicultura/specie.js"
 import "./module/sanidad/account_form.js"
 import "./module/sanidad/company_form.js"
 import "./module/sanidad/inspection.js"

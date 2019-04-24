@@ -1,8 +1,13 @@
+import swal from 'sweetalert2';
+import axios from 'axios';
+import getCookie from '../../utils/get_cookie.js';
 import validInput from '../../utils/validInput.js';
+import deleteSwalCompany from '../../utils/delete_with_swal.js';
+
 const new_wells = document.querySelector("#id_new_number_well");
-const new_lagoon = document.querySelector("#id_new_number_lagoon");
+// const new_lagoon = document.querySelector("#id_new_number_lagoon");
 const multiwells = document.querySelector("#multinew_wells");
-const multilagoon = document.querySelector("#multinew_lagoon");
+// const multilagoon = document.querySelector("#multinew_lagoon");
 
 // if (new_lagoon){
 //     const html = (name, number) => `
@@ -83,3 +88,35 @@ if (id_tracing_form) {
     
 }
 
+
+const deletetracing = (password, company) => {
+    
+    const config = {
+        headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+        }
+    }
+    return axios.post(company, { password }, config)
+}
+
+
+const btn_delete_tracing = document.querySelector("#btn_delete_tracing")
+if (btn_delete_tracing) {
+    btn_delete_tracing.addEventListener('click', (e) => {
+        e.preventDefault()
+        const url = btn_delete_tracing.getAttribute("href")
+        deleteSwalCompany(url, deletetracing)
+            .then((result) => {
+                if (result.value) {
+                    const data = result.value
+                    swal.fire({
+                        type: "success",
+                        titleText: data.msg,
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                    window.location.href = "http://localhost:8000/acuicultura/"
+                }
+            })
+    })
+}

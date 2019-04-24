@@ -27,6 +27,23 @@
 						</label>
 						<span class="h5">{{ object.scientific_name }}</span>
 					</div>
+					<div class="card-body">
+						<div class="row text-center">
+							<div class="col-sm-6 mb-3">
+								<a href="{% url 'acuicultura:update_specie' object.pk %} " class="btn btn-rounded btn-info">
+									<i class="far fa-edit"></i>
+									Actualizar
+								</a>
+							</div>
+							<div class="col-sm-6 mb-3">
+								<a href="{% url 'acuicultura:delete_specie' object.pk %} " class="btn btn-rounded btn-danger" id="btn_delete_specie">
+									<i class="fas fa-user-times"></i>
+									Eliminar
+								</a>
+							</div>
+	
+						</div>
+					</div>				
 
 				</div>
 			</div>

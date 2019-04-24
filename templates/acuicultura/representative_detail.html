@@ -68,6 +68,12 @@ Acuicultura / Unida Productora / Representante / {{ object.pk }}
                           </div>
                           
                           {% if object.is_active == False %}
+                            <div class="col-sm-6 mb-3">
+                              <a href="#" class="btn btn-rounded btn-success" id="btn_delete_repre_company">
+                                <i class="fas fa-check"></i>
+                                Activar
+                              </a>
+                            </div>
                             
                           {% else %}
                             

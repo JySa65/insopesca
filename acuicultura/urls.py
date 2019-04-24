@@ -2,7 +2,7 @@ from django.urls import path
 from acuicultura.views import AcuiculturaHome, ProductionUnitCreateView,\
     ProductionUnitUpdate, ProductionuUnitDetail, ProductionUnitDelete, ProductionUnitList,\
     SpeciesCreateView, SpeciesList, SpeciesDetail, SpeciesUpdate, SpeciesDelete, TracingCreate, RepreUnitCreate,\
-    TracingDetail, TracingUpdate,WellDetail,LagoonDetail,Tracingdelete,Representative_unit_production_delete, Representative_unit_production_detail, \
+    TracingDetail, TracingUpdate,WellDetail,LagoonDetail,TracingdeleteView,Representative_unit_production_delete, Representative_unit_production_detail, \
          RepresentativeUnitProductionUpdate
 
 
@@ -39,7 +39,7 @@ urlpatterns = [
          TracingCreate.as_view(), name="create_tracing"),
     path('tracing/detail/<pk>/', TracingDetail.as_view(), name="detail_tracing"),
     path('tracing/update/<pk>/', TracingUpdate.as_view(), name="update_tracing"),
-    path('tracing/delete/<pk>/', Tracingdelete.as_view(), name="delete_tracing"),
+    path('tracing/delete/<pk>/', TracingdeleteView.as_view(), name="delete_tracing"),
     # path('list/', TracingList.as_view(), name="list_tracing"),
     path('well/detail/<pk>/', WellDetail.as_view(), name="well_detail"),
     path('lagoon/detail/<pk>/', LagoonDetail.as_view(), name="lagoon_detail"),

@@ -4,24 +4,8 @@ import getCookie from '../../utils/get_cookie.js';
 import validInput from '../../utils/validInput.js';
 import deleteSwalCompany from '../../utils/delete_with_swal.js';
 
-const id_form_company_acui = document.querySelector("#id_form_company_acuicultura")
-if (id_form_company_acui) {
-    document.querySelector("#id_document").addEventListener(
-        "keypress", (event) => validInput('n', 12, event))
 
-    document.querySelector("#id_name").addEventListener(
-        "keypress", (event) => validInput('g', 50, event))
-
-    document.querySelector("#id_tlf").addEventListener(
-        "keypress", (event) => validInput('n', 11, event))
-
-    document.querySelector("#id_tlf_house").addEventListener(
-        "keypress", (event) => validInput('n', 11, event))
-    
-}
-
-
-const deleteuni = (password, company) => {
+const deletespecie = (password, company) => {
     
     const config = {
         headers: {
@@ -32,12 +16,12 @@ const deleteuni = (password, company) => {
 }
 
 
-const btn_delete_unit = document.querySelector("#btn_delete_unit")
-if (btn_delete_unit) {
-    btn_delete_unit.addEventListener('click', (e) => {
+const btn_delete_specie = document.querySelector("#btn_delete_specie")
+if (btn_delete_specie) {
+    btn_delete_specie.addEventListener('click', (e) => {
         e.preventDefault()
-        const url = btn_delete_unit.getAttribute("href")
-        deleteSwalCompany(url, deleteuni)
+        const url = btn_delete_specie.getAttribute("href")
+        deleteSwalCompany(url, deletespecie)
             .then((result) => {
                 if (result.value) {
                     const data = result.value
