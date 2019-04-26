@@ -256,22 +256,21 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(TracingCreate, self).get_context_data(**kwargs)
-        context['tracing'] = LagoonTracing.objects.filter(
+        context['tracing_lagoon'] = LagoonTracing.objects.filter(
             tracing__producion_unit=self.get_object())
 
-        data = []
+        context['tracing_well'] = WellTracing.objects.filter(
+            tracing__producion_unit=self.get_object())
 
         context['new_well_diameter'] = 0
         context['new_well_deepth'] = 0
         context['new_lagoon_diameter'] = 0
         context['new_lagoon_deepth'] = 0
-        for i in Specie.objects.all():
-            data.append(dict(
-                id=i.pk,
-                name=f"{i.scientific_name} - {i.ordinary_name}",
-            ))
 
-        context['especie'] = data
+        context['especie'] = [dict(
+            id=i.pk,
+            name=f"{i.scientific_name} - {i.ordinary_name}",
+        ) for i in Specie.objects.all()]
         return context
 
     def post(self, request, *args, **kwargs):

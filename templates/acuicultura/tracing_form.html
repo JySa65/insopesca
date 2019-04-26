@@ -34,14 +34,21 @@ Registro De Seguimiento
 					{% csrf_token %}
 					<div style="display:flex; align-items: center;">
 						<h4 style="margin:0"><b>Numero de Lagunas Actuales:</b>
-							<span class="text-primary"><b>{{ tracing.count }}</b></span></h4>
+							<span class="text-primary"><b>{{ tracing_lagoon.count }}</b></span></h4>
 						<!-- <button>+</button> -->
 						<button type="button" class="btn btn-primary" style="margin-left: 30px;" data-toggle="tooltip" data-placement="top" title="Añadir Nueva Laguna" id="id_new_lagoon">
 							<i class="fas fa-plus"></i>
 						</button>
-
 					</div>
 					<div id="id_data_lagoon"></div>
+					<div style="display:flex; align-items: center; margin-top: 20px;">
+						<h4 style="margin:0"><b>Numero de Pozos Actuales:</b>
+							<span class="text-primary"><b>{{ tracing_well.count }}</b></span></h4>
+						<!-- <button>+</button> -->
+						<button type="button" class="btn btn-primary" style="margin-left: 30px;" data-toggle="tooltip" data-placement="top" title="Añadir Nuevo Pozo" id="id_new_lagoon">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
 				</form>
 			</div>
 		</div>

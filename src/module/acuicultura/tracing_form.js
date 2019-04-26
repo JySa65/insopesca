@@ -1,29 +1,69 @@
+import yo from 'yo-yo'
+import empty from "empty-element";
+
 const id_new_lagoon = document.querySelector('#id_new_lagoon')
-if (id_new_lagoon){
+if (id_new_lagoon) {
     const data = []
 
-    const onChange = index => e => {
-        data[index] = e.target.value
+    const render = () => {
+        const root = document.querySelector('#id_data_lagoon')
+        const html = []
+        data.forEach((item, index) => html.push(
+            input("name", "id_hola", index, item)))
+        const emt = empty(root)
+        html.forEach(inp => {
+            emt.append(inp)
+        })
     }
 
-    const input = (name, id, index, value="") => `
-        <input type="text" name="${name}" id="${id}" value="${value}" onchange="${onChange(index) }">
-    `
+    const onChange = (e, name, index) => {
+        data[index][e.target.name] = e.target.value
+    }
+
+    const deleteRow = (index) => () => {
+        data.splice(index, 1)
+        return render()
+    }
+
+    const onChange_diameter = index => e => onChange(e, 'diameter', index)
+
+    const onchange_deepth = index => e => onChange(e, 'deepth', index)
+
+    const input = (name, id, index, value = "") => {
+        return yo`
+            <div class="row" id=${index}>
+                <div class="col-md-5 col-sm-10">
+                    <div class="form-group">
+                        <label for="${id}" class="col-form-label">
+                            Diametro de la Laguna Nro° ${index + 1}
+                        </label>
+                        <input class="form-control" type="number" name="${name}" id="${id}" value="${value.diameter}" onchange="${onChange_diameter(index)}" required autocomplete="off">
+                    </div>
+                </div>
+                <div class="col-md-5 col-sm-10">
+                    <div class="form-group">
+                        <label for="${id}" class="col-form-label">
+                            Profundidad de la Laguna Nro° ${index + 1}
+                        </label>
+                        <input class="form-control" type="number" name="${name}" id="${id}" value="${value.deepth}" onchange="${onchange_deepth(index)}" required autocomplete="off">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-danger" style="margin: 30px 0 0 0;" data-toggle="tooltip" data-placement="top" title="Eliminar Fila N° ${index + 1}" onclick="${deleteRow(index)}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+
+                </div>
+            </div>
+        `
+    }
 
     id_new_lagoon.addEventListener('click', (e) => {
-        data.push({})
-        html = []
-        data.forEach((item, index) => html.push(input("name", "id_hola", index)))
-        document.querySelector('#id_data_lagoon').innerHTML = ""
-        html.forEach(inp => {
-            document.querySelector('#id_data_lagoon').innerHTML += inp
+        data.push({
+            diameter: "",
+            deepth: ""
         })
-
-        console.log(html)
-        
-        // data.map(item => console.log(item))
-
-        console.log(data)
+        return render()
     })
 
 }
@@ -109,19 +149,19 @@ if (id_new_lagoon){
 
 //     document.querySelector("#id_last_name_repre").addEventListener(
 //         "keypress", (event) => validInput('g', 50, event))
-    
+
 
 //     document.querySelector("#id_phone_repre").addEventListener(
 //         "keypress", (event) => validInput('n', 11, event))
 
 //     document.querySelector("#id_landline_repre").addEventListener(
 //         "keypress", (event) => validInput('n', 11, event))
-    
+
 // }
 
 
 // const deletetracing = (password, company) => {
-    
+
 //     const config = {
 //         headers: {
 //             "X-CSRFToken": getCookie("csrftoken"),
