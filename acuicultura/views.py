@@ -278,7 +278,7 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
         well_current = data.get('well_current', '')
         laggon_current = data.get('laggon_current', '')
         producion_unit = self.get_object()
-        print(data)
+
         if len(lagoons) != 0:
             for number, lagoon in enumerate(lagoons):
                 diameter = lagoon.get('diameter', '')
@@ -329,52 +329,61 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
             )
             return JsonResponse(data)
 
-        with transaction.atomic():
-            data = dict(
-                illegal_superfaces=illegal_superfaces,
-                irregular_superfaces=irregular_superfaces,
-                permise_superfaces=permise_superfaces,
-                regular_superfaces=regular_superfaces,
-                number_well=well_current,
-                number_lagoon=laggon_current,
-                new_number_lagoon=len(lagoons),
-                new_number_well=len(wells),
-                producion_unit=producion_unit,
-                responsible=request.user
-            )
-            tracing = Tracing.objects.create(**data)
-            for lagoon in lagoons:
-                laggon = Lagoon.objects.create(
+        try:
+            with transaction.atomic():
+                data = dict(
+                    illegal_superfaces=illegal_superfaces,
+                    irregular_superfaces=irregular_superfaces,
+                    permise_superfaces=permise_superfaces,
+                    regular_superfaces=regular_superfaces,
+                    number_well=well_current,
+                    number_lagoon=laggon_current,
+                    new_number_lagoon=len(lagoons),
+                    new_number_well=len(wells),
                     producion_unit=producion_unit,
-                    lagoon_diameter=lagoon['diameter'],
-                    lagoon_deepth=lagoon['deepth'])
+                    responsible=request.user
+                )
+                tracing = Tracing.objects.create(**data)
+                for lagoon in lagoons:
+                    laggon = Lagoon.objects.create(
+                        producion_unit=producion_unit,
+                        lagoon_diameter=lagoon['diameter'],
+                        lagoon_deepth=lagoon['deepth'])
 
-                LagoonTracing.objects.create(
-                    tracing=tracing, lagoon=laggon)
+                    LagoonTracing.objects.create(
+                        tracing=tracing, lagoon=laggon)
 
-                number_specie = 1
-                if lagoon['sistem_cultive']['type'] == 'duo':
-                    number_specie = 2
+                    number_specie = 1
+                    if lagoon['sistem_cultive']['type'] == 'duo':
+                        number_specie = 2
+                    
+                    for specie in lagoon['sistem_cultive']['species']:
+                        sspecie = get_object_or_404(Specie, pk=specie)
+                        Lagoon_has_especies.objects.create(
+                            lagoon=laggon,
+                            especies=sspecie,
+                            number_specie=number_specie)
                 
-                for specie in lagoon['sistem_cultive']['species']:
-                    sspecie = get_object_or_404(Specie, pk=specie)
-                    Lagoon_has_especies.objects.create(
-                        lagoon=laggon,
-                        especies=sspecie,
-                        number_specie=number_specie)
-            
-            for well in wells:
-                welll = Well.objects.create(
-                    producion_unit=producion_unit, 
-                    well_diameter=int(well['diameter']), 
-                    well_deepth=int(well['deepth']))
+                for well in wells:
+                    welll = Well.objects.create(
+                        producion_unit=producion_unit, 
+                        well_diameter=well['diameter'], 
+                        well_deepth=well['deepth'])
 
-                WellTracing.objects.create(
-                        tracing=tracing, well=welll)
-            
+                    WellTracing.objects.create(
+                            tracing=tracing, well=welll)
+            data = dict(
+                status=True,
+                msg="Guardado Exitosamente"
+            )
+            return JsonResponse(data)
+        except Exception as e:
+            data = dict(
+                status=False,
+                msg=e
+            )
+            return JsonResponse(data)    
         
-        return HttpResponse("hj")
-
 # class TracingList(TemplateView):
 #     model = Tracing
 #     tempalte_name = "acuicultura/tracing_form.html"

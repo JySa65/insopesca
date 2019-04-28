@@ -65,17 +65,31 @@ if (id_new_lagoon && id_new_well) {
         for (let i = 0; i < number; i++) {
             emt.append(
                 yo`
-                    <div class="col-md-6 col-sm-12">
-                        <label class="col-form-label">
-                            Especies N° ${i + 1}
-                        </label>
-                        <select name="specie" class="form-control" onchange=${getSpecies(index, i)} required>
-                            <option value="">-------------</option>
-                            ${species.map(specie => yo`
-                                <option value=${specie.id}>${specie.name}</option>
-                            `)}
-                        </select>
-                    </div>               
+                    <div class="col-sm-12">
+                        <div class="col-md-6 col-sm-12">
+                            <label class="col-form-label">
+                                Especies N° ${i + 1}
+                            </label>
+                            <select name="specie" class="form-control" onchange=${getSpecies(index, i)} required>
+                                <option value="">-------------</option>
+                                ${species.map(specie => yo`
+                                    <option value=${specie.id}>${specie.name}</option>
+                                `)}
+                            </select>
+                        </div>               
+                        <div class="col-md-6 col-sm-12">
+                            <label class="col-form-label">
+                                Especies N° ${i + 1}
+                            </label>
+                            <select name="specie" class="form-control" onchange=${getSpecies(index, i)} required>
+                                <option value="">-------------</option>
+                                ${species.map(specie => yo`
+                                    <option value=${specie.id}>${specie.name}</option>
+                                `)}
+                            </select>
+                        </div>               
+
+                    </div>
                 `
             ) 
         }
@@ -204,7 +218,10 @@ if (id_new_lagoon && id_new_well) {
             deepth: "",
             sistem_cultive: {
                 type: "",
-                species: []
+                species: [{
+                    number_specie:0,
+                    specie:""
+                }]
             },
         })
         return render('#id_data_lagoon', data, lagoon_template)
