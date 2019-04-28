@@ -2,39 +2,41 @@ import yo from 'yo-yo'
 import empty from "empty-element";
 
 const id_new_lagoon = document.querySelector('#id_new_lagoon')
-console.log(species)
-if (id_new_lagoon) {
+const id_new_well = document.querySelector('#id_new_well')
+if (id_new_lagoon && id_new_well) {
     const data = []
+    const dataWell = [] 
 
-    const render = () => {
-        const $root = document.querySelector('#id_data_lagoon')
-        const html = []
-        const emt = empty($root)
-        data.forEach((item, index) => html.push(
-            lagoon_template("id_hola", index, item)))
-        html.forEach(inp => {
-            emt.append(inp)
-        })
+    const onChange = (index, dat) => e => dat[index][e.target.name] = e.target.value
+
+    const deleteRow = (index, status=true) => () => {
+        if(status){
+            data.splice(index, 1)
+            return render('#id_data_lagoon', data, lagoon_template)
+        }
+        else {
+            dataWell.splice(index, 1)
+            render('#id_data_well', dataWell, well_template)
+        }
     }
 
-    const onChange = index => e => data[index][e.target.name] = e.target.value
-
-    const deleteRow = (index) => () => {
-        data.splice(index, 1)
-        return render()
+    const getSpecies = (index, number) => e => {
+        const value = e.target.value
+        const key = data[index]['sistem_cultive']['species']
+        key[number] = value
     }
+
     const species_template = index => e => {
         const $root = document.querySelector(`#id_species_${index}`)
         data[index][e.target.name]['type'] = e.target.value
+        data[index]['sistem_cultive']['species'] = []
         let number = 0
         switch (e.target.value) {
             case 'mono':
                 number = 1
-                console.log("mono")
                 break;
             case 'duo':
                 number = 2
-                console.log("duo")
                 break;
             default:
                 break;
@@ -47,7 +49,8 @@ if (id_new_lagoon) {
                         <label class="col-form-label">
                             Especies N° ${i + 1}
                         </label>
-                        <select name="specie" class="form-control">
+                        <select name="specie" class="form-control" onchange=${getSpecies(index, i)} required>
+                            <option>-------------</option>
                             ${species.map(specie => yo`
                                 <option value=${specie.id}>${specie.name}</option>
                             `)}
@@ -69,7 +72,7 @@ if (id_new_lagoon) {
                                     Diametro de la Laguna Nro° ${index + 1}
                                 </label>
                                 <input class="form-control" type="number" name="diameter" id="${id}" value="${value.diameter}"
-                                    onchange="${onChange(index)}" required autocomplete="off">
+                                    onchange="${onChange(index, data)}" required autocomplete="off">
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12">
@@ -78,7 +81,7 @@ if (id_new_lagoon) {
                                     Profundidad de la Laguna Nro° ${index + 1}
                                 </label>
                                 <input class="form-control" type="number" name="deepth" id="${id}" value="${value.deepth}"
-                                    onchange="${onChange(index)}" required autocomplete="off">
+                                    onchange="${onChange(index, data)}" required autocomplete="off">
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12">
@@ -92,8 +95,29 @@ if (id_new_lagoon) {
                             </select>
                         </div>
                         <div class="col-md-6 col-sm-12"></div>
-                        <div class="col-sm-12">
-                            <div id="id_species_${index}" class="row"></div>
+                        <div class="col-sm-12 mt-4">
+                            <div id="id_species_${index}" class="row">
+                            ${value.sistem_cultive.species.length >= 1 
+                                ? value.sistem_cultive.species.map((data, i) => {
+                                    return yo`
+                                        <div class="col-md-6 col-sm-12">
+                                        <label class="col-form-label">
+                                            Especies N° ${i + 1}
+                                        </label>
+                                        <select name="specie" class="form-control" onchange=${getSpecies(index, i)} required>
+                                            <option>-------------</option>
+                                            ${species.map(specie => {
+                                                return data == specie.id
+                                                ? yo`<option selected value=${specie.id}>${specie.name}</option>`
+                                                    : yo`<option value=${specie.id}>${specie.name}</option>`
+                                            })}
+                                        </select>
+                                    </div>    
+                                    `
+                                })
+                                : ''
+                            }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -107,6 +131,53 @@ if (id_new_lagoon) {
         `
     }
 
+    const well_template = (id, index, value="") => {
+        return yo`
+            <div class="row mb-4">
+                <div class="col-sm-10">
+                    <div class="row" id=${index}>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label for="${id}" class="col-form-label">
+                                    Diametro del Pozo Nro° ${index + 1}
+                                </label>
+                                <input class="form-control" type="number" name="diameter" id="${id}" value="${value.diameter}"
+                                    onchange="${onChange(index, dataWell)}" required autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label for="${id}" class="col-form-label">
+                                    Profundidad del Pozo Nro° ${index + 1}
+                                </label>
+                                <input class="form-control" type="number" name="deepth" id="${id}" value="${value.deepth}"
+                                    onchange="${onChange(index, dataWell)}" required autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-danger" style="margin: 30px 0 0 0;" data-toggle="tooltip" data-placement="top"
+                        title="Eliminar Fila" onclick="${deleteRow(index, false)}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `
+    }
+
+    const render = (id, dat, template) => {
+        const $root = document.querySelector(id)
+        const html = []
+        const emt = empty($root)
+        dat.forEach((item, index) => html.push(
+            template("id_well", index, item)))
+        html.forEach(inp => {
+            emt.append(inp)
+        })
+    }
+
+    
     id_new_lagoon.addEventListener('click', () => {
         data.push({
             diameter: "",
@@ -116,7 +187,15 @@ if (id_new_lagoon) {
                 species: []
             },
         })
-        return render()
+        return render('#id_data_lagoon', data, lagoon_template)
+    })
+
+    id_new_well.addEventListener('click', () => {
+        dataWell.push({
+            diameter: "",
+            deepth: ""
+        })
+        render('#id_data_well', dataWell, well_template)
     })
 
 }

@@ -41,9 +41,11 @@ class TracingCreateForm(forms.ModelForm):
         model = Tracing
         fields = ('number_lagoon','new_number_lagoon','number_well','new_number_well','illegal_superfaces','irregular_superfaces','permise_superfaces','regular_superfaces')
 
-    # def __init__(self, *args, **kwargs):
-        # super().__init__(*args, **kwargs)
-        # self.fields['number_lagoon'].widget.attrs['readonly'] = 'readonly'
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for _, field in self.fields.items():
+            field.widget.attrs.update(
+                {'class': 'form-control', 'autocomplete': 'off'})
 
 
 class TracingUpdateForm(forms.ModelForm):

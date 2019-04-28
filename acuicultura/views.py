@@ -250,9 +250,7 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
     tempalte_name = "acuicultura/tracing_form.html"
 
     def get_object(self):
-        pk = self.kwargs['pk']
-        _object = get_object_or_404(ProductionUnit, pk=pk)
-        return _object
+        return get_object_or_404(ProductionUnit, self.kwargs['pk'])
 
     def get_context_data(self, **kwargs):
         context = super(TracingCreate, self).get_context_data(**kwargs)
@@ -261,11 +259,6 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
 
         context['tracing_well'] = WellTracing.objects.filter(
             tracing__producion_unit=self.get_object())
-
-        context['new_well_diameter'] = 0
-        context['new_well_deepth'] = 0
-        context['new_lagoon_diameter'] = 0
-        context['new_lagoon_deepth'] = 0
 
         context['species'] = [dict(
             id=i.pk,
