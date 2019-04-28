@@ -1,4 +1,13 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+
+const miniCssExtractPlugin = new MiniCssExtractPlugin({
+	filename: 'main.css',
+	chunkFilename: '[id].css'
+})
+
+const optimizeCSSAssetsPlugin = new OptimizeCSSAssetsPlugin({})
 
 module.exports = {
 	mode: "production",
@@ -17,7 +26,7 @@ module.exports = {
 			{
 				test: /\.(css|scss)$/,
 				use: [
-					'style-loader',
+					MiniCssExtractPlugin.loader,
 					'css-loader',
 					'sass-loader'
 				]
@@ -29,7 +38,11 @@ module.exports = {
 				]
 			}
 		]
-	}
+	},
+	plugins: [
+		miniCssExtractPlugin,
+		optimizeCSSAssetsPlugin,
+	]
 };
 
 // const path = require('path');

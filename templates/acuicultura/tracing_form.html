@@ -22,6 +22,9 @@ Registro De Seguimiento
 
 
 {% block context %}
+<script>
+	var species = {{ species|safe }}
+</script>
 <div class="row">
 	<div class="col-sm-12">
 		<div class="card">
@@ -40,7 +43,10 @@ Registro De Seguimiento
 							<i class="fas fa-plus"></i>
 						</button>
 					</div>
-					<div id="id_data_lagoon"></div>
+					<div id="id_data_lagoon">
+						<hola></hola>
+					</div>
+
 					<div style="display:flex; align-items: center; margin-top: 20px;">
 						<h4 style="margin:0"><b>Numero de Pozos Actuales:</b>
 							<span class="text-primary"><b>{{ tracing_well.count }}</b></span></h4>
@@ -168,6 +174,7 @@ Registro De Seguimiento
 	</div>
 	
 	<script>
+		
 		const new_lagoon = document.querySelector("#id_new_number_lagoon")
 		const multilagoon = document.querySelector("#multinew_lagoon")
 		const multilagoon2 = document.querySelector("#multinew_lagoon2")

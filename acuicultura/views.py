@@ -267,7 +267,7 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
         context['new_lagoon_diameter'] = 0
         context['new_lagoon_deepth'] = 0
 
-        context['especie'] = [dict(
+        context['species'] = [dict(
             id=i.pk,
             name=f"{i.scientific_name} - {i.ordinary_name}",
         ) for i in Specie.objects.all()]

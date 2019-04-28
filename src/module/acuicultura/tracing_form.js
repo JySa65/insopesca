@@ -2,66 +2,119 @@ import yo from 'yo-yo'
 import empty from "empty-element";
 
 const id_new_lagoon = document.querySelector('#id_new_lagoon')
+console.log(species)
 if (id_new_lagoon) {
     const data = []
 
     const render = () => {
-        const root = document.querySelector('#id_data_lagoon')
+        const $root = document.querySelector('#id_data_lagoon')
         const html = []
+        const emt = empty($root)
         data.forEach((item, index) => html.push(
-            input("name", "id_hola", index, item)))
-        const emt = empty(root)
+            lagoon_template("id_hola", index, item)))
         html.forEach(inp => {
             emt.append(inp)
         })
     }
 
-    const onChange = (e, name, index) => {
-        data[index][e.target.name] = e.target.value
-    }
+    const onChange = index => e => data[index][e.target.name] = e.target.value
 
     const deleteRow = (index) => () => {
         data.splice(index, 1)
         return render()
     }
+    const species_template = index => e => {
+        const $root = document.querySelector(`#id_species_${index}`)
+        data[index][e.target.name]['type'] = e.target.value
+        let number = 0
+        switch (e.target.value) {
+            case 'mono':
+                number = 1
+                console.log("mono")
+                break;
+            case 'duo':
+                number = 2
+                console.log("duo")
+                break;
+            default:
+                break;
+        }
+        const emt = empty($root)
+        for (let i = 0; i < number; i++) {
+            emt.append(
+                yo`
+                    <div class="col-md-6 col-sm-12">
+                        <label class="col-form-label">
+                            Especies N° ${i + 1}
+                        </label>
+                        <select name="specie" class="form-control">
+                            ${species.map(specie => yo`
+                                <option value=${specie.id}>${specie.name}</option>
+                            `)}
+                        </select>
+                    </div>               
+                `
+            ) 
+        }
+    }
 
-    const onChange_diameter = index => e => onChange(e, 'diameter', index)
-
-    const onchange_deepth = index => e => onChange(e, 'deepth', index)
-
-    const input = (name, id, index, value = "") => {
+    const lagoon_template = (id, index, value = "") => {
         return yo`
-            <div class="row" id=${index}>
-                <div class="col-md-5 col-sm-10">
-                    <div class="form-group">
-                        <label for="${id}" class="col-form-label">
-                            Diametro de la Laguna Nro° ${index + 1}
-                        </label>
-                        <input class="form-control" type="number" name="${name}" id="${id}" value="${value.diameter}" onchange="${onChange_diameter(index)}" required autocomplete="off">
-                    </div>
-                </div>
-                <div class="col-md-5 col-sm-10">
-                    <div class="form-group">
-                        <label for="${id}" class="col-form-label">
-                            Profundidad de la Laguna Nro° ${index + 1}
-                        </label>
-                        <input class="form-control" type="number" name="${name}" id="${id}" value="${value.deepth}" onchange="${onchange_deepth(index)}" required autocomplete="off">
+            <div class="row mb-4">
+                <div class="col-sm-10">
+                    <div class="row" id=${index}>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label for="${id}" class="col-form-label">
+                                    Diametro de la Laguna Nro° ${index + 1}
+                                </label>
+                                <input class="form-control" type="number" name="diameter" id="${id}" value="${value.diameter}"
+                                    onchange="${onChange(index)}" required autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label for="${id}" class="col-form-label">
+                                    Profundidad de la Laguna Nro° ${index + 1}
+                                </label>
+                                <input class="form-control" type="number" name="deepth" id="${id}" value="${value.deepth}"
+                                    onchange="${onChange(index)}" required autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label for="${id}" class="col-form-label">
+                                Sistema de Cultivo Nro° ${index +1}
+                            </label>
+                            <select name="sistem_cultive" required class="form-control" onchange="${species_template(index)}">
+                                <option ${!value.sistem_cultive.type ? 'selected' : ''}>------------</option>
+                                <option ${value.sistem_cultive.type == 'mono' ? 'selected' : ''}     value="mono">Mono Cultivo</option>
+                                <option ${value.sistem_cultive.type == 'duo' ? 'selected' : ''}     value="duo">Duo Cultivo</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-sm-12"></div>
+                        <div class="col-sm-12">
+                            <div id="id_species_${index}" class="row"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-2">
-                    <button type="button" class="btn btn-danger" style="margin: 30px 0 0 0;" data-toggle="tooltip" data-placement="top" title="Eliminar Fila N° ${index + 1}" onclick="${deleteRow(index)}">
+                    <button type="button" class="btn btn-danger" style="margin: 30px 0 0 0;" data-toggle="tooltip" data-placement="top"
+                        title="Eliminar Fila" onclick="${deleteRow(index)}">
                         <i class="fas fa-trash"></i>
                     </button>
-
                 </div>
             </div>
         `
     }
 
-    id_new_lagoon.addEventListener('click', (e) => {
+    id_new_lagoon.addEventListener('click', () => {
         data.push({
             diameter: "",
-            deepth: ""
+            deepth: "",
+            sistem_cultive: {
+                type: "",
+                species: []
+            },
         })
         return render()
     })
