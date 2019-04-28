@@ -126,17 +126,13 @@ class Tracing(models.Model):
     new_number_well = models.IntegerField(
         _("Numero de  Nuevos Pozos "), null=False, blank=False)
     illegal_superfaces = models.IntegerField(
-        _("Numero de Superficies Ilegales"), blank=False,
-        null=False, default=0)
+        _("Numero de Superficies Ilegales"), blank=False, null=False)
     irregular_superfaces = models.IntegerField(
-        _("Numero de Superficies Irregulares"), blank=False,
-        null=False, default=0)
+        _("Numero de Superficies Irregulares"), blank=False, null=False)
     permise_superfaces = models.IntegerField(
-        _("Numero de Superficies Permisadas"), blank=False,
-        null=False, default=0)
+        _("Numero de Superficies Permisadas"), blank=False, null=False)
     regular_superfaces = models.IntegerField(
-        _("Numero de Superficies regulares"), blank=False,
-        null=False, default=0)
+        _("Numero de Superficies regulares"), blank=False, null=False)
     responsible = models.ForeignKey(User, on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)

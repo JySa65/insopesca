@@ -24,6 +24,9 @@ Registro De Seguimiento
 {% block context %}
 <script>
 	var species = {{ species|safe }}
+	var laggon_current = {{ tracing_lagoon.count }}
+	var well_current = {{ tracing_well.count }}
+	var object_pk = "{{ current.pk }}"
 </script>
 <div class="row">
 	<div class="col-sm-12">
@@ -33,7 +36,7 @@ Registro De Seguimiento
 					class="fas fa-reply"></i></a>
 			</div>
 			<div class="card-body">
-				<form action="" method="post">
+				<form action="" method="post" id="id_form_tracing">
 					{% csrf_token %}
 					<div style="display:flex; align-items: center;">
 						<h4 style="margin:0"><b>Numero de Lagunas Actuales:</b>

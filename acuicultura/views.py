@@ -11,6 +11,7 @@ from utils.check_password import checkPassword
 from django.urls import reverse, reverse_lazy
 import json
 from utils.permissions import UserUrlCorrectMixin
+from django.db import transaction
 
 # Create your views here.
 
@@ -250,16 +251,16 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
     tempalte_name = "acuicultura/tracing_form.html"
 
     def get_object(self):
-        return get_object_or_404(ProductionUnit, self.kwargs['pk'])
+        pk = self.kwargs['pk']
+        return get_object_or_404(ProductionUnit, pk=pk)
 
     def get_context_data(self, **kwargs):
         context = super(TracingCreate, self).get_context_data(**kwargs)
         context['tracing_lagoon'] = LagoonTracing.objects.filter(
             tracing__producion_unit=self.get_object())
-
         context['tracing_well'] = WellTracing.objects.filter(
             tracing__producion_unit=self.get_object())
-
+        context['current'] = self.get_object()
         context['species'] = [dict(
             id=i.pk,
             name=f"{i.scientific_name} - {i.ordinary_name}",
@@ -267,108 +268,112 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        new_wells = int(request.POST.get("new_number_well", 0))
-        new_lagoon = int(request.POST.get("new_number_lagoon", 0))
-        unit = self.get_object()
-        form = self.form_class(request.POST)
-        c_new_well_deepth = []
-        c_new_well_diameter = []
-        c_new_lagoon_deepth = []
-        c_new_lagoon_diameter = []
-        json_new_well_diameter = []
-        json_new_well_deepth = []
-        lagoons_duo = []
-        lagoons_mono = []
-        especies = []
-        cantidad_especies = []
+        data = json.loads(str(request.body, 'utf-8'))
+        lagoons = data.get('lagoon')
+        wells = data.get('well')
+        illegal_superfaces = data.get('illegal_superfaces', '')
+        irregular_superfaces = data.get('irregular_superfaces', '')
+        permise_superfaces = data.get('permise_superfaces', '')
+        regular_superfaces = data.get('regular_superfaces', '')
+        well_current = data.get('well_current', '')
+        laggon_current = data.get('laggon_current', '')
+        producion_unit = self.get_object()
+        print(data)
+        if len(lagoons) != 0:
+            for number, lagoon in enumerate(lagoons):
+                diameter = lagoon.get('diameter', '')
+                deepth = lagoon.get('deepth', '')
+                sistem_cultive = lagoon.get('sistem_cultive', None)
+                _type = sistem_cultive.get('type', '')
+                species = sistem_cultive.get('species', [])
 
-        request_post = request.POST
-        for i in range(new_wells):
-            new_wells_diameter = request_post.get(
-                "new_wells_diameter_%s" % (i))
-            new_wells_deepth = request_post.get("new_wells_deepth_%s" % (i))
-            if new_wells_diameter != None:
-                c_new_well_diameter.append(new_wells_diameter)
-                c_new_well_deepth.append(new_wells_deepth)
+                if (diameter == '' or deepth == '' or sistem_cultive == None):
+                    data = dict(
+                        status=False,
+                        msg=f"Algunos Datos Son Requeridos En La Laguna N° {number+1}"
+                    )
+                    return JsonResponse(data)
 
-            json_new_well_diameter = json.dumps(c_new_well_diameter)
-            json_new_well_deepth = json.dumps(c_new_well_deepth)
+                if _type == '':
+                    data = dict(
+                        status=False,
+                        msg=f"Falta Añadir El Tipo De Sistema De Cultivo En La Laguna N° {number+1}"
+                    )
+                    return JsonResponse(data)
 
-        for i in range(int(new_lagoon)):
-            new_lagoon_diameter = request_post.get(
-                "new_lagoon_diameter_%s" % (i))
-            new_lagoon_deepth = request_post.get("new_lagoon_deepth_%s" % (i))
-            if new_lagoon_diameter != None and new_lagoon_diameter != None:
-                c_new_lagoon_deepth.append(new_lagoon_diameter)
-                c_new_lagoon_diameter.append(new_lagoon_deepth)
+                if (_type == 'mono' and len(species) == 0 or
+                        _type == 'duo' and len(species) <= 1):
+                    data = dict(
+                        status=False,
+                        msg=f"Hace Falta Añadir La Especie En La Laguna N° {number+1}"
+                    )
+                    return JsonResponse(data)
 
-            json_new_lagoon_diameter = json.dumps(c_new_lagoon_diameter)
-            json_new_lagoon_deepth = json.dumps(c_new_lagoon_deepth)
-        # return HttpResponse("Su")
-        print(request.POST)
-        if form.is_valid():
-            tracing = form.save(commit=False)
-            tracing.producion_unit = unit
-            tracing.responsible = request.user
-            tracing.save()
+        if len(wells) != 0:
+            for number, well in enumerate(wells):
+                diameter = well.get('diameter', '')
+                deepth = well.get('deepth', '')
 
-            if request.POST.get("new_number_well") != "0" and request.POST.get("new_number_lagoon") == "0":
-                tracing = form.save(commit=False)
-                tracing.producion_unit = unit
-                tracing.responsible = request.user
-                tracing.save()
+                if (diameter == '' or deepth == ''):
+                    data = dict(
+                        status=False,
+                        msg=f"Algunos Datos Son Requeridos En El Pozo N° {number+1}"
+                    )
+                    return JsonResponse(data)
 
-                for i in range(int(request.POST.get("new_number_well"))):
-                    wells = Well.objects.create(
-                        producion_unit=unit, well_diameter=c_new_well_diameter[i], well_deepth=c_new_well_deepth[i])
-                    wells_tracing = WellTracing.objects.create(
-                        tracing=tracing, well=wells)
-                return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit.pk,)))
+        if (illegal_superfaces == '' or irregular_superfaces == '' or
+                permise_superfaces == '' or regular_superfaces == ''):
+            data = dict(
+                status=False,
+                msg=f"Algunos Datos Son Requeridos En La Superficies"
+            )
+            return JsonResponse(data)
 
-            elif request.POST.get("new_number_lagoon") != "0" and request.POST.get("new_number_well") == "0":
-                tracing = form.save(commit=False)
-                tracing.producion_unit = unit
-                tracing.responsible = request.user
-                tracing.save()
-                for i in range(int(request.POST.get("new_number_lagoon"))):
-                    lagoon = Lagoon.objects.create(
-                        producion_unit=unit, lagoon_diameter=c_new_lagoon_diameter[i], lagoon_deepth=c_new_lagoon_deepth[i],)
-                    lagoon_tracing = LagoonTracing.objects.create(
-                        tracing=tracing, lagoon=lagoon)
+        with transaction.atomic():
+            data = dict(
+                illegal_superfaces=illegal_superfaces,
+                irregular_superfaces=irregular_superfaces,
+                permise_superfaces=permise_superfaces,
+                regular_superfaces=regular_superfaces,
+                number_well=well_current,
+                number_lagoon=laggon_current,
+                new_number_lagoon=len(lagoons),
+                new_number_well=len(wells),
+                producion_unit=producion_unit,
+                responsible=request.user
+            )
+            tracing = Tracing.objects.create(**data)
+            for lagoon in lagoons:
+                laggon = Lagoon.objects.create(
+                    producion_unit=producion_unit,
+                    lagoon_diameter=lagoon['diameter'],
+                    lagoon_deepth=lagoon['deepth'])
 
-                    if request.POST.get("sistem_cultive%s" % (i)) == "mono":
-                        lagoons_mono.append(lagoon)
-                    elif request.POST.get("sistem_cultive%s" % (i)) == "duo":
-                        lagoons_duo.append(lagoon)
+                LagoonTracing.objects.create(
+                    tracing=tracing, lagoon=laggon)
 
-                return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit.pk,)))
-            elif request.POST.get("new_number_well") != "0" and request.POST.get("new_number_lagoon") != "0":
-                tracing = form.save(commit=False)
-                tracing.producion_unit = unit
-                tracing.responsible = request.user
-                tracing.save()
+                number_specie = 1
+                if lagoon['sistem_cultive']['type'] == 'duo':
+                    number_specie = 2
+                
+                for specie in lagoon['sistem_cultive']['species']:
+                    sspecie = get_object_or_404(Specie, pk=specie)
+                    Lagoon_has_especies.objects.create(
+                        lagoon=laggon,
+                        especies=sspecie,
+                        number_specie=number_specie)
+            
+            for well in wells:
+                welll = Well.objects.create(
+                    producion_unit=producion_unit, 
+                    well_diameter=int(well['diameter']), 
+                    well_deepth=int(well['deepth']))
 
-                for i in range(int(request.POST.get("new_number_well"))):
-                    wells = Well.objects.create(
-                        producion_unit=unit, well_diameter=c_new_well_diameter[i], well_deepth=c_new_well_deepth[i])
-                    wells_tracing = WellTracing.objects.create(
-                        tracing=tracing, well=wells)
-
-                for i in range(int(request.POST.get("new_number_lagoon"))):
-                    print(c_new_lagoon_diameter)
-                    print(c_new_lagoon_deepth)
-                    lagoon = Lagoon.objects.create(
-                        producion_unit=unit, lagoon_diameter=c_new_lagoon_diameter[i], lagoon_deepth=c_new_lagoon_deepth[i])
-                    lagoon_tracing = LagoonTracing.objects.create(
-                        tracing=tracing, lagoon=lagoon)
-
-                return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit.pk,)))
-                print("ambos")
-            else:
-                return render(request, self.tempalte_name, {'form': form, 'new_well_diameter': json_new_well_diameter, 'new_well_deepth': json_new_well_deepth, 'new_lagoon_deepth': json_new_lagoon_deepth, 'new_lagoon_diameter': json_new_lagoon_diameter})
-
-        else:
-            return render(request, self.tempalte_name, {'form': form, 'new_well_diameter': json_new_well_diameter, 'new_well_deepth': json_new_well_deepth, 'new_lagoon_deepth': json_new_lagoon_deepth, 'new_lagoon_diameter': json_new_lagoon_diameter})
+                WellTracing.objects.create(
+                        tracing=tracing, well=welll)
+            
+        
+        return HttpResponse("hj")
 
 # class TracingList(TemplateView):
 #     model = Tracing
