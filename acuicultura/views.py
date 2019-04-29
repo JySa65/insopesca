@@ -308,6 +308,17 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
                         msg=f"Hace Falta Añadir La Especie En La Laguna N° {number+1}"
                     )
                     return JsonResponse(data)
+                
+                for _, specie in enumerate(species):
+                    name = specie.get('specie', 0)
+                    number_specie = specie.get('number_specie', 0)
+                    
+                    if (name == 0 or number_specie == 0):
+                        data = dict(
+                            status=False,
+                            msg=f"Hace Falta Añadir La Especie o La Cantidad En La Laguna N° {number+1}"
+                            )
+                        return JsonResponse(data)
 
         if len(wells) != 0:
             for number, well in enumerate(wells):
@@ -352,13 +363,11 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
 
                     LagoonTracing.objects.create(
                         tracing=tracing, lagoon=laggon)
-
-                    number_specie = 1
-                    if lagoon['sistem_cultive']['type'] == 'duo':
-                        number_specie = 2
-                    
+                 
                     for specie in lagoon['sistem_cultive']['species']:
-                        sspecie = get_object_or_404(Specie, pk=specie)
+                        pk = specie['specie']
+                        number_specie = int(specie['number_specie'])
+                        sspecie = get_object_or_404(Specie, pk=pk)
                         Lagoon_has_especies.objects.create(
                             lagoon=laggon,
                             especies=sspecie,
@@ -386,7 +395,7 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
         
 # class TracingList(TemplateView):
 #     model = Tracing
-#     tempalte_name = "acuicultura/tracing_form.html"
+#     tempalte_number_specie = "acuicultura/tracing_form.html"
 
 
 class TracingUpdate(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):

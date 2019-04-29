@@ -23,14 +23,14 @@ if (id_new_lagoon && id_new_well) {
         regular_superfaces: 0,
         well_current: well_current,
         laggon_current: laggon_current
-    } 
+    }
 
     const onChange = (index, dat) => e => dat[index][e.target.name] = e.target.value
 
     const onChangeInput = e => dataSave[e.target.name] = e.target.value
 
-    const deleteRow = (index, status=true) => () => {
-        if(status){
+    const deleteRow = (index, status = true) => () => {
+        if (status) {
             data.splice(index, 1)
             return render('#id_data_lagoon', data, lagoon_template)
         }
@@ -42,21 +42,32 @@ if (id_new_lagoon && id_new_well) {
 
     const getSpecies = (index, number) => e => {
         const value = e.target.value
-        const key = data[index]['sistem_cultive']['species']
-        key[number] = value
+        const id_input = document.querySelector(`#id_input_${index}${number}`)
+        data[index].sistem_cultive.species[number]['specie'] = value
+        data[index].sistem_cultive.species[number]['number_specie'] = 0
+        id_input.value = ""
+        id_input.removeAttribute('readonly')
+        if (value == '') id_input.setAttribute('readonly', 'readonly')
     }
 
-    const species_template = index => e => {
+    const getNumberSpecie = (index, number) => e => {
+        const value = e.target.value
+        data[index].sistem_cultive.species[number]['number_specie'] = value
+    }
+
+    const species_template = (index, dat = { specie: "", number_specie:0 }) => e => {
         const $root = document.querySelector(`#id_species_${index}`)
         data[index][e.target.name]['type'] = e.target.value
-        data[index]['sistem_cultive']['species'] = []
+        
         let number = 0
         switch (e.target.value) {
             case 'mono':
                 number = 1
+                data[index].sistem_cultive.species = [{}]
                 break;
             case 'duo':
                 number = 2
+                data[index].sistem_cultive.species = [{}, {}]
                 break;
             default:
                 break;
@@ -66,32 +77,32 @@ if (id_new_lagoon && id_new_well) {
             emt.append(
                 yo`
                     <div class="col-sm-12">
-                        <div class="col-md-6 col-sm-12">
-                            <label class="col-form-label">
-                                Especies N° ${i + 1}
-                            </label>
-                            <select name="specie" class="form-control" onchange=${getSpecies(index, i)} required>
-                                <option value="">-------------</option>
-                                ${species.map(specie => yo`
-                                    <option value=${specie.id}>${specie.name}</option>
-                                `)}
-                            </select>
-                        </div>               
-                        <div class="col-md-6 col-sm-12">
-                            <label class="col-form-label">
-                                Especies N° ${i + 1}
-                            </label>
-                            <select name="specie" class="form-control" onchange=${getSpecies(index, i)} required>
-                                <option value="">-------------</option>
-                                ${species.map(specie => yo`
-                                    <option value=${specie.id}>${specie.name}</option>
-                                `)}
-                            </select>
-                        </div>               
-
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <label class="col-form-label">
+                                    Especies N° ${i + 1}
+                                </label>
+                                <select name="specie" class="form-control" onchange=${getSpecies(index, i)} required>
+                                    <option value="">-------------</option>
+                                    ${species.map(specie => {
+                                        return dat.specie == specie.id
+                                            ? yo`<option selected value=${specie.id}>${specie.name}</option>`
+                                            : yo`<option value=${specie.id}>${specie.name}</option>`
+                                    })}
+                                </select>
+                            </div>               
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-form-label">
+                                        Cantidad De Especie N° ${i + 1}
+                                    </label>
+                                    <input class="form-control" id="id_input_${index}${i}" type="number" name="number_specie" required autocomplete="off" readonly onchange=${getNumberSpecie(index,i)}>
+                                </div>
+                            </div>      
+                        </div>
                     </div>
                 `
-            ) 
+            )
         }
     }
 
@@ -120,7 +131,7 @@ if (id_new_lagoon && id_new_well) {
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <label for="${id}" class="col-form-label">
-                                Sistema de Cultivo Nro° ${index +1}
+                                Sistema de Cultivo Nro° ${index + 1}
                             </label>
                             <select name="sistem_cultive" required class="form-control" onchange="${species_template(index)}">
                                 <option ${!value.sistem_cultive.type ? 'selected' : ''} value="">------------</option>
@@ -131,25 +142,37 @@ if (id_new_lagoon && id_new_well) {
                         <div class="col-md-6 col-sm-12"></div>
                         <div class="col-sm-12 mt-4">
                             <div id="id_species_${index}" class="row">
-                            ${value.sistem_cultive.species.length >= 1 
-                                ? value.sistem_cultive.species.map((data, i) => {
-                                    return yo`
-                                        <div class="col-md-6 col-sm-12">
-                                        <label class="col-form-label">
-                                            Especies N° ${i + 1}
-                                        </label>
-                                        <select name="specie" class="form-control" onchange=${getSpecies(index, i)} required>
-                                            <option value="">-------------</option>
-                                            ${species.map(specie => {
-                                                return data == specie.id
-                                                ? yo`<option selected value=${specie.id}>${specie.name}</option>`
-                                                    : yo`<option value=${specie.id}>${specie.name}</option>`
-                                            })}
-                                        </select>
-                                    </div>    
-                                    `
-                                })
-                                : ''
+                            ${Object.keys(value.sistem_cultive.species[0]).length !== 0
+                            ? value.sistem_cultive.species.map((data, i) => {
+                                return yo`
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12">
+                                                <label class="col-form-label">
+                                                    Especies N° ${i + 1}
+                                                </label>
+                                                <select name="specie" class="form-control" onchange=${getSpecies(index, i)} required>
+                                                    <option value="">-------------</option>
+                                                    ${species.map(specie => {
+                                                    return data.specie == specie.id
+                                                        ? yo`<option selected value=${specie.id}>${specie.name}</option>`
+                                                        : yo`<option value=${specie.id}>${specie.name}</option>`
+                                                })}
+                                                </select>
+                                            </div>               
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="col-form-label">
+                                                        Cantidad De Especie N° ${i + 1}
+                                                    </label>
+                                                    <input class="form-control" id="id_input_${index}${i}" type="number" name="number_specie" required autocomplete="off" onchange=${getNumberSpecie(index, i)} value=${data.number_specie}>
+                                                </div>
+                                            </div>      
+                                        </div>
+                                    </div>
+                                `
+                            })
+                            : ''
                             }
                             </div>
                         </div>
@@ -165,7 +188,7 @@ if (id_new_lagoon && id_new_well) {
         `
     }
 
-    const well_template = (id, index, value="") => {
+    const well_template = (id, index, value = "") => {
         return yo`
             <div class="row mb-4">
                 <div class="col-sm-10">
@@ -211,17 +234,14 @@ if (id_new_lagoon && id_new_well) {
         })
     }
 
-    
+
     id_new_lagoon.addEventListener('click', () => {
         data.push({
             diameter: "",
             deepth: "",
             sistem_cultive: {
                 type: "",
-                species: [{
-                    number_specie:0,
-                    specie:""
-                }]
+                species: [{}]
             },
         })
         return render('#id_data_lagoon', data, lagoon_template)
@@ -232,7 +252,7 @@ if (id_new_lagoon && id_new_well) {
             diameter: "",
             deepth: ""
         })
-        render('#id_data_well', dataWell, well_template)
+        return render('#id_data_well', dataWell, well_template)
     })
 
     id_illegal_superfaces.addEventListener('change', e => onChangeInput(e))
@@ -255,10 +275,15 @@ if (id_new_lagoon && id_new_well) {
     id_form_tracing.addEventListener('submit', e => {
         e.preventDefault();
         dataSave = {
-            ...dataSave, 
-            lagoon:data, 
-            well:dataWell
+            ...dataSave,
+            lagoon: data,
+            well: dataWell
         }
-        saveData(dataSave)
+        console.log(dataSave)
+        window.scrollBy(0, -1000)
+        return saveData(dataSave)
+            .then(data => {
+                console.log(data)
+            })
     })
 }

@@ -38,6 +38,11 @@ Registro De Seguimiento
 			<div class="card-body">
 				<form action="" method="post" id="id_form_tracing">
 					{% csrf_token %}
+					<div class="form-group" hidden id="alert_message">
+						<div class="alert alert-danger" role="alert">
+						
+						</div>
+					</div>
 					<div style="display:flex; align-items: center;">
 						<h4 style="margin:0"><b>Numero de Lagunas Actuales:</b>
 							<span class="text-primary"><b>{{ tracing_lagoon.count }}</b></span></h4>
