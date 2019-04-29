@@ -10,6 +10,7 @@ const id_irregular_superfaces = document.querySelector('#id_irregular_superfaces
 const id_permise_superfaces = document.querySelector('#id_permise_superfaces')
 const id_regular_superfaces = document.querySelector('#id_regular_superfaces')
 const id_form_tracing = document.querySelector('#id_form_tracing')
+const alert_message = document.querySelector('#alert_message')
 
 if (id_new_lagoon && id_new_well) {
     const data = []
@@ -261,7 +262,6 @@ if (id_new_lagoon && id_new_well) {
     id_regular_superfaces.addEventListener('change', e => onChangeInput(e))
 
     const saveData = data => {
-        console.log(data)
         const pk = object_pk
         const url = `/acuicultura/tracing/add/${pk}`
         const config = {
@@ -279,11 +279,17 @@ if (id_new_lagoon && id_new_well) {
             lagoon: data,
             well: dataWell
         }
-        console.log(dataSave)
-        window.scrollBy(0, -1000)
+        
         return saveData(dataSave)
             .then(data => {
-                console.log(data)
+                const {status, msg} = data.data
+                if (!status){
+                    window.scrollBy(0, -1000)
+                    alert_message.removeAttribute('hidden')
+                    alert_message.children[0].textContent = msg
+                } else {
+                    window.location.href = `/acuicultura/production/unit/detail/${object_pk}/`
+                }
             })
     })
 }

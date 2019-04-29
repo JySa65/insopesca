@@ -269,14 +269,15 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         data = json.loads(str(request.body, 'utf-8'))
+        print(data)
         lagoons = data.get('lagoon')
         wells = data.get('well')
-        illegal_superfaces = data.get('illegal_superfaces', '')
-        irregular_superfaces = data.get('irregular_superfaces', '')
-        permise_superfaces = data.get('permise_superfaces', '')
-        regular_superfaces = data.get('regular_superfaces', '')
-        well_current = data.get('well_current', '')
-        laggon_current = data.get('laggon_current', '')
+        illegal_superfaces = data.get('illegal_superfaces', 0)
+        irregular_superfaces = data.get('irregular_superfaces', 0)
+        permise_superfaces = data.get('permise_superfaces', 0)
+        regular_superfaces = data.get('regular_superfaces', 0)
+        well_current = data.get('well_current', 0)
+        laggon_current = data.get('laggon_current', 0)
         producion_unit = self.get_object()
 
         if len(lagoons) != 0:
@@ -332,8 +333,8 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
                     )
                     return JsonResponse(data)
 
-        if (illegal_superfaces == '' or irregular_superfaces == '' or
-                permise_superfaces == '' or regular_superfaces == ''):
+        if (illegal_superfaces == 0 or irregular_superfaces == 0 or
+                permise_superfaces == 0 or regular_superfaces == 0):
             data = dict(
                 status=False,
                 msg=f"Algunos Datos Son Requeridos En La Superficies"
