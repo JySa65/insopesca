@@ -51,42 +51,36 @@ Registro De Unidad Prductora
 				</div>
 				{% endif %}
 				{% endfor %}
-
-					<div class="border-top">
-
-						<div class="form-group">
-							<label for="id_{{ form.type_document_repre.name }}" class="col-form-label">{{form.type_document_repre.label}}</label>
-							{{ form.type_document_repre|add_class:"selectpicker show-tick"|attr:"data-width:100%" }}
-						</div>
-
-						<div class="form-group">
-							<label for="id_{{ form.document_repre.name }}" class="col-form-label">{{form.document_repre.label}}</label>
-							{{ form.document_repre|add_class:"form-control"|attr:"autocomplete:off" }}
-						</div>
-
-						<div class="form-group">
-								<label for="id_{{ form.last_name_repre.name }}" class="col-form-label">{{form.name_repre.label}}</label>
-								{{ form.name_repre|add_class:"form-control"|attr:"autocomplete:off" }}
-						</div>
-	
-
-
-						<div class="form-group">
-							<label for="id_{{ three.last_name_repre.name }}" class="col-form-label">{{form.last_name_repre.label}}</label>
-							{{ form.last_name_repre|add_class:"form-control"|attr:"autocomplete:off" }}
-						</div>
-
-						<div class="form-group">
-							<label for="id_{{ form.landline_repre.name }}" class="col-form-label">{{form.landline_repre.label}}</label>
-							{{ form.landline_repre|add_class:"form-control"|attr:"autocomplete:off" }}
-						</div>
-
-						<div class="form-group">
-							<label for="id_{{ form.phone_repre.name }}" class="col-form-label">{{form.phone_repre.label}}</label>
-							{{ form.phone_repre|add_class:"form-control"|attr:"autocomplete:off" }}
-						</div>
-	
+					<div class="form-group">
+						<label for="id_{{ form.type_document.name }}" class="col-form-label">{{form.type_document.label}}</label>
+						{{ form.type_document|add_class:"selectpicker show-tick"|attr:"data-width:100%" }}
 					</div>
+
+					<div class="form-group">
+						<label for="id_{{ form.document.name }}" class="col-form-label">{{form.document.label}}</label>
+						{{ form.document|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+					<div class="form-group">
+							<label for="id_{{ form.name.name }}" class="col-form-label">{{form.name.label}}</label>
+							{{ form.name|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+					<div class="form-group">
+						<label for="id_{{ three.last_name.name }}" class="col-form-label">{{form.last_name.label}}</label>
+						{{ form.last_name|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+					<div class="form-group">
+						<label for="id_{{ form.tlf_house.name }}" class="col-form-label">{{form.tlf_house.label}}</label>
+						{{ form.tlf_house|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+
+					<div class="form-group">
+						<label for="id_{{ form.tlf.name }}" class="col-form-label">{{form.tlf.label}}</label>
+						{{ form.tlf|add_class:"form-control"|attr:"autocomplete:off" }}
+					</div>
+	
 					<div class="form-group text-center">
 						<br>
 						<button type="submit" class="btn btn-rounded btn-success">Aceptar</button>

@@ -147,10 +147,8 @@ Acuicultura / Unida Productora /{{ object.name }}
 					<div class="card-header clearfix">
 						<span class="h4 text-primary"><b>Representantes Legales </b></span>
 						<a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-rounded btn-primary">Añadir Representate <i class="fas fa-user-plus"></i></a>
-
 					</div>
 						
-
 					<div class="card-body p-0">
 						<div class="table-responsive">
 							<table class="table table-hover">
@@ -169,11 +167,11 @@ Acuicultura / Unida Productora /{{ object.name }}
 										
 										<tr>
 											<td>{{ forloop.counter }}</td>
-											<td>{{repre.type_document_repre}}-{{ repre.document_repre }}</td>
-											<td>{{ repre.name_repre }}</td>
-											<td>{{repre.last_name_repre}}</td>											
+											<td>{{repre.type_document}}-{{ repre.document }}</td>
+											<td>{{ repre.name }}</td>
+											<td>{{repre.last_name}}</td>											
 											{% if repre.is_active == True %}
-												<td>Activo</td>												
+												<td>Activo</td>		
 											{% else %}
 												<td>Inactivo</td>
 											{% endif %}

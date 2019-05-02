@@ -4,7 +4,7 @@
 {% include 'sidebar/acuicultura.html' %}
 {% endblock sidebar %}
 {% block pageheader %}
-Acuicultura / Unida Productora / Representante / {{ object.pk }}
+Acuicultura / Unida Productora / Representante / {{ object.get_full_name }}
 {% endblock pageheader %}
 
 {% block context %}
@@ -20,74 +20,74 @@ Acuicultura / Unida Productora / Representante / {{ object.pk }}
 						<label class="h5">
 							<b>Documento:</b>
 						</label>
-						<span class="h5">{{object.type_document_repre}}-{{ object.document_repre }}</span>
+						<span class="h5">{{object.type_document}}-{{ object.document }}</span>
 					</div>
 					<div class="col-sm-6 mb-3">
-                        <label class="h5">
-                            <b>Nombres :</b>
-                        </label>
-                        <span class="h5">{{ object.name_repre }} </span>
-                    </div>
+						<label class="h5">
+								<b>Nombres :</b>
+						</label>
+						<span class="h5">{{ object.name }} </span>
+					</div>
 					<div class="col-sm-6 mb-3">
-                        <label class="h5">
-                            <b>Apellidos :</b>
-                        </label>
-                        <span class="h5">{{object.last_name_repre}}</span>
-                    </div>
+						<label class="h5">
+								<b>Apellidos :</b>
+						</label>
+						<span class="h5">{{object.last_name}}</span>
+					</div>
 	
 					<div class="col-sm-6 mb-3">
 						<label class="h5">
 							<b>Telefono Fijo:</b>
 						</label>
-						<span class="h5">{{ object.landline_repre }}</span>
+						<span class="h5">{{ object.tlf_house }}</span>
 					</div>
 					<div class="col-sm-6 mb-3">
 						<label class="h5">
 							<b>Telefono Movil:</b>
 						</label>
-						<span class="h5">{{ object.phone_repre }}</span>
+						<span class="h5">{{ object.tlf }}</span>
 					</div>
-                    <div class= "col-sm-6 mb-3"> 
-                        <label class="h5">
-                            <b>Se Encuentra:</b>
-                        </label>
-                        {% if object.is_active == True %}
-                            <span class="h5">Activo</span>
-                        {% else %}
-                            <span class="h5">Inactivo</span>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="card-body">
-                  
-                        <div class="row text-center">
-                          <div class="col-sm-6 mb-3">
-                            <a href="{% url 'acuicultura:repre_update' object.pk %}" class="btn btn-rounded btn-info">
-                              <i class="far fa-edit"></i>
-                              Actualizar
-                            </a>
-                          </div>
-                          
-                          {% if object.is_active == False %}
-                            <div class="col-sm-6 mb-3">
-                              <a href="#" class="btn btn-rounded btn-success" id="btn_delete_repre_company">
-                                <i class="fas fa-check"></i>
-                                Activar
-                              </a>
-                            </div>
-                            
-                          {% else %}
-                            
-                          <div class="col-sm-6 mb-3">
-                            <a href="{% url 'acuicultura:repre_delete' object.pk %}" class="btn btn-rounded btn-danger" id="btn_delete_repre_company">
-                              <i class="fas fa-user-times"></i>
-                              Desactivar
-                            </a>
-                          </div>
-                          {% endif %}
-                
-                        </div>
-                      </div>
+					<div class= "col-sm-6 mb-3"> 
+							<label class="h5">
+									<b>Se Encuentra:</b>
+							</label>
+							{% if object.is_active == True %}
+									<span class="h5">Activo</span>
+							{% else %}
+									<span class="h5">Inactivo</span>
+							{% endif %}
+					</div>
+				</div>
+				<div class="card-body">
+		
+					<div class="row text-center">
+						<div class="col-sm-6 mb-3">
+							<a href="{% url 'acuicultura:repre_update' object.pk %}" class="btn btn-rounded btn-info">
+								<i class="far fa-edit"></i>
+								Actualizar
+							</a>
+						</div>
+						
+						{% if object.is_active == False %}
+							<div class="col-sm-6 mb-3">
+								<a href="#" class="btn btn-rounded btn-success" id="btn_delete_company">
+									<i class="fas fa-check"></i>
+									Activar
+								</a>
+							</div>
+							
+						{% else %}
+							
+						<div class="col-sm-6 mb-3">
+							<a href="{% url 'acuicultura:repre_delete' object.pk %}" class="btn btn-rounded btn-danger" id="btn_delete_company">
+								<i class="fas fa-user-times"></i>
+								Desactivar
+							</a>
+						</div>
+						{% endif %}
+	
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

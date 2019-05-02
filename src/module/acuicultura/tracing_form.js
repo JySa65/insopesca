@@ -11,7 +11,7 @@ const id_permise_superfaces = document.querySelector('#id_permise_superfaces')
 const id_regular_superfaces = document.querySelector('#id_regular_superfaces')
 const id_form_tracing = document.querySelector('#id_form_tracing')
 const alert_message = document.querySelector('#alert_message')
-
+// step="0.0001"
 if (id_new_lagoon && id_new_well) {
     const data = []
     const dataWell = []
@@ -284,7 +284,7 @@ if (id_new_lagoon && id_new_well) {
             .then(data => {
                 const {status, msg} = data.data
                 if (!status){
-                    window.scrollBy(0, -1000)
+                    window.scrollBy(0, -10000)
                     alert_message.removeAttribute('hidden')
                     alert_message.children[0].textContent = msg
                 } else {

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
-from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, Lagoon_has_especies
+from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, LagoonEspecies
 from acuicultura.forms import UnitCreateForm, CardinaPointForm, RepreUnitForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect, Http404, JsonResponse, \
@@ -112,12 +112,13 @@ class ProductionuUnitDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView)
 
     def get_context_data(self, **kwargs):
         context = super(ProductionuUnitDetail, self).get_context_data(**kwargs)
+        pk = self.kwargs['pk']
         context['cardinal'] = get_object_or_404(
-            CardinalPoint, production_unit=self.kwargs['pk'])
+            CardinalPoint, production_unit=pk)
         context['representative'] = RepreUnitProductive.objects.filter(
-            production_unit=self.kwargs['pk'])
+            production_unit=pk)
         context['tracing'] = Tracing.objects.filter(
-            producion_unit=self.kwargs['pk'])
+            producion_unit=pk)
         return context
 
 
@@ -177,7 +178,7 @@ class SpeciesCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
     template_name = "acuicultura/specie_form.html"
 
     def get_success_url(self):
-        return reverse_lazy('acuicultura:detail_specie', args=(self.object.id,))
+        return reverse_lazy('acuicultura:list_specie')
 
 
 class SpeciesList(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
@@ -258,12 +259,13 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
         context = super(TracingCreate, self).get_context_data(**kwargs)
         context['tracing_lagoon'] = LagoonTracing.objects.filter(
             tracing__producion_unit=self.get_object())
+
         context['tracing_well'] = WellTracing.objects.filter(
             tracing__producion_unit=self.get_object())
         context['current'] = self.get_object()
         context['species'] = [dict(
             id=i.pk,
-            name=f"{i.scientific_name} - {i.ordinary_name}",
+            name=f"{i.scientific_name if i.scientific_name else '----'} - {i.ordinary_name if i.ordinary_name else '-----'}",
         ) for i in Specie.objects.all()]
         return context
 
@@ -359,7 +361,8 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
                     laggon = Lagoon.objects.create(
                         producion_unit=producion_unit,
                         lagoon_diameter=lagoon['diameter'],
-                        lagoon_deepth=lagoon['deepth'])
+                        lagoon_deepth=lagoon['deepth'],
+                        sistem_cultivate=lagoon['sistem_cultive']['type'])
 
                     LagoonTracing.objects.create(
                         tracing=tracing, lagoon=laggon)
@@ -368,7 +371,7 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
                         pk = specie['specie']
                         number_specie = int(specie['number_specie'])
                         sspecie = get_object_or_404(Specie, pk=pk)
-                        Lagoon_has_especies.objects.create(
+                        LagoonEspecies.objects.create(
                             lagoon=laggon,
                             especies=sspecie,
                             number_specie=number_specie)
@@ -521,9 +524,9 @@ class LagoonDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(LagoonDetail, self).get_context_data(**kwargs)
         area = Lagoon.objects.filter(pk=self.kwargs['pk']).first()
-        context['species_has_lagoon'] = Lagoon_has_especies.objects.filter(
+        context['species_has_lagoon'] = LagoonEspecies.objects.filter(
             lagoon=self.kwargs['pk'])
-        # # context['total_number_species'] = Lagoon_has_especies.objects.filter(
+        # # context['total_number_species'] = LagoonEspecies.objects.filter(
         # #     lagoon=self.kwargs['pk']).aggregate(total__sum=Sum('number_specie'))
         # context['square_meter'] = (area.lagoon_diameter*area.lagoon_deepth)
         # context['food'] = int((context['square_meter'])*1.5)
