@@ -30,25 +30,35 @@ ALLOWED_HOSTS = ['*']
 
 
 # Application definition
-
-INSTALLED_APPS = [
-    'django_extensions',
-    'utils.configSuit.SuitConfig',
-    'widget_tweaks',
-    'authentication.apps.AuthenticationConfig',
-    'sanidad.apps.SanidadConfig',
-    'reports.apps.ReportsConfig',
-    'core.apps.CoreConfig',
+APPS_DJANGO = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'acuicultura',
+]
+
+APPS_LOCAL = [
+    'utils.configSuit.SuitConfig',
+    'authentication.apps.AuthenticationConfig',
+    'sanidad.apps.SanidadConfig',
+    'reports.apps.ReportsConfig',
+    'core.apps.CoreConfig',
+    'acuicultura.apps.AcuiculturaConfig',
+    'chat.apps.ChatConfig',
+
+]
+
+APPS_THRID = [
+    'django_extensions',
+    'widget_tweaks',
     'simple_history',
     'corsheaders',
+    'channels',
 ]
+
+INSTALLED_APPS = APPS_THRID + APPS_LOCAL + APPS_DJANGO
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -87,6 +97,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'insopesca.wsgi.application'
 
+# Channels
+ASGI_APPLICATION = 'insopesca.routing.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -157,7 +178,6 @@ AUTH_USER_MODEL = 'authentication.User'
 # history django
 SIMPLE_HISTORY_EDIT = True
 
-
 # shell python
 SHELL_PLUS = "bpython"
 
@@ -166,7 +186,7 @@ LOGIN_URL = '/'
 LOGOUT_REDIRECT_URL='/'
 
 CORS_ORIGIN_ALLOW_ALL=True
-# CORS_ALLOW_CREDENTIALS=True
+
 
 # seccion expire
 # SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'

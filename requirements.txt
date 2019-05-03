@@ -10,6 +10,8 @@ fpdf==1.7.2
 django-cors-headers==2.5.2
 gunicorn==19.9.0
 gevent==1.4.0
+channels==2.2.0
+channels-redis==2.4.0
 
 
 #corregir al añadir un usuario existe en la compañia mme da error cuando existe uni

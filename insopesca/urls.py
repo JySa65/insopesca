@@ -32,5 +32,6 @@ urlpatterns = [
         'acuicultura.urls', namespace="acuicultura")),
     path('sanidad/', include('sanidad.urls', namespace='sanidad')),
     path('reports/', include('reports.urls', namespace='reports')),
+    path('chat/', include('chat.urls')),
 
 ]

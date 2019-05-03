@@ -41,26 +41,8 @@ class RepreUnitProductive(core.Account):
     """
     Esta clase es para el representante de la unidad productora
     """
-    # id = models.UUIDField(
-    # default=uuid.uuid4, editable=False, unique=True, primary_key=True)
-
     production_unit = models.ForeignKey(
         ProductionUnit, on_delete=models.CASCADE)
-    # type_document_repre = models.CharField(
-    #     _("Tipo de Documento"), max_length=50, blank=False, null=False, choices=Selects().type_document())
-    # document_repre = models.CharField(
-    #     _("Documento"), max_length=10, blank=False, null=False, unique=True)
-    # name_repre = models.CharField(
-    #     _("Nombre"), max_length=50, blank=False, null=False)
-    # last_name_repre = models.CharField(
-    #     _("Apellido"), max_length=50, blank=True, null=True)
-    # landline_repre = models.CharField(
-    #     _("Telefono Casa"), max_length=11, blank=False, null=False)
-    # phone_repre = models.CharField(
-    #     _("Telefono Movil"), max_length=11, blank=False, null=False)
-    # is_active = models.BooleanField(_('Es Activo'), default=True)
-    # created_at = models.DateTimeField(auto_now_add=True)
-    # updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.get_full_name()}"
