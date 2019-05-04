@@ -1,4 +1,6 @@
 from django.contrib.sessions.models import Session
+from django.db.models import Q
+
 from django.db import transaction
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -26,6 +28,29 @@ from utils.Select import Selects
 from utils.permissions import AdminRequiredMixin
 from django.contrib import messages
 # Create your views here.
+
+
+class UserDetailApiView(LoginRequiredMixin, AdminRequiredMixin, View):
+    model = models.User
+
+    def get(self, request, *args, **kwargs):
+        data = request.GET.get('data', '')
+        if data != '':
+            user = self.model.objects.filter(
+                Q(ci=data) | Q(email=data)).exclude(pk=request.user.pk).first()
+            if user:
+                data = dict(
+                    status=True,
+                    user=dict(
+                        pk=user.pk,
+                        document=user.ci,
+                        name=user.get_full_name(),
+                        is_active=user.is_active,
+                        is_delete=user.is_delete
+                    )
+                )
+                return JsonResponse(data)
+        return JsonResponse(dict(status=False))
 
 
 class UserListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
@@ -67,6 +92,16 @@ class UserUpdateView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
     form_class = forms.UserUpdateForm
     success_url = reverse_lazy('authentication:list')
 
+    def form_valid(self, form):
+        _object = form.save(commit=False)
+        _type = self.request.GET.get('type')
+        if _type == 'delete':
+            _object.is_delete = False
+        if _type == 'active':
+            _object.is_active = True
+        self.object = _object.save()
+        return super(UserUpdateView, self).form_valid(form)
+
 
 class UserDeleteView(LoginRequiredMixin, AdminRequiredMixin, DeleteView):
     model = models.User
@@ -75,6 +110,7 @@ class UserDeleteView(LoginRequiredMixin, AdminRequiredMixin, DeleteView):
         user = self.get_object()
         user.is_delete = True
         user.is_active = False
+        user.change_pass = False
         user.set_password(user.ci)
         user.save()
         return HttpResponseRedirect(reverse_lazy('authentication:list'))
@@ -182,22 +218,25 @@ class LoginFormView(FormView):
         user = authenticate(email=username, password=password)
         if user is not None:
             login(request, user)
-            session = Session.objects.get(session_key=request.session.session_key)
+            session = Session.objects.get(
+                session_key=request.session.session_key)
             user_session = models.SessionUser.objects.filter(user=user).first()
             try:
                 with transaction.atomic():
-                    models.SessionUser.objects.create(user=user, session=session)
+                    models.SessionUser.objects.create(
+                        user=user, session=session)
                 self.fail('Duplicate Session')
             except Exception:
                 if user_session:
                     Session.objects.get(
                         session_key=user_session.session.session_key).delete()
-                    models.SessionUser.objects.create(user=user, session=session)
+                    models.SessionUser.objects.create(
+                        user=user, session=session)
             url_next = request.GET.get('next')
             if url_next is not None:
                 return HttpResponseRedirect(url_next)
             else:
-                return self.render_user(user)     
+                return self.render_user(user)
         msg = "Usuario o Contraseña Incorrecta"
         messages.add_message(self.request, messages.INFO, msg)
         return render(request, self.template_name, {'form': self.form_class})
@@ -217,9 +256,9 @@ class ChangePassword(LoginRequiredMixin, FormView):
         _object = form.save(commit=False)
         _object.change_pass = True
         user = _object.save()
-        messages.add_message(self.request, 
-                            messages.INFO, 
-                            'Contraseña Cambiada Exitosamente')
+        messages.add_message(self.request,
+                             messages.INFO,
+                             'Contraseña Cambiada Exitosamente')
         update_session_auth_hash(self.request, user)
         logout(self.request)
         return super(ChangePassword, self).form_valid(form)

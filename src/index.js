@@ -5,10 +5,10 @@
 // import '@fullcalendar/list/main.css';
 
 // import "./module/location.js"
-// import "./module/user_register.js"
+import "./module/user_register.js"
 // import "./module/profile_user.js"
 // import "./module/forgot_password.js"
-import "./module/acuicultura/tracing_form.js"
+// import "./module/acuicultura/tracing_form.js"
 // import "./module/acuicultura/company_form.js"
 // import "./module/acuicultura/species_form.js"
 // import "./module/acuicultura/repre_form.js"

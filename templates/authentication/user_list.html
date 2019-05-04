@@ -47,7 +47,7 @@ Usuarios
 								</td>
 								<td>
 									<a href="{% url 'authentication:detail' object.pk %}" class="btn btn-rounded btn-secondary" data-toggle="tooltip" data-placement="top" title="Ver Usuario {{ object.name }}"><i class="fas fa-eye"></i></a>
-									<a href="{% url 'authentication:delete' object.pk %}" class="btn btn-rounded btn-danger"data-toggle="tooltip" data-placement="top" title="Eliminar Usuario {{ object.name }}"><i class="fas fa-user-times"></i></a>
+									<a href="{% url 'authentication:delete' object.pk %}" class="btn btn-rounded btn-danger"data-toggle="tooltip" data-placement="top" title="Ihnabilitar Usuario {{ object.name }}"><i class="fas fa-user-times"></i></a>
 								</td>
 							</tr>
 							{% empty %}

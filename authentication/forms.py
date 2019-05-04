@@ -9,6 +9,13 @@ class UserCreateForm(forms.ModelForm):
         fields = ('email', 'ci', 'name', 'last_name', 'is_superuser',
                   'is_active', 'is_staff', 'role', 'level',)  # '__all__'
 
+    def __init__(self, *args, **kwargs):
+        super(UserCreateForm, self).__init__(*args, **kwargs)
+        for key, field in self.fields.items():
+            if (key == 'email' or key == 'ci'):
+                field.widget.attrs.update(
+                    {'data_type': 'user'})
+
 
 class UserUpdateForm(forms.ModelForm):
 
@@ -21,6 +28,9 @@ class UserUpdateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['password'].widget.attrs.update(
             {'hidden': 'hidden'})
+        
+        self.fields['email'].widget.attrs.update(
+            {'readonly': 'readonly'})
 
 
 class SecurityQuestionForm(forms.ModelForm):
@@ -54,5 +64,5 @@ class ForgotPasswordForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for _, field in self.fields.items():
             field.widget.attrs.update(
-                {'class': 'form-control', 'autocomplete': 'off', 
+                {'class': 'form-control', 'autocomplete': 'off',
                     'placeholder': "Correo Electronico"})

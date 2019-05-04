@@ -2,7 +2,7 @@ from django.urls import path
 
 from authentication.views import UserListView, UserCreateView, UserUpdateView, \
     UserDeleteView, UserDetailView, ChangePassword, SecurityQuestionCreateView, \
-    UserAdminDetailView, UserAdminUpdateView, RestoreDataUser
+    UserAdminDetailView, UserAdminUpdateView, RestoreDataUser, UserDetailApiView
 
 
 app_name = "authentication"
@@ -27,4 +27,8 @@ urlpatterns = [
          UserAdminUpdateView.as_view(), name='update_profile'),
 
     path('restore-data/', RestoreDataUser.as_view(), name="restore_data"),
+
+    # api
+
+    path('api/detail/', UserDetailApiView.as_view(), name="api_detail_user")
 ]

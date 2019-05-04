@@ -32,7 +32,8 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    ci = models.CharField(_('Cedula'), max_length=8, blank=False, null=False, unique=True)
+    ci = models.CharField(_('Cedula'), max_length=8,
+                          blank=False, null=False, unique=True)
     name = models.CharField(_('Nombres'), max_length=50,
                             blank=False, null=False)
     last_name = models.CharField(_('Apellidos'), max_length=50,
@@ -84,8 +85,8 @@ class SecurityQuestion(models.Model):
     answer = models.TextField(_("Respuesta"), null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    history = HistoricalRecords(user_model=User)
-    
+    history = HistoricalRecords()
+
     class Meta:
         verbose_name = "Pregunta De Seguridad"
         verbose_name_plural = "Preguntas De Seguridad"
@@ -93,14 +94,6 @@ class SecurityQuestion(models.Model):
 
     def __str__(self):
         return self.user.email
-
-    @property
-    def _history_user(self):
-        return self.changed_by
-
-    @_history_user.setter
-    def _history_user(self, value):
-        self.changed_by = value
 
 
 class SessionUser(models.Model):
@@ -111,4 +104,3 @@ class SessionUser(models.Model):
 
     def __str__(self):
         return self.user.get_full_name()
-
