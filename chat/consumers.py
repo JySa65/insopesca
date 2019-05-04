@@ -2,10 +2,14 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
+
 class ChatConsumer(AsyncWebsocketConsumer):
+
     async def connect(self):
-        # print(self.scope)
-        print(self.channel_name, "nose")
+        a = self.scope['user']
+        if not a.is_authenticated:
+            await self.close()
+
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
 
