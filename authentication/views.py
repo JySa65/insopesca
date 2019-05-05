@@ -58,6 +58,8 @@ class UserListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
 
     def get_queryset(self):
         super(UserListView, self).get_queryset()
+        # data = dict(self.request.GET)
+        # self.model.objects.filter(**data)
         return self.model.objects.filter(is_delete=False, is_superuser=False).exclude(
             email=self.request.user.email
         )
@@ -172,28 +174,29 @@ class SecurityQuestionCreateView(LoginRequiredMixin, FormView):
     def post(self, *args, **kwargs):
         form = self.form_class(self.request.POST)
         if form.is_valid():
-            self.model.objects.filter(user=self.request.user).delete()
-            user = get_object_or_404(models.User, pk=self.request.user.pk)
-            question_one = form.cleaned_data.get("question_one")
-            question_two = form.cleaned_data.get("question_two")
-            question_three = form.cleaned_data.get("question_three")
-            answer_one = form.cleaned_data.get("answer_one")
-            answer_two = form.cleaned_data.get("answer_two")
-            answer_three = form.cleaned_data.get("answer_three")
-            securitys = [
-                {'question': question_one, 'answer': answer_one},
-                {'question': question_two, 'answer': answer_two},
-                {'question': question_three, 'answer': answer_three}
-            ]
-            for security in securitys:
-                self.model.objects.create(**security, user=user)
-            user.question = True
-            user.save()
-            if self.request.user.is_superuser or self.request.user.role == 'is_coordinator':
-                return HttpResponseRedirect(
-                    Selects().level_user_url()['is_admin_or_coordinator'])
-            else:
-                return HttpResponseRedirect(Selects().level_user_url()[user.level])
+            with transaction.atomic():
+                self.model.objects.filter(user=self.request.user).delete()
+                user = get_object_or_404(models.User, pk=self.request.user.pk)
+                question_one = form.cleaned_data.get("question_one")
+                question_two = form.cleaned_data.get("question_two")
+                question_three = form.cleaned_data.get("question_three")
+                answer_one = form.cleaned_data.get("answer_one")
+                answer_two = form.cleaned_data.get("answer_two")
+                answer_three = form.cleaned_data.get("answer_three")
+                securitys = [
+                    {'question': question_one, 'answer': answer_one},
+                    {'question': question_two, 'answer': answer_two},
+                    {'question': question_three, 'answer': answer_three}
+                ]
+                for security in securitys:
+                    self.model.objects.create(**security, user=user)
+                user.question = True
+                user.save()
+                if self.request.user.is_superuser or self.request.user.role == 'is_coordinator':
+                    return HttpResponseRedirect(
+                        Selects().level_user_url()['is_admin_or_coordinator'])
+                else:
+                    return HttpResponseRedirect(Selects().level_user_url()[user.level])
         return render(self.request, self.template_name, {'form': form})
 
 
@@ -228,10 +231,11 @@ class LoginFormView(FormView):
                 self.fail('Duplicate Session')
             except Exception:
                 if user_session:
-                    Session.objects.get(
-                        session_key=user_session.session.session_key).delete()
-                    models.SessionUser.objects.create(
-                        user=user, session=session)
+                    with transaction.atomic():
+                        Session.objects.get(
+                            session_key=user_session.session.session_key).delete()
+                        models.SessionUser.objects.create(
+                            user=user, session=session)
             url_next = request.GET.get('next')
             if url_next is not None:
                 return HttpResponseRedirect(url_next)

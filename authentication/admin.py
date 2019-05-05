@@ -25,7 +25,6 @@ class UserAdmin(BaseUserAdmin, SimpleHistoryAdmin):
         (_('Market Stall'), {'fields': ('role', 'level',)}),
         (_('Join'), {'fields': ('date_joined', 'created_at', 'updated_at')}),
         (_('Login'), {'fields': ('last_login',)}),
-        # (_('History'), {'fields': ('history',)}),
     )
     add_fieldsets = (
         (None, {

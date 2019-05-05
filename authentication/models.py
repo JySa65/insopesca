@@ -66,7 +66,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
 
     class Meta:
-        verbose_name = "User"
+        verbose_name = "Usuario"
         ordering = ('-created_at',)
 
     def __str__(self):
