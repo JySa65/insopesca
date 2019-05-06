@@ -39,6 +39,7 @@ class BackupRestoreDBConfig():
         try:
             bd = get_object_or_404(models.BackupRestoreBD, pk=pk)
             path = bd.path
+            call_command('flush', verbosity=0, interactive=False)
             call_command('loaddata', path)
             time.sleep(10)
             async_to_sync(channel_layer.group_send)(
