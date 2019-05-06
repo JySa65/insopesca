@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}
+Base de Datos
+{% endblock %}
+{% block sidebar %}
+{% include 'sidebar/authentication.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+Base de Datos
+{% endblock pageheader %}
+
+
+{% block context %}
+<div class="container">
+    <h1>¿Que Desea Hacer?</h1>
+    <div class="row mt-5">
+        <div class="col-sm-6 text-center">
+            <button class="btn btn-lg btn-primary" data-toggle="tooltip" data-placement="top"
+                title="Respaldar La Base De Datos" id="backup">
+                <i class="far fa-hdd"></i>
+                Respaldar
+            </button>
+        </div>
+        <div class="col-sm-6 text-center">
+            <button class="btn btn-lg btn-secondary" data-toggle="tooltip" data-placement="top"
+                title="Restaurar Base De Datos" id="restore_db">
+                <i class="fas fa-database"></i>
+                Restaurar
+            </button>
+        </div>
+    </div>
+    <div class="row mt-5" id="togle_table" hidden>
+        <div class="card col-sm-12">
+            <div style="position: absolute; right: 10px; font-size: 25px; top: -5px;">
+                <a href="" id="remove_card">x</a>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Fecha de Creación</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="table_show_db"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

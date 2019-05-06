@@ -1,0 +1,4068 @@
+[
+{
+  "model": "core.state",
+  "pk": "ddb4f118-398f-4dd6-9c1d-639e385bdd22",
+  "fields": {
+    "name": "Portuguesa",
+    "created_at": "2019-04-29T18:29:54.813Z",
+    "updated_at": "2019-04-29T18:29:54.813Z"
+  }
+},
+{
+  "model": "core.municipality",
+  "pk": "8d7fdccd-8fd5-4fcd-882e-848491d461fb",
+  "fields": {
+    "name": "Guanare",
+    "state": "ddb4f118-398f-4dd6-9c1d-639e385bdd22",
+    "created_at": "2019-04-29T18:29:58.063Z",
+    "updated_at": "2019-04-29T18:29:58.063Z"
+  }
+},
+{
+  "model": "core.parish",
+  "pk": "cc45c007-48df-4a18-8cf8-c332c3e4d803",
+  "fields": {
+    "name": "Mesa de Cavacas",
+    "municipality": "8d7fdccd-8fd5-4fcd-882e-848491d461fb",
+    "created_at": "2019-04-29T18:30:00.251Z",
+    "updated_at": "2019-04-29T18:30:00.251Z"
+  }
+},
+{
+  "model": "core.parish",
+  "pk": "cc45c007-48df-4a18-8cf8-c332c3e4d804",
+  "fields": {
+    "name": "Guanare",
+    "municipality": "8d7fdccd-8fd5-4fcd-882e-848491d461fb",
+    "created_at": "2019-04-29T18:30:00.251Z",
+    "updated_at": "2019-04-29T18:30:00.251Z"
+  }
+},
+{
+  "model": "core.account",
+  "pk": "fead25e3-241c-4e16-94f7-0f8973cdf19d",
+  "fields": {
+    "type_document": "V",
+    "document": "12312534",
+    "name": "efwef wfwefrwe",
+    "last_name": "wefwe wfewe",
+    "sex": "",
+    "tlf": "234234234234",
+    "tlf_house": "234234234",
+    "birthday": null,
+    "address": "",
+    "is_active": true,
+    "created_at": "2019-04-30T10:25:30.415Z",
+    "updated_at": "2019-04-30T10:25:30.415Z"
+  }
+},
+{
+  "model": "core.company",
+  "pk": "e1b82244-a833-4fff-87fc-c86fa69debb2",
+  "fields": {
+    "type_document": "V",
+    "document": "312321",
+    "name": "erwer",
+    "tlf": "23123123",
+    "tlf_house": "1231231231",
+    "state": "ddb4f118-398f-4dd6-9c1d-639e385bdd22",
+    "municipality": "8d7fdccd-8fd5-4fcd-882e-848491d461fb",
+    "parish": "cc45c007-48df-4a18-8cf8-c332c3e4d804",
+    "address": "1ewfwef",
+    "is_active": true,
+    "is_delete": false,
+    "created_at": "2019-04-30T10:13:14.371Z",
+    "updated_at": "2019-04-30T10:13:14.371Z"
+  }
+},
+{
+  "model": "acuicultura.specie",
+  "pk": 1,
+  "fields": {
+    "ordinary_name": "Bugie Normal",
+    "scientific_name": "Bugie Doctor",
+    "created_at": "2019-04-30T10:35:59.166Z",
+    "updated_at": "2019-04-30T10:35:59.166Z"
+  }
+},
+{
+  "model": "acuicultura.specie",
+  "pk": 2,
+  "fields": {
+    "ordinary_name": "Bugie 1",
+    "scientific_name": "bugie 1 Doctor",
+    "created_at": "2019-04-30T10:36:43.371Z",
+    "updated_at": "2019-04-30T10:36:43.372Z"
+  }
+},
+{
+  "model": "acuicultura.specie",
+  "pk": 6,
+  "fields": {
+    "ordinary_name": "Cachama",
+    "scientific_name": null,
+    "created_at": "2019-04-30T11:06:11.862Z",
+    "updated_at": "2019-04-30T11:06:11.862Z"
+  }
+},
+{
+  "model": "acuicultura.productionunit",
+  "pk": "e1b82244-a833-4fff-87fc-c86fa69debb2",
+  "fields": {}
+},
+{
+  "model": "acuicultura.repreunitproductive",
+  "pk": "fead25e3-241c-4e16-94f7-0f8973cdf19d",
+  "fields": {
+    "production_unit": "e1b82244-a833-4fff-87fc-c86fa69debb2"
+  }
+},
+{
+  "model": "acuicultura.cardinalpoint",
+  "pk": "5639ac09-eca9-460b-88ee-641dbedf21db",
+  "fields": {
+    "production_unit": "e1b82244-a833-4fff-87fc-c86fa69debb2",
+    "north": 233.9999999987,
+    "south": 23422.99,
+    "west": 2341.9999999994,
+    "oest": 233.9999999996,
+    "altitude": 1.9999999996,
+    "total_area_terr": 4563456.0,
+    "created_at": "2019-04-30T10:13:14.382Z",
+    "updated_at": "2019-04-30T10:13:14.383Z"
+  }
+},
+{
+  "model": "acuicultura.lagoon",
+  "pk": "56422509-d34d-4553-b0f8-2df3c9d2df24",
+  "fields": {
+    "producion_unit": "e1b82244-a833-4fff-87fc-c86fa69debb2",
+    "lagoon_diameter": 234.54,
+    "lagoon_deepth": 456.45,
+    "total_area_mirror_guater": null,
+    "sistem_cultivate": "mono",
+    "created_at": "2019-04-30T14:56:33.940Z",
+    "updated_at": "2019-04-30T14:56:33.940Z"
+  }
+},
+{
+  "model": "acuicultura.lagoon",
+  "pk": "d897670d-3724-45f4-bfd9-2f4e19176fd2",
+  "fields": {
+    "producion_unit": "e1b82244-a833-4fff-87fc-c86fa69debb2",
+    "lagoon_diameter": 234.0,
+    "lagoon_deepth": 234.0,
+    "total_area_mirror_guater": null,
+    "sistem_cultivate": "duo",
+    "created_at": "2019-04-30T14:56:34.034Z",
+    "updated_at": "2019-04-30T14:56:34.034Z"
+  }
+},
+{
+  "model": "acuicultura.well",
+  "pk": "904eb945-90f1-4dad-b0b7-d1c020b36eef",
+  "fields": {
+    "producion_unit": "e1b82244-a833-4fff-87fc-c86fa69debb2",
+    "well_diameter": 234.1,
+    "well_deepth": 152.145,
+    "created_at": "2019-04-30T14:56:34.044Z",
+    "updated_at": "2019-04-30T14:56:34.044Z"
+  }
+},
+{
+  "model": "acuicultura.welltracing",
+  "pk": "9fdb5809-3a9e-463b-bed1-b67fd53c5b85",
+  "fields": {
+    "tracing": "84b0ba50-054c-486b-922e-101949054219",
+    "well": "904eb945-90f1-4dad-b0b7-d1c020b36eef",
+    "created_at": "2019-04-30T14:56:34.046Z",
+    "updated_at": "2019-04-30T14:56:34.047Z"
+  }
+},
+{
+  "model": "acuicultura.lagoontracing",
+  "pk": "295dd0bb-edb6-4b89-a1ed-7620489c67a1",
+  "fields": {
+    "tracing": "84b0ba50-054c-486b-922e-101949054219",
+    "lagoon": "56422509-d34d-4553-b0f8-2df3c9d2df24",
+    "created_at": "2019-04-30T14:56:33.963Z",
+    "updated_at": "2019-04-30T14:56:33.963Z"
+  }
+},
+{
+  "model": "acuicultura.lagoontracing",
+  "pk": "d0a739dd-1a6d-4168-9858-a7d457670d4e",
+  "fields": {
+    "tracing": "84b0ba50-054c-486b-922e-101949054219",
+    "lagoon": "d897670d-3724-45f4-bfd9-2f4e19176fd2",
+    "created_at": "2019-04-30T14:56:34.036Z",
+    "updated_at": "2019-04-30T14:56:34.036Z"
+  }
+},
+{
+  "model": "acuicultura.lagoonespecies",
+  "pk": 1,
+  "fields": {
+    "lagoon": "56422509-d34d-4553-b0f8-2df3c9d2df24",
+    "especies": 6,
+    "number_specie": 456
+  }
+},
+{
+  "model": "acuicultura.lagoonespecies",
+  "pk": 2,
+  "fields": {
+    "lagoon": "d897670d-3724-45f4-bfd9-2f4e19176fd2",
+    "especies": 1,
+    "number_specie": 234
+  }
+},
+{
+  "model": "acuicultura.lagoonespecies",
+  "pk": 3,
+  "fields": {
+    "lagoon": "d897670d-3724-45f4-bfd9-2f4e19176fd2",
+    "especies": 2,
+    "number_specie": 234
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 1,
+  "fields": {
+    "app_label": "authentication",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 2,
+  "fields": {
+    "app_label": "authentication",
+    "model": "historicalsecurityquestion"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 3,
+  "fields": {
+    "app_label": "authentication",
+    "model": "historicaluser"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 4,
+  "fields": {
+    "app_label": "authentication",
+    "model": "securityquestion"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 5,
+  "fields": {
+    "app_label": "authentication",
+    "model": "sessionuser"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 6,
+  "fields": {
+    "app_label": "sanidad",
+    "model": "account"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 7,
+  "fields": {
+    "app_label": "sanidad",
+    "model": "company"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 8,
+  "fields": {
+    "app_label": "sanidad",
+    "model": "companyhasaccount"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 9,
+  "fields": {
+    "app_label": "sanidad",
+    "model": "driver"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 10,
+  "fields": {
+    "app_label": "sanidad",
+    "model": "inspection"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 11,
+  "fields": {
+    "app_label": "sanidad",
+    "model": "plantice"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 12,
+  "fields": {
+    "app_label": "sanidad",
+    "model": "transport"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 13,
+  "fields": {
+    "app_label": "sanidad",
+    "model": "typecompany"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 14,
+  "fields": {
+    "app_label": "core",
+    "model": "account"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 15,
+  "fields": {
+    "app_label": "core",
+    "model": "company"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 16,
+  "fields": {
+    "app_label": "core",
+    "model": "municipality"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 17,
+  "fields": {
+    "app_label": "core",
+    "model": "notification"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 18,
+  "fields": {
+    "app_label": "core",
+    "model": "parish"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 19,
+  "fields": {
+    "app_label": "core",
+    "model": "state"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 20,
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 21,
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 22,
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 23,
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 24,
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 25,
+  "fields": {
+    "app_label": "acuicultura",
+    "model": "cardinalpoint"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 26,
+  "fields": {
+    "app_label": "acuicultura",
+    "model": "lagoon"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 27,
+  "fields": {
+    "app_label": "acuicultura",
+    "model": "lagoonespecies"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 28,
+  "fields": {
+    "app_label": "acuicultura",
+    "model": "lagoontracing"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 29,
+  "fields": {
+    "app_label": "acuicultura",
+    "model": "productionunit"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 30,
+  "fields": {
+    "app_label": "acuicultura",
+    "model": "repreunitproductive"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 31,
+  "fields": {
+    "app_label": "acuicultura",
+    "model": "specie"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 32,
+  "fields": {
+    "app_label": "acuicultura",
+    "model": "tracing"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 33,
+  "fields": {
+    "app_label": "acuicultura",
+    "model": "well"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 34,
+  "fields": {
+    "app_label": "acuicultura",
+    "model": "welltracing"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 35,
+  "fields": {
+    "app_label": "authentication",
+    "model": "backuprestorebd"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "336of8ydsgg8iu6fv3oakhlcs3j0sfvk",
+  "fields": {
+    "session_data": "NzFkOWNiNWQ3MWE5ZjE2ZjBmYmZlZTYxOGU5ZjdmZWIzYTM4ZjhhNzp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJhY2JjNWQyNGE1YmMwOTQ0NTAyNzYwZmIzMDg5NDRhNjA1MjhmOWY2In0=",
+    "expire_date": "2019-05-18T08:51:32.545Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "i1l8f7qx8eyey3rlw25iaqx20kkume3b",
+  "fields": {
+    "session_data": "ZGE4ZTEyNTYwYzViODBkZjY2MjZlY2EzMDAzYTliYjNhMzQ5MTgzMzp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI4ZGFlNGFkMGY5ODQyZjk4YjAzZmY2MDljZDM0ZTJlNDg2MGYwOGE1In0=",
+    "expire_date": "2019-05-18T08:50:45.164Z"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add User",
+    "content_type": 1,
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change User",
+    "content_type": 1,
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete User",
+    "content_type": 1,
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can view User",
+    "content_type": 1,
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can add historical Pregunta De Seguridad",
+    "content_type": 2,
+    "codename": "add_historicalsecurityquestion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can change historical Pregunta De Seguridad",
+    "content_type": 2,
+    "codename": "change_historicalsecurityquestion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can delete historical Pregunta De Seguridad",
+    "content_type": 2,
+    "codename": "delete_historicalsecurityquestion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can view historical Pregunta De Seguridad",
+    "content_type": 2,
+    "codename": "view_historicalsecurityquestion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can add historical User",
+    "content_type": 3,
+    "codename": "add_historicaluser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can change historical User",
+    "content_type": 3,
+    "codename": "change_historicaluser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can delete historical User",
+    "content_type": 3,
+    "codename": "delete_historicaluser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can view historical User",
+    "content_type": 3,
+    "codename": "view_historicaluser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add Pregunta De Seguridad",
+    "content_type": 4,
+    "codename": "add_securityquestion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change Pregunta De Seguridad",
+    "content_type": 4,
+    "codename": "change_securityquestion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete Pregunta De Seguridad",
+    "content_type": 4,
+    "codename": "delete_securityquestion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can view Pregunta De Seguridad",
+    "content_type": 4,
+    "codename": "view_securityquestion"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can add session user",
+    "content_type": 5,
+    "codename": "add_sessionuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can change session user",
+    "content_type": 5,
+    "codename": "change_sessionuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can delete session user",
+    "content_type": 5,
+    "codename": "delete_sessionuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can view session user",
+    "content_type": 5,
+    "codename": "view_sessionuser"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can add account",
+    "content_type": 6,
+    "codename": "add_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can change account",
+    "content_type": 6,
+    "codename": "change_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can delete account",
+    "content_type": 6,
+    "codename": "delete_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can view account",
+    "content_type": 6,
+    "codename": "view_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add company",
+    "content_type": 7,
+    "codename": "add_company"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change company",
+    "content_type": 7,
+    "codename": "change_company"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete company",
+    "content_type": 7,
+    "codename": "delete_company"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can view company",
+    "content_type": 7,
+    "codename": "view_company"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 29,
+  "fields": {
+    "name": "Can add company has account",
+    "content_type": 8,
+    "codename": "add_companyhasaccount"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 30,
+  "fields": {
+    "name": "Can change company has account",
+    "content_type": 8,
+    "codename": "change_companyhasaccount"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 31,
+  "fields": {
+    "name": "Can delete company has account",
+    "content_type": 8,
+    "codename": "delete_companyhasaccount"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 32,
+  "fields": {
+    "name": "Can view company has account",
+    "content_type": 8,
+    "codename": "view_companyhasaccount"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 33,
+  "fields": {
+    "name": "Can add driver",
+    "content_type": 9,
+    "codename": "add_driver"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 34,
+  "fields": {
+    "name": "Can change driver",
+    "content_type": 9,
+    "codename": "change_driver"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 35,
+  "fields": {
+    "name": "Can delete driver",
+    "content_type": 9,
+    "codename": "delete_driver"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 36,
+  "fields": {
+    "name": "Can view driver",
+    "content_type": 9,
+    "codename": "view_driver"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 37,
+  "fields": {
+    "name": "Can add inspection",
+    "content_type": 10,
+    "codename": "add_inspection"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 38,
+  "fields": {
+    "name": "Can change inspection",
+    "content_type": 10,
+    "codename": "change_inspection"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 39,
+  "fields": {
+    "name": "Can delete inspection",
+    "content_type": 10,
+    "codename": "delete_inspection"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 40,
+  "fields": {
+    "name": "Can view inspection",
+    "content_type": 10,
+    "codename": "view_inspection"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 41,
+  "fields": {
+    "name": "Can add plant ice",
+    "content_type": 11,
+    "codename": "add_plantice"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 42,
+  "fields": {
+    "name": "Can change plant ice",
+    "content_type": 11,
+    "codename": "change_plantice"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 43,
+  "fields": {
+    "name": "Can delete plant ice",
+    "content_type": 11,
+    "codename": "delete_plantice"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 44,
+  "fields": {
+    "name": "Can view plant ice",
+    "content_type": 11,
+    "codename": "view_plantice"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 45,
+  "fields": {
+    "name": "Can add transport",
+    "content_type": 12,
+    "codename": "add_transport"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 46,
+  "fields": {
+    "name": "Can change transport",
+    "content_type": 12,
+    "codename": "change_transport"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 47,
+  "fields": {
+    "name": "Can delete transport",
+    "content_type": 12,
+    "codename": "delete_transport"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 48,
+  "fields": {
+    "name": "Can view transport",
+    "content_type": 12,
+    "codename": "view_transport"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 49,
+  "fields": {
+    "name": "Can add type company",
+    "content_type": 13,
+    "codename": "add_typecompany"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 50,
+  "fields": {
+    "name": "Can change type company",
+    "content_type": 13,
+    "codename": "change_typecompany"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 51,
+  "fields": {
+    "name": "Can delete type company",
+    "content_type": 13,
+    "codename": "delete_typecompany"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 52,
+  "fields": {
+    "name": "Can view type company",
+    "content_type": 13,
+    "codename": "view_typecompany"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 53,
+  "fields": {
+    "name": "Can add account",
+    "content_type": 14,
+    "codename": "add_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 54,
+  "fields": {
+    "name": "Can change account",
+    "content_type": 14,
+    "codename": "change_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 55,
+  "fields": {
+    "name": "Can delete account",
+    "content_type": 14,
+    "codename": "delete_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 56,
+  "fields": {
+    "name": "Can view account",
+    "content_type": 14,
+    "codename": "view_account"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 57,
+  "fields": {
+    "name": "Can add company",
+    "content_type": 15,
+    "codename": "add_company"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 58,
+  "fields": {
+    "name": "Can change company",
+    "content_type": 15,
+    "codename": "change_company"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 59,
+  "fields": {
+    "name": "Can delete company",
+    "content_type": 15,
+    "codename": "delete_company"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 60,
+  "fields": {
+    "name": "Can view company",
+    "content_type": 15,
+    "codename": "view_company"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 61,
+  "fields": {
+    "name": "Can add municipality",
+    "content_type": 16,
+    "codename": "add_municipality"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 62,
+  "fields": {
+    "name": "Can change municipality",
+    "content_type": 16,
+    "codename": "change_municipality"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 63,
+  "fields": {
+    "name": "Can delete municipality",
+    "content_type": 16,
+    "codename": "delete_municipality"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 64,
+  "fields": {
+    "name": "Can view municipality",
+    "content_type": 16,
+    "codename": "view_municipality"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 65,
+  "fields": {
+    "name": "Can add notification",
+    "content_type": 17,
+    "codename": "add_notification"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 66,
+  "fields": {
+    "name": "Can change notification",
+    "content_type": 17,
+    "codename": "change_notification"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 67,
+  "fields": {
+    "name": "Can delete notification",
+    "content_type": 17,
+    "codename": "delete_notification"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 68,
+  "fields": {
+    "name": "Can view notification",
+    "content_type": 17,
+    "codename": "view_notification"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 69,
+  "fields": {
+    "name": "Can add parish",
+    "content_type": 18,
+    "codename": "add_parish"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 70,
+  "fields": {
+    "name": "Can change parish",
+    "content_type": 18,
+    "codename": "change_parish"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 71,
+  "fields": {
+    "name": "Can delete parish",
+    "content_type": 18,
+    "codename": "delete_parish"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 72,
+  "fields": {
+    "name": "Can view parish",
+    "content_type": 18,
+    "codename": "view_parish"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 73,
+  "fields": {
+    "name": "Can add state",
+    "content_type": 19,
+    "codename": "add_state"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 74,
+  "fields": {
+    "name": "Can change state",
+    "content_type": 19,
+    "codename": "change_state"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 75,
+  "fields": {
+    "name": "Can delete state",
+    "content_type": 19,
+    "codename": "delete_state"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 76,
+  "fields": {
+    "name": "Can view state",
+    "content_type": 19,
+    "codename": "view_state"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 77,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 20,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 78,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 20,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 79,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 20,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 80,
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": 20,
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 81,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 21,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 82,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 21,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 83,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 21,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 84,
+  "fields": {
+    "name": "Can view permission",
+    "content_type": 21,
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 85,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 22,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 86,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 22,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 87,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 22,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 88,
+  "fields": {
+    "name": "Can view group",
+    "content_type": 22,
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 89,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 23,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 90,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 23,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 91,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 23,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 92,
+  "fields": {
+    "name": "Can view content type",
+    "content_type": 23,
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 93,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 24,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 94,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 24,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 95,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 24,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 96,
+  "fields": {
+    "name": "Can view session",
+    "content_type": 24,
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 97,
+  "fields": {
+    "name": "Can add cardinal point",
+    "content_type": 25,
+    "codename": "add_cardinalpoint"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 98,
+  "fields": {
+    "name": "Can change cardinal point",
+    "content_type": 25,
+    "codename": "change_cardinalpoint"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 99,
+  "fields": {
+    "name": "Can delete cardinal point",
+    "content_type": 25,
+    "codename": "delete_cardinalpoint"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 100,
+  "fields": {
+    "name": "Can view cardinal point",
+    "content_type": 25,
+    "codename": "view_cardinalpoint"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 101,
+  "fields": {
+    "name": "Can add lagoon",
+    "content_type": 26,
+    "codename": "add_lagoon"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 102,
+  "fields": {
+    "name": "Can change lagoon",
+    "content_type": 26,
+    "codename": "change_lagoon"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 103,
+  "fields": {
+    "name": "Can delete lagoon",
+    "content_type": 26,
+    "codename": "delete_lagoon"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 104,
+  "fields": {
+    "name": "Can view lagoon",
+    "content_type": 26,
+    "codename": "view_lagoon"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 105,
+  "fields": {
+    "name": "Can add lagoon especies",
+    "content_type": 27,
+    "codename": "add_lagoonespecies"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 106,
+  "fields": {
+    "name": "Can change lagoon especies",
+    "content_type": 27,
+    "codename": "change_lagoonespecies"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 107,
+  "fields": {
+    "name": "Can delete lagoon especies",
+    "content_type": 27,
+    "codename": "delete_lagoonespecies"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 108,
+  "fields": {
+    "name": "Can view lagoon especies",
+    "content_type": 27,
+    "codename": "view_lagoonespecies"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 109,
+  "fields": {
+    "name": "Can add lagoon tracing",
+    "content_type": 28,
+    "codename": "add_lagoontracing"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 110,
+  "fields": {
+    "name": "Can change lagoon tracing",
+    "content_type": 28,
+    "codename": "change_lagoontracing"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 111,
+  "fields": {
+    "name": "Can delete lagoon tracing",
+    "content_type": 28,
+    "codename": "delete_lagoontracing"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 112,
+  "fields": {
+    "name": "Can view lagoon tracing",
+    "content_type": 28,
+    "codename": "view_lagoontracing"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 113,
+  "fields": {
+    "name": "Can add production unit",
+    "content_type": 29,
+    "codename": "add_productionunit"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 114,
+  "fields": {
+    "name": "Can change production unit",
+    "content_type": 29,
+    "codename": "change_productionunit"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 115,
+  "fields": {
+    "name": "Can delete production unit",
+    "content_type": 29,
+    "codename": "delete_productionunit"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 116,
+  "fields": {
+    "name": "Can view production unit",
+    "content_type": 29,
+    "codename": "view_productionunit"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 117,
+  "fields": {
+    "name": "Can add repre unit productive",
+    "content_type": 30,
+    "codename": "add_repreunitproductive"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 118,
+  "fields": {
+    "name": "Can change repre unit productive",
+    "content_type": 30,
+    "codename": "change_repreunitproductive"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 119,
+  "fields": {
+    "name": "Can delete repre unit productive",
+    "content_type": 30,
+    "codename": "delete_repreunitproductive"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 120,
+  "fields": {
+    "name": "Can view repre unit productive",
+    "content_type": 30,
+    "codename": "view_repreunitproductive"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 121,
+  "fields": {
+    "name": "Can add specie",
+    "content_type": 31,
+    "codename": "add_specie"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 122,
+  "fields": {
+    "name": "Can change specie",
+    "content_type": 31,
+    "codename": "change_specie"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 123,
+  "fields": {
+    "name": "Can delete specie",
+    "content_type": 31,
+    "codename": "delete_specie"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 124,
+  "fields": {
+    "name": "Can view specie",
+    "content_type": 31,
+    "codename": "view_specie"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 125,
+  "fields": {
+    "name": "Can add tracing",
+    "content_type": 32,
+    "codename": "add_tracing"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 126,
+  "fields": {
+    "name": "Can change tracing",
+    "content_type": 32,
+    "codename": "change_tracing"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 127,
+  "fields": {
+    "name": "Can delete tracing",
+    "content_type": 32,
+    "codename": "delete_tracing"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 128,
+  "fields": {
+    "name": "Can view tracing",
+    "content_type": 32,
+    "codename": "view_tracing"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 129,
+  "fields": {
+    "name": "Can add well",
+    "content_type": 33,
+    "codename": "add_well"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 130,
+  "fields": {
+    "name": "Can change well",
+    "content_type": 33,
+    "codename": "change_well"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 131,
+  "fields": {
+    "name": "Can delete well",
+    "content_type": 33,
+    "codename": "delete_well"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 132,
+  "fields": {
+    "name": "Can view well",
+    "content_type": 33,
+    "codename": "view_well"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 133,
+  "fields": {
+    "name": "Can add well tracing",
+    "content_type": 34,
+    "codename": "add_welltracing"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 134,
+  "fields": {
+    "name": "Can change well tracing",
+    "content_type": 34,
+    "codename": "change_welltracing"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 135,
+  "fields": {
+    "name": "Can delete well tracing",
+    "content_type": 34,
+    "codename": "delete_welltracing"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 136,
+  "fields": {
+    "name": "Can view well tracing",
+    "content_type": 34,
+    "codename": "view_welltracing"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 137,
+  "fields": {
+    "name": "Can add backup restore bd",
+    "content_type": 35,
+    "codename": "add_backuprestorebd"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 138,
+  "fields": {
+    "name": "Can change backup restore bd",
+    "content_type": 35,
+    "codename": "change_backuprestorebd"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 139,
+  "fields": {
+    "name": "Can delete backup restore bd",
+    "content_type": 35,
+    "codename": "delete_backuprestorebd"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 140,
+  "fields": {
+    "name": "Can view backup restore bd",
+    "content_type": 35,
+    "codename": "view_backuprestorebd"
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$120000$u5Hbkvq6AJSS$RJQOJwIvFguWhT9Y+mQZ6+xXPLxUDO/MFMcLxa4gXXI=",
+    "last_login": "2019-05-04T08:51:32.499Z",
+    "ci": "",
+    "name": "",
+    "last_name": "",
+    "email": "r.a.s.g65@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": true,
+    "is_active": true,
+    "is_staff": true,
+    "is_superuser": true,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": null,
+    "level": null,
+    "date_joined": "2019-04-29T18:24:30.725Z",
+    "created_at": "2019-04-29T18:24:31.027Z",
+    "updated_at": "2019-04-29T18:25:53.773Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$120000$VKdySVjwlmlm$51S/RfgA2x6cMIzt7PnOdft5mycjwTlylOPezgGwQyA=",
+    "last_login": "2019-05-04T08:50:45.111Z",
+    "ci": "25520843",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g610@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": true,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_coordinator",
+    "level": "is_acuicul",
+    "date_joined": "2019-04-29T18:27:49.347Z",
+    "created_at": "2019-04-29T18:27:49.689Z",
+    "updated_at": "2019-05-04T09:00:39.882Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$120000$KOiGFjxl3BOL$BYtv9jHoEeALMBVA+41mlD79tzDsGJRTLYBIzqbSlME=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": false,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-04T06:01:11.810Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 1,
+  "fields": {
+    "id": 1,
+    "password": "pbkdf2_sha256$120000$u5Hbkvq6AJSS$RJQOJwIvFguWhT9Y+mQZ6+xXPLxUDO/MFMcLxa4gXXI=",
+    "last_login": null,
+    "ci": "",
+    "name": "",
+    "last_name": "",
+    "email": "r.a.s.g65@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": null,
+    "level": null,
+    "date_joined": "2019-04-29T18:24:30.725Z",
+    "created_at": "2019-04-29T18:24:31.027Z",
+    "updated_at": "2019-04-29T18:24:31.030Z",
+    "history_date": "2019-04-29T18:24:31.058Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": null
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 2,
+  "fields": {
+    "id": 1,
+    "password": "pbkdf2_sha256$120000$u5Hbkvq6AJSS$RJQOJwIvFguWhT9Y+mQZ6+xXPLxUDO/MFMcLxa4gXXI=",
+    "last_login": null,
+    "ci": "",
+    "name": "",
+    "last_name": "",
+    "email": "r.a.s.g65@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": true,
+    "is_staff": true,
+    "is_superuser": true,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": null,
+    "level": null,
+    "date_joined": "2019-04-29T18:24:30.725Z",
+    "created_at": "2019-04-29T18:24:31.027Z",
+    "updated_at": "2019-04-29T18:24:31.080Z",
+    "history_date": "2019-04-29T18:24:31.102Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": null
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 3,
+  "fields": {
+    "id": 1,
+    "password": "pbkdf2_sha256$120000$u5Hbkvq6AJSS$RJQOJwIvFguWhT9Y+mQZ6+xXPLxUDO/MFMcLxa4gXXI=",
+    "last_login": null,
+    "ci": "",
+    "name": "",
+    "last_name": "",
+    "email": "r.a.s.g65@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": true,
+    "is_active": true,
+    "is_staff": true,
+    "is_superuser": true,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": null,
+    "level": null,
+    "date_joined": "2019-04-29T18:24:30.725Z",
+    "created_at": "2019-04-29T18:24:31.027Z",
+    "updated_at": "2019-04-29T18:25:53.773Z",
+    "history_date": "2019-04-29T18:25:53.814Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": null
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 4,
+  "fields": {
+    "id": 1,
+    "password": "pbkdf2_sha256$120000$u5Hbkvq6AJSS$RJQOJwIvFguWhT9Y+mQZ6+xXPLxUDO/MFMcLxa4gXXI=",
+    "last_login": "2019-04-29T18:26:14.485Z",
+    "ci": "",
+    "name": "",
+    "last_name": "",
+    "email": "r.a.s.g65@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": true,
+    "is_active": true,
+    "is_staff": true,
+    "is_superuser": true,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": null,
+    "level": null,
+    "date_joined": "2019-04-29T18:24:30.725Z",
+    "created_at": "2019-04-29T18:24:31.027Z",
+    "updated_at": "2019-04-29T18:25:53.773Z",
+    "history_date": "2019-04-29T18:26:14.488Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 5,
+  "fields": {
+    "id": 2,
+    "password": "pbkdf2_sha256$120000$EYIc4FChs7KN$ii2pqrbt8YdOx5557aXFV2RaNEPQwTQFWWwPDfejI5s=",
+    "last_login": null,
+    "ci": "25520843",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g610@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_acuicul",
+    "date_joined": "2019-04-29T18:27:49.347Z",
+    "created_at": "2019-04-29T18:27:49.689Z",
+    "updated_at": "2019-04-29T18:27:49.689Z",
+    "history_date": "2019-04-29T18:27:49.691Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 6,
+  "fields": {
+    "id": 2,
+    "password": "pbkdf2_sha256$120000$EYIc4FChs7KN$ii2pqrbt8YdOx5557aXFV2RaNEPQwTQFWWwPDfejI5s=",
+    "last_login": null,
+    "ci": "25520843",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g610@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_acuicul",
+    "date_joined": "2019-04-29T18:27:49.347Z",
+    "created_at": "2019-04-29T18:27:49.689Z",
+    "updated_at": "2019-04-29T18:27:49.732Z",
+    "history_date": "2019-04-29T18:27:49.735Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 7,
+  "fields": {
+    "id": 2,
+    "password": "pbkdf2_sha256$120000$EYIc4FChs7KN$ii2pqrbt8YdOx5557aXFV2RaNEPQwTQFWWwPDfejI5s=",
+    "last_login": "2019-04-29T18:28:12.239Z",
+    "ci": "25520843",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g610@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_acuicul",
+    "date_joined": "2019-04-29T18:27:49.347Z",
+    "created_at": "2019-04-29T18:27:49.689Z",
+    "updated_at": "2019-04-29T18:27:49.732Z",
+    "history_date": "2019-04-29T18:28:12.242Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 8,
+  "fields": {
+    "id": 2,
+    "password": "pbkdf2_sha256$120000$VKdySVjwlmlm$51S/RfgA2x6cMIzt7PnOdft5mycjwTlylOPezgGwQyA=",
+    "last_login": "2019-04-29T18:28:12.239Z",
+    "ci": "25520843",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g610@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": false,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_acuicul",
+    "date_joined": "2019-04-29T18:27:49.347Z",
+    "created_at": "2019-04-29T18:27:49.689Z",
+    "updated_at": "2019-04-29T18:28:21.883Z",
+    "history_date": "2019-04-29T18:28:21.886Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 9,
+  "fields": {
+    "id": 2,
+    "password": "pbkdf2_sha256$120000$VKdySVjwlmlm$51S/RfgA2x6cMIzt7PnOdft5mycjwTlylOPezgGwQyA=",
+    "last_login": "2019-04-29T18:28:34.181Z",
+    "ci": "25520843",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g610@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": false,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_acuicul",
+    "date_joined": "2019-04-29T18:27:49.347Z",
+    "created_at": "2019-04-29T18:27:49.689Z",
+    "updated_at": "2019-04-29T18:28:21.883Z",
+    "history_date": "2019-04-29T18:28:34.184Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 10,
+  "fields": {
+    "id": 2,
+    "password": "pbkdf2_sha256$120000$VKdySVjwlmlm$51S/RfgA2x6cMIzt7PnOdft5mycjwTlylOPezgGwQyA=",
+    "last_login": "2019-04-29T18:28:34.181Z",
+    "ci": "25520843",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g610@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": true,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_acuicul",
+    "date_joined": "2019-04-29T18:27:49.347Z",
+    "created_at": "2019-04-29T18:27:49.689Z",
+    "updated_at": "2019-04-29T18:28:39.511Z",
+    "history_date": "2019-04-29T18:28:39.518Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 11,
+  "fields": {
+    "id": 2,
+    "password": "pbkdf2_sha256$120000$VKdySVjwlmlm$51S/RfgA2x6cMIzt7PnOdft5mycjwTlylOPezgGwQyA=",
+    "last_login": "2019-05-03T09:03:38.182Z",
+    "ci": "25520843",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g610@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": true,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_acuicul",
+    "date_joined": "2019-04-29T18:27:49.347Z",
+    "created_at": "2019-04-29T18:27:49.689Z",
+    "updated_at": "2019-04-29T18:28:39.511Z",
+    "history_date": "2019-05-03T09:03:38.185Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 12,
+  "fields": {
+    "id": 1,
+    "password": "pbkdf2_sha256$120000$u5Hbkvq6AJSS$RJQOJwIvFguWhT9Y+mQZ6+xXPLxUDO/MFMcLxa4gXXI=",
+    "last_login": "2019-05-04T04:44:52.914Z",
+    "ci": "",
+    "name": "",
+    "last_name": "",
+    "email": "r.a.s.g65@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": true,
+    "is_active": true,
+    "is_staff": true,
+    "is_superuser": true,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": null,
+    "level": null,
+    "date_joined": "2019-04-29T18:24:30.725Z",
+    "created_at": "2019-04-29T18:24:31.027Z",
+    "updated_at": "2019-04-29T18:25:53.773Z",
+    "history_date": "2019-05-04T04:44:52.917Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 13,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$XQrsjFwIhoRI$/D1ua6i6xSpXLUwdp44C4MBhD1GXi0hhxFLV3/mzVlk=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-04T04:45:52.708Z",
+    "history_date": "2019-05-04T04:45:52.720Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 14,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$XQrsjFwIhoRI$/D1ua6i6xSpXLUwdp44C4MBhD1GXi0hhxFLV3/mzVlk=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-04T04:45:52.772Z",
+    "history_date": "2019-05-04T04:45:52.775Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 15,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$0ZvcS5sdJIl2$h5yozVdoB2wNOICjEXTb6DOsvKB2XVEW1N665OFbjI4=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": false,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": true,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-04T04:46:22.043Z",
+    "history_date": "2019-05-04T04:46:22.046Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 17,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$0ZvcS5sdJIl2$h5yozVdoB2wNOICjEXTb6DOsvKB2XVEW1N665OFbjI4=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": true,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-04T05:52:44.055Z",
+    "history_date": "2019-05-04T05:52:44.058Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 18,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$0ZvcS5sdJIl2$h5yozVdoB2wNOICjEXTb6DOsvKB2XVEW1N665OFbjI4=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": true,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-04T05:52:44.062Z",
+    "history_date": "2019-05-04T05:52:44.065Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 19,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$0ZvcS5sdJIl2$h5yozVdoB2wNOICjEXTb6DOsvKB2XVEW1N665OFbjI4=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-04T05:53:28.421Z",
+    "history_date": "2019-05-04T05:53:28.425Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 20,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$0ZvcS5sdJIl2$h5yozVdoB2wNOICjEXTb6DOsvKB2XVEW1N665OFbjI4=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-04T05:53:28.428Z",
+    "history_date": "2019-05-04T05:53:28.431Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 21,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$p7rTIu9Nue00$kZUDWpKy3FeKxBCd7jIgOhMNDEBqVcZpleGaGELmcQs=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": false,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": true,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-04T05:55:44.917Z",
+    "history_date": "2019-05-04T05:55:44.920Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 22,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$p7rTIu9Nue00$kZUDWpKy3FeKxBCd7jIgOhMNDEBqVcZpleGaGELmcQs=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": false,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-04T05:56:18.985Z",
+    "history_date": "2019-05-04T05:56:18.989Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 23,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$p7rTIu9Nue00$kZUDWpKy3FeKxBCd7jIgOhMNDEBqVcZpleGaGELmcQs=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": false,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-04T05:56:18.993Z",
+    "history_date": "2019-05-04T05:56:18.995Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 24,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$KOiGFjxl3BOL$BYtv9jHoEeALMBVA+41mlD79tzDsGJRTLYBIzqbSlME=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": false,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": true,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-04T05:57:21.189Z",
+    "history_date": "2019-05-04T05:57:21.192Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 25,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$KOiGFjxl3BOL$BYtv9jHoEeALMBVA+41mlD79tzDsGJRTLYBIzqbSlME=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": false,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-04T06:01:11.799Z",
+    "history_date": "2019-05-04T06:01:11.806Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 26,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$KOiGFjxl3BOL$BYtv9jHoEeALMBVA+41mlD79tzDsGJRTLYBIzqbSlME=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": false,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-04T06:01:11.810Z",
+    "history_date": "2019-05-04T06:01:11.823Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 27,
+  "fields": {
+    "id": 2,
+    "password": "pbkdf2_sha256$120000$VKdySVjwlmlm$51S/RfgA2x6cMIzt7PnOdft5mycjwTlylOPezgGwQyA=",
+    "last_login": "2019-05-04T06:04:18.085Z",
+    "ci": "25520843",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g610@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": true,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_acuicul",
+    "date_joined": "2019-04-29T18:27:49.347Z",
+    "created_at": "2019-04-29T18:27:49.689Z",
+    "updated_at": "2019-04-29T18:28:39.511Z",
+    "history_date": "2019-05-04T06:04:18.088Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 28,
+  "fields": {
+    "id": 2,
+    "password": "pbkdf2_sha256$120000$VKdySVjwlmlm$51S/RfgA2x6cMIzt7PnOdft5mycjwTlylOPezgGwQyA=",
+    "last_login": "2019-05-04T06:04:18.085Z",
+    "ci": "25520843",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g610@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": true,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_coordinator",
+    "level": "is_acuicul",
+    "date_joined": "2019-04-29T18:27:49.347Z",
+    "created_at": "2019-04-29T18:27:49.689Z",
+    "updated_at": "2019-05-04T06:04:39.908Z",
+    "history_date": "2019-05-04T06:04:39.911Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 29,
+  "fields": {
+    "id": 2,
+    "password": "pbkdf2_sha256$120000$VKdySVjwlmlm$51S/RfgA2x6cMIzt7PnOdft5mycjwTlylOPezgGwQyA=",
+    "last_login": "2019-05-04T06:04:18.085Z",
+    "ci": "25520843",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g610@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": true,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_coordinator",
+    "level": "is_acuicul",
+    "date_joined": "2019-04-29T18:27:49.347Z",
+    "created_at": "2019-04-29T18:27:49.689Z",
+    "updated_at": "2019-05-04T06:04:39.915Z",
+    "history_date": "2019-05-04T06:04:39.917Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 30,
+  "fields": {
+    "id": 2,
+    "password": "pbkdf2_sha256$120000$VKdySVjwlmlm$51S/RfgA2x6cMIzt7PnOdft5mycjwTlylOPezgGwQyA=",
+    "last_login": "2019-05-04T08:50:28.137Z",
+    "ci": "25520843",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g610@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": true,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_coordinator",
+    "level": "is_acuicul",
+    "date_joined": "2019-04-29T18:27:49.347Z",
+    "created_at": "2019-04-29T18:27:49.689Z",
+    "updated_at": "2019-05-04T06:04:39.915Z",
+    "history_date": "2019-05-04T08:50:28.140Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 31,
+  "fields": {
+    "id": 2,
+    "password": "pbkdf2_sha256$120000$VKdySVjwlmlm$51S/RfgA2x6cMIzt7PnOdft5mycjwTlylOPezgGwQyA=",
+    "last_login": "2019-05-04T08:50:45.111Z",
+    "ci": "25520843",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g610@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": true,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_coordinator",
+    "level": "is_acuicul",
+    "date_joined": "2019-04-29T18:27:49.347Z",
+    "created_at": "2019-04-29T18:27:49.689Z",
+    "updated_at": "2019-05-04T06:04:39.915Z",
+    "history_date": "2019-05-04T08:50:45.114Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 32,
+  "fields": {
+    "id": 1,
+    "password": "pbkdf2_sha256$120000$u5Hbkvq6AJSS$RJQOJwIvFguWhT9Y+mQZ6+xXPLxUDO/MFMcLxa4gXXI=",
+    "last_login": "2019-05-04T08:51:32.499Z",
+    "ci": "",
+    "name": "",
+    "last_name": "",
+    "email": "r.a.s.g65@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": true,
+    "is_active": true,
+    "is_staff": true,
+    "is_superuser": true,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": null,
+    "level": null,
+    "date_joined": "2019-04-29T18:24:30.725Z",
+    "created_at": "2019-04-29T18:24:31.027Z",
+    "updated_at": "2019-04-29T18:25:53.773Z",
+    "history_date": "2019-05-04T08:51:32.502Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 33,
+  "fields": {
+    "id": 2,
+    "password": "pbkdf2_sha256$120000$VKdySVjwlmlm$51S/RfgA2x6cMIzt7PnOdft5mycjwTlylOPezgGwQyA=",
+    "last_login": "2019-05-04T08:50:45.111Z",
+    "ci": "25520843",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g610@gmail.com",
+    "uuid": null,
+    "change_pass": true,
+    "question": true,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_coordinator",
+    "level": "is_acuicul",
+    "date_joined": "2019-04-29T18:27:49.347Z",
+    "created_at": "2019-04-29T18:27:49.689Z",
+    "updated_at": "2019-05-04T09:00:39.882Z",
+    "history_date": "2019-05-04T09:00:39.885Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 34,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$KOiGFjxl3BOL$BYtv9jHoEeALMBVA+41mlD79tzDsGJRTLYBIzqbSlME=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-06T09:22:10.329Z",
+    "history_date": "2019-05-06T09:22:10.332Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicaluser",
+  "pk": 35,
+  "fields": {
+    "id": 3,
+    "password": "pbkdf2_sha256$120000$KOiGFjxl3BOL$BYtv9jHoEeALMBVA+41mlD79tzDsGJRTLYBIzqbSlME=",
+    "last_login": null,
+    "ci": "25520842",
+    "name": "Ramon",
+    "last_name": "Sanchez",
+    "email": "r.a.s.g611@gmail.com",
+    "uuid": null,
+    "change_pass": false,
+    "question": false,
+    "is_active": true,
+    "is_staff": false,
+    "is_superuser": false,
+    "is_delete": false,
+    "ip": "",
+    "is_login": false,
+    "role": "is_worker",
+    "level": "is_sanid",
+    "date_joined": "2019-05-04T04:45:52.349Z",
+    "created_at": "2019-05-04T04:45:52.708Z",
+    "updated_at": "2019-05-06T09:22:10.356Z",
+    "history_date": "2019-05-06T09:22:10.360Z",
+    "history_change_reason": null,
+    "history_type": "~",
+    "history_user": 1
+  }
+},
+{
+  "model": "authentication.historicalsecurityquestion",
+  "pk": 1,
+  "fields": {
+    "id": 1,
+    "question": "si",
+    "answer": "si",
+    "created_at": "2019-04-29T18:28:39.496Z",
+    "updated_at": "2019-04-29T18:28:39.496Z",
+    "user": 2,
+    "history_date": "2019-04-29T18:28:39.497Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicalsecurityquestion",
+  "pk": 2,
+  "fields": {
+    "id": 2,
+    "question": "si",
+    "answer": "si",
+    "created_at": "2019-04-29T18:28:39.501Z",
+    "updated_at": "2019-04-29T18:28:39.501Z",
+    "user": 2,
+    "history_date": "2019-04-29T18:28:39.502Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicalsecurityquestion",
+  "pk": 3,
+  "fields": {
+    "id": 3,
+    "question": "si",
+    "answer": "si",
+    "created_at": "2019-04-29T18:28:39.507Z",
+    "updated_at": "2019-04-29T18:28:39.507Z",
+    "user": 2,
+    "history_date": "2019-04-29T18:28:39.508Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicalsecurityquestion",
+  "pk": 4,
+  "fields": {
+    "id": 3,
+    "question": "si",
+    "answer": "si",
+    "created_at": "2019-04-29T18:28:39.507Z",
+    "updated_at": "2019-04-29T18:28:39.507Z",
+    "user": 2,
+    "history_date": "2019-05-04T09:00:39.557Z",
+    "history_change_reason": null,
+    "history_type": "-",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicalsecurityquestion",
+  "pk": 5,
+  "fields": {
+    "id": 2,
+    "question": "si",
+    "answer": "si",
+    "created_at": "2019-04-29T18:28:39.501Z",
+    "updated_at": "2019-04-29T18:28:39.501Z",
+    "user": 2,
+    "history_date": "2019-05-04T09:00:39.815Z",
+    "history_change_reason": null,
+    "history_type": "-",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicalsecurityquestion",
+  "pk": 6,
+  "fields": {
+    "id": 1,
+    "question": "si",
+    "answer": "si",
+    "created_at": "2019-04-29T18:28:39.496Z",
+    "updated_at": "2019-04-29T18:28:39.496Z",
+    "user": 2,
+    "history_date": "2019-05-04T09:00:39.817Z",
+    "history_change_reason": null,
+    "history_type": "-",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicalsecurityquestion",
+  "pk": 7,
+  "fields": {
+    "id": 4,
+    "question": "si va",
+    "answer": "si",
+    "created_at": "2019-05-04T09:00:39.824Z",
+    "updated_at": "2019-05-04T09:00:39.824Z",
+    "user": 2,
+    "history_date": "2019-05-04T09:00:39.868Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicalsecurityquestion",
+  "pk": 8,
+  "fields": {
+    "id": 5,
+    "question": "si si",
+    "answer": "si",
+    "created_at": "2019-05-04T09:00:39.871Z",
+    "updated_at": "2019-05-04T09:00:39.872Z",
+    "user": 2,
+    "history_date": "2019-05-04T09:00:39.873Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.historicalsecurityquestion",
+  "pk": 9,
+  "fields": {
+    "id": 6,
+    "question": "si sino",
+    "answer": "si",
+    "created_at": "2019-05-04T09:00:39.877Z",
+    "updated_at": "2019-05-04T09:00:39.877Z",
+    "user": 2,
+    "history_date": "2019-05-04T09:00:39.879Z",
+    "history_change_reason": null,
+    "history_type": "+",
+    "history_user": 2
+  }
+},
+{
+  "model": "authentication.securityquestion",
+  "pk": 4,
+  "fields": {
+    "user": 2,
+    "question": "si va",
+    "answer": "si",
+    "created_at": "2019-05-04T09:00:39.824Z",
+    "updated_at": "2019-05-04T09:00:39.824Z"
+  }
+},
+{
+  "model": "authentication.securityquestion",
+  "pk": 5,
+  "fields": {
+    "user": 2,
+    "question": "si si",
+    "answer": "si",
+    "created_at": "2019-05-04T09:00:39.871Z",
+    "updated_at": "2019-05-04T09:00:39.872Z"
+  }
+},
+{
+  "model": "authentication.securityquestion",
+  "pk": 6,
+  "fields": {
+    "user": 2,
+    "question": "si sino",
+    "answer": "si",
+    "created_at": "2019-05-04T09:00:39.877Z",
+    "updated_at": "2019-05-04T09:00:39.877Z"
+  }
+},
+{
+  "model": "authentication.sessionuser",
+  "pk": 9,
+  "fields": {
+    "session": "i1l8f7qx8eyey3rlw25iaqx20kkume3b",
+    "user": 2,
+    "created_at": "2019-05-04T08:50:45.138Z",
+    "updated_at": "2019-05-04T08:50:45.138Z"
+  }
+},
+{
+  "model": "authentication.sessionuser",
+  "pk": 10,
+  "fields": {
+    "session": "336of8ydsgg8iu6fv3oakhlcs3j0sfvk",
+    "user": 1,
+    "created_at": "2019-05-04T08:51:32.514Z",
+    "updated_at": "2019-05-04T08:51:32.514Z"
+  }
+},
+{
+  "model": "authentication.backuprestorebd",
+  "pk": 68,
+  "fields": {
+    "path": "/webapp/bd/backup_bad3a280-2f7c-4294-9f55-1d2c7cd40b16.json",
+    "user": 1,
+    "created_at": "2019-05-06T09:20:24.430Z",
+    "updated_at": "2019-05-06T09:20:24.430Z"
+  }
+},
+{
+  "model": "authentication.backuprestorebd",
+  "pk": 69,
+  "fields": {
+    "path": "/webapp/bd/backup_39b7ef1c-b512-429f-93c9-bc6646c28fc1.json",
+    "user": 1,
+    "created_at": "2019-05-06T09:25:13.675Z",
+    "updated_at": "2019-05-06T09:25:13.675Z"
+  }
+},
+{
+  "model": "authentication.backuprestorebd",
+  "pk": 70,
+  "fields": {
+    "path": "/webapp/bd/backup_87d149dc-c98f-4d68-a516-2de1bc4ea759.json",
+    "user": 1,
+    "created_at": "2019-05-06T09:25:46.317Z",
+    "updated_at": "2019-05-06T09:25:46.317Z"
+  }
+},
+{
+  "model": "acuicultura.tracing",
+  "pk": "84b0ba50-054c-486b-922e-101949054219",
+  "fields": {
+    "producion_unit": "e1b82244-a833-4fff-87fc-c86fa69debb2",
+    "number_lagoon": 0,
+    "new_number_lagoon": 2,
+    "number_well": 0,
+    "new_number_well": 1,
+    "illegal_superfaces": 1,
+    "irregular_superfaces": 1,
+    "permise_superfaces": 2,
+    "regular_superfaces": 3,
+    "responsible": 2,
+    "date": null,
+    "date_next": null,
+    "notes": null,
+    "created_at": "2019-04-30T14:56:33.935Z",
+    "updated_at": "2019-04-30T14:56:33.935Z"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2019-04-29T18:29:54.815Z",
+    "user": 1,
+    "content_type": 19,
+    "object_id": "ddb4f118-398f-4dd6-9c1d-639e385bdd22",
+    "object_repr": "Portuguesa",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2019-04-29T18:29:58.064Z",
+    "user": 1,
+    "content_type": 16,
+    "object_id": "8d7fdccd-8fd5-4fcd-882e-848491d461fb",
+    "object_repr": "Guanare",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2019-04-29T18:30:00.252Z",
+    "user": 1,
+    "content_type": 18,
+    "object_id": "cc45c007-48df-4a18-8cf8-c332c3e4d804",
+    "object_repr": "Guanare",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.638Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "58",
+    "object_repr": "BackupRestoreBD object (58)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.682Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "57",
+    "object_repr": "BackupRestoreBD object (57)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.685Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "56",
+    "object_repr": "BackupRestoreBD object (56)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.687Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "55",
+    "object_repr": "BackupRestoreBD object (55)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.690Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "54",
+    "object_repr": "BackupRestoreBD object (54)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.692Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "53",
+    "object_repr": "BackupRestoreBD object (53)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.695Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "52",
+    "object_repr": "BackupRestoreBD object (52)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.699Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "51",
+    "object_repr": "BackupRestoreBD object (51)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.702Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "50",
+    "object_repr": "BackupRestoreBD object (50)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.704Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "49",
+    "object_repr": "BackupRestoreBD object (49)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.706Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "48",
+    "object_repr": "BackupRestoreBD object (48)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.707Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "47",
+    "object_repr": "BackupRestoreBD object (47)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.709Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "46",
+    "object_repr": "BackupRestoreBD object (46)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.710Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "45",
+    "object_repr": "BackupRestoreBD object (45)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.712Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "44",
+    "object_repr": "BackupRestoreBD object (44)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.715Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "43",
+    "object_repr": "BackupRestoreBD object (43)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.718Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "42",
+    "object_repr": "BackupRestoreBD object (42)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.721Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "41",
+    "object_repr": "BackupRestoreBD object (41)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.723Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "40",
+    "object_repr": "BackupRestoreBD object (40)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.725Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "39",
+    "object_repr": "BackupRestoreBD object (39)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.727Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "38",
+    "object_repr": "BackupRestoreBD object (38)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.730Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "37",
+    "object_repr": "BackupRestoreBD object (37)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.732Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "36",
+    "object_repr": "BackupRestoreBD object (36)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.733Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "35",
+    "object_repr": "BackupRestoreBD object (35)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.735Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "34",
+    "object_repr": "BackupRestoreBD object (34)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.736Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "33",
+    "object_repr": "BackupRestoreBD object (33)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.737Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "32",
+    "object_repr": "BackupRestoreBD object (32)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.739Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "31",
+    "object_repr": "BackupRestoreBD object (31)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 32,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.740Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "30",
+    "object_repr": "BackupRestoreBD object (30)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 33,
+  "fields": {
+    "action_time": "2019-05-06T07:28:28.742Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "29",
+    "object_repr": "BackupRestoreBD object (29)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.829Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "28",
+    "object_repr": "BackupRestoreBD object (28)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 35,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.832Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "27",
+    "object_repr": "BackupRestoreBD object (27)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 36,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.834Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "26",
+    "object_repr": "BackupRestoreBD object (26)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 37,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.835Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "24",
+    "object_repr": "BackupRestoreBD object (24)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 38,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.837Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "23",
+    "object_repr": "BackupRestoreBD object (23)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 39,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.839Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "22",
+    "object_repr": "BackupRestoreBD object (22)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 40,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.840Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "21",
+    "object_repr": "BackupRestoreBD object (21)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 41,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.841Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "20",
+    "object_repr": "BackupRestoreBD object (20)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 42,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.843Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "19",
+    "object_repr": "BackupRestoreBD object (19)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 43,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.845Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "18",
+    "object_repr": "BackupRestoreBD object (18)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 44,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.846Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "17",
+    "object_repr": "BackupRestoreBD object (17)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 45,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.848Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "16",
+    "object_repr": "BackupRestoreBD object (16)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 46,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.849Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "15",
+    "object_repr": "BackupRestoreBD object (15)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 47,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.850Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "14",
+    "object_repr": "BackupRestoreBD object (14)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 48,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.852Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "13",
+    "object_repr": "BackupRestoreBD object (13)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 49,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.853Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "12",
+    "object_repr": "BackupRestoreBD object (12)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 50,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.855Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "11",
+    "object_repr": "BackupRestoreBD object (11)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 51,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.856Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "10",
+    "object_repr": "BackupRestoreBD object (10)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 52,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.858Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "9",
+    "object_repr": "BackupRestoreBD object (9)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 53,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.864Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "8",
+    "object_repr": "BackupRestoreBD object (8)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 54,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.867Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "7",
+    "object_repr": "BackupRestoreBD object (7)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 55,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.869Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "6",
+    "object_repr": "BackupRestoreBD object (6)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 56,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.871Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "5",
+    "object_repr": "BackupRestoreBD object (5)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 57,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.873Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "4",
+    "object_repr": "BackupRestoreBD object (4)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 58,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.875Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "3",
+    "object_repr": "BackupRestoreBD object (3)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 59,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.877Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "2",
+    "object_repr": "BackupRestoreBD object (2)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 60,
+  "fields": {
+    "action_time": "2019-05-06T07:28:35.879Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "1",
+    "object_repr": "BackupRestoreBD object (1)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 61,
+  "fields": {
+    "action_time": "2019-05-06T09:17:50.863Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "67",
+    "object_repr": "  - 2019-05-06 09:13:40.556000+00:00",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 62,
+  "fields": {
+    "action_time": "2019-05-06T09:17:50.867Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "66",
+    "object_repr": "  - 2019-05-06 08:56:00.648000+00:00",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 63,
+  "fields": {
+    "action_time": "2019-05-06T09:17:50.870Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "65",
+    "object_repr": "  - 2019-05-06 07:51:01.095000+00:00",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 64,
+  "fields": {
+    "action_time": "2019-05-06T09:17:50.874Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "64",
+    "object_repr": "  - 2019-05-06 07:50:38.567000+00:00",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 65,
+  "fields": {
+    "action_time": "2019-05-06T09:17:50.876Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "63",
+    "object_repr": "  - 2019-05-06 07:48:58.125000+00:00",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 66,
+  "fields": {
+    "action_time": "2019-05-06T09:17:50.877Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "62",
+    "object_repr": "  - 2019-05-06 07:47:54.048000+00:00",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 67,
+  "fields": {
+    "action_time": "2019-05-06T09:17:50.879Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "61",
+    "object_repr": "  - 2019-05-06 07:47:35.217000+00:00",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 68,
+  "fields": {
+    "action_time": "2019-05-06T09:17:50.882Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "60",
+    "object_repr": "  - 2019-05-06 07:46:46.001000+00:00",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 69,
+  "fields": {
+    "action_time": "2019-05-06T09:17:50.884Z",
+    "user": 1,
+    "content_type": 35,
+    "object_id": "59",
+    "object_repr": "  - 2019-05-06 07:44:11.440000+00:00",
+    "action_flag": 3,
+    "change_message": ""
+  }
+}
+]

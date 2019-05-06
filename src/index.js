@@ -5,7 +5,7 @@
 // import '@fullcalendar/list/main.css';
 
 // import "./module/location.js"
-import "./module/user_register.js"
+// import "./module/user_register.js"
 // import "./module/profile_user.js"
 // import "./module/forgot_password.js"
 // import "./module/acuicultura/tracing_form.js"
@@ -19,3 +19,5 @@ import "./module/user_register.js"
 // import "./module/sanidad/driver.js"
 // import "./module/sanidad/dashboard.js"
 // import "./module/sanidad/transport.js"
+
+import './module/socket_notify.js'

@@ -2,7 +2,8 @@ from django.urls import path
 
 from authentication.views import UserListView, UserCreateView, UserUpdateView, \
     UserDeleteView, UserDetailView, ChangePassword, SecurityQuestionCreateView, \
-    UserAdminDetailView, UserAdminUpdateView, RestoreDataUser, UserDetailApiView
+    UserAdminDetailView, UserAdminUpdateView, RestoreDataUser, UserDetailApiView, \
+    BackupBDView, BackupBDAPiView
 
 
 app_name = "authentication"
@@ -30,5 +31,9 @@ urlpatterns = [
 
     # api
 
-    path('api/detail/', UserDetailApiView.as_view(), name="api_detail_user")
+    path('api/detail/', UserDetailApiView.as_view(), name="api_detail_user"),
+
+     # BD backup o restore
+    path('bd/', BackupBDView.as_view(), name="bd_user"),
+    path('api/bd/', BackupBDAPiView.as_view(), name="bd_api"),
 ]

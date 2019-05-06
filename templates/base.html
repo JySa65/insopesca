@@ -4,7 +4,8 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta name="viewport"
+		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>INSOPESCA | {% block title %} {% endblock %}</title>
 	<link rel="shortcut icon" href="{% static 'assets/images/logo1.png' %}">
@@ -13,7 +14,7 @@
 	<link rel="stylesheet" href="{% static 'assets/libs/css/style.css' %}">
 	<link rel="stylesheet" href="{% static 'assets/vendor/fonts/fontawesome/css/fontawesome-all.css' %}">
 	<link rel="stylesheet" href="{% static 'assets/vendor/bootstrap-datepicker/css/main.css' %}">
-	
+
 	<link rel="stylesheet" href="{% static 'assets/vendor/bootstrap-select/css/bootstrap-select.css' %}">
 	<link rel="stylesheet" href="{% static 'main.css' %}">
 </head>
@@ -29,8 +30,9 @@
 		<div class="dashboard-header">
 			<nav class="navbar navbar-expand-lg bg-white fixed-top">
 				<a class="navbar-brand" href="/">INSOPESCA</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-				 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+					aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="collapse navbar-collapse " id="navbarSupportedContent">
@@ -78,16 +80,21 @@
 							</ul>
 						</li> -->
 						<li class="nav-item dropdown nav-user">
-							<a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false"><img src="{% static 'assets/images/insopesca-logo.png' %}" alt="" class="user-avatar-md rounded-circle"></a>
-							<div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
+							<a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
+									src="{% static 'assets/images/insopesca-logo.png' %}" alt=""
+									class="user-avatar-md rounded-circle"></a>
+							<div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
+								aria-labelledby="navbarDropdownMenuLink2">
 								<div class="nav-user-info">
 									<h5 class="mb-0 text-white nav-user-name">
 										{{ request.user.email }}</h5>
 									<span class="status"></span><span class="ml-2">Disponible</span>
 								</div>
-								<a class="dropdown-item" href="{% url 'authentication:detail_profile' %}"><i class="fas fa-user mr-2"></i>Pefil</a>
-								<a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-power-off mr-2"></i>Cerrar Sesión</a>
+								<a class="dropdown-item" href="{% url 'authentication:detail_profile' %}"><i
+										class="fas fa-user mr-2"></i>Pefil</a>
+								<a class="dropdown-item" href="{% url 'logout' %}"><i
+										class="fas fa-power-off mr-2"></i>Cerrar Sesión</a>
 							</div>
 						</li>
 					</ul>
@@ -104,8 +111,8 @@
 			<div class="menu-list">
 				<nav class="navbar navbar-expand-lg navbar-light">
 					<a class="d-xl-none d-lg-none" href="#">Dashboard</a>
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-					 aria-expanded="false" aria-label="Toggle navigation">
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+						aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="collapse navbar-collapse" id="navbarNav">
@@ -154,12 +161,16 @@
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-							© {% now "Y" %} INSOPESCA. Derechos Reservados. Hecho con <i class="fas fa-heart text-danger"></i>
+							© {% now "Y" %} INSOPESCA. Derechos Reservados. Hecho con <i
+								class="fas fa-heart text-danger"></i>
 							<br>
-							<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licencia Creative Commons" title="Licencia Creative Commons" style="border-width:0" src="{% static 'assets/images/license.png' %}" /></a>
+							<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img
+									alt="Licencia Creative Commons" title="Licencia Creative Commons"
+									style="border-width:0" src="{% static 'assets/images/license.png' %}" /></a>
 							<br>
 							Esta obra está bajo una
-							<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Licencia Creative Commons
+							<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Licencia Creative
+								Commons
 								Atribución-NoComercial-CompartirIgual 4.0 Internacional</a>.
 						</div>
 						<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
@@ -186,10 +197,14 @@
 	<script src="{% static 'assets/libs/js/main-js.js' %}"></script>
 	<script src="{% static 'assets/vendor/bootstrap-datepicker/js/main.js' %}"></script>
 	<script src="{% static 'assets/vendor/bootstrap-datepicker/js/main.es.js' %}" charset="UTF-8"></script>
-	
+
 	<script src="{% static 'assets/vendor/bootstrap-select/js/bootstrap-select.js' %}"></script>
-	
+
 	<script src="{% static 'main.js' %}"></script>
+	<script>
+		
+
+	</script>
 
 </body>
 

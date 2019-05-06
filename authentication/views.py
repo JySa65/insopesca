@@ -1,6 +1,5 @@
 from django.contrib.sessions.models import Session
 from django.db.models import Q
-
 from django.db import transaction
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -27,7 +26,12 @@ import json
 from utils.Select import Selects
 from utils.permissions import AdminRequiredMixin
 from django.contrib import messages
+import asyncio
+from utils.back_restore_db import BackupRestoreDBConfig
+
 # Create your views here.
+
+loop = asyncio.new_event_loop()
 
 
 class UserDetailApiView(LoginRequiredMixin, AdminRequiredMixin, View):
@@ -381,3 +385,48 @@ class ForgotPassword(FormView):
             'status': True,
             'msg': 'Clave Reestablecida Exitosamente Es Su Cedula Recuerde Cambiarla'
         })
+
+
+class BackupBDView(View):
+    template_name = "authentication/bd.html"
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+    def post(self, request, *args, **kwargs):
+        bd = BackupRestoreDBConfig()
+        loop.run_in_executor(None, bd.back_up, request.user)
+        data = dict(
+            status=True,
+            msg="Le Avisaremos Cuando Este Listo"
+        )
+        return JsonResponse(data)
+
+
+class BackupBDAPiView(View):
+    model = models.BackupRestoreBD
+
+    def get(self, request, *args, **kwargs):
+        data = self.model.objects.select_related('user').all().order_by('-created_at')
+        serialize = json.loads(
+            serializers.serialize(
+                'json', data, fields=('created_at', 'user')))
+        return JsonResponse(serialize, safe=False)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            bd = BackupRestoreDBConfig()
+            pk = int(json.loads(str(request.body, 'utf-8')).get('id'))
+            model = get_object_or_404(self.model, pk=pk)
+            loop.run_in_executor(None, bd.restore, model.pk)
+            data = dict(
+                status=True,
+                msg="Le Avisaremos Cuando Este Listo"
+            )
+            return JsonResponse(data)
+        except Exception as e:
+            data = dict(
+                status=False,
+                msg=e
+            )
+            return JsonResponse(data)

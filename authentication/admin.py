@@ -1,5 +1,5 @@
 from django.contrib import admin
-from authentication.models import User, SecurityQuestion
+from authentication.models import User, SecurityQuestion, BackupRestoreBD
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import ugettext, ugettext_lazy as _
 from simple_history.admin import SimpleHistoryAdmin
@@ -38,3 +38,4 @@ class UserAdmin(BaseUserAdmin, SimpleHistoryAdmin):
 
 
 admin.site.register(SecurityQuestion, SimpleHistoryAdmin)
+admin.site.register(BackupRestoreBD)
