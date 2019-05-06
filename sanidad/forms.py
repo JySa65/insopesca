@@ -4,7 +4,7 @@ from sanidad.models import Company, Account, Transport, Inspection, Driver
 from utils.Select import Selects
 from django.utils import timezone
 from datetime import timedelta
-from utils.users_exists import sanidad_user_exists, sanidad_company_exists
+from utils.users_exists import sanidad_user_exists, sanidad_company_exists, user_exists
 
 
 class CompanyForm(forms.ModelForm):

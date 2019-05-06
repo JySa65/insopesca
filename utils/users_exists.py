@@ -13,8 +13,10 @@ def sanidad_company_exists(document):
     return models_sanidad.Company.objects.filter(
         document=document).exists()
 
+
 def user_exists(document):
-	user = models_authentication.User.objects.filter(
-		ci=document)
-	if user.exists():
-		raise ValidationError(f'{user.first().get_full_name()} esta como usuario del sistema')
+    user = models_authentication.User.objects.filter(
+        ci=document)
+    if user.exists():
+        raise ValidationError(
+            f'{user.first().get_full_name()} esta como usuario del sistema')

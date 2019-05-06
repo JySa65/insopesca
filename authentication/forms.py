@@ -1,6 +1,6 @@
 from django import forms
 from authentication.models import User, SecurityQuestion
-
+from core.models import Account
 
 class UserCreateForm(forms.ModelForm):
 
@@ -16,6 +16,13 @@ class UserCreateForm(forms.ModelForm):
                 field.widget.attrs.update(
                     {'data_type': 'user'})
 
+    def clean_ci(self):
+        document = self.cleaned_data['ci']
+        account = Account.objects.filter(document=document).exists()
+        if account:
+            raise forms.ValidationError(
+                'Usuario Ya Existe')
+        return document
 
 class UserUpdateForm(forms.ModelForm):
 
@@ -31,6 +38,14 @@ class UserUpdateForm(forms.ModelForm):
         
         self.fields['email'].widget.attrs.update(
             {'readonly': 'readonly'})
+    
+    def clean_ci(self):
+        document = self.cleaned_data['ci']
+        account = Account.objects.filter(document=document).exists()
+        if account:
+            raise forms.ValidationError(
+                'Usuario Ya Existe')
+        return document
 
 
 class SecurityQuestionForm(forms.ModelForm):

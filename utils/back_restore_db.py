@@ -40,7 +40,7 @@ class BackupRestoreDBConfig():
             bd = get_object_or_404(models.BackupRestoreBD, pk=pk)
             path = bd.path
             call_command('flush', verbosity=0, interactive=False)
-            call_command('loaddata', path)
+            call_command('loaddata', path, verbosity=0)
             time.sleep(10)
             async_to_sync(channel_layer.group_send)(
                 "events", {"type": "events.alarms",
