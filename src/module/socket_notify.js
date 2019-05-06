@@ -83,6 +83,10 @@ const restore = e => {
                         allowOutsideClick: false,
                         allowEnterKey: false,
                         allowEscapeKey: false,
+                        onBeforeOpen: () => {
+                            // Swal.showLoading()
+                            swal.showLoading()
+                        },
                     })
                 }
             })

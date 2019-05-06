@@ -421,7 +421,7 @@ class BackupBDAPiView(View):
             loop.run_in_executor(None, bd.restore, model.pk)
             data = dict(
                 status=True,
-                msg="Le Avisaremos Cuando Este Listo"
+                msg="Espere Por Favor"
             )
             return JsonResponse(data)
         except Exception as e:
