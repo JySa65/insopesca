@@ -42,6 +42,8 @@
             {% endblock %}
             <div class="user-links">
             {% block userlinks %}
+                <a href="{% url 'login' %}" class="icon-link logout-link" data-title="{{'Inicio' }}"> Volver a la pagina</a>
+                <span class="separator">/</span>
                 {% if user.has_usable_password %}
                     <a href="{% url 'admin:password_change' %}" class="icon-link change-password-link" data-title="{% trans 'Change password' %}">{% trans 'Change password' %}</a>
                     <span class="separator">/</span>

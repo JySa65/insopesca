@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block title %}
+{% if type == 'tracing' %}
+Seguimientos
+{% else %}
+Inspecciones Lagunas
+{% endif %}
+{% endblock %}
+{% block sidebar %}
+{% include 'sidebar/acuicultura.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+{% if type == 'tracing' %}
+Seguimientos
+{% else %}
+Inspecciones Lagunas
+{% endif %}
+{% endblock pageheader %}
+
+
+{% block context %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6 offset-sm-3">
+                            <form action="" method="get">
+                                <div class="form-group">
+                                    <label for="id_q" class="text-danger text-center h4">
+                                        Ingrese Nombre o Documente la Unidad Productora
+                                    </label>
+                                    <div class="input-group mb-3">
+                                        <input type="search" id="id_tracing_search" name="q"
+                                            class="form-control text-center" value="{{ request.GET.q }}">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-primary"
+                                                style="padding-top: 0px; padding-bottom: 0px;">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {% if productionunits %}
+                    <div class="row mt-5">
+                        <div class="col-sm-12">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Documento</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Operativa</th>
+                                        <th scope="col">Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in productionunits  %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>{{i.get_document }}</td>
+                                        <td>{{i.get_full_name}}</td>
+                                        {% if i.is_active %}
+                                        <td>
+                                            <span class="badge badge-success ">
+                                                Activo
+                                            </span>
+                                        </td>
+                                        {% else %}
+                                        <td>
+                                            <span class="badge badge-danger">
+                                                Inactivo
+                                            </span>
+                                        </td>
+                                        {% endif %}
+                                        <td>                                                
+                                            <a href="{% if type == 'tracing' %}{% url 'acuicultura:create_tracing' i.pk %}{% else %}{% url 'acuicultura:inspection_lagoon_list' i.pk %}{% endif %}"
+                                                class="btn btn-rounded btn-primary">
+                                                <i class="fas fa-thumbtack"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <h1 class="text-center mt-5 text-danger">{{ error }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

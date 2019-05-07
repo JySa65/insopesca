@@ -387,11 +387,8 @@ class ForgotPassword(FormView):
         })
 
 
-class BackupBDView(View):
+class BackupBDView(LoginRequiredMixin, TemplateView):
     template_name = "authentication/bd.html"
-
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
 
     def post(self, request, *args, **kwargs):
         bd = BackupRestoreDBConfig()
@@ -403,11 +400,12 @@ class BackupBDView(View):
         return JsonResponse(data)
 
 
-class BackupBDAPiView(View):
+class BackupBDAPiView(LoginRequiredMixin, View):
     model = models.BackupRestoreBD
 
     def get(self, request, *args, **kwargs):
-        data = self.model.objects.select_related('user').all().order_by('-created_at')
+        data = self.model.objects.select_related(
+            'user').all().order_by('-created_at')
         serialize = json.loads(
             serializers.serialize(
                 'json', data, fields=('created_at', 'user')))

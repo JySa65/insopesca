@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, render_to_resp
 from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, LagoonEspecies
 from acuicultura.forms import UnitCreateForm, CardinaPointForm, RepreUnitForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import HttpResponseRedirect, Http404, JsonResponse, \
     HttpResponse
 from django.views.generic import TemplateView, ListView, CreateView, \
@@ -245,7 +246,43 @@ class SpeciesDelete(LoginRequiredMixin, UserUrlCorrectMixin, View):
             return JsonResponse(data)
 
 
+class InspectionProductionUnitLagoon(LoginRequiredMixin, 
+                                    UserUrlCorrectMixin, ListView):
+    model = Lagoon
+
+    def get_queryset(self):
+        super(InspectionProductionUnitLagoon, self).get_queryset()
+        return Lagoon.objects.filter(producion_unit__pk=self.kwargs.get('pk'))
+
+
+
 # # Views Tracing = Create,detail,update,delete
+class TracingInspectionHomeView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
+    template_name = "acuicultura/tracing_home.html"
+    model = ProductionUnit
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.kwargs.get('type') not in ['tracing', 'lagoon']:
+            raise Http404
+        return super(TracingInspectionHomeView,
+                     self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(TracingInspectionHomeView,
+                        self).get_context_data(**kwargs)
+        query = self.request.GET.get('q', '')
+        context['productionunits'] = []
+        if query:
+            data = self.model.objects.filter(
+                Q(name__contains=query) | Q(document__contains=query))
+            if data:
+                context['productionunits'] = data
+            else:
+                context['error'] = "No Hay Resultados"
+        context['type'] = self.kwargs.get('type')
+        return context
+
+
 class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
     model = Tracing
     form_class = TracingCreateForm
@@ -265,7 +302,7 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
         context['current'] = self.get_object()
         context['species'] = [dict(
             id=i.pk,
-            name=f"{i.scientific_name if i.scientific_name else '----'} - {i.ordinary_name if i.ordinary_name else '-----'}",
+            name=f"{i.scientific_name if i.scientific_name else '----'} - {i.ordinary_name if i.ordinary_name else '----'}",
         ) for i in Specie.objects.all()]
         return context
 
@@ -310,16 +347,16 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
                         msg=f"Hace Falta Añadir La Especie En La Laguna N° {number+1}"
                     )
                     return JsonResponse(data)
-                
+
                 for _, specie in enumerate(species):
                     name = specie.get('specie', 0)
                     number_specie = specie.get('number_specie', 0)
-                    
+
                     if (name == 0 or number_specie == 0):
                         data = dict(
                             status=False,
                             msg=f"Hace Falta Añadir La Especie o La Cantidad En La Laguna N° {number+1}"
-                            )
+                        )
                         return JsonResponse(data)
 
         if len(wells) != 0:
@@ -366,7 +403,7 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
 
                     LagoonTracing.objects.create(
                         tracing=tracing, lagoon=laggon)
-                 
+
                     for specie in lagoon['sistem_cultive']['species']:
                         pk = specie['specie']
                         number_specie = int(specie['number_specie'])
@@ -375,15 +412,15 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
                             lagoon=laggon,
                             especies=sspecie,
                             number_specie=number_specie)
-                
+
                 for well in wells:
                     welll = Well.objects.create(
-                        producion_unit=producion_unit, 
-                        well_diameter=well['diameter'], 
+                        producion_unit=producion_unit,
+                        well_diameter=well['diameter'],
                         well_deepth=well['deepth'])
 
                     WellTracing.objects.create(
-                            tracing=tracing, well=welll)
+                        tracing=tracing, well=welll)
             data = dict(
                 status=True,
                 msg="Guardado Exitosamente"
@@ -394,8 +431,8 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
                 status=False,
                 msg=e
             )
-            return JsonResponse(data)    
-        
+            return JsonResponse(data)
+
 # class TracingList(TemplateView):
 #     model = Tracing
 #     tempalte_number_specie = "acuicultura/tracing_form.html"
