@@ -11,9 +11,13 @@ const optimizeCSSAssetsPlugin = new OptimizeCSSAssetsPlugin({})
 
 module.exports = {
 	mode: "production",
-	entry: './src/index.js',
+	entry: {
+		index: './src/index.js',
+		acuicultura: './src/module/acuicultura/index.js',
+		sanidad: './src/module/sanidad/index.js',
+	},
 	output: {
-		filename: 'main.js',
+		filename: '[name].js',
 		path: path.resolve(__dirname, 'static')
 	},
 	module: {
@@ -42,7 +46,15 @@ module.exports = {
 	plugins: [
 		miniCssExtractPlugin,
 		optimizeCSSAssetsPlugin,
-	]
+	],
+	// optimization: {
+	// 	splitChunks: {
+	// 		chunks: 'all',
+	// 	},
+	// },
+	performance: {
+		hints: false 
+	}
 };
 
 // const path = require('path');

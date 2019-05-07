@@ -19,9 +19,12 @@ socket.onopen = () => {
 socket.addEventListener('message', (e) => {
     // console.log('Message from server', event);
     const backUp = document.querySelector("#backup")
-    if (backUp) backUp.removeAttribute('disabled')
+    if (backUp){
+        backUp.removeAttribute('disabled')
+    }
     const data = JSON.parse(e.data)
     swal.fire(data.msg, '', 'success')
+    window.location.reload()
 });
 
 const config = {

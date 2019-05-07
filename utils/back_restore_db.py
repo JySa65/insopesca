@@ -3,6 +3,7 @@ from channels.layers import get_channel_layer
 from django.conf import settings
 from django.core.management import call_command
 from django.shortcuts import get_object_or_404
+from django.contrib.sessions.models import Session
 import uuid
 import asyncio
 from authentication import models
@@ -42,6 +43,7 @@ class BackupRestoreDBConfig():
             call_command('flush', verbosity=0, interactive=False)
             call_command('loaddata', path, verbosity=0)
             time.sleep(10)
+            Session.objects.all().delete()
             async_to_sync(channel_layer.group_send)(
                 "events", {"type": "events.alarms",
                            "message": "Base de Datos Restaurada"})
