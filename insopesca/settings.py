@@ -63,7 +63,6 @@ INSTALLED_APPS = APPS_THRID + APPS_LOCAL + APPS_DJANGO
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -164,11 +163,12 @@ USE_TZ = True
 
 STATIC = "static"
 STATIC_URL = f"/{STATIC}/"
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, STATIC)
-]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+if DEBUG:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, STATIC)
+    ]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
@@ -183,11 +183,11 @@ SIMPLE_HISTORY_EDIT = True
 # shell python
 SHELL_PLUS = "bpython"
 
-#login url
+# login url
 LOGIN_URL = '/'
-LOGOUT_REDIRECT_URL='/'
+LOGOUT_REDIRECT_URL = '/'
 
-CORS_ORIGIN_ALLOW_ALL=True
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 # seccion expire
