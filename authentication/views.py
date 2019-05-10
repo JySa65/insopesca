@@ -32,6 +32,7 @@ from utils.back_restore_db import BackupRestoreDBConfig
 # Create your views here.
 
 loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
 
 
 class UserDetailApiView(LoginRequiredMixin, AdminRequiredMixin, View):

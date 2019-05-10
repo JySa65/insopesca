@@ -19,6 +19,7 @@
 1. Copy to `env.example` into `.env`
 
        $ cp env.example .env
+       $ export hola=emma
 
 1. Edit values in `.env` depending on your preferences
 

@@ -28,7 +28,6 @@ services:
     networks: 
       - insopesca
 
-
 networks:
   insopesca:
     driver: bridge
