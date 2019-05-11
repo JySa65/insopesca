@@ -116,3 +116,6 @@ node_modules
 /static/main.js
 *.pdf
 staticfiles
+static/admin
+static/suit
+static/django_extensions
