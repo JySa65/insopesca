@@ -192,3 +192,23 @@ class LagoonEspecies(models.Model):
 
     def __str__(self):
         return str(self.especies)
+
+
+class InspectionLagoon(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    lagoon = models.ForeignKey(Lagoon, on_delete=models.CASCADE)
+    oxdi = models.FloatField(_('OXIGENO DISUELTO (mg/l)'))
+    saox = models.FloatField(_('% SATURACION DE OXIGENO'))
+    ph = models.FloatField(_('PH'))
+    conde = models.FloatField(_('CONDUCTIVILIDAD ELECTRICA'))
+    soto = models.FloatField(_('SOLIDOS TOTALES'))
+    sotodi = models.FloatField(_('SOLIDOS TOTALES DISUELTOS (mg/l)'))
+    trans = models.FloatField(_('TRANSPARENCIA (cm)'))
+    tempa = models.FloatField(_('TEMPERATURA DEL AGUA (ºC)'))
+    odsa = models.FloatField(_('O.D. AL 100% DE SATURACION'))
+    notes = models.TextField(_('Observaciones'))
+    date = models.DateField(verbose_name=_('Fecha de Inspección'))
+    next_date = models.DateField(verbose_name=_('Siguiente Inspección'))
+
+    def __str__(self):
+        return self.user.get_full_name()

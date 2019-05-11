@@ -1,5 +1,6 @@
 from django import forms
-from acuicultura.models import ProductionUnit, CardinalPoint, RepreUnitProductive, Specie, Tracing
+from acuicultura.models import ProductionUnit, CardinalPoint, RepreUnitProductive, \
+    Specie, Tracing, InspectionLagoon
 from django.db.models import Q
 
 
@@ -91,3 +92,11 @@ class RepresentativeForm(forms.ModelForm):
         model = RepreUnitProductive
         fields = ("type_document", "document", "name",
                   "last_name", "tlf", "tlf_house")
+
+
+class InspectionLagoonForm(forms.ModelForm):
+
+    class Meta:
+        model = InspectionLagoon
+        exclude = ('user',
+                   'lagoon',)

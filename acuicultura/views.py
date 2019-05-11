@@ -256,6 +256,7 @@ class InspectionProductionUnitLagoon(LoginRequiredMixin,
 
 
 
+
 # # Views Tracing = Create,detail,update,delete
 class TracingInspectionHomeView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
     template_name = "acuicultura/tracing_home.html"

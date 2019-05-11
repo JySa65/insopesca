@@ -283,6 +283,7 @@ class RestoreDataUser(LoginRequiredMixin, View):
             user = get_object_or_404(self.model, pk=pk)
             user.set_password(user.ci)
             user.change_pass = False
+            user.is_active = True
             user.save()
             data = {
                 "status": True,
