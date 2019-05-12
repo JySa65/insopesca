@@ -188,7 +188,7 @@ class LagoonTracing(models.Model):
 class LagoonEspecies(models.Model):
     lagoon = models.ForeignKey(Lagoon, on_delete=models.CASCADE)
     especies = models.ForeignKey(Specie, on_delete=models.CASCADE)
-    number_specie = models.IntegerField()
+    number_specie = models.FloatField()
 
     def __str__(self):
         return str(self.especies)

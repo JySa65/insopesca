@@ -35,11 +35,11 @@ class Selects(object):
 
     def level(self):
         return(
-            ('is_ord_pesque', 'Ordenación Pesquera'),
+            # ('is_ord_pesque', 'Ordenación Pesquera'),
             ('is_acuicul', 'Acuicultura'),
             ('is_sanid', 'Sanidad'),
-            ('is_tvc', 'Tramitación Vigilancia y Control'),
-            ('is_fomen', 'Fomento Pesquero y Acuicola')
+            # ('is_tvc', 'Tramitación Vigilancia y Control'),
+            # ('is_fomen', 'Fomento Pesquero y Acuicola')
         )
 
     def type_document(self):

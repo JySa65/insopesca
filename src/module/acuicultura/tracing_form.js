@@ -97,7 +97,7 @@ if (id_new_lagoon && id_new_well) {
                                     <label class="col-form-label">
                                         Cantidad De Especie N° ${i + 1}
                                     </label>
-                                    <input class="form-control" id="id_input_${index}${i}" type="number" name="number_specie" required autocomplete="off" readonly onchange=${getNumberSpecie(index, i)}>
+                                    <input class="form-control" id="id_input_${index}${i}" type="number" step="any" name="number_specie" step="any" required autocomplete="off" readonly onchange=${getNumberSpecie(index, i)}>
                                 </div>
                             </div>      
                         </div>
@@ -117,7 +117,7 @@ if (id_new_lagoon && id_new_well) {
                                 <label for="${id}" class="col-form-label">
                                     Diametro de la Laguna Nro° ${index + 1}
                                 </label>
-                                <input class="form-control" type="number" name="diameter" id="${id}" value="${value.diameter}"
+                                <input class="form-control" type="number" step="any" name="diameter" id="${id}" value="${value.diameter}"
                                     onchange="${onChange(index, data)}" required autocomplete="off">
                             </div>
                         </div>
@@ -126,7 +126,7 @@ if (id_new_lagoon && id_new_well) {
                                 <label for="${id}" class="col-form-label">
                                     Profundidad de la Laguna Nro° ${index + 1}
                                 </label>
-                                <input class="form-control" type="number" name="deepth" id="${id}" value="${value.deepth}"
+                                <input class="form-control" type="number" step="any" name="deepth" id="${id}" value="${value.deepth}"
                                     onchange="${onChange(index, data)}" required autocomplete="off">
                             </div>
                         </div>
@@ -166,7 +166,7 @@ if (id_new_lagoon && id_new_well) {
                                                     <label class="col-form-label">
                                                         Cantidad De Especie N° ${i + 1}
                                                     </label>
-                                                    <input class="form-control" id="id_input_${index}${i}" type="number" name="number_specie" required autocomplete="off" onchange=${getNumberSpecie(index, i)} value=${data.number_specie}>
+                                                    <input class="form-control" id="id_input_${index}${i}" type="number" step="any" name="number_specie" required autocomplete="off" onchange=${getNumberSpecie(index, i)} value=${data.number_specie}>
                                                 </div>
                                             </div>      
                                         </div>
@@ -199,7 +199,7 @@ if (id_new_lagoon && id_new_well) {
                                 <label for="${id}" class="col-form-label">
                                     Diametro del Pozo Nro° ${index + 1}
                                 </label>
-                                <input class="form-control" type="number" name="diameter" id="${id}" value="${value.diameter}"
+                                <input class="form-control" type="number" step="any" name="diameter" id="${id}" value="${value.diameter}"
                                     onchange="${onChange(index, dataWell)}" required autocomplete="off">
                             </div>
                         </div>
@@ -208,7 +208,7 @@ if (id_new_lagoon && id_new_well) {
                                 <label for="${id}" class="col-form-label">
                                     Profundidad del Pozo Nro° ${index + 1}
                                 </label>
-                                <input class="form-control" type="number" name="deepth" id="${id}" value="${value.deepth}"
+                                <input class="form-control" type="number" step="any" name="deepth" id="${id}" value="${value.deepth}"
                                     onchange="${onChange(index, dataWell)}" required autocomplete="off">
                             </div>
                         </div>

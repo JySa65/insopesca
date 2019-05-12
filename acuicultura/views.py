@@ -246,15 +246,12 @@ class SpeciesDelete(LoginRequiredMixin, UserUrlCorrectMixin, View):
             return JsonResponse(data)
 
 
-class InspectionProductionUnitLagoon(LoginRequiredMixin, 
-                                    UserUrlCorrectMixin, ListView):
+class InspectionProductionUnitLagoon(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
     model = Lagoon
 
     def get_queryset(self):
         super(InspectionProductionUnitLagoon, self).get_queryset()
         return Lagoon.objects.filter(producion_unit__pk=self.kwargs.get('pk'))
-
-
 
 
 # # Views Tracing = Create,detail,update,delete
@@ -407,7 +404,7 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
 
                     for specie in lagoon['sistem_cultive']['species']:
                         pk = specie['specie']
-                        number_specie = int(specie['number_specie'])
+                        number_specie = specie['number_specie']
                         sspecie = get_object_or_404(Specie, pk=pk)
                         LagoonEspecies.objects.create(
                             lagoon=laggon,
@@ -561,9 +558,9 @@ class LagoonDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(LagoonDetail, self).get_context_data(**kwargs)
-        area = Lagoon.objects.filter(pk=self.kwargs['pk']).first()
-        context['species_has_lagoon'] = LagoonEspecies.objects.filter(
-            lagoon=self.kwargs['pk'])
+        lagoon = self.object
+        species = LagoonEspecies.objects.filter(lagoon=lagoon)
+        context['species'] = species
         # # context['total_number_species'] = LagoonEspecies.objects.filter(
         # #     lagoon=self.kwargs['pk']).aggregate(total__sum=Sum('number_specie'))
         # context['square_meter'] = (area.lagoon_diameter*area.lagoon_deepth)

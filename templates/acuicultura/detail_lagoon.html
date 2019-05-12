@@ -1,23 +1,23 @@
 {% extends 'base.html' %}
-{% block title %} {{ object.ordinary_name|upper }} {% endblock %}
+{% block title %} Detalles {% endblock %}
 {% block sidebar %}
 {% include 'sidebar/acuicultura.html' %}
 {% endblock sidebar %}
 {% block pageheader %}
-Acuicultura / Seguimiento / Laguna / {{ object.pk }}
+Laguna / Detalle / {{ object.pk }} /
 {% endblock pageheader %}
 {% block context %}
 <div class="row">
 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 		<div class="card">
 			<div class="card-header">
-				<span class="h4 text-primary"><b>Información de la Laguna: {{object.pk}} </b></span>
+				<a href="javascript:window.history.back()" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
 			</div>
 			<div class="card-body">
 				<div class="row p-0">
 					<div class="col-sm-12 mb-4">
 						<label class="h5">
-							<b>Nombre de la Unidad Productora:</b>
+							<b>Unidad Productora:</b>
 						</label>
 						<span class="h5">{{object.producion_unit.name}}</span>
 					</div>
@@ -44,12 +44,12 @@ Acuicultura / Seguimiento / Laguna / {{ object.pk }}
 		</div>
 	</div>
 </div>
-<!-- 
+
 <div class="section-block" id="basicform">
 	<h3 class="section-title">Especies en la laguna</h3>
 </div>
 
-{% for specie_lagoon in species_has_lagoon %}
+{% for specie_lagoon in species %}
 
 <div class="row">
 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -91,9 +91,9 @@ Acuicultura / Seguimiento / Laguna / {{ object.pk }}
 		</div>
 	</div>
 </div>
-{% endfor %} -->
+{% endfor %} 
 
-<!-- 
+
 <div class="row">
 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 		<div class="card">
@@ -137,5 +137,5 @@ Acuicultura / Seguimiento / Laguna / {{ object.pk }}
 			</div>
 		</div>
 	</div>
-</div> -->
+</div>
 {% endblock %}

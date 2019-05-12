@@ -10,7 +10,8 @@ const miniCssExtractPlugin = new MiniCssExtractPlugin({
 const optimizeCSSAssetsPlugin = new OptimizeCSSAssetsPlugin({})
 
 module.exports = {
-	mode: "production",
+	// mode: "production",
+	mode: "development",
 	entry: {
 		index: './src/index.js',
 		acuicultura: './src/module/acuicultura/index.js',
@@ -30,7 +31,7 @@ module.exports = {
 			{
 				test: /\.(css|scss)$/,
 				use: [
-					MiniCssExtractPlugin.loader,
+					this.mode != 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
 					'css-loader',
 					'sass-loader'
 				]

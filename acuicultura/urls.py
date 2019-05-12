@@ -37,7 +37,7 @@ urlpatterns = [
     path('species/list/', SpeciesList.as_view(), name="list_specie"),
 
     path('<type>/', TracingInspectionHomeView.as_view(), name="tracing_home"),
-    path('inspection/lagoon/list/<uuid:pk>', InspectionProductionUnitLagoon.as_view(),
+    path('lagoon/<uuid:pk>', InspectionProductionUnitLagoon.as_view(),
          name="inspection_lagoon_list"),
 
     path('tracing/add/<pk>',
@@ -47,7 +47,7 @@ urlpatterns = [
     path('tracing/delete/<pk>/', TracingdeleteView.as_view(), name="delete_tracing"),
     # path('list/', TracingList.as_view(), name="list_tracing"),
     path('well/detail/<pk>/', WellDetail.as_view(), name="well_detail"),
-    path('lagoon/detail/<pk>/', LagoonDetail.as_view(), name="lagoon_detail"),
+    path('lagoon/detail/<uuid:pk>/', LagoonDetail.as_view(), name="lagoon_detail"),
 
     path('legal/representative/<pk>/',
          RepreUnitCreate.as_view(), name="repre_create"),

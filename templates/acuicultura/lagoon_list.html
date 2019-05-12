@@ -17,46 +17,64 @@ Lagunas de la Unidad Productora
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
+                <div class="card-header">
+                    <a href="javascript:window.history.back()" class="btn btn-rounded btn-primary">Regresar <i
+                            class="fas fa-reply"></i></a>
+                </div>
                 <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Codigo</th>
-                                <th scope="col">Creada</th>
-                                <!-- <th scope="col">Nombre</th> -->
-                                <!-- <th scope="col">Opciones</th> -->
-                            </tr>
-                        </thead>
-                        <tbody>
+                    {% for i in object_list %}
+                    <div class="card ml-5 mr-5" style="background-color: #e6e6e6;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="media influencer-profile-data d-flex align-items-center p-2">
+                                        <div class="mr-4">
+                                            <h1
+                                                style="border: 3px solid #5969ff !important;border-radius: 100%; color: #2b3590 !important;     padding: 0px 15px;">
+                                                {{ forloop.counter }}</h1>
+                                        </div>
+                                        <div class="media-body ">
+                                            <div class="influencer-profile-data">
+                                                <h3 class="m-b-10">{{ i.producion_unit.get_full_name }}</h3>
+                                                <p>
+                                                    <span class="m-r-20 d-inline-block"><b>Codigo de la Laguna</b>
+                                                        <span class="m-l-10 text-primary">{{ i.pk }}</span>
+                                                    </span>
+                                                    <span class="m-r-20 d-inline-block"> <b>Creada</b>
+                                                        <span class="m-l-10 text-secondary">{{ i.created_at }}</span>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-top card-footer p-0">
+                            <div class="campaign-metrics d-xl-inline-block">
+                                <h4 class="mb-0">{{ i.sistem_cultivate|title }} Cultivo</h4>
+                                <p>Sistema de Cultivo</p>
+                            </div>
+                            <div class="campaign-metrics d-xl-inline-block">
+                                <h4 class="mb-0">{{ i.lagoon_diameter }}</h4>
+                                <p>Ancho de la Laguna</p>
+                            </div>
+                            <div class="campaign-metrics d-xl-inline-block">
+                                <h4 class="mb-0">{{ i.lagoon_deepth }}</h4>
+                                <p>Largo de la Laguna</p>
+                            </div>
+                        </div>
+                        <div class="border-top card-footer p-0 text-center">
+                            <div class="campaign-metrics d-xl-inline-block">
+                                <a href="{% url 'acuicultura:lagoon_detail' i.pk %}" class="btn btn-lg btn-info">Ver Informacion de la Laguna</a>
+                            </div>
 
-                            {% for i in object_list  %}
-                            <tr>
-                                <th scope="row">{{forloop.counter}}</th>
-                                <td>{{i.pk}}</td>
-                                <td>{{i.created_at}}</td>
-                                <td>
-                                    <a href="{% url 'acuicultura:detail_unit' i.pk %}"
-                                        class="btn btn-rounded btn-secondary">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="{% url 'acuicultura:delete_unit' i.pk %}"
-                                        class="btn btn-rounded btn-danger">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            {% empty%}
-                            <tr>
-                                <td></td>
-                                <td>No Hay</td>
-                                <td>Registros</td>
-                                <td>En Estos</td>
-                                <td>Momentos</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            <div class="campaign-metrics d-xl-inline-block">
+                                <a href="" class="btn btn-lg btn-danger">Eliminar Laguna</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

@@ -80,11 +80,16 @@ Inspecciones Lagunas
                                             </span>
                                         </td>
                                         {% endif %}
-                                        <td>                                                
-                                            <a href="{% if type == 'tracing' %}{% url 'acuicultura:create_tracing' i.pk %}{% else %}{% url 'acuicultura:inspection_lagoon_list' i.pk %}{% endif %}"
-                                                class="btn btn-rounded btn-primary">
-                                                <i class="fas fa-thumbtack"></i>
-                                            </a>
+                                        <td> {% if type == 'tracing' %}
+                                                <a href="{% url 'acuicultura:create_tracing' i.pk %}" class="btn btn-rounded btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir Seguimiento">
+                                                    <i class="fas fa-thumbtack"></i>
+                                                </a>
+                                                {% else %}
+                                                <a href="{% url 'acuicultura:inspection_lagoon_list' i.pk %}" class="btn btn-rounded btn-primary" data-toggle="tooltip" data-placement="top" title="Ver Lagunas">
+                                                    <!-- <i class="fas fa-clipboard-list"></i> -->
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                     {% endfor %}
