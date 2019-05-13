@@ -93,6 +93,10 @@ class RepresentativeForm(forms.ModelForm):
             if name == 'type_document':
                 field.widget.attrs.update(
                     {'class': 'form-control selectpicker show-tick', 'autocomplete': 'off'})
+            
+            if name == "address":
+                field.widget.attrs.update(
+                    {'class': 'form-control', 'autocomplete': 'off', 'rows': 1})
 
 
 class InspectionLagoonForm(forms.ModelForm):

@@ -7,7 +7,7 @@ import deleteSwalCompany from '../../utils/delete_with_swal.js';
 const id_repre_form = document.querySelector("#id_representative_form")
 if (id_repre_form) {
     document.querySelector("#id_document").addEventListener(
-        "keypress", (event) => validInput('n', 12, event))
+        "keypress", (event) => validInput('n', 8, event))
 
     document.querySelector("#id_name").addEventListener(
         "keypress", (event) => validInput('l', 50, event))

@@ -78,21 +78,7 @@ Registro De Unidad Prductora
 				{% endif %}
 				{% endfor %}
 
-				<div class="row">
-					<div class="col-md-6 col-sm-12">
-						<div class="form-group">
-							<label for="id_{{ form.type_document.name }}" class="col-form-label">{{form.type_document.label}}</label>
-							{{ form.type_document|add_class:"selectpicker show-tick"|attr:"data-width:100%"}}
-						</div>
-					</div>
-					
-					<div class="col-md-6 col-sm-12">
-						<div class="form-group">
-							<label for="id_{{ form.document.name }}" class="col-form-label">Documento</label>
-							{{ form.document|add_class:"form-control"|attr:"autocomplete:off" }}
-						</div>
-					</div>
-					
+				<div class="row">					
 					<div class="col-md-12 col-sm-12">
 						<div class="form-group">
 							<label for="id_{{ form.name.name }}" class="col-form-label">Nombre</label>
@@ -154,32 +140,12 @@ Registro De Unidad Prductora
 							
 							<div class="col-md-6 col-sm-12">
 								<div class="form-group">
-									<label for="id_{{ second.south.name }}" class="col-form-label">Sur</label>
-									{{ second.south|add_class:"form-control"|attr:"autocomplete:off" }}
-								</div>
-							</div>
-							
-							<div class="col-md-6 col-sm-12">
-								<div class="form-group">
 									<label for="id_{{ second.west.name }}" class="col-form-label">Este</label>
 									{{ second.west|add_class:"form-control"|attr:"autocomplete:off" }}
 								</div>
 							</div>
 							
-							<div class="col-md-6 col-sm-12">
-								<div class="form-group">
-									<label for="id_{{ second.oest.name }}" class="col-form-label">Oeste</label>
-									{{ second.oest|add_class:"form-control"|attr:"autocomplete:off" }}
-								</div>
-							</div>
-							
-							<div class="col-md-6 col-sm-12">
-								<div class="form-group">
-									<label for="id_{{ second.oest.name }}" class="col-form-label">Oeste</label>
-									{{ second.oest|add_class:"form-control"|attr:"autocomplete:off" }}
-								</div>
-							</div>
-							
+						
 							<div class="col-md-6 col-sm-12">
 								<div class="form-group">
 									<label for="id_{{ second.altitude.name }}" class="col-form-label">Altitud</label>

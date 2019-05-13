@@ -18,12 +18,6 @@ Acuicultura / Unida Productora /{{ object.name }}
 				<div class="row p-0">
 					<div class="col-sm-12 mb-3">
 						<label class="h5">
-							<b>Documento:</b>
-						</label>
-						<span class="h5">{{object.type_document}}-{{ object.document }}</span>
-					</div>
-					<div class="col-sm-12 mb-3">
-						<label class="h5">
 							<b>Nombre:</b>
 						</label>
 						<span class="h5">{{ object.name }}</span>
@@ -99,7 +93,7 @@ Acuicultura / Unida Productora /{{ object.name }}
 
 		<div class="card">
 			<div class="card-header">
-				<span class="h4 text-primary"><b>Puntos Cardinales</b></span>
+				<span class="h4 text-primary"><b>UMT</b></span>
 			</div>
 			<div class="card-body">
 				<div class="row p-0">
@@ -109,12 +103,7 @@ Acuicultura / Unida Productora /{{ object.name }}
 						</label>
 						<span class="h5"> {{ cardinal.north }}</span>
 					</div>
-					<div class="col-sm-6 mb-3">
-						<label class="h5">
-							<b>Sur:</b>
-						</label>
-						<span class="h5"> {{ cardinal.south }}</span>
-					</div>
+					
 
 					<div class="col-sm-6 mb-3">
 						<label class="h5">
@@ -122,12 +111,7 @@ Acuicultura / Unida Productora /{{ object.name }}
 						</label>
 						<span class="h5"> {{ cardinal.west }}</span>
 					</div>
-					<div class="col-sm-6 mb-3">
-						<label class="h5">
-							<b>Oeste:</b>
-						</label>
-						<span class="h5"> {{ cardinal.oest }}</span>
-					</div>
+					
 					<div class="col-sm-6 mb-3">
 						<label class="h5">
 							<b>Altitud:</b>
@@ -148,8 +132,8 @@ Acuicultura / Unida Productora /{{ object.name }}
 				<div class="card">
 					<div class="card-header clearfix">
 						<span class="h4 text-primary"><b>Representantes Legales </b></span>
-						<a href="{% url 'acuicultura:repre_create' object.pk %}"
-							class="btn btn-rounded btn-primary">Añadir Representate <i class="fas fa-user-plus"></i></a>
+						<!-- <a href="{% url 'acuicultura:repre_create' object.pk %}"
+							class="btn btn-rounded btn-primary">Añadir Representate <i class="fas fa-user-plus"></i></a> -->
 					</div>
 
 					<div class="card-body p-0">

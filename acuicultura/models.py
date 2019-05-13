@@ -39,7 +39,7 @@ class ProductionUnit(core.Company):
 
     def save(self, *args, **kwargs):
         self.type_document = "V"
-        self.document = self.id[0:15]
+        self.document = str(self.id)[0:15]
         super(ProductionUnit, self).save(*args, **kwargs)
 
 

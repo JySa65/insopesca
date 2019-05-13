@@ -99,7 +99,7 @@ Registro De Unidad Prductora
 
 					<div class="row">
 						{% for i in form %}
-						<div class="col-md-6 col-sm-12">
+						<div class="{% if i.name == 'address' %}col-sm-12{% else %}col-md-6 col-sm-12{% endif %}">
 							<div class="form-group">
 								<label for="id_{{ i.name }}" class="col-form-label">
 									{{ i.label}}
