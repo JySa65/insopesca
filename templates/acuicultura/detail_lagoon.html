@@ -8,18 +8,25 @@ Laguna / Detalle / {{ object.pk }} /
 {% endblock pageheader %}
 {% block context %}
 <div class="row">
-	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+	<div class="col-12">
 		<div class="card">
 			<div class="card-header">
-				<a href="javascript:window.history.back()" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				<a href="javascript:window.history.back()" class="btn btn-rounded btn-primary">Regresar <i
+						class="fas fa-reply"></i></a>
 			</div>
 			<div class="card-body">
 				<div class="row p-0">
-					<div class="col-sm-12 mb-4">
+					<div class="col-sm-6 mb-4">
 						<label class="h5">
 							<b>Unidad Productora:</b>
 						</label>
 						<span class="h5">{{object.producion_unit.name}}</span>
+					</div>
+					<div class="col-sm-6 mb-4">
+						<label class="h5">
+							<b>Tipo de Cultivo:</b>
+						</label>
+						<span class="h5">{{ object.sistem_cultivate|title }}</span>
 					</div>
 					<div class="col-sm-6 mb-4">
 						<label class="h5">
@@ -33,72 +40,52 @@ Laguna / Detalle / {{ object.pk }} /
 						</label>
 						<span class="h5">{{ object.lagoon_deepth }}m</span>
 					</div>
-					<!-- <div class="col-sm-6 mb-4">
-						<label class="h5">
-							<b>Area total de Terreno:</b>
-						</label>
-						<span class="h5">{{ object.total_area_mirror_guater }}</span>
-					</div> -->
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="section-block" id="basicform">
-	<h3 class="section-title">Especies en la laguna</h3>
-</div>
-
-{% for specie_lagoon in species %}
-
 <div class="row">
-	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+	<div class="col-12">
 		<div class="card">
 			<div class="card-header">
-				<span class="h4 text-primary"><b>Especie Nro° {{forloop.counter}} </b></span>
+				<h3 class="section-title text-primary" >Especies en la laguna</h3>
 			</div>
 			<div class="card-body">
-				<div class="row p-0">
-					<div class="col-sm-12 mb-4">
-
-						<label class="h5">
-							<b>Nombre Ordinario:</b>
-						</label>
-						<span class="h5">{{ specie_lagoon.especies.ordinary_name }}</span>
-					</div>
-					<div class="col-sm-6 mb-4">
-						<label class="h5">
-							<b>Nombre Cientifico:</b>
-						</label>
-						<span class="h5">{{ specie_lagoon.especies.scientific_name }}</span>
-					</div>
-					<div class="col-sm-6 mb-4">
-						<label class="h5">
-							<b>Cantidad de Especies:</b>
-						</label>
-						<span class="h5">{{ specie_lagoon.number_specie }}</span>
-					</div>
-				</div>
+				<table class="table">
+					<thead>
+						<th>Nombre</th>
+						<th>Cantidad</th>
+					</thead>
+					<tbody>
+						{% for specie in species %}
+						<tr>
+							<td>{{ specie }}</td>
+							<td>{{ specie.number_specie }}</td>
+						</tr>
+						{% endfor %}
+						<tr>
+							<td align="right">
+								<label class="h4 text-info">Total De Especie:</label>
+							</td>
+							<td>
+								<label class="h4"><b>{{ total_number_species.total__sum }}</b></label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-			{% if forloop.last  %}
-			<div class="card-body border-top">
-				<h3>Total de las Especies: {{total_number_species.total__sum}}</h3>
-
-			</div>
-			{% else %}
-
-			{% endif %}
 		</div>
 	</div>
 </div>
-{% endfor %} 
 
 
 <div class="row">
 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 		<div class="card">
 			<div class="card-header">
-				<span class="h4 text-primary"><b>Algun texto</b></span>
+				<span class="h4 text-primary"><b>Comida</b></span>
 			</div>
 			<div class="card-body">
 				<h3>Densidad de Animales</h3>

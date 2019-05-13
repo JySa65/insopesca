@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, render_to_resp
 from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, LagoonEspecies
 from acuicultura.forms import UnitCreateForm, CardinaPointForm, RepreUnitForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.http import HttpResponseRedirect, Http404, JsonResponse, \
     HttpResponse
 from django.views.generic import TemplateView, ListView, CreateView, \
@@ -35,19 +35,10 @@ class ProductionUnitCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateVi
     second_form = CardinaPointForm
     template_name = "acuicultura/production_unit_form.html"
 
-    def form_valid(self, form):
-        _object = form.save(commit=False)
-        self.object = _object.save()
-        return super(ProductionUnitCreateView, self).form_valid(form)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if 'first' not in context:
-            context["first"] = self.form_class()
-
-        if 'second' not in context:
-            context["second"] = self.second_form()
-
+        context["first"] = self.form_class()
+        context["second"] = self.second_form()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -60,9 +51,10 @@ class ProductionUnitCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateVi
             cardinal.production_unit_id = unit_save.pk
             cardinal_form.save()
             return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit_save.pk,)))
-
-        else:
-            return render(request, self.template_name, {'form': unit_form, 'second': cardinal_form})
+        return render(
+            request, 
+            self.template_name, 
+            {'form': unit_form, 'second': cardinal_form})
 
 
 class ProductionUnitUpdate(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):
@@ -431,15 +423,10 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
             )
             return JsonResponse(data)
 
-# class TracingList(TemplateView):
-#     model = Tracing
-#     tempalte_number_specie = "acuicultura/tracing_form.html"
-
 
 class TracingUpdate(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):
     model = Tracing
     form_class = TracingUpdateForm
-
     tempalte_name = "acuicultura/tracing_form.html"
 
     def get_context_data(self, **kwargs):
@@ -560,14 +547,19 @@ class LagoonDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
         context = super(LagoonDetail, self).get_context_data(**kwargs)
         lagoon = self.object
         species = LagoonEspecies.objects.filter(lagoon=lagoon)
+        square_meter = lagoon.lagoon_diameter * lagoon.lagoon_deepth
+        food = square_meter * 1.5
+        food_sacks = float(food / 25)
+        percentage_60 = (food_sacks*60)/100
+        percentage_40 = (food_sacks*40)/100
         context['species'] = species
-        # # context['total_number_species'] = LagoonEspecies.objects.filter(
-        # #     lagoon=self.kwargs['pk']).aggregate(total__sum=Sum('number_specie'))
-        # context['square_meter'] = (area.lagoon_diameter*area.lagoon_deepth)
-        # context['food'] = int((context['square_meter'])*1.5)
-        # context['food_sacks'] = int((context['food'])/25)
-        # context['percentage_60'] = (context['food_sacks'])*60/100
-        # context['percentage_40'] = (context['food_sacks'])*40/100
+        context['total_number_species'] = species.aggregate(
+                                            total__sum=Sum('number_specie'))
+        context['square_meter'] = square_meter
+        context['food'] = food
+        context['food_sacks'] = food_sacks
+        context['percentage_60'] = percentage_60
+        context['percentage_40'] = percentage_40
         return context
 
 
