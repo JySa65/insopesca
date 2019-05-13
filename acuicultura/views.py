@@ -631,11 +631,11 @@ class RepreUnitCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
             ctx = dict(
                 form=form,
                 user=user,
-                msg="Usuario Ya Existe ¿Desea Añadirlo?",
+                msg="Usuario Ya Existe En El Sistema ¿Desea Añadirlo?",
                 add=True
             )
             if user_many:
-                ctx['msg'] = "Usuario Ya Existe en esta unidad productora"
+                ctx['msg'] = "Usuario Ya Existe En Esta Unidad Productora"
                 ctx['add'] = False
 
             return render(self.request, self.template_name, ctx)
@@ -664,12 +664,10 @@ class Representative_unit_production_delete(LoginRequiredMixin,
             self.model, pk=self.kwargs.get('pk'))
 
     def delete(self, request, *args, **kwargs):
-        repre = self.get_object()
-        repre.is_active = False
-        repre.save()
+        self.get_object().delete()
         data = dict(
             status=True,
-            msg="Representante Desactivado"
+            msg="Representante Removido"
         )
         return JsonResponse(data)
 

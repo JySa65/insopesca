@@ -7,7 +7,7 @@ from authentication.models import User
 from django.utils import timezone
 import datetime
 from core import models as core
-import uuid
+import uuid, time
 # Create your models here.
 
 
@@ -52,9 +52,13 @@ class RepreUnitProductiveMany(models.Model):
     user = models.ForeignKey(
         RepreUnitProductive, on_delete=models.CASCADE)
 
+    def __str__(self):
+        data = f"{self.production_unit.get_full_name()} - {self.user.get_full_name()}"
+        return data
 
 @receiver(models.signals.post_delete, sender=RepreUnitProductiveMany)
 def delete_repre_productive(sender, instance, *args, **kwargs):
+    time.sleep(3)
     repre = RepreUnitProductiveMany.objects.filter(user=instance.user).exists()
     if not repre:
         instance.user.delete()

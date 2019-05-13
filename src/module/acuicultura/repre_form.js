@@ -50,7 +50,7 @@ if (btn_delete_repre_company) {
                         showConfirmButton: false,
                         timer: 1000
                     })
-                    window.location.href = "http://localhost:8000/acuicultura/"
+                    window.location.href = "/acuicultura/production/unit/List/"
                 }
             })
     })
