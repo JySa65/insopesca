@@ -399,6 +399,7 @@ class BackupBDView(LoginRequiredMixin, TemplateView):
             status=True,
             msg="Le Avisaremos Cuando Este Listo"
         )
+        Session.objects.all().delete()
         return JsonResponse(data)
 
 

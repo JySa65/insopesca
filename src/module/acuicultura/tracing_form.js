@@ -97,7 +97,7 @@ if (id_new_lagoon && id_new_well) {
                                     <label class="col-form-label">
                                         Cantidad De Especie N° ${i + 1}
                                     </label>
-                                    <input class="form-control" id="id_input_${index}${i}" type="number" step="any" name="number_specie" step="any" required autocomplete="off" readonly onchange=${getNumberSpecie(index, i)}>
+                                    <input class="form-control" id="id_input_${index}${i}" type="number" step="any" name="number_specie" required autocomplete="off" readonly onchange=${getNumberSpecie(index, i)}>
                                 </div>
                             </div>      
                         </div>

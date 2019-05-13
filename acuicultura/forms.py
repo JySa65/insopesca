@@ -10,7 +10,7 @@ class UnitCreateForm(forms.ModelForm):
 
     class Meta:
         model = ProductionUnit
-        fields = ('type_document', 'document', 'name',
+        fields = ('name',
                   'tlf', 'tlf_house', 'state', 'municipality',
                   'parish', 'address')
 
@@ -19,18 +19,8 @@ class CardinaPointForm(forms.ModelForm):
 
     class Meta:
         model = CardinalPoint
-        fields = ("north", "south", "west", "oest",
+        fields = ("north", "west",
                   "altitude", "total_area_terr")
-
-
-class RepreUnitForm(forms.ModelForm):
-    # phone_repre = forms.CharField(max_length=11,required=True,label="Telefono")
-    # landline_repre = forms.CharField(max_length=11,required=True,label="Telefono Casa")
-
-    class Meta:
-        model = RepreUnitProductive
-        fields = ("type_document", "document", "name",
-                  "last_name", "tlf", "tlf_house")
 
 
 class EspecieForm(forms.ModelForm):
@@ -66,7 +56,7 @@ class TracingCreateForm(forms.ModelForm):
     class Meta:
         model = Tracing
         fields = ('number_lagoon', 'new_number_lagoon', 'number_well', 'new_number_well',
-                  'illegal_superfaces', 'irregular_superfaces', 'permise_superfaces', 'regular_superfaces')
+                  'illegal_superfaces', 'permise_superfaces', 'regular_superfaces')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -79,7 +69,7 @@ class TracingUpdateForm(forms.ModelForm):
     class Meta:
         model = Tracing
         fields = ('number_lagoon', 'new_number_lagoon', 'number_well', 'new_number_well',
-                  'illegal_superfaces', 'irregular_superfaces', 'permise_superfaces', 'regular_superfaces')
+                  'illegal_superfaces', 'permise_superfaces', 'regular_superfaces')
 
     def __init__(self, *args, **kwargs):
 
@@ -92,7 +82,7 @@ class RepresentativeForm(forms.ModelForm):
     class Meta:
         model = RepreUnitProductive
         fields = ("type_document", "document", "name",
-                  "last_name", "tlf", "tlf_house")
+                  "last_name", "tlf", "tlf_house", 'address')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

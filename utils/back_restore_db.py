@@ -20,6 +20,7 @@ class BackupRestoreDBConfig():
                 user=user,
                 path=path
             )
+            Session.objects.all().delete()
             models.BackupRestoreBD.objects.create(**data)
             with open(path, "w") as f:
                 f.seek(0)

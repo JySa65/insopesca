@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, LagoonEspecies, RepreUnitProductiveMany
-from acuicultura.forms import UnitCreateForm, CardinaPointForm, RepreUnitForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm
+from acuicultura.forms import UnitCreateForm, CardinaPointForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm
 from django.core.paginator import Paginator
 from django.db.models import Q, Sum
 from django.http import HttpResponseRedirect, Http404, JsonResponse, \
@@ -537,6 +537,7 @@ class TracingDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
 class WellDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
     model = Well
     template_name = "acuicultura/detail_well.html"
+
 
 
 class LagoonDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
