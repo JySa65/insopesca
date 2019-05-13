@@ -23,12 +23,12 @@ Acuicultura / Unida Productora /{{ object.name }}
 						<span class="h5">{{object.type_document}}-{{ object.document }}</span>
 					</div>
 					<div class="col-sm-12 mb-3">
-							<label class="h5">
-								<b>Nombre:</b>
-							</label>
-							<span class="h5">{{ object.name }}</span>
-						</div>
-	
+						<label class="h5">
+							<b>Nombre:</b>
+						</label>
+						<span class="h5">{{ object.name }}</span>
+					</div>
+
 					<div class="col-sm-6 mb-3">
 						<label class="h5">
 							<b>Telefono Fijo:</b>
@@ -69,28 +69,30 @@ Acuicultura / Unida Productora /{{ object.name }}
 						<span class="h5">{{ object.state }}</span>
 					</div>
 					<div class="col-sm-12 mb-3">
-							<label class="h5">
-								<b>Dirección: </b>
-							</label>
-							<span class="h5">{{ object.address }}</span>
-						</div>
+						<label class="h5">
+							<b>Dirección: </b>
+						</label>
+						<span class="h5">{{ object.address }}</span>
+					</div>
 					<div class="card-body">
 						<div class="row text-center">
 							<div class="col-sm-6 mb-3">
-								<a href="{% url 'acuicultura:update_unit' object.pk %} " class="btn btn-rounded btn-info">
+								<a href="{% url 'acuicultura:update_unit' object.pk %} "
+									class="btn btn-rounded btn-info">
 									<i class="far fa-edit"></i>
 									Actualizar
 								</a>
 							</div>
 							<div class="col-sm-6 mb-3">
-								<a href="{% url 'acuicultura:delete_unit' object.pk %}" class="btn btn-rounded btn-danger" id="btn_delete_unit">
+								<a href="{% url 'acuicultura:delete_unit' object.pk %}"
+									class="btn btn-rounded btn-danger" id="btn_delete_unit">
 									<i class="fas fa-user-times"></i>
 									Eliminar
 								</a>
 							</div>
-	
+
 						</div>
-					</div>				
+					</div>
 				</div>
 			</div>
 		</div>
@@ -114,7 +116,7 @@ Acuicultura / Unida Productora /{{ object.name }}
 						<span class="h5"> {{ cardinal.south }}</span>
 					</div>
 
-                    <div class="col-sm-6 mb-3">
+					<div class="col-sm-6 mb-3">
 						<label class="h5">
 							<b>Este:</b>
 						</label>
@@ -146,9 +148,10 @@ Acuicultura / Unida Productora /{{ object.name }}
 				<div class="card">
 					<div class="card-header clearfix">
 						<span class="h4 text-primary"><b>Representantes Legales </b></span>
-						<a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-rounded btn-primary">Añadir Representate <i class="fas fa-user-plus"></i></a>
+						<a href="{% url 'acuicultura:repre_create' object.pk %}"
+							class="btn btn-rounded btn-primary">Añadir Representate <i class="fas fa-user-plus"></i></a>
 					</div>
-						
+
 					<div class="card-body p-0">
 						<div class="table-responsive">
 							<table class="table table-hover">
@@ -164,33 +167,41 @@ Acuicultura / Unida Productora /{{ object.name }}
 								</thead>
 								<tbody>
 									{% for repre in representative %}
-										
-										<tr>
-											<td>{{ forloop.counter }}</td>
-											<td>{{repre.type_document}}-{{ repre.document }}</td>
-											<td>{{ repre.name }}</td>
-											<td>{{repre.last_name}}</td>											
-											{% if repre.is_active == True %}
-												<td>Activo</td>		
-											{% else %}
-												<td>Inactivo</td>
-											{% endif %}
-											<td>
-												<a href="{% url 'acuicultura:repre_detail' repre.pk %}" class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
-											</td>
-										</tr>
+
+									<tr>
+										<td>{{ forloop.counter }}</td>
+										<td>{{repre.user.type_document}}-{{ repre.user.document }}</td>
+										<td>{{ repre.user.name }}</td>
+										<td>{{repre.user.last_name}}</td>
+										{% if repre.user.is_active == True %}
+										<td>
+											<span class="badge badge-success">
+												Activo
+											</span>
+										</td>
+										{% else %}
+										<td>
+											<span class="badge badge-danger">
+												Inactivo
+											</span>
+										</td>
+										{% endif %}
+										<td>
+											<a href="{% url 'acuicultura:repre_detail' repre.user.pk %}"
+												class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
+										</td>
+									</tr>
 									{% empty %}
-		
 									<tr>
 										<td colspan="5" class="text-center">
 											<h1>No tiene Representante Asignado a la Empresa</h1>
-											<a href="{% url 'acuicultura:repre_create' object.pk %}" class="btn btn-primary btn-rounded ">
-											Añadir Representante
-											<i class="fas fa-user-plus"></i>
+											<a href="{% url 'acuicultura:repre_create' object.pk %}"
+												class="btn btn-primary btn-rounded ">
+												Añadir Representante
+												<i class="fas fa-user-plus"></i>
 											</a>
 										</td>
 									</tr>
-		
 									{% endfor %}
 								</tbody>
 							</table>
@@ -205,10 +216,9 @@ Acuicultura / Unida Productora /{{ object.name }}
 				<div class="card">
 					<div class="card-header clearfix">
 						<span class="h4 text-primary"><b>Seguimientos </b></span>
-							<a href="{% url 'acuicultura:create_tracing' object.pk %}" class="btn btn-rounded btn-primary">Nuevo Seguimiento <i class="fas fa-thumbtack"></i></a>
-
+						<a href="{% url 'acuicultura:create_tracing' object.pk %}"
+							class="btn btn-rounded btn-primary">Nuevo Seguimiento <i class="fas fa-thumbtack"></i></a>
 					</div>
-						
 
 					<div class="card-body p-0">
 						<div class="table-responsive">
@@ -225,7 +235,7 @@ Acuicultura / Unida Productora /{{ object.name }}
 									</tr>
 								</thead>
 								<tbody>
-									
+
 									{% for tracings in tracing %}
 									<tr>
 										<td>{{ forloop.counter }}</td>
@@ -235,23 +245,25 @@ Acuicultura / Unida Productora /{{ object.name }}
 
 										<td>{{ tracings.new_number_well }}</td>
 										<td>{{tracings.responsible.name}} {{tracings.responsible.last_name}} </td>
-		
+
 										<td>
-											<a href="{% url 'acuicultura:detail_tracing' tracings.pk %}" class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
+											<a href="{% url 'acuicultura:detail_tracing' tracings.pk %}"
+												class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
 										</td>
 									</tr>
 									{% empty %}
-		
+
 									<tr>
 										<td colspan="7" class="text-center">
 											<h1>No tiene Seguimientoss realizados a la Empresa</h1>
-											<a href="{% url 'acuicultura:create_tracing' object.pk %}" class="btn btn-primary btn-rounded ">
-											Añadir Seguimiento
-
-											<i class="fas fa-thumbtack"></i>											</a>
+											<a href="{% url 'acuicultura:create_tracing' object.pk %}"
+												class="btn btn-primary btn-rounded ">
+												Añadir Seguimiento
+												<i class="fas fa-thumbtack"></i>
+											</a>
 										</td>
 									</tr>
-		
+
 									{% endfor %}
 								</tbody>
 							</table>
@@ -260,7 +272,7 @@ Acuicultura / Unida Productora /{{ object.name }}
 				</div>
 			</div>
 		</div>
-		
+
 	</div>
 </div>
 {% endblock %}

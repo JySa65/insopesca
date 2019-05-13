@@ -18,8 +18,10 @@ Lagunas de la Unidad Productora
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="javascript:window.history.back()" class="btn btn-rounded btn-primary">Regresar <i
-                            class="fas fa-reply"></i></a>
+                    <a href="javascript:window.history.back()" class="btn btn-rounded btn-primary">
+                        Regresar
+                        <i class="fas fa-reply"></i>
+                    </a>
                 </div>
                 <div class="card-body">
                     {% for i in object_list %}
@@ -66,7 +68,8 @@ Lagunas de la Unidad Productora
                         </div>
                         <div class="border-top card-footer p-0 text-center">
                             <div class="campaign-metrics d-xl-inline-block">
-                                <a href="{% url 'acuicultura:lagoon_detail' i.pk %}" class="btn btn-lg btn-info">Ver Informacion de la Laguna</a>
+                                <a href="{% url 'acuicultura:lagoon_detail' i.pk %}" class="btn btn-lg btn-info">Ver
+                                    Informacion de la Laguna</a>
                             </div>
 
                             <div class="campaign-metrics d-xl-inline-block">

@@ -49,8 +49,12 @@ Listdo Unidad Productora
 
 								{% endif %}
 								<td>
-									<a href="{% url 'acuicultura:detail_unit' i.pk %}" class="btn btn-rounded btn-secondary"><i class="fas fa-eye"></i></a>
-									<a href="{% url 'acuicultura:delete_unit' i.pk %}" class="btn btn-rounded btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+									<a href="{% url 'acuicultura:detail_unit' i.pk %}" class="btn btn-rounded btn-secondary">
+										<i class="fas fa-eye"></i>
+									</a>
+									<a href="{% url 'acuicultura:delete_unit' i.pk %}" class="btn btn-rounded btn-danger" id="btn_delete_unit">
+										<i class="fa fa-trash" aria-hidden="true"></i>
+									</a>
 
 								</td>
 	
@@ -99,6 +103,6 @@ Listdo Unidad Productora
 	<!-- end data table  -->
 	<!-- ============================================================== -->
 </div>
-<script src="{% static 'assets/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
+<!-- <script src="{% static 'assets/vendor/jquery/jquery-3.3.1.min.js' %}"></script> -->
 
 {% endblock %}

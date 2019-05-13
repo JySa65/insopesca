@@ -1,7 +1,7 @@
 from django.db import models
+from django.dispatch import receiver
 from utils.Select import Selects
 from decimal import Decimal
-from django.core.validators import MinValueValidator
 from django.utils.translation import ugettext, ugettext_lazy as _
 from authentication.models import User
 from django.utils import timezone
@@ -41,11 +41,23 @@ class RepreUnitProductive(core.Account):
     """
     Esta clase es para el representante de la unidad productora
     """
-    production_unit = models.ForeignKey(
-        ProductionUnit, on_delete=models.CASCADE)
-
+    
     def __str__(self):
         return f"{self.get_full_name()}"
+
+
+class RepreUnitProductiveMany(models.Model):
+    production_unit = models.ForeignKey(
+        ProductionUnit, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        RepreUnitProductive, on_delete=models.CASCADE)
+
+
+@receiver(models.signals.post_delete, sender=RepreUnitProductiveMany)
+def delete_repre_productive(sender, instance, *args, **kwargs):
+    repre = RepreUnitProductiveMany.objects.filter(user=instance.user).exists()
+    if not repre:
+        instance.user.delete()
 
 
 class CardinalPoint(models.Model):

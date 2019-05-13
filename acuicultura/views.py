@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
-from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, LagoonEspecies
+from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, LagoonEspecies, RepreUnitProductiveMany
 from acuicultura.forms import UnitCreateForm, CardinaPointForm, RepreUnitForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm
 from django.core.paginator import Paginator
 from django.db.models import Q, Sum
@@ -52,8 +52,8 @@ class ProductionUnitCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateVi
             cardinal_form.save()
             return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit_save.pk,)))
         return render(
-            request, 
-            self.template_name, 
+            request,
+            self.template_name,
             {'form': unit_form, 'second': cardinal_form})
 
 
@@ -108,7 +108,7 @@ class ProductionuUnitDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView)
         pk = self.kwargs['pk']
         context['cardinal'] = get_object_or_404(
             CardinalPoint, production_unit=pk)
-        context['representative'] = RepreUnitProductive.objects.filter(
+        context['representative'] = RepreUnitProductiveMany.objects.filter(
             production_unit=pk)
         context['tracing'] = Tracing.objects.filter(
             producion_unit=pk)
@@ -549,17 +549,17 @@ class LagoonDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
         species = LagoonEspecies.objects.filter(lagoon=lagoon)
         square_meter = lagoon.lagoon_diameter * lagoon.lagoon_deepth
         food = square_meter * 1.5
-        food_sacks = float(food / 25)
+        food_sacks = food / 25
         percentage_60 = (food_sacks*60)/100
         percentage_40 = (food_sacks*40)/100
         context['species'] = species
         context['total_number_species'] = species.aggregate(
-                                            total__sum=Sum('number_specie'))
-        context['square_meter'] = square_meter
-        context['food'] = food
-        context['food_sacks'] = food_sacks
-        context['percentage_60'] = percentage_60
-        context['percentage_40'] = percentage_40
+            total__sum=Sum('number_specie'))
+        context['square_meter'] = round(square_meter, 2)
+        context['food'] = round(food, 2)
+        context['food_sacks'] = round(food_sacks, 2)
+        context['percentage_60'] = round(percentage_60, 2)
+        context['percentage_40'] = round(percentage_40, 2)
         return context
 
 
@@ -607,24 +607,47 @@ class RepreUnitCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
     template_name = "acuicultura/representative_form.html"
     form_class = RepresentativeForm
 
-    def form_valid(self, form):
-        _object = form.save(commit=False)
-        self.object = _object.save()
-        return super(ProductionUnitUpdate, self).form_valid(form)
+    def dispatch(self, request, *args, **kwargs):
+        get_object_or_404(self.model, pk=self.kwargs.get('pk'))
+        return super(RepreUnitCreate, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        unit = self.model.objects.filter(pk=self.kwargs['pk']).first()
-        repre = self.second_model.objects.filter(
-            production_unit=self.kwargs['pk'])
+        unit = get_object_or_404(self.model, pk=self.kwargs.get('pk'))
         form = self.form_class(request.POST)
+        try:
+            data_user = request.POST.get('user', '')
+            if data_user:
+                user = get_object_or_404(self.second_model, pk=data_user)
+                RepreUnitProductiveMany.objects.create(
+                    production_unit=unit, user=user)
+                return HttpResponseRedirect(
+                    reverse("acuicultura:detail_unit", args=(unit.pk,)))
 
-        if form.is_valid():
-            repre = form.save(commit=False)
-            repre.production_unit_id = unit.pk
-            repre.save()
-            return HttpResponseRedirect(reverse("acuicultura:detail_unit", args=(unit.pk,)))
-        else:
-            return render(self.request, self.template_name, {'form': form})
+            document = request.POST.get('document')
+            user = self.second_model.objects.get(document=document)
+            user_many = RepreUnitProductiveMany.objects.filter(
+                production_unit=unit, user=user).exists()
+
+            ctx = dict(
+                form=form,
+                user=user,
+                msg="Usuario Ya Existe ¿Desea Añadirlo?",
+                add=True
+            )
+            if user_many:
+                ctx['msg'] = "Usuario Ya Existe en esta unidad productora"
+                ctx['add'] = False
+
+            return render(self.request, self.template_name, ctx)
+        except self.second_model.DoesNotExist:
+            with transaction.atomic():
+                if form.is_valid():
+                    repre = form.save()
+                    RepreUnitProductiveMany.objects.create(
+                        production_unit=unit, user=repre)
+                    return HttpResponseRedirect(
+                        reverse("acuicultura:detail_unit", args=(unit.pk,)))
+                return render(self.request, self.template_name, {'form': form})
 
 
 class Representative_unit_production_detail(DetailView, UserUrlCorrectMixin):
@@ -669,10 +692,6 @@ class Representative_unit_production_delete(LoginRequiredMixin,
             )
             return JsonResponse(data)
 
-# class Representative_unit_production_list(TemplateView):
-#     model = RepreUnitProductive
-#     template_name = "acuicultura/representative_form.html"
-
 
 class RepresentativeUnitProductionUpdate(LoginRequiredMixin,
                                          UserUrlCorrectMixin, UpdateView):
@@ -680,21 +699,5 @@ class RepresentativeUnitProductionUpdate(LoginRequiredMixin,
     form_class = RepresentativeForm
     template_name = "acuicultura/representative_form.html"
 
-    def get_context_data(self, **kwargs):
-        context = super(RepresentativeUnitProductionUpdate,
-                        self).get_context_data(**kwargs)
-        repre = self.model.objects.filter(
-            production_unit=self.kwargs['pk']).first()
-        if 'form' not in context:
-            context['form'] = self.form_class(instance=repre)
-        return context
-
-    def post(self, request, *args, **kwargs):
-        repre = self.model.objects.get(pk=self.kwargs['pk'])
-        repre_form = self.form_class(request.POST, instance=repre)
-
-        if repre_form.is_valid():
-            repre_form.save()
-            return HttpResponseRedirect(reverse("acuicultura:detail_unit", args=(repre.production_unit.pk,)))
-        else:
-            return render(self.request, self.template_name, {'form': form})
+    def get_success_url(self):
+        return reverse_lazy("acuicultura:repre_detail", args=(self.object.pk,))

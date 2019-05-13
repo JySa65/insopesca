@@ -88,10 +88,21 @@ class TracingUpdateForm(forms.ModelForm):
 
 
 class RepresentativeForm(forms.ModelForm):
+    
     class Meta:
         model = RepreUnitProductive
         fields = ("type_document", "document", "name",
                   "last_name", "tlf", "tlf_house")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            field.widget.attrs.update(
+                {'class': 'form-control', 'autocomplete': 'off'})
+                
+            if name == 'type_document':
+                field.widget.attrs.update(
+                    {'class': 'form-control selectpicker show-tick', 'autocomplete': 'off'})
 
 
 class InspectionLagoonForm(forms.ModelForm):

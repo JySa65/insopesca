@@ -6,20 +6,20 @@ import deleteSwalCompany from '../../utils/delete_with_swal.js';
 
 const id_repre_form = document.querySelector("#id_representative_form")
 if (id_repre_form) {
-    document.querySelector("#id_document_repre").addEventListener(
+    document.querySelector("#id_document").addEventListener(
         "keypress", (event) => validInput('n', 12, event))
 
-    document.querySelector("#id_name_repre").addEventListener(
-        "keypress", (event) => validInput('g', 50, event))
+    document.querySelector("#id_name").addEventListener(
+        "keypress", (event) => validInput('l', 50, event))
 
-    document.querySelector("#id_last_name_repre").addEventListener(
-        "keypress", (event) => validInput('g', 50, event))
+    document.querySelector("#id_last_name").addEventListener(
+        "keypress", (event) => validInput('l', 50, event))
     
 
-    document.querySelector("#id_phone_repre").addEventListener(
+    document.querySelector("#id_tlf").addEventListener(
         "keypress", (event) => validInput('n', 11, event))
 
-    document.querySelector("#id_landline_repre").addEventListener(
+    document.querySelector("#id_tlf_house").addEventListener(
         "keypress", (event) => validInput('n', 11, event))
     
 }
