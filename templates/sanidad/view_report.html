@@ -1,0 +1,177 @@
+{% extends 'sanidad/base.html' %}
+{% block title %}
+{% if object.pk %}
+EMPRESA {{ object.name }}
+{% else %}
+RESGISTRO
+{% endif %}
+{% endblock %}
+{% block sidebar %}
+{% include 'sidebar/sanidad.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+
+{% endblock %}
+
+
+{% block context %}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <a href="javascript:history.back()" class="btn btn-rounded btn-primary">Regresar <i
+                        class="fas fa-reply"></i></a>
+            </div>
+            <div class="card-body">
+                <form action="" method="get" id="form_report">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group row">
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Busqueda Por</label>
+                                <div class="col-12 col-sm-10 col-lg-6">
+                                    <select name="select_report" id="id_report_select" class="form-control">
+                                        <option value="-----">------</option>
+                                        <optgroup label="Empresas">
+                                            <!-- <option value="is_especific_company">Especifico</option>
+                                            <option value="is_indiviual_company">Individual</option>
+                                            <option value="is_for_date_company">Por Fecha</option> -->
+                                            <option value="is_all_company">Todos</option>
+                                        </optgroup>
+                                        <optgroup label="Conductor">
+                                            <!-- <option value="is_especific_driver">Especifico</option>
+                                            <option value="is_indiviual_driver">Individual</option>
+                                            <option value="is_for_date_driver">Por Fecha</option> -->
+                                            <option value="is_all_driver">Todos</option>
+                                        </optgroup>
+                                        <optgroup label="Inspección">
+                                            <!-- <option value="is_especific_inpection">Especifico</option>
+                                            <option value="is_indiviual_inspeccion">Individual</option>
+                                            <option value="is_for_date_inpection">Por Fecha</option> -->
+                                            <option value="is_all_inpection">Todos</option>
+                                        </optgroup>
+    
+
+                                    </select>
+                                </div>
+                            </div>
+    
+                            <div class="form-group row" id="especific-form" hidden>
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">Documento</label>
+                                    <div class="col-sm-6 col-lg-6 mb-3 mb-sm-0">
+                                        <input type="text" name="search-especific" id="id_search-especific" placeholder="Ingrese el Documento" class="form-control">            
+                                    </div>
+                                </div>
+    
+                            <div class="form-group row" id="date-form" hidden>
+                                <label class="col-12 col-sm-3 col-form-label text-sm-right">Desde/Hasta</label>
+                                <div class="col-sm-4 col-lg-3 mb-3 mb-sm-0">
+                                    <input type="date" name="date_1"id="id_date_1" class="form-control">            
+                                </div>
+                                <div class="col-sm-4 col-lg-3">
+                                    <input type="date" name="date_2" id="id_date_2" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mx-sm-3 mb-3 text-center">
+                        <button type="search" class="btn btn-success btn-block">Buscar</button>
+                    </div>
+                    {% if object_list %}
+                    <div class="form-group mx-sm-3 mb-3 text-center">
+                        <a href="{% url 'reports:sanidad_report_all_company' %}?typei={{ request.GET.select_report }}" class="btn btn-info btn-block" target="_blank">Generar Resporte</a>
+                    </div>
+                    {% endif %}
+
+                </form>
+            </div>
+        </div>
+        
+        {% for i  in object_list  %}
+            
+            <div class="card">
+                {% if type == "is_all_company" %}
+                <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="media influencer-profile-data d-flex align-items-center p-2">
+                                    <div class="mr-4">
+                                        <h1
+                                            style="border: 3px solid #5969ff !important;border-radius: 100%; color: #2b3590 !important;     padding: 0px 15px;">
+                                            {{ forloop.counter }}</h1>
+                                    </div>
+                                    <div class="media-body ">
+                                        <div class="influencer-profile-data">
+    
+                                            <h3 class="m-b-10">{{i.name}}</h3>
+                                            
+                                            <p>
+                                                <span class="m-r-20 d-inline-block"> Telefono
+                                                    <span class="m-l-10 text-secondary">{{i.tlf}}</span>
+                                                </span>
+        
+                                                
+                                                <span class="m-r-20 d-inline-block">Activo <span class="m-l-10  text-info">
+                                                         {% if i.is_active == True  %}
+                                                            Si
+                                                         {% else %}
+                                                            No
+                                                         {% endif %}
+                                                    </span>
+                                                </span>
+                                            </p>
+    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-top card-footer p-0">
+                        <div class="campaign-metrics d-xl-inline-block">
+                            <h4 class="mb-0 ">{{i.created_at}}</h4>
+                            <p>Fecha de Creación</p>
+    
+                        </div>
+                        <div class="campaign-metrics d-xl-inline-block">
+                            <h4 class="mb-0 ">{{i.state}}</h4>
+                            <p>Estado</p>
+                        </div>
+                        <div class="campaign-metrics d-xl-inline-block">
+                            <h4 class="mb-0">{{i.municipality}}</h4>
+                            <p>Municipio</p>
+                        </div>
+                        <div class="campaign-metrics d-xl-inline-block">
+                            <h4 class="mb-0 ">{{i.parish}}</h4>
+                            <p>Parroquia</p>
+                        </div>
+                        <div class="campaign-metrics d-xl-inline-block">
+                            <h4 class="mb-0">3k</h4>
+                            <p>Conversion</p>
+                        </div>
+                    </div>
+    
+                {% endif %}
+
+            </div>
+        {% endfor %}
+
+
+
+            <!-- {% if type == "is_all_company" %}
+                    a
+                {% for i in object_list  %}
+                    {{i.type_company}}
+                {% endfor %}
+            {% elif type == "is_for_date_company" %}
+                b
+                {% for i in object_list  %}
+                    {{i.type_company}}
+                    {{i.created_at}}
+                {% endfor %}
+            
+            {% endif %} -->
+
+
+    </div>
+</div>
+{% endblock %}

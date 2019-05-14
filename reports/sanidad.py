@@ -94,3 +94,29 @@ class ReportSanidadListInpections(View):
 
 
 # class 
+
+
+class ReportCompanyAll(View):
+
+    def get(self, *args, **kwargs):
+        typei = self.request.GET.get('typei', '')
+        companys = models.Company.objects.all()
+        cont = 1
+        pdf = PDF('L', 'mm', 'A4')
+        pdf.alias_nb_pages()
+        pdf.add_page()
+        pdf.set_font('Arial', 'B', 14)
+        pdf.cell(7.9, 8, '#', 1, 0, 'C')
+        pdf.cell(40, 8, 'Nombre', 1, 0, 'C')
+        pdf.cell(40, 8, 'Telefono', 1, 1, 'C')
+
+        pdf.output(FILENAME, 'F')
+        fs = FileSystemStorage()
+        with fs.open(FILENAME) as pdf:
+            response = HttpResponse(pdf)
+            response['Content-type'] = 'application/pdf'
+            response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
+        return response
+
+
+
