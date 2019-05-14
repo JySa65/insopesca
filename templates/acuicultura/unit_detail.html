@@ -101,7 +101,7 @@ Acuicultura / Unida Productora /{{ object.name }}
 						<label class="h5">
 							<b>Norte:</b>
 						</label>
-						<span class="h5"> {{ cardinal.north }}</span>
+						<span class="h5"> {{ cardinal.north_utm }}</span>
 					</div>
 					
 
@@ -109,7 +109,7 @@ Acuicultura / Unida Productora /{{ object.name }}
 						<label class="h5">
 							<b>Este:</b>
 						</label>
-						<span class="h5"> {{ cardinal.west }}</span>
+						<span class="h5"> {{ cardinal.west_utm }}</span>
 					</div>
 					
 					<div class="col-sm-6 mb-3">
@@ -127,6 +127,44 @@ Acuicultura / Unida Productora /{{ object.name }}
 				</div>
 			</div>
 		</div>
+
+		<div class="card">
+			<div class="card-header">
+				<span class="h4 text-primary"><b>Linderos</b></span>
+			</div>
+			<div class="card-body">
+				<div class="row p-0">
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Norte:</b>
+						</label>
+						<span class="h5"> {{ linder.north.name }}</span>
+					</div>
+					
+
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Sur:</b>
+						</label>
+						<span class="h5"> {{ linder.south.name }}</span>
+					</div>
+					
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Este:</b>
+						</label>
+						<span class="h5"> {{ linder.west.name }}</span>
+					</div>
+					<div class="col-sm-6 mb-3">
+						<label class="h5">
+							<b>Oeste:</b>
+						</label>
+						<span class="h5"> {{ linder.oest.name }}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 		<div class="row">
 			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 				<div class="card">

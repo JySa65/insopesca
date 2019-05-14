@@ -36,7 +36,6 @@ Registro De Unidad Prductora
 				{% endif %}
 			</div>
 			<div class="card-body">
-
 				<form action="" method="post" id="id_form_company_acuicultura">
 						{% csrf_token %}
 				{% for field in form %}
@@ -79,7 +78,7 @@ Registro De Unidad Prductora
 				{% endfor %}
 
 				<div class="row">					
-					<div class="col-md-12 col-sm-12">
+					<div class="col-sm-12">
 						<div class="form-group">
 							<label for="id_{{ form.name.name }}" class="col-form-label">Nombre</label>
 							{{ form.name|add_class:"form-control"|attr:"autocomplete:off" }}
@@ -127,44 +126,71 @@ Registro De Unidad Prductora
 							{{ form.address|add_class:"form-control"|attr:"autocomplete:off"|attr:"rows:1" }}
 						</div>
 					</div>
-					<br>
-					<h2 class="ml-3 mt-4">Localización Geografica</h2>
-					<div class="border-top">
-						<div class="row p-3">
-							<div class="col-md-6 col-sm-12">
-								<div class="form-group">
-									<label for="id_{{ second.north.name }}" class="col-form-label">Norte</label>
-									{{ second.north|add_class:"form-control"|attr:"autocomplete:off" }}
+					
+				</div>
+
+				<div class="row">
+					<div class="col-sm-12">
+						<h2 class="ml-3 mt-4">UTM</h2>
+						<div class="border-top">
+							<div class="row p-3">
+								<div class="col-md-6 col-sm-12">
+									<div class="form-group">
+										<label for="id_{{ second.north_utm.name }}" class="col-form-label">Norte</label>
+										{{ second.north_utm|add_class:"form-control"|attr:"autocomplete:off" }}
+									</div>
 								</div>
-							</div>
-							
-							<div class="col-md-6 col-sm-12">
-								<div class="form-group">
-									<label for="id_{{ second.west.name }}" class="col-form-label">Este</label>
-									{{ second.west|add_class:"form-control"|attr:"autocomplete:off" }}
-								</div>
-							</div>
-							
 						
-							<div class="col-md-6 col-sm-12">
-								<div class="form-group">
-									<label for="id_{{ second.altitude.name }}" class="col-form-label">Altitud</label>
-									{{ second.altitude|add_class:"form-control"|attr:"autocomplete:off" }}
+								<div class="col-md-6 col-sm-12">
+									<div class="form-group">
+										<label for="id_{{ second.west_utm.name }}" class="col-form-label">Este</label>
+										{{ second.west_utm|add_class:"form-control"|attr:"autocomplete:off" }}
+									</div>
 								</div>
-							</div>
-							
-							<div class="col-sm-12">
-								<div class="form-group">
-									<label for="id_{{ second.total_area_terr.name }}" class="col-form-label">Total Area del Terreno</label>
-									{{ second.total_area_terr|add_class:"form-control"|attr:"autocomplete:off" }}
+						
+						
+								<div class="col-md-6 col-sm-12">
+									<div class="form-group">
+										<label for="id_{{ second.altitude.name }}" class="col-form-label">Altitud</label>
+										{{ second.altitude|add_class:"form-control"|attr:"autocomplete:off" }}
+									</div>
+								</div>
+						
+								<div class="col-md-6 col-sm-12">
+									<div class="form-group">
+										<label for="id_{{ second.total_area_terr.name }}" class="col-form-label">Total Area del Terreno</label>
+										{{ second.total_area_terr|add_class:"form-control"|attr:"autocomplete:off" }}
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 
-				<div class="form-group text-center">
-					<br>
+				<div class="row">
+					<div class="col-sm-12">
+						<h2 class="ml-3 mt-4">Linderos</h2>
+						<div class="border-top">
+							<div class="row p-3">
+								{% for i in three %}
+								<div class="col-md-6 col-sm-12 mt-4">
+									<label for="id_{{ i.name }}" class="col-form-label"><b>{{ i.label }}</b></label>
+									<div class="input-group">
+										{{ i }}
+										<div class="input-group-append">
+											<button type="button" class="btn btn-primary" id="btn_add_{{ i.name }}">
+												<i class="fas fa-plus"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group text-center mt-5">
 					<button type="submit" class="btn btn-rounded btn-success">Aceptar</button>
 				</div>
 					

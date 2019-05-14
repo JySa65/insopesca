@@ -1,6 +1,6 @@
 from django import forms
 from acuicultura.models import ProductionUnit, CardinalPoint, RepreUnitProductive, \
-    Specie, Tracing, InspectionLagoon
+    Specie, Tracing, InspectionLagoon, BoundaryMap
 from django.db.models import Q
 
 
@@ -19,8 +19,27 @@ class CardinaPointForm(forms.ModelForm):
 
     class Meta:
         model = CardinalPoint
-        fields = ("north", "west",
+        fields = ("north_utm", "west_utm",
                   "altitude", "total_area_terr")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            field.widget.attrs.update(
+                {'id': f'id_{name}_utm'})
+
+
+class BoundaryMapForm(forms.ModelForm):
+
+    class Meta:
+        model = BoundaryMap
+        exclude = ('production_unit',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for _, field in self.fields.items():
+            field.widget.attrs.update(
+                {'class': 'form-control', 'autocomplete': 'off'})
 
 
 class EspecieForm(forms.ModelForm):
@@ -47,7 +66,7 @@ class EspecieForm(forms.ModelForm):
                 spes = data.ordinary_name if data.ordinary_name else data.scientific_name
                 msg = f"Especie {spes} Ya Existe"
                 self.add_error('ordinary_name', msg)
-                
+
         return cleaned_data
 
 
@@ -78,7 +97,7 @@ class TracingUpdateForm(forms.ModelForm):
 
 
 class RepresentativeForm(forms.ModelForm):
-    
+
     class Meta:
         model = RepreUnitProductive
         fields = ("type_document", "document", "name",
@@ -89,11 +108,11 @@ class RepresentativeForm(forms.ModelForm):
         for name, field in self.fields.items():
             field.widget.attrs.update(
                 {'class': 'form-control', 'autocomplete': 'off'})
-                
+
             if name == 'type_document':
                 field.widget.attrs.update(
                     {'class': 'form-control selectpicker show-tick', 'autocomplete': 'off'})
-            
+
             if name == "address":
                 field.widget.attrs.update(
                     {'class': 'form-control', 'autocomplete': 'off', 'rows': 1})

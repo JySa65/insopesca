@@ -4,7 +4,7 @@ from acuicultura.views import AcuiculturaHome, ProductionUnitCreateView,\
     SpeciesCreateView, SpeciesList, SpeciesDetail, SpeciesUpdate, SpeciesDelete, TracingCreate, RepreUnitCreate,\
     TracingDetail, WellDetail, LagoonDetail, TracingdeleteView, Representative_unit_production_delete, Representative_unit_production_detail, \
     RepresentativeUnitProductionUpdate, TracingInspectionHomeView, \
-    InspectionProductionUnitLagoon
+    InspectionProductionUnitLagoon, LinderoView
 
 
 # ,Production_unit_CreateView,Production_unit_Update,Production_unit_List, \
@@ -17,6 +17,8 @@ app_name = "acuicultura"
 urlpatterns = [
 
     path('', AcuiculturaHome.as_view(), name="home"),
+
+    path('linder/', LinderoView.as_view(), name="linder"),
     # Production
     path('production/unit/add/',
          ProductionUnitCreateView.as_view(), name="create_unit"),

@@ -77,10 +77,16 @@ class BoundaryMapSelect(models.Model):
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     name = models.CharField(_('Nombre'), max_length=1000, null=False)
 
+    def __str__(self):
+        return self.name.title()
+
 
 class BoundaryMap(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
+
+    production_unit = models.OneToOneField(
+        ProductionUnit, on_delete=models.CASCADE)
 
     north = models.ForeignKey(BoundaryMapSelect, on_delete=models.CASCADE,
                               verbose_name=_("Norte"), related_name="norte")
@@ -102,9 +108,9 @@ class CardinalPoint(models.Model):
     production_unit = models.OneToOneField(
         ProductionUnit, on_delete=models.CASCADE)
 
-    north = models.FloatField(_("Norte"), null=False, blank=False)
+    north_utm = models.FloatField(_("Norte"), null=False, blank=False)
 
-    west = models.FloatField(_("Este"), null=False, blank=False)
+    west_utm = models.FloatField(_("Este"), null=False, blank=False)
 
     altitude = models.FloatField(_("Altitud"), null=False, blank=False)
 

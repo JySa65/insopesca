@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
-from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, LagoonEspecies, RepreUnitProductiveMany
-from acuicultura.forms import UnitCreateForm, CardinaPointForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm
+from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, LagoonEspecies, RepreUnitProductiveMany, BoundaryMap, BoundaryMapSelect
+from acuicultura.forms import UnitCreateForm, CardinaPointForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm, BoundaryMapForm
 from django.core.paginator import Paginator
 from django.db.models import Q, Sum
 from django.db.models.functions import Lower
@@ -26,77 +26,130 @@ class AcuiculturaHome(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
         super(AcuiculturaHome, self).get_queryset()
         return self.model.objects.all()[:5]
 
+
+class LinderoView(LoginRequiredMixin, UserUrlCorrectMixin, View):
+    model = BoundaryMapSelect
+
+    def post(self, *args, **kwargs):
+        try:
+            name = json.loads(str(self.request.body, 'utf-8')).get('data', "")
+            if name == "":
+                data = dict(
+                    status=False,
+                    msg="Lindero Requerido"
+                )
+                return JsonResponse(data)
+            # print(name)
+
+            # self.model.objects.filter(name=name)
+            check_data = self.model.objects.filter(name=name).exists()
+            if check_data:
+                data = dict(
+                    status=False,
+                    msg="Lindero Ya Existe"
+                )
+                return JsonResponse(data)
+
+            save_name = self.model.objects.create(name=name.lower())
+            data = dict(
+                status=True,
+                msg="Lindero Registrado",
+                data=dict(
+                    id=save_name.id,
+                    name=save_name.name
+                )
+            )
+            return JsonResponse(data)
+        except Exception as e:
+            data = dict(
+                status=False,
+                data=e
+            )
+            return JsonResponse(data)
+
+
 # Views Production = Create,detail,update,delete
-
-
 class ProductionUnitCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
     model = ProductionUnit
     second_model = CardinalPoint
+    thrid_model = BoundaryMap
     form_class = UnitCreateForm
     second_form = CardinaPointForm
+    three_form = BoundaryMapForm
     template_name = "acuicultura/production_unit_form.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["first"] = self.form_class()
         context["second"] = self.second_form()
+        context["three"] = self.three_form()
         return context
 
     def post(self, request, *args, **kwargs):
         unit_form = self.form_class(request.POST)
-        cardinal_form = self.second_form(request.POST)
+        utm_form = self.second_form(request.POST)
+        location_form = self.three_form(request.POST)
 
-        if unit_form.is_valid() and cardinal_form.is_valid():
-            unit_save = unit_form.save()
-            cardinal = cardinal_form.save(commit=False)
-            cardinal.production_unit_id = unit_save.pk
-            cardinal_form.save()
-            return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit_save.pk,)))
+        if unit_form.is_valid() and utm_form.is_valid() and location_form.is_valid():
+            with transaction.atomic():
+                unit_save = unit_form.save()
+                utm = utm_form.save(commit=False)
+                utm.production_unit_id = unit_save.pk
+                location = location_form.save(commit=False)
+                location.production_unit = unit_save
+                utm.save()
+                location.save()
+                return HttpResponseRedirect(
+                    reverse('acuicultura:detail_unit', args=(unit_save.pk,)))
         return render(
             request,
             self.template_name,
-            {'form': unit_form, 'second': cardinal_form})
+            {'form': unit_form, 'second': utm_form, 'three': location_form})
 
 
 class ProductionUnitUpdate(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):
     model = ProductionUnit
     second_model = CardinalPoint
+    thrid_model = BoundaryMap
     form_class = UnitCreateForm
     second_form = CardinaPointForm
-
+    three_form = BoundaryMapForm
     template_name = "acuicultura/production_unit_form.html"
 
-    def form_valid(self, form):
-        _object = form.save(commit=False)
-        self.object = _object.save()
-        return super(ProductionUnitUpdate, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ProductionUnitUpdate, self).get_context_data(**kwargs)
-        unit = self.model.objects.filter(pk=self.kwargs['pk']).first()
+        unit = self.object
         cardinal = self.second_model.objects.filter(
-            production_unit=self.kwargs['pk']).first()
-        if 'first' not in context:
-            context['first'] = self.form_class(instance=unit)
+            production_unit=unit).first()
+        linder = self.thrid_model.objects.filter(
+             production_unit=unit).first()
 
-        if 'second' not in context:
-            context["second"] = self.second_form(instance=cardinal)
-
+        context['first'] = self.form_class(instance=unit)
+        context["second"] = self.second_form(instance=cardinal)
+        context["three"] = self.three_form(instance=linder)
         return context
 
     def post(self, request, *args, **kwargs):
-        unit = self.model.objects.get(pk=self.kwargs['pk'])
+        unit = get_object_or_404(self.model, pk=self.kwargs.get('pk'))
         cardinal = self.second_model.objects.filter(
-            production_unit=self.kwargs['pk']).first()
+            production_unit=unit).first()
+        linder = self.thrid_model.objects.filter(
+            production_unit=unit).first()
         unit_form = self.form_class(request.POST, instance=unit)
         cardinal_form = self.second_form(request.POST, instance=cardinal)
-
-        if unit_form.is_valid() and cardinal_form.is_valid():
+        linder_form = self.three_form(request.POST, instance=linder)
+        if (unit_form.is_valid() and cardinal_form.is_valid() and
+            linder_form.is_valid()):
             unit_form.save()
             cardinal_form.save()
-            return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(unit.pk,)))
+            linder_form.save()
+            return HttpResponseRedirect(
+                reverse('acuicultura:detail_unit', args=(unit.pk,)))
         else:
-            return render(request, self.template_name, {'form': unit_form, 'second': cardinal_form})
+            return render(request, 
+                    self.template_name, 
+                    {'form': unit_form, 'second': cardinal_form})
 
 
 class ProductionuUnitDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
@@ -106,13 +159,14 @@ class ProductionuUnitDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView)
 
     def get_context_data(self, **kwargs):
         context = super(ProductionuUnitDetail, self).get_context_data(**kwargs)
-        pk = self.kwargs['pk']
         context['cardinal'] = get_object_or_404(
-            CardinalPoint, production_unit=pk)
+            CardinalPoint, production_unit=self.object)
+        context['linder'] = get_object_or_404(
+            BoundaryMap, production_unit=self.object)
         context['representative'] = RepreUnitProductiveMany.objects.filter(
-            production_unit=pk)
+            production_unit=self.object)
         context['tracing'] = Tracing.objects.filter(
-            producion_unit=pk).order_by('-created_at')
+            producion_unit=self.object).order_by('-created_at')
         return context
 
 
