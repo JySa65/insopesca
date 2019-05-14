@@ -157,7 +157,7 @@ if (id_new_lagoon && id_new_well) {
                             <select name="sistem_cultive" required class="form-control" onchange="${species_template(index)}">
                                 <option ${!value.sistem_cultive.type ? 'selected' : ''} value="">------------</option>
                                 <option ${value.sistem_cultive.type == 'mono' ? 'selected' : ''} value="mono">Mono Cultivo</option>
-                                <option ${value.sistem_cultive.type == 'duo' ? 'selected' : ''} value="poli">Poli Cultivo</option>
+                                <option ${value.sistem_cultive.type == 'poli' ? 'selected' : ''} value="poli">Poli Cultivo</option>
                             </select>
                         </div>
                         <div class="col-md-6 col-sm-12"></div>

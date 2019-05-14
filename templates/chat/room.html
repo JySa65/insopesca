@@ -1,29 +1,106 @@
+{% extends 'base_home.html' %}
+{% load staticfiles %}
+{% load chat_tags %}
+{% block title %}Chat{% endblock %}
 
-<!-- chat/templates/chat/room.html -->
-<!DOCTYPE html>
-<html>
+{% block context %}
+<style>
+    body {
+        display: block;
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
 
-<head>
-    <meta charset="utf-8" />
-    <title>Chat Room</title>
-</head>
+    .chat_img {
+        border: 2px solid #c1c1e2;
+        border-radius: 100%;
+        font-size: 40px;
+        width: 70px;
+        padding-left: 10px;
+        background: #c1c1e2;
+        color: #000;
+    }
 
-<body>
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br />
-    <input id="chat-message-input" type="text" size="100" /><br />
-    <input id="chat-message-submit" type="button" value="Send" />
-</body>
+    .chat_name {
+        padding: 20px 0px;
+        font-size: 15px;
+    }
+
+    textarea {
+        resize: none;
+    }
+    #chat-log::-webkit-scrollbar {
+        width: 0px;
+        background-color: #F5F5F5;
+    }
+</style>
+<div class="row m-0 bg-white">
+    <div class="col-sm-12 text-center">
+        <label class="h5 text-danger">Al Momento de Dejar Esta Ventana Toda La Informacion se perdera</label>
+    </div>
+</div>
+<div class="row" style="height:calc(100vh - 34px); margin-right: 0px; margin-left: 0px;">
+    <div class="col-md-3 bg-white p-0" style="border: 2px solid #e6e6f2">
+        <div class="row mb-2 mt-1 border-bottom">
+            <div class="ml-5">
+                <span class="h5">Usuarios En El Sistema</span>
+            </div>
+        </div>
+        {% for user in users %}
+        <div class="row mb-2 mt-1 border-bottom">
+            <div class="col-sm-4">
+                <div class="chat_img mr-2 ml-2 mb-1">
+                    {{ user|two_letter }}
+                </div>
+            </div>
+            <div class="col-sm-8 chat_name">
+                {{user}}
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+    <div class="col-md-9 p-0 m-0">
+        <div class="border pr-1 bg-white" style="height: calc(100vh - 77px); overflow-y: auto;" id="chat-log"> </div>
+        <div class="border pr-1" style="position: absolute; bottom: 0; width: 100%;">
+            <div class="input-group">
+                <input type="search" class="form-control" style="height: 40px;    font-size: 25px;"
+                    id="chat-message-input">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary" style="padding-top: 0px; padding-bottom: 0px;"
+                        id="chat-message-submit">
+                        Enviar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     var roomName = {{ room_name_json }};
-  
+
     var chatSocket = new WebSocket(
         'ws://' + window.location.host +
         '/ws/chat/' + roomName + '/');
 
     chatSocket.onmessage = function (e) {
         var data = JSON.parse(e.data);
-        var message = data['message'];
-        document.querySelector('#chat-log').value += (message + '\n');
+        var chat_log = document.querySelector('#chat-log');
+        var template = `
+        <div class="border-bottom p-2">
+            <div class="row ml-5 mr-0">
+                <div class="col-sm-12">
+                    <label class="text-primary"><b>${data.data.user}</b></label>
+                </div>
+                <div class="col-sm-12">
+                    <label>${data.data.msg}</label>
+                </div>
+            </div>
+        </div>
+        `
+        chat_log.innerHTML += template;
+        chat_log.scrollTop = chat_log.scrollHeight;
     };
 
     chatSocket.onclose = function (e) {
@@ -43,9 +120,8 @@
         chatSocket.send(JSON.stringify({
             'message': message
         }));
-
         messageInputDom.value = '';
     };
 </script>
 
-</html>
+{% endblock %}

@@ -162,7 +162,7 @@ class ProductionuUnitDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView)
         context['cardinal'] = get_object_or_404(
             CardinalPoint, production_unit=self.object)
         context['linder'] = BoundaryMap.objects.filter(
-            production_unit=self.object)
+            production_unit=self.object).first()
         context['representative'] = RepreUnitProductiveMany.objects.filter(
             production_unit=self.object)
         context['tracing'] = Tracing.objects.filter(
@@ -295,10 +295,11 @@ class SpeciesDelete(LoginRequiredMixin, UserUrlCorrectMixin, View):
 
 class InspectionProductionUnitLagoon(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
     model = Lagoon
+    paginate_by = 10
 
     def get_queryset(self):
-        super(InspectionProductionUnitLagoon, self).get_queryset()
-        return Lagoon.objects.filter(producion_unit__pk=self.kwargs.get('pk'))
+        queryset = super(InspectionProductionUnitLagoon, self).get_queryset()
+        return queryset.filter(producion_unit__pk=self.kwargs.get('pk'))
 
 
 # # Views Tracing = Create,detail,update,delete
