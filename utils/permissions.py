@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import AccessMixin
 from django.http import Http404
 from django.shortcuts import redirect
 from utils.Select import Selects
+from django.urls import reverse
 
 
 class AdminRequiredMixin(AccessMixin):
@@ -9,7 +10,13 @@ class AdminRequiredMixin(AccessMixin):
     login_url = '/'
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_superuser and request.user.role != 'is_coordinator':
+        path = request.META.get('PATH_INFO')
+        detail = reverse('authentication:detail_profile')
+        update = reverse('authentication:update_profile')
+
+        if (path == detail or path == update):
+            pass
+        elif not request.user.is_superuser and request.user.role != 'is_coordinator':
             raise Http404
         return super().dispatch(request, *args, **kwargs)
 
