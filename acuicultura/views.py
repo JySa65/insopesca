@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
-from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, LagoonEspecies, RepreUnitProductiveMany, BoundaryMap, BoundaryMapSelect
-from acuicultura.forms import UnitCreateForm, CardinaPointForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm, BoundaryMapForm
+from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, LagoonEspecies, RepreUnitProductiveMany, BoundaryMap, BoundaryMapSelect, InspectionLagoon
+from acuicultura.forms import UnitCreateForm, CardinaPointForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm, BoundaryMapForm, InspectionLagoonForm
 from django.core.paginator import Paginator
 from django.db.models import Q, Sum
 from django.db.models.functions import Lower
@@ -14,7 +14,7 @@ from django.urls import reverse, reverse_lazy
 import json
 from utils.permissions import UserUrlCorrectMixin
 from django.db import transaction
-
+from django.utils import timezone
 # Create your views here.
 
 
@@ -161,8 +161,8 @@ class ProductionuUnitDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView)
         context = super(ProductionuUnitDetail, self).get_context_data(**kwargs)
         context['cardinal'] = get_object_or_404(
             CardinalPoint, production_unit=self.object)
-        context['linder'] = get_object_or_404(
-            BoundaryMap, production_unit=self.object)
+        context['linder'] = BoundaryMap.objects.filter(
+            production_unit=self.object)
         context['representative'] = RepreUnitProductiveMany.objects.filter(
             production_unit=self.object)
         context['tracing'] = Tracing.objects.filter(
@@ -513,6 +513,9 @@ class LagoonDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
         # densidad de animales
         fish = species.aggregate(
             total=Sum('number_specie'))
+        if fish['total'] == None:
+            fish['total'] = 0
+
         area = lagoon.lagoon_diameter * lagoon.lagoon_deepth
         alevino = int(int(fish['total']) * area)
 
@@ -677,3 +680,44 @@ class RepresentativeUnitProductionUpdate(LoginRequiredMixin,
 
     def get_success_url(self):
         return reverse_lazy("acuicultura:repre_detail", args=(self.object.pk,))
+
+
+class LagoonInspectionView(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
+    model = InspectionLagoon
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super(LagoonInspectionView, self).get_queryset()
+        queryset = queryset.filter(
+            lagoon=self.kwargs.get('pk')).order_by('-date')
+        return queryset
+
+    
+    def get_context_data(self, **kwargs):
+        context = super(LagoonInspectionView, self).get_context_data(**kwargs)
+        context['lagoon'] = get_object_or_404(Lagoon, pk=self.kwargs.get('pk'))
+        return context
+
+
+class LagoonInspectionCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
+    model = InspectionLagoon
+    form_class = InspectionLagoonForm
+    
+    def get_context_data(self, **kwargs):
+        context = super(LagoonInspectionCreateView, self).get_context_data(**kwargs)
+        context['lagoon'] = get_object_or_404(Lagoon, pk=self.kwargs.get('pk'))
+        return context
+
+    def form_valid(self, form):
+        _object = form.save(commit=False)
+        _object.user = self.request.user
+        _object.lagoon = get_object_or_404(Lagoon, pk=self.kwargs.get('pk'))
+        _object.next_date = timezone.now()
+        _object.save()
+        return super(LagoonInspectionCreateView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'acuicultura:inspection_lagoon', args=(self.kwargs.get('pk'),))
+
+    

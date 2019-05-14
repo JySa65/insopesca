@@ -140,14 +140,14 @@ class Lagoon(models.Model):
     lagoon_height = models.FloatField(
         _('Altura De La Laguna'), blank=False, null=False)
 
-    lagoon_type = models.CharField(_('Tipo De Laguna'), 
-        max_length=30, blank=False, null=False)
+    lagoon_type = models.CharField(_('Tipo De Laguna'),
+                                   max_length=30, blank=False, null=False)
 
     total_area_mirror_guater = models.FloatField(
         _("Area total de Terreno"), blank=True, null=True)
 
     sistem_cultivate = models.CharField(
-        _("Sistema de Cultivo"), max_length=50, blank=True, 
+        _("Sistema de Cultivo"), max_length=50, blank=True,
         null=True, choices=Selects().type_cultive())
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -261,7 +261,8 @@ class InspectionLagoon(models.Model):
     tempa = models.FloatField(_('TEMPERATURA DEL AGUA (ºC)'))
     odsa = models.FloatField(_('O.D. AL 100% DE SATURACION'))
     notes = models.TextField(_('Observaciones'))
-    date = models.DateField(verbose_name=_('Fecha de Inspección'))
+    date = models.DateTimeField(auto_now_add=True,
+                                verbose_name=_('Fecha de Inspección'))
     next_date = models.DateField(verbose_name=_('Siguiente Inspección'))
 
     def __str__(self):

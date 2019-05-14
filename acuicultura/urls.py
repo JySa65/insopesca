@@ -4,7 +4,8 @@ from acuicultura.views import AcuiculturaHome, ProductionUnitCreateView,\
     SpeciesCreateView, SpeciesList, SpeciesDetail, SpeciesUpdate, SpeciesDelete, TracingCreate, RepreUnitCreate,\
     TracingDetail, WellDetail, LagoonDetail, TracingdeleteView, Representative_unit_production_delete, Representative_unit_production_detail, \
     RepresentativeUnitProductionUpdate, TracingInspectionHomeView, \
-    InspectionProductionUnitLagoon, LinderoView
+    InspectionProductionUnitLagoon, LinderoView, LagoonInspectionView, \
+    LagoonInspectionCreateView
 
 
 # ,Production_unit_CreateView,Production_unit_Update,Production_unit_List, \
@@ -60,5 +61,11 @@ urlpatterns = [
          Representative_unit_production_delete.as_view(), name="repre_delete"),
     path('legal/representative/update/<pk>/',
          RepresentativeUnitProductionUpdate.as_view(), name="repre_update"),
+
+    path('inspection/<uuid:pk>', 
+          LagoonInspectionView.as_view(), name="inspection_lagoon"),
+
+    path('inspection/<uuid:pk>/create', 
+         LagoonInspectionCreateView.as_view(), name="inspection_create")
 
 ]

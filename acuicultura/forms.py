@@ -123,4 +123,15 @@ class InspectionLagoonForm(forms.ModelForm):
     class Meta:
         model = InspectionLagoon
         exclude = ('user',
-                   'lagoon',)
+                   'lagoon',
+                   'next_date')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            field.widget.attrs.update(
+                {'class': 'form-control', 'autocomplete': 'off'})
+
+            if name == "notes":
+                field.widget.attrs.update(
+                    {'class': 'form-control', 'autocomplete': 'off', 'rows': 1})

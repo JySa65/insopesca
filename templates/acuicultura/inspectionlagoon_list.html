@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load widget_tweaks %}
+{% block title %}
+Lagunas de la Unidad Productora
+{% endblock %}
+{% block sidebar %}
+{% include 'sidebar/acuicultura.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+Inspecciones a la laguna {{ lagoon.pk }}
+{% endblock pageheader %}
+
+{% block context %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <a href="javascript:window.history.back()" class="btn btn-rounded btn-primary">
+                                Regresar
+                                <i class="fas fa-reply"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <a href="{% url 'acuicultura:inspection_create' lagoon.pk %}" class="btn btn-rounded btn-secondary">
+                                Añadir Nueva Inspección
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    {% for i in object_list %}
+                    <div class="card ml-5 mr-5" style="background-color: #e6e6e6;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="media influencer-profile-data d-flex align-items-center p-2">
+                                        <div class="mr-4">
+                                            <h1
+                                                style="border: 3px solid #5969ff !important;border-radius: 100%; color: #2b3590 !important;     padding: 0px 15px;">
+                                                {{ forloop.counter }}</h1>
+                                        </div>
+                                        <div class="media-body ">
+                                            <div class="influencer-profile-data">
+                                                <h3 class="m-b-10">Hecha por: {{ i.user.get_full_name }}</h3>
+                                                <p>
+                                                    <span class="m-r-20 d-inline-block"><b>Codigo de la Inspeccion</b>
+                                                        <span class="m-l-10 text-primary">{{ i.pk }}</span>
+                                                    </span>
+                                                    <span class="m-r-20 d-inline-block"> <b>Creada</b>
+                                                        <span class="m-l-10 text-secondary">{{ i.date }}</span>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-top card-footer p-0">
+                            <div class="campaign-metrics d-xl-inline-block" style="padding: 8px 25px;">
+                                <h4 class="mb-0">{{ i.oxdi }} </h4>
+                                <p>OXIGENO DISUELTO (mg/l)</p>
+                            </div>
+                            <div class="campaign-metrics d-xl-inline-block" style="padding: 8px 20px;">
+                                <h4 class="mb-0">{{ i.saox }}</h4>
+                                <p>% SATURACION DE OXIGENO</p>
+                            </div>
+                            <div class="campaign-metrics d-xl-inline-block" style="padding: 8px 35px;">
+                                <h4 class="mb-0">{{ i.conde }}</h4>
+                                <p>PH</p>
+                            </div>
+                            <div class="campaign-metrics d-xl-inline-block" style="padding: 8px 30px;">
+                                <h4 class="mb-0">{{ i.ph }}</h4>
+                                <p>CONDUCTIVILIDAD ELECTRICA</p>
+                            </div>
+                        </div>
+                        <div class="border-top card-footer p-0">
+                            <div class="campaign-metrics d-xl-inline-block" style="padding: 8px 50px;">
+                                <h4 class="mb-0">{{ i.soto }} </h4>
+                                <p>SOLIDOS TOTALES (mg/l)</p>
+                            </div>
+                            <div class="campaign-metrics d-xl-inline-block" style="padding: 8px 40px;">
+                                <h4 class="mb-0">{{ i.sotodi }}</h4>
+                                <p>SOLIDOS TOTALES DISUELTOS (mg/l)</p>
+                            </div>
+                            <div class="campaign-metrics d-xl-inline-block" style="padding: 8px 40px;">
+                                <h4 class="mb-0">{{ i.trans }}</h4>
+                                <p>TRANSPARENCIA (cm)</p>
+                            </div>
+                        </div>
+                        <div class="border-top card-footer p-0">
+                            <div class="campaign-metrics d-xl-inline-block">
+                                <h4 class="mb-0">{{ i.tempa }} </h4>
+                                <p>TEMPERATURA DEL AGUA (ºC)</p>
+                            </div>
+                            <div class="campaign-metrics d-xl-inline-block">
+                                <h4 class="mb-0">{{ i.odsa }}</h4>
+                                <p>O.D. AL 100% DE SATURACION)</p>
+                            </div>
+                        </div>
+                        <div class="border-top card-footer p-0 text-center">
+                            <div class="campaign-metrics d-xl-inline-block">
+                                <h4 class="mb-0">{{ i.notes }}</h4>
+                                <p>OBSERVACIONES</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="alert-warning text-center">
+                                <h1>No Hay Inspecciones En Este Momento</h1>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {% include 'partial/paginator.html' %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

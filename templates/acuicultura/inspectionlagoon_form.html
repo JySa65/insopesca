@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% block title %}
+Lagunas de la Unidad Productora
+{% endblock %}
+{% block sidebar %}
+{% include 'sidebar/acuicultura.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+Crear una Inspección a la laguna {{ lagoon.pk }}
+{% endblock pageheader %}
+
+
+{% block context %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <a href="javascript:window.history.back()" class="btn btn-rounded btn-primary">
+                    Regresar
+                    <i class="fas fa-reply"></i>
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        {% for field in form %}
+                        {% if field.errors %}
+                        <div class="form-group">
+                            <div class="alert alert-danger" role="alert">
+                                {{ field.label }}:
+                                {% for error in field.errors %}
+                                {{ error }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <form action="" method="post">
+                    {% csrf_token %}
+                
+                    <div class="row">
+                        {% for i in form %}
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label for="id_{{ i.name }}" class="col-form-label">
+                                    {{ i.label}}
+                                </label>
+                                {{ i }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                
+                    <div class="form-group text-center mt-5">
+                        <button type="submit" class="btn btn-rounded btn-success">Aceptar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
