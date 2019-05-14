@@ -67,6 +67,7 @@ class UserListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
         # self.model.objects.filter(**data)
         return self.model.objects.filter(is_delete=False, is_superuser=False).exclude(
             email=self.request.user.email
+      
         )
 
 

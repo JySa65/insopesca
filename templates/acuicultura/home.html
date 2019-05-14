@@ -22,7 +22,7 @@ Unidades Productoras
 						<thead class="bg-light">
 							<tr>
 								<th>#</th>
-								<th>Rif</th>
+								<!-- <th>Rif</th> -->
                                 <th>Nombre</th>
                                 <th>Telefono Fijo</th>
                                 <th>Telefono Movil</th>
@@ -34,7 +34,7 @@ Unidades Productoras
 							{% for object in object_list %}
 							<tr>
 								<td>{{ forloop.counter }}</td>
-                                <td>{{ object.document }}</td>
+                               
 								<td>{{ object.name }}</td>
                                 <td>{{object.tlf_house}}</td>
                                 <td>{{object.tlf}}</td>

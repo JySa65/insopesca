@@ -298,10 +298,10 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         data = json.loads(str(request.body, 'utf-8'))
+        print(data)
         lagoons = data.get('lagoon')
         wells = data.get('well')
         illegal_superfaces = data.get('illegal_superfaces', 0)
-        irregular_superfaces = data.get('irregular_superfaces', 0)
         permise_superfaces = data.get('permise_superfaces', 0)
         regular_superfaces = data.get('regular_superfaces', 0)
         well_current = data.get('well_current', 0)
@@ -312,11 +312,14 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
             for number, lagoon in enumerate(lagoons):
                 diameter = lagoon.get('diameter', '')
                 deepth = lagoon.get('deepth', '')
+                height = lagoon.get('height', '')
+                type_lagoon = lagoon.get('type', '')
                 sistem_cultive = lagoon.get('sistem_cultive', None)
                 _type = sistem_cultive.get('type', '')
                 species = sistem_cultive.get('species', [])
 
-                if (diameter == '' or deepth == '' or sistem_cultive == None):
+                if (diameter == '' or deepth == '' or sistem_cultive == None or
+                        height == '' or type_lagoon == ''):
                     data = dict(
                         status=False,
                         msg=f"Algunos Datos Son Requeridos En La Laguna N° {number+1}"
@@ -361,7 +364,7 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
                     )
                     return JsonResponse(data)
 
-        if (illegal_superfaces == 0 or irregular_superfaces == 0 or
+        if (illegal_superfaces == 0 or
                 permise_superfaces == 0 or regular_superfaces == 0):
             data = dict(
                 status=False,
@@ -373,7 +376,6 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
             with transaction.atomic():
                 data = dict(
                     illegal_superfaces=illegal_superfaces,
-                    irregular_superfaces=irregular_superfaces,
                     permise_superfaces=permise_superfaces,
                     regular_superfaces=regular_superfaces,
                     number_well=well_current,
@@ -389,7 +391,9 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
                         producion_unit=producion_unit,
                         lagoon_diameter=lagoon['diameter'],
                         lagoon_deepth=lagoon['deepth'],
-                        sistem_cultivate=lagoon['sistem_cultive']['type'])
+                        sistem_cultivate=lagoon['sistem_cultive']['type'],
+                        lagoon_height=lagoon['height'],
+                        lagoon_type=lagoon['type'])
 
                     LagoonTracing.objects.create(
                         tracing=tracing, lagoon=laggon)
@@ -424,102 +428,6 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
             return JsonResponse(data)
 
 
-class TracingUpdate(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):
-    model = Tracing
-    form_class = TracingUpdateForm
-    tempalte_name = "acuicultura/tracing_form.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(TracingUpdate, self).get_context_data(**kwargs)
-        tracing = self.model.objects.filter(pk=self.kwargs['pk']).first()
-        well_data = WellTracing.objects.filter(
-            tracing=self.kwargs['pk']).order_by('-id')
-        lagoon_data = LagoonTracing.objects.filter(
-            tracing=self.kwargs['pk']).order_by('-id')
-        if len(well_data) == 0:
-            context['new_well_diameter'] = 0
-            context['new_well_deepth'] = 0
-
-        if len(lagoon_data) == 0:
-            context['new_lagoon_diameter'] = 0
-            context['new_lagoon_deepth'] = 0
-        c_new_well_deepth = []
-        c_new_well_diameter = []
-        c_new_lagoon_deepth = []
-        c_new_lagoon_diameter = []
-
-        if 'form' not in context:
-            context['form'] = self.form_class(instance=tracing)
-
-        for i_well in well_data:
-            c_new_well_diameter.append(i_well.well.well_diameter)
-            c_new_well_deepth.append(i_well.well.well_deepth)
-
-        for i_lagoon in lagoon_data:
-            c_new_lagoon_diameter.append(i_lagoon.lagoon.lagoon_diameter)
-            c_new_lagoon_deepth.append(i_lagoon.lagoon.lagoon_deepth)
-
-        context['new_well_diameter'] = json.dumps(c_new_well_diameter)
-        context['new_well_deepth'] = json.dumps(c_new_well_deepth)
-        context['new_lagoon_diameter'] = json.dumps(c_new_lagoon_diameter)
-        context['new_lagoon_deepth'] = json.dumps(c_new_lagoon_deepth)
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-        new_wells = request.POST.get("new_number_well", '')
-        new_lagoon = request.POST.get("new_number_lagoon", '')
-        unit = ProductionUnit.objects.filter(pk=self.kwargs['pk']).first()
-        form = self.form_class(request.POST)
-
-        c_new_well_deepth = []
-        c_new_well_diameter = []
-        c_new_lagoon_deepth = []
-        c_new_lagoon_diameter = []
-
-        for i in range(int(new_wells)):
-            new_wells_diameter = request.POST.get(
-                "new_wells_diameter_%s" % (i))
-            new_wells_deepth = request.POST.get("new_wells_deepth_%s" % (i))
-            if new_wells_diameter != None:
-                c_new_well_diameter.append(new_wells_diameter)
-                c_new_well_deepth.append(new_wells_deepth)
-
-            json_new_well_diameter = json.dumps(c_new_well_diameter)
-            json_new_well_deepth = json.dumps(c_new_well_deepth)
-
-        for i in range(int(new_lagoon)):
-            new_lagoon_diameter = request.POST.get(
-                "new_lagoon_diameter_%s" % (i))
-            new_lagoon_deepth = request.POST.get("new_lagoon_deepth_%s" % (i))
-            if new_lagoon_diameter != None and new_lagoon_diameter != None:
-                c_new_lagoon_deepth.append(new_lagoon_diameter)
-                c_new_lagoon_diameter.append(new_lagoon_deepth)
-
-            json_new_lagoon_diameter = json.dumps(c_new_lagoon_diameter)
-            json_new_lagoon_deepth = json.dumps(c_new_lagoon_deepth)
-
-        if form.is_valid():
-            tracing = self.model.objects.get(pk=self.kwargs['pk'])
-            tracing_form = self.form_class(request.POST, instance=tracing)
-            lagoons = LagoonTracing.objects.filter(tracing=self.kwargs['pk'])
-
-            if tracing_form.is_valid():
-                tracing_form.save()
-                cont = 0
-                for j in lagoons:
-                    a = Lagoon.objects.filter(pk=j.lagoon.pk).update(
-                        lagoon_diameter=c_new_lagoon_diameter[cont], lagoon_deepth=c_new_lagoon_deepth[cont])
-                    cont += 1
-                return HttpResponseRedirect(reverse('acuicultura:detail_unit', args=(tracing.producion_unit.pk,)))
-
-            else:
-                return render(request, self.tempalte_name, {'form': form, 'new_well_diameter': json_new_well_diameter, 'new_well_deepth': json_new_well_deepth, 'new_lagoon_deepth': json_new_lagoon_deepth, 'new_lagoon_diameter': json_new_lagoon_diameter})
-
-        else:
-            return render(request, self.tempalte_name, {'form': form, 'new_well_diameter': json_new_well_diameter, 'new_well_deepth': json_new_well_deepth, 'new_lagoon_deepth': json_new_lagoon_deepth, 'new_lagoon_diameter': json_new_lagoon_diameter})
-
-
 class TracingDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
     model = Tracing
     tempalte_name = "acuicultura/tracing_detail.html"
@@ -539,7 +447,6 @@ class WellDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
     template_name = "acuicultura/detail_well.html"
 
 
-
 class LagoonDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
     model = Lagoon
     template_name = "acuicultura/detail_lagoon.html"
@@ -548,19 +455,35 @@ class LagoonDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
         context = super(LagoonDetail, self).get_context_data(**kwargs)
         lagoon = self.object
         species = LagoonEspecies.objects.filter(lagoon=lagoon)
-        square_meter = lagoon.lagoon_diameter * lagoon.lagoon_deepth
-        food = square_meter * 1.5
+
+        # densidad de animales
+        fish = species.aggregate(
+            total=Sum('number_specie'))
+        area = lagoon.lagoon_diameter * lagoon.lagoon_deepth
+        alevino = int(int(fish['total']) * area)
+
+        # calculo alimenticio
+        food = (alevino * 1.5)
         food_sacks = food / 25
+
+        # percentage
         percentage_60 = (food_sacks*60)/100
         percentage_40 = (food_sacks*40)/100
+
         context['species'] = species
-        context['total_number_species'] = species.aggregate(
-            total__sum=Sum('number_specie'))
-        context['square_meter'] = round(square_meter, 2)
-        context['food'] = round(food, 2)
-        context['food_sacks'] = round(food_sacks, 2)
-        context['percentage_60'] = round(percentage_60, 2)
-        context['percentage_40'] = round(percentage_40, 2)
+        context['total_number_species'] = fish['total']
+        context['densidad'] = dict(
+            area=int(area),
+            alevino=int(alevino)
+        )
+        context['calculo'] = dict(
+            food=int(food),
+            food_sacks=round(food_sacks, 2)
+        )
+        context['percen'] = dict(
+            percentage_60=round(percentage_60, 2),
+            percentage_40=round(percentage_40, 2),
+        )
         return context
 
 

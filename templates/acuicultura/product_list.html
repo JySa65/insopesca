@@ -28,25 +28,20 @@ Listdo Unidad Productora
 					<thead>
 						<tr>
 							<th scope="col">#</th>
-							<th scope="col">Documento</th>
 							<th scope="col">Nombre</th>
 							<th scope="col">Operativa</th>
 							<th scope="col">Opciones</th>
 						</tr>
 					</thead>
 					<tbody>
-						
 							{% for i in object_list  %}
 							<tr>
 								<th scope="row">{{forloop.counter}}</th>
-								<td>{{i.type_document}}-{{i.document}}</td>
 								<td>{{i.name}}</td>
-
 								{% if i.is_active %}
 								<td><span class="badge badge-success ">Activo</span></td>
 								{% else %}
 								<td><span class="badge badge-danger">Inactivo</span></td> 
-
 								{% endif %}
 								<td>
 									<a href="{% url 'acuicultura:detail_unit' i.pk %}" class="btn btn-rounded btn-secondary">
@@ -55,9 +50,8 @@ Listdo Unidad Productora
 									<a href="{% url 'acuicultura:delete_unit' i.pk %}" class="btn btn-rounded btn-danger" id="btn_delete_unit">
 										<i class="fa fa-trash" aria-hidden="true"></i>
 									</a>
-
 								</td>
-	
+							</tr>
 							{% empty%}
 							<tr>
 								<td></td>
@@ -65,20 +59,12 @@ Listdo Unidad Productora
 								<td>Registros</td>
 								<td>En Estos</td>
 								<td>Momentos</td>
-							  </tr>
-				
-
 							</tr>
-
 							{% endfor %}
-						
-							
-
 					</tbody>
 					<tfoot>
 						<tr>
 							<th scope="col">#</th>
-							<th scope="col">Documento</th>
 							<th scope="col">Nombre</th>
 							<th scope="col">Operativa</th>
 							<th scope="col">Opciones</th>

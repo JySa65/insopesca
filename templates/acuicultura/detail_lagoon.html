@@ -40,6 +40,18 @@ Laguna / Detalle / {{ object.pk }} /
 						</label>
 						<span class="h5">{{ object.lagoon_deepth }}m</span>
 					</div>
+					<div class="col-sm-6 mb-4">
+						<label class="h5">
+							<b>Alto de la Laguna:</b>
+						</label>
+						<span class="h5">{{ object.lagoon_height }}m</span>
+					</div>
+					<div class="col-sm-6 mb-4">
+						<label class="h5">
+							<b>Tipo de la Laguna:</b>
+						</label>
+						<span class="h5">{{ object.lagoon_type|title }}</span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -70,7 +82,7 @@ Laguna / Detalle / {{ object.pk }} /
 								<label class="h4 text-info">Total De Especie:</label>
 							</td>
 							<td>
-								<label class="h4"><b>{{ total_number_species.total__sum }}</b></label>
+								<label class="h4"><b>{{ total_number_species }}</b></label>
 							</td>
 						</tr>
 					</tbody>
@@ -89,37 +101,73 @@ Laguna / Detalle / {{ object.pk }} /
 			</div>
 			<div class="card-body">
 				<h3>Densidad de Animales</h3>
-				<div class="col-sm-12 mb-4">
-					<label class="h5">
-						<b>1 ( Pez ) x {{square_meter}}m<sup>2</sup>: </b>
-					</label>
-					<span class="h5"> {{square_meter}} Alubines</span>
+				<div class="col-sm-12 mb-1">
+					<p class="h5">
+						<b>
+							Area 
+							<span class="h6">
+								<b>(ancho*largo)</b>
+							</span>
+						</b>
+						: {{ densidad.area }} m<sup>2</sup>
+					</p>
+					<p class="h5">
+						<b>
+							Alevino
+							<span class="h6">
+								<b>(peces*area)</b>
+							</span>
+						</b>
+						: {{ densidad.alevino }} alevino
+					</p>
 				</div>
 			</div>
 			<hr>
 			<div class="card-body">
 				<h3>Calculo del Alimento</h3>
-				<div class="col-sm-12 mb-4">
-					<label class="h5">
-						<b>{{square_meter}} Alubines x 1,5 Kg:</b>
-					</label>
-					<span class="h5">{{food}} Kg / 25 = {{food_sacks}} Sacos de Alimento</span>
+				<div class="col-sm-12 mb-1">
+					<p class="h5">
+						<b>
+							Comida
+							<span class="h6"> 
+								<b>(alevino*1.5)</b>
+							</span>
+						</b>
+						: {{ calculo.food }} kg
+					</p>
+					<p class="h5">
+						<b>
+							Sacos de Comida
+							<span class="h6"> 
+								<b>(comida/25)</b>
+							</span>
+						</b>
+						: {{ calculo.food_sacks }} kg
+					</p>
 				</div>
 			</div>
 			<hr>
 			<div class="card-body">
-				<h3>Proporción</h3>
-				<div class="col-sm-12 mb-4">
-					<label class="h5">
-						<b>{{food_sacks}} Sacos de Alimento * 60% /100 =</b>
-					</label>
-					<span class="h5"> {{percentage_60}}</span>
-				</div>
-				<div class="col-sm-12 mb-4">
-					<label class="h5">
-						<b>{{food_sacks}} Sacos de Alimento * 40% /100=</b>
-					</label>
-					<span class="h5"> {{percentage_40}} </span>
+				<h3>Proporción De la Comida</h3>
+				<div class="col-sm-12 mb-1">
+					<p class="h5">
+						<b>
+							Al 60%
+							<span class="h6">
+								<b>(saco de comida*0.6)</b>
+							</span>
+						</b>
+						: {{ percen.percentage_60 }} kg
+					</p>
+					<p class="h5">
+						<b>
+							Al 40%
+							<span class="h6">
+								<b>(saco de comida*0.4)</b>
+							</span>
+						</b>
+						: {{ percen.percentage_40 }} kg
+					</p>
 				</div>
 			</div>
 		</div>

@@ -6,7 +6,6 @@ import getCookie from '../../utils/get_cookie.js';
 const id_new_lagoon = document.querySelector('#id_new_lagoon')
 const id_new_well = document.querySelector('#id_new_well')
 const id_illegal_superfaces = document.querySelector('#id_illegal_superfaces')
-const id_irregular_superfaces = document.querySelector('#id_irregular_superfaces')
 const id_permise_superfaces = document.querySelector('#id_permise_superfaces')
 const id_regular_superfaces = document.querySelector('#id_regular_superfaces')
 const id_form_tracing = document.querySelector('#id_form_tracing')
@@ -19,7 +18,6 @@ if (id_new_lagoon && id_new_well) {
         lagoon: [],
         well: [],
         illegal_superfaces: 0,
-        irregular_superfaces: 0,
         permise_superfaces: 0,
         regular_superfaces: 0,
         well_current: well_current,
@@ -115,7 +113,7 @@ if (id_new_lagoon && id_new_well) {
                         <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="${id}" class="col-form-label">
-                                    Diametro de la Laguna Nro° ${index + 1}
+                                    Ancho de la Laguna Nro° ${index + 1}
                                 </label>
                                 <input class="form-control" type="number" step="any" name="diameter" id="${id}" value="${value.diameter}"
                                     onchange="${onChange(index, data)}" required autocomplete="off">
@@ -124,9 +122,18 @@ if (id_new_lagoon && id_new_well) {
                         <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="${id}" class="col-form-label">
-                                    Profundidad de la Laguna Nro° ${index + 1}
+                                    Largo de la Laguna Nro° ${index + 1}
                                 </label>
                                 <input class="form-control" type="number" step="any" name="deepth" id="${id}" value="${value.deepth}"
+                                    onchange="${onChange(index, data)}" required autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label for="${id}" class="col-form-label">
+                                    Altura de la Laguna Nro° ${index + 1}
+                                </label>
+                                <input class="form-control" type="number" step="any" name="height" id="${id}" value="${value.height}"
                                     onchange="${onChange(index, data)}" required autocomplete="off">
                             </div>
                         </div>
@@ -134,10 +141,21 @@ if (id_new_lagoon && id_new_well) {
                             <label for="${id}" class="col-form-label">
                                 Sistema de Cultivo Nro° ${index + 1}
                             </label>
+                            <select name="type" required class="form-control" onchange="${onChange(index, data)}">
+                                <option ${!value.type ? 'selected' : ''} value="">------------</option>
+                                <option ${value.type == 'circular' ? 'selected' : ''}     value="circular">Circular</option>
+                                <option ${value.type == 'rectangular' ? 'selected' : ''}     value="rectangular">Rectangular</option>
+                                <option ${value.type == 'irregular' ? 'selected' : ''}     value="irregular">Irregular</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <label for="${id}" class="col-form-label">
+                                Sistema de Cultivo Nro° ${index + 1}
+                            </label>
                             <select name="sistem_cultive" required class="form-control" onchange="${species_template(index)}">
                                 <option ${!value.sistem_cultive.type ? 'selected' : ''} value="">------------</option>
-                                <option ${value.sistem_cultive.type == 'mono' ? 'selected' : ''}     value="mono">Mono Cultivo</option>
-                                <option ${value.sistem_cultive.type == 'duo' ? 'selected' : ''}     value="duo">Duo Cultivo</option>
+                                <option ${value.sistem_cultive.type == 'mono' ? 'selected' : ''} value="mono">Mono Cultivo</option>
+                                <option ${value.sistem_cultive.type == 'duo' ? 'selected' : ''} value="poli">Poli Cultivo</option>
                             </select>
                         </div>
                         <div class="col-md-6 col-sm-12"></div>
@@ -240,6 +258,8 @@ if (id_new_lagoon && id_new_well) {
         data.push({
             diameter: "",
             deepth: "",
+            height: "",
+            type: "",
             sistem_cultive: {
                 type: "",
                 species: [{}]
@@ -257,7 +277,6 @@ if (id_new_lagoon && id_new_well) {
     })
 
     id_illegal_superfaces.addEventListener('change', e => onChangeInput(e))
-    id_irregular_superfaces.addEventListener('change', e => onChangeInput(e))
     id_permise_superfaces.addEventListener('change', e => onChangeInput(e))
     id_regular_superfaces.addEventListener('change', e => onChangeInput(e))
 

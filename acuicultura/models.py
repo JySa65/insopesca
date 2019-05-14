@@ -65,7 +65,7 @@ class RepreUnitProductiveMany(models.Model):
 
 @receiver(models.signals.post_delete, sender=RepreUnitProductiveMany)
 def delete_repre_productive(sender, instance, *args, **kwargs):
-    time.sleep(2)
+    time.sleep(1)
     repre = RepreUnitProductiveMany.objects.filter(user=instance.user).exists()
     if not repre:
         instance.user.delete()

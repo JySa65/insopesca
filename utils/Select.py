@@ -78,13 +78,13 @@ class Selects(object):
 
     def type_cultive(self):
         return(
-            ('is_mono', 'Mono Cultivo'),
-            ('is_duo', 'Poli Cultivo')
+            ('mono', 'Mono Cultivo'),
+            ('duo', 'Poli Cultivo')
         )
 
     def type_lagoon(self):
         return(
-            ('is_circle', 'Circular'),
-            ('is_rectangular', 'Rectangular'),
-            ('is_irregular', 'Irregular')
+            ('circular', 'Circular'),
+            ('rectangular', 'Rectangular'),
+            ('irregular', 'Irregular')
         )
