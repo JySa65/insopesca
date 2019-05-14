@@ -76,6 +76,13 @@ Lagunas de la Unidad Productora
                                 <a href="" class="btn btn-lg btn-danger">Eliminar Laguna</a>
                             </div>
                         </div>
+                        <div class="border-top card-footer p-0 text-center">
+                            <div class="campaign-metrics d-xl-inline-block">
+                                <a href="{% url 'acuicultura:lagoon_detail' i.pk %}" class="btn btn-lg btn-secondary">
+                                    Ver Informacion De las Inspecciones
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     {% endfor %}
                 </div>

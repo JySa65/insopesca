@@ -210,9 +210,8 @@ Acuicultura / Unida Productora /{{ object.name }}
 								<thead class="bg-light">
 									<tr>
 										<th>#</th>
-										<th>Lagunas Actuales</th>
+										<th>Creada</th>
 										<th>Lagunas Nuevas</th>
-										<th>Pozos Actuales</th>
 										<th>Pozos Nuevos</th>
 										<th>Responsable</th>
 										<th>Opciones</th>
@@ -223,10 +222,8 @@ Acuicultura / Unida Productora /{{ object.name }}
 									{% for tracings in tracing %}
 									<tr>
 										<td>{{ forloop.counter }}</td>
-										<td>{{ tracings.number_lagoon }}</td>
+										<td>{{ tracings.created_at }}</td>
 										<td>{{ tracings.new_number_lagoon }}</td>
-										<td>{{ tracings.number_well }}</td>
-
 										<td>{{ tracings.new_number_well }}</td>
 										<td>{{tracings.responsible.name}} {{tracings.responsible.last_name}} </td>
 
@@ -236,9 +233,8 @@ Acuicultura / Unida Productora /{{ object.name }}
 										</td>
 									</tr>
 									{% empty %}
-
 									<tr>
-										<td colspan="7" class="text-center">
+										<td colspan="6" class="text-center">
 											<h1>No tiene Seguimientoss realizados a la Empresa</h1>
 											<a href="{% url 'acuicultura:create_tracing' object.pk %}"
 												class="btn btn-primary btn-rounded ">
@@ -247,7 +243,6 @@ Acuicultura / Unida Productora /{{ object.name }}
 											</a>
 										</td>
 									</tr>
-
 									{% endfor %}
 								</tbody>
 							</table>

@@ -1,7 +1,6 @@
 import swal from 'sweetalert2';
 import axios from 'axios';
 import getCookie from '../../utils/get_cookie.js';
-import validInput from '../../utils/validInput.js';
 import deleteSwalCompany from '../../utils/delete_with_swal.js';
 
 

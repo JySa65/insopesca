@@ -1,7 +1,9 @@
 import yo from 'yo-yo'
+import swal from 'sweetalert2';
 import empty from "empty-element";
 import axios from '../../utils/axios'
 import getCookie from '../../utils/get_cookie.js';
+import deleteSwalCompany from '../../utils/delete_with_swal.js';
 
 const id_new_lagoon = document.querySelector('#id_new_lagoon')
 const id_new_well = document.querySelector('#id_new_well')
@@ -10,7 +12,7 @@ const id_permise_superfaces = document.querySelector('#id_permise_superfaces')
 const id_regular_superfaces = document.querySelector('#id_regular_superfaces')
 const id_form_tracing = document.querySelector('#id_form_tracing')
 const alert_message = document.querySelector('#alert_message')
-// step="0.0001"
+
 if (id_new_lagoon && id_new_well) {
     const data = []
     const dataWell = []
@@ -64,7 +66,7 @@ if (id_new_lagoon && id_new_well) {
                 number = 1
                 data[index].sistem_cultive.species = [{}]
                 break;
-            case 'duo':
+            case 'poli':
                 number = 2
                 data[index].sistem_cultive.species = [{}, {}]
                 break;
@@ -311,6 +313,35 @@ if (id_new_lagoon && id_new_well) {
                     btn_tracing_form.removeAttribute('disabled')
                 } else {
                     window.location.href = `/acuicultura/production/unit/detail/${object_pk}/`
+                }
+            })
+    })
+}
+
+const tracingDetailDelete = document.querySelector("#tracing_detail_delete")
+if (tracingDetailDelete) {
+    const deleteTracing = (password, company) => {
+        const config = {
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+            }
+        }
+        return axios.post(company, { password }, config)
+    }
+    tracingDetailDelete.addEventListener('click', (e) => {
+        e.preventDefault()
+        const url = tracingDetailDelete.getAttribute("href")
+        deleteSwalCompany(url, deleteTracing)
+            .then((result) => {
+                if (result.value) {
+                    const data = result.value
+                    swal.fire({
+                        type: "success",
+                        titleText: data.msg,
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                    window.location.href = "http://localhost:8000/acuicultura/production/unit/List/"
                 }
             })
     })

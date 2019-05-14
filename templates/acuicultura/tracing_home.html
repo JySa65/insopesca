@@ -32,7 +32,7 @@ Inspecciones Lagunas
                             <form action="" method="get">
                                 <div class="form-group">
                                     <label for="id_q" class="text-danger text-center h4">
-                                        Ingrese Nombre o Documente la Unidad Productora
+                                        Ingrese Nombre De la Unidad Productora
                                     </label>
                                     <div class="input-group mb-3">
                                         <input type="search" id="id_tracing_search" name="q"
@@ -55,7 +55,6 @@ Inspecciones Lagunas
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Documento</th>
                                         <th scope="col">Nombre</th>
                                         <th scope="col">Operativa</th>
                                         <th scope="col">Opciones</th>
@@ -65,7 +64,6 @@ Inspecciones Lagunas
                                     {% for i in productionunits  %}
                                     <tr>
                                         <th scope="row">{{forloop.counter}}</th>
-                                        <td>{{i.get_document }}</td>
                                         <td>{{i.get_full_name}}</td>
                                         {% if i.is_active %}
                                         <td>
@@ -86,7 +84,6 @@ Inspecciones Lagunas
                                                 </a>
                                                 {% else %}
                                                 <a href="{% url 'acuicultura:inspection_lagoon_list' i.pk %}" class="btn btn-rounded btn-primary" data-toggle="tooltip" data-placement="top" title="Ver Lagunas">
-                                                    <!-- <i class="fas fa-clipboard-list"></i> -->
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             {% endif %}

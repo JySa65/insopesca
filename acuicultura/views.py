@@ -3,6 +3,7 @@ from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProduct
 from acuicultura.forms import UnitCreateForm, CardinaPointForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm
 from django.core.paginator import Paginator
 from django.db.models import Q, Sum
+from django.db.models.functions import Lower
 from django.http import HttpResponseRedirect, Http404, JsonResponse, \
     HttpResponse
 from django.views.generic import TemplateView, ListView, CreateView, \
@@ -111,7 +112,7 @@ class ProductionuUnitDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView)
         context['representative'] = RepreUnitProductiveMany.objects.filter(
             production_unit=pk)
         context['tracing'] = Tracing.objects.filter(
-            producion_unit=pk)
+            producion_unit=pk).order_by('-created_at')
         return context
 
 
@@ -263,8 +264,7 @@ class TracingInspectionHomeView(LoginRequiredMixin, UserUrlCorrectMixin, Templat
         query = self.request.GET.get('q', '')
         context['productionunits'] = []
         if query:
-            data = self.model.objects.filter(
-                Q(name__contains=query) | Q(document__contains=query))
+            data = self.model.objects.filter(name__startswith=query)
             if data:
                 context['productionunits'] = data
             else:

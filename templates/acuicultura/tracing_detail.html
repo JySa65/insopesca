@@ -44,7 +44,7 @@
                 <div class="card-body">
                     <div class="row text-center">
                         <div class="col-sm-6 mb-3">
-                            <a href="{% url 'acuicultura:delete_tracing' object.pk %}" class="btn btn-rounded btn-danger">
+                            <a href="{% url 'acuicultura:delete_tracing' object.pk %}" class="btn btn-rounded btn-danger" id="tracing_detail_delete">
                                 <i class="fas fa-user-times"></i>
                                 Eliminar
                             </a>
@@ -78,8 +78,8 @@
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
                                         <th>{{wells.tracing.pk}}</th>
-                                        <td>{{ wells.well.well_diameter }}</td>
-                                        <td>{{ wells.well.well_deepth }}</td>
+                                        <td>{{ wells.well.well_diameter }}m<sup>2</sup></td>
+                                        <td>{{ wells.well.well_deepth }}m<sup>2</sup></td>
 										<td>
                                             <a href="{% url 'acuicultura:well_detail' wells.well.pk %}" class="btn btn-rounded btn-secondary">
                                                 <i class="fas fa-eye"></i>
@@ -108,8 +108,10 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Nro Seguimiento</th>
-                                            <th>Diametro</th>
-                                            <th>Profundidad</th>
+                                            <th>Tipo</th>
+                                            <th>Ancho</th>
+                                            <th>Largo</th>
+                                            <th>Altura</th>
                                             <th>Opciones</th>
                                         </tr>
                                     </thead>
@@ -119,9 +121,10 @@
                                         <tr>
                                             <td>{{ forloop.counter }}</td>
                                             <th>{{tracings.tracing.pk}}</th>
-
-                                            <td>{{ tracings.lagoon.lagoon_diameter }}</td>
-                                            <td>{{ tracings.lagoon.lagoon_deepth }}</td>
+                                            <td>{{ tracings.lagoon.lagoon_type|title }}</td>
+                                            <td>{{ tracings.lagoon.lagoon_diameter }}m<sup>2</sup></td>
+                                            <td>{{ tracings.lagoon.lagoon_deepth }}m<sup>2</sup></td>
+                                            <td>{{ tracings.lagoon.lagoon_height }}m<sup>2</sup></td>
                                             <td>
                                                 <a href="{% url 'acuicultura:lagoon_detail' tracings.lagoon.pk %}" class="btn btn-rounded btn-secondary">
                                                     <i class="fas fa-eye"></i>
