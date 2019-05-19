@@ -648,3 +648,31 @@ class TransportDriverCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateV
     def get_success_url(self):
         return reverse_lazy('sanidad:driver_detail', args=(
             self.kwargs.get('pk'),))
+
+
+
+class ReportListView(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
+    template_name = "sanidad/view_report.html"
+    model = models.Company
+    two_model  = models.Driver
+
+    def get_context_data(self, **kwargs):
+        context = super(ReportListView, self).get_context_data(**kwargs)
+        date1 = self.request.GET.get('date_1', "")
+        date2 = self.request.GET.get('date_2', "")
+        report_type = self.request.GET.get("select_report")
+        documents = self.request.GET.get("search-especific")
+        if (report_type in ["is_all_company", "is_all_driver", "is_all_inpection"]):
+
+            if report_type == "is_especific_company":
+                context['object'] = self.model.objects.filter(document=documents).first()
+                context['type'] = "is_especific_company"
+            elif report_type == "is_for_date_company":
+                context['object'] = self.model.objects.filter(created_at__range=(date1,date2))
+                context['type'] = "is_for_date_company"
+            elif report_type == "is_all_company":
+                context['object'] = self.model.objects.all()
+                context['type'] = "is_all_company"
+
+
+        return context

@@ -8,7 +8,7 @@ from sanidad.views import HomeTemplateView, \
     DriverListView, DriverDetailView, DriverCreateView, DriverUpdateView, \
     DriverDeleteView, TransportDriverCreateView, InspectionListApiView, \
     InspectionDetailApiView, InspectionListNotificationView, \
-         InspectionDriversCompanyListView
+         InspectionDriversCompanyListView,ReportListView
 
 app_name = 'sanidad'
 
@@ -68,6 +68,11 @@ urlpatterns = [
 
      path('notification/', 
           InspectionListNotificationView.as_view(),
-          name='notification')
+          name='notification'),
+
+     path('report/', 
+          ReportListView.as_view(),
+          name="report_views"),
+
 
 ]

@@ -2548,7 +2548,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var axio
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _account_form_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./account_form.js */ \"./src/module/sanidad/account_form.js\");\n/* harmony import */ var _company_form_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./company_form.js */ \"./src/module/sanidad/company_form.js\");\n/* harmony import */ var _inspection_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./inspection.js */ \"./src/module/sanidad/inspection.js\");\n/* harmony import */ var _driver_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./driver.js */ \"./src/module/sanidad/driver.js\");\n/* harmony import */ var _dashboard_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dashboard.js */ \"./src/module/sanidad/dashboard.js\");\n/* harmony import */ var _transport_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./transport.js */ \"./src/module/sanidad/transport.js\");\n\n\n\n\n\n\n\n//# sourceURL=webpack:///./src/module/sanidad/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _account_form_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./account_form.js */ \"./src/module/sanidad/account_form.js\");\n/* harmony import */ var _company_form_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./company_form.js */ \"./src/module/sanidad/company_form.js\");\n/* harmony import */ var _inspection_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./inspection.js */ \"./src/module/sanidad/inspection.js\");\n/* harmony import */ var _driver_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./driver.js */ \"./src/module/sanidad/driver.js\");\n/* harmony import */ var _dashboard_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./dashboard.js */ \"./src/module/sanidad/dashboard.js\");\n/* harmony import */ var _transport_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./transport.js */ \"./src/module/sanidad/transport.js\");\n/* harmony import */ var _report_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./report.js */ \"./src/module/sanidad/report.js\");\n/* harmony import */ var _report_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_report_js__WEBPACK_IMPORTED_MODULE_6__);\n\n\n\n\n\n\n\n\n//# sourceURL=webpack:///./src/module/sanidad/index.js?");
 
 /***/ }),
 
@@ -2561,6 +2561,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _acc
 
 "use strict";
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _utils_Date_periodic__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/Date_periodic */ \"./src/utils/Date_periodic.js\");\n\nvar date = $('#id_date');\nvar next_date = $('#id_next_date');\nvar result = $('#id_result');\ndate.datepicker({\n  language: 'es',\n  title: \"Insopesca\",\n  autoclose: true\n}).on('hide', function (e) {\n  if (e.target.value != \"\" && result.val() != \"\") {\n    Object(_utils_Date_periodic__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(e.target.value, result.val(), next_date);\n  }\n});\nnext_date.datepicker({\n  language: 'es',\n  title: \"Insopesca\",\n  autoclose: true\n});\n$('#id_result').change(function (e) {\n  if (result.val() != \"\" && date.val() != \"\") {\n    Object(_utils_Date_periodic__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(date.val(), result.val(), next_date);\n  }\n});\n\n//# sourceURL=webpack:///./src/module/sanidad/inspection.js?");
+
+/***/ }),
+
+/***/ "./src/module/sanidad/report.js":
+/*!**************************************!*\
+  !*** ./src/module/sanidad/report.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("var report_select = document.querySelector(\"#id_report_select\");\nvar date_1 = document.querySelector(\"#date_1\");\nvar date_2 = document.querySelector(\"#date_2\");\nvar form_date = document.querySelector(\"#date-form\");\nvar specific_form = document.querySelector(\"#especific-form\");\n\nif (report_select) {\n  report_select.onchange = function (e) {\n    var value = e.target.value;\n    console.log(value);\n\n    if (value == \"is_for_date_company\" || value == \"is_for_date_driver\" || value == \"is_for_date_inpection\") {\n      form_date.removeAttribute(\"hidden\");\n      specific_form.setAttribute(\"hidden\", \"hidden\");\n    } else if (value == \"is_especific_company\" || value == \"is_especific_driver\" || value == \"is_especific_inpection\") {\n      console.log(\"is_especific_company\");\n      form_date.setAttribute(\"hidden\", \"hidden\");\n      specific_form.removeAttribute(\"hidden\");\n      date_1.value = \"\";\n      date_2.value = \"\";\n    } else if (value == \"is_all_company\" || value == \"is_all_driver\" || value == \"is_all_inpection\") {\n      form_date.setAttribute(\"hidden\", \"hidden\");\n      specific_form.setAttribute(\"hidden\", \"hidden\");\n      date_1.value = \"\";\n      date_2.value = \"\";\n    }\n  };\n}\n\n//# sourceURL=webpack:///./src/module/sanidad/report.js?");
 
 /***/ }),
 
