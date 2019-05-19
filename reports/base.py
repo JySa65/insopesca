@@ -1,7 +1,8 @@
 from fpdf import FPDF
 from datetime import datetime
+from django.conf import settings
 
-FILENAME = 'reports.pdf'
+FILENAME = f'{settings.MEDIA_ROOT}/reports.pdf'
 
 class PDF(FPDF):
     def header(self):

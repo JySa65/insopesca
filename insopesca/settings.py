@@ -168,10 +168,10 @@ if DEBUG:
         os.path.join(BASE_DIR, STATIC)
     ]
 else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATIC_ROOT = os.path.join(BASE_DIR, STATIC)
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # LOGOUT_REDIRECT_URL = 'admin:index'
 

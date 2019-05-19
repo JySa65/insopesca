@@ -15,7 +15,9 @@ channels-redis==2.4.0
 uvicorn==0.7.1
 
 
-
+# espresar unidades en la capacidad del carro 
+# preguntar bien los utm
+#preguntar estandar en la inspeccion de la laguna
 #corregir al añadir un usuario existe en la compañia mme da error cuando existe uni
 
 
