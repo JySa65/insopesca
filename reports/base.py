@@ -6,8 +6,6 @@ FILENAME = f'{settings.MEDIA_ROOT}/reports.pdf'
 
 class PDF(FPDF):
     def header(self):
-        # self.image(
-        #     'static/assets/images/banner.jpeg', 10, 5, 150, 25,)
         self.image(
             'static/assets/images/logo1.png', 160, 5, 30, 25)
         self.set_font('Arial', 'B', 15)
