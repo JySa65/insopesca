@@ -13,6 +13,7 @@ from datetime import timedelta, datetime
 from sanidad import models, forms
 from core.models import Notification
 from utils.permissions import UserUrlCorrectMixin
+from uuid import UUID
 import json
 # Create your views here.
 
@@ -452,7 +453,8 @@ class InspectionListView(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
     paginate_by = 30
 
 
-class InspectionDriversCompanyListView(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
+class InspectionDriversCompanyListView(LoginRequiredMixin,
+                                       UserUrlCorrectMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(
@@ -650,29 +652,76 @@ class TransportDriverCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateV
             self.kwargs.get('pk'),))
 
 
-
-class ReportListView(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
+class ReportGenreralView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
     template_name = "sanidad/view_report.html"
-    model = models.Company
-    two_model  = models.Driver
 
     def get_context_data(self, **kwargs):
-        context = super(ReportListView, self).get_context_data(**kwargs)
-        date1 = self.request.GET.get('date_1', "")
-        date2 = self.request.GET.get('date_2', "")
-        report_type = self.request.GET.get("select_report")
-        documents = self.request.GET.get("search-especific")
-        if (report_type in ["is_all_company", "is_all_driver", "is_all_inpection"]):
-
-            if report_type == "is_especific_company":
-                context['object'] = self.model.objects.filter(document=documents).first()
-                context['type'] = "is_especific_company"
-            elif report_type == "is_for_date_company":
-                context['object'] = self.model.objects.filter(created_at__range=(date1,date2))
-                context['type'] = "is_for_date_company"
-            elif report_type == "is_all_company":
-                context['object'] = self.model.objects.all()
-                context['type'] = "is_all_company"
-
-
+        context = super(ReportGenreralView, self).get_context_data(**kwargs)
+        type_companys = models.TypeCompany.objects.all()
+        companys = models.Company.objects.all()
+        context['type_companys'] = type_companys
+        context['companys'] = companys
         return context
+
+
+class ReportGeneralAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        type_company = request.GET.get('type_company', '')
+        company = request.GET.get('company', '')
+        week1 = request.GET.get('week1', '')
+        week2 = request.GET.get('week2', '')
+        date = bool(int(request.GET.get('date')))
+
+        if (type_company == "" and company == "" or
+                type_company != "" and company != ""):
+            data = dict(
+                status=False,
+                msg="Debes Escoger una compañia o un tipo de compañia"
+            )
+            return JsonResponse(data)
+
+        if date == 1:
+            if week1 == "":
+                data = dict(
+                    status=False,
+                    msg="Asignes Fecha Inicial Para La Consulta"
+                )
+                return JsonResponse(data)
+
+        if type_company != '':
+            data = self.get_type_company(type_company, date, week1, week2)
+            return JsonResponse(data, safe=False)
+        
+        if company != '':
+            data = self.get_company(type_company, date, week1, week2)
+            return JsonResponse(data, safe=False)
+
+
+        return JsonResponse({})
+
+    def get_type_company(self, type_company, date, week1, week2):
+        data = []
+        type_companys = models.TypeCompany.objects.all()
+        if type_company != "all":
+            type_companys = type_companys.filter(pk=type_company)
+        for tp_company in type_companys:
+            companys = models.Company.objects.filter(type_company=tp_company)
+            for company in companys:
+                inspections = company.get_inspections()
+                if date:
+                    inspections = company.get_inspections(week1, week2)
+                inspections = serializers.serialize(
+                    'json', inspections,
+                    fields=('date', 'result',
+                            'next_date', 'notes',))
+                data.append(dict(
+                    type_company=tp_company.name,
+                    company=company.get_full_name(),
+                    inspections=json.loads(inspections)
+                ))
+        return data
+
+    def get_company(self, company, date, week1, week2):
+        data = dict()
+        return data

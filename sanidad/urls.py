@@ -8,7 +8,7 @@ from sanidad.views import HomeTemplateView, \
     DriverListView, DriverDetailView, DriverCreateView, DriverUpdateView, \
     DriverDeleteView, TransportDriverCreateView, InspectionListApiView, \
     InspectionDetailApiView, InspectionListNotificationView, \
-         InspectionDriversCompanyListView,ReportListView
+    InspectionDriversCompanyListView, ReportGenreralView, ReportGeneralAPIView
 
 app_name = 'sanidad'
 
@@ -34,7 +34,7 @@ urlpatterns = [
     path('company/detail/<pk>/account/delete/<account>/',
          AccountCompanyDeleteView.as_view(), name="account_delete"),
 
-    # transport
+
     path('company/detail/<pk>/transport/<str:type>',
          TransportCompanyCreateView.as_view(), name="transport_create"),
 
@@ -46,7 +46,7 @@ urlpatterns = [
          InspectionDetailApiView.as_view(),
          name="inspection_api_detail"),
 
-    # Inspection
+
     path('inspection/',
          InspectionListView.as_view(), name="inspection_list"),
     path('inspection/create/',
@@ -54,9 +54,9 @@ urlpatterns = [
     path('inspection/<pk>/',
          InspectionDetailView.as_view(), name="inspection_detail"),
 
-     path('inspection/list/<type>', 
-          InspectionDriversCompanyListView.as_view(),
-          name="inspection_drivers_company"),
+    path('inspection/list/<type>',
+         InspectionDriversCompanyListView.as_view(),
+         name="inspection_drivers_company"),
 
     path('driver/', DriverListView.as_view(), name="driver_list"),
     path('driver/create/', DriverCreateView.as_view(), name="driver_create"),
@@ -66,13 +66,15 @@ urlpatterns = [
     path('driver/detail/<pk>/transport/<str:type>',
          TransportDriverCreateView.as_view(), name="transport_driver"),
 
-     path('notification/', 
-          InspectionListNotificationView.as_view(),
-          name='notification'),
+    path('notification/',
+         InspectionListNotificationView.as_view(),
+         name='notification'),
 
-     path('report/', 
-          ReportListView.as_view(),
-          name="report_views"),
+    path('report/',
+         ReportGenreralView.as_view(),
+         name="report_views"),
 
-
+     path('api/report/',
+          ReportGeneralAPIView.as_view(),
+          name="api_report_views")
 ]

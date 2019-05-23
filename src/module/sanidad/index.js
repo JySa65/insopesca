@@ -4,4 +4,5 @@ import "./inspection.js"
 import "./driver.js"
 import "./dashboard.js"
 import "./transport.js"
-import "./report.js"
+import "./report_view.js"
+

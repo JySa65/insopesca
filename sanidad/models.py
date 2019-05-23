@@ -5,6 +5,7 @@ from django.db import models
 from core import models as core
 import uuid
 from utils.Select import Selects
+from datetime import date
 # Create your models here.
 
 
@@ -62,6 +63,20 @@ class Company(core.Company):
             type='is_fluvial'
         )
 
+    def get_inspections(self, date1="", date2=""):
+        inspections = Inspection.objects.filter(
+            company_account_id=self.id,
+            date__year=date.today().year)
+        if date1 != "":
+            inspections = inspections.filter(
+                date__year__range=(
+                    self.get_year_or_week(date1)[0], self.get_year_or_week(date2)[0]),
+                date__week__range=(
+                    self.get_year_or_week(date1)[1], self.get_year_or_week(date2)[1]))
+        return inspections
+
+    def get_year_or_week(self, year_week):
+        return year_week.split('-')
 
 class CompanyHasAccount(models.Model):
     id = models.UUIDField(
