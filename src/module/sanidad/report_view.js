@@ -1,6 +1,8 @@
 import moment from 'moment'
 import swal from 'sweetalert2'
 import axios from '../../utils/axios'
+import empty from 'empty-element'
+import template from './report_view_template'
 
 const form_report_sanidad = document.querySelector("#form_report_sanidad")
 if (form_report_sanidad) {
@@ -119,8 +121,12 @@ if (form_report_sanidad) {
             }
             axios.get(`/sanidad/api/report/?type_company=${type_company}&company=${company}&week1=${week1}&week2=${state.week2}&date=${state.date}`)
                 .then(response => {
+                    const el = document.querySelector("#reports_view_id")
                     const { data } = response
-                    console.log(data)
+                    const emp = empty(el)
+                    data.forEach((data, index) => {
+                        emp.append(template(data, index))
+                    });
                 })
         })
     })

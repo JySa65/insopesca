@@ -1,4 +1,5 @@
 {% extends 'sanidad/base.html' %}
+{% load staticfiles %}
 {% block title %}
 CONSULTA
 {% endblock %}
@@ -50,15 +51,19 @@ Consultas
                         <div class="col-md-6 col-sm-12" style="padding:0">
                             <div class="form-group mx-sm-3 mb-3 text">
                                 <label for="id_date_range1" class="pr-2"><b>Por Semana:</b></label>
-                                <div  class="input-group input-daterange" style="padding: 8px 0;">
-                                    <input type="text" class="form-control" name="date_range1" id="id_date_range1" readonly>
+                                <div class="input-group input-daterange" style="padding: 8px 0;">
+                                    <input type="text" class="form-control" name="date_range1" id="id_date_range1"
+                                        readonly>
                                     <div class="input-group-addon" style="padding: 5px 10px;">a</div>
-                                    <input type="text" class="form-control" name="date_range2" id="id_date_range2" readonly>
+                                    <input type="text" class="form-control" name="date_range2" id="id_date_range2"
+                                        readonly>
                                 </div>
-                                <div  class="input-group input-daterange" style="padding: 8px 0;">
-                                    <input type="text" class="form-control" name="date_range1_text" id="id_date_range1_text" readonly>
+                                <div class="input-group input-daterange" style="padding: 8px 0;">
+                                    <input type="text" class="form-control" name="date_range1_text"
+                                        id="id_date_range1_text" readonly>
                                     <div class="input-group-addon" style="padding: 5px 10px;">a</div>
-                                    <input type="text" class="form-control" name="date_range2_text" id="id_date_range2_text" readonly>
+                                    <input type="text" class="form-control" name="date_range2_text"
+                                        id="id_date_range2_text" readonly>
                                 </div>
                             </div>
                         </div>
@@ -66,8 +71,9 @@ Consultas
                     <div class="col-md-4 col-sm-12 offset-md-4 mt-4">
                         <div class="form-group mx-sm-3 mb-3 text-center">
                             <button type="search" class="btn btn-success btn-block">Buscar</button>
-                        </div> 
+                        </div>
                     </div>
+
 
                     <!-- {% if object_list %}
                     <div class="form-group mx-sm-3 mb-3 text-center">
@@ -77,6 +83,9 @@ Consultas
 
                 </form>
             </div>
+        </div>
+        <div class="col-sm-12 mt-3" id="reports_view_id">
+            
         </div>
     </div>
 </div>

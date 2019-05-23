@@ -694,11 +694,8 @@ class ReportGeneralAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
             return JsonResponse(data, safe=False)
         
         if company != '':
-            data = self.get_company(type_company, date, week1, week2)
+            data = self.get_company(company, date, week1, week2)
             return JsonResponse(data, safe=False)
-
-
-        return JsonResponse({})
 
     def get_type_company(self, type_company, date, week1, week2):
         data = []
@@ -723,5 +720,22 @@ class ReportGeneralAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
         return data
 
     def get_company(self, company, date, week1, week2):
-        data = dict()
+        data = []
+        companys = models.Company.objects.all()
+        if company != 'all':
+            companys = companys.filter(pk=company)
+        for compan in companys:
+            inspections = compan.get_inspections()
+            if date:
+                inspections = compan.get_inspections(week1, week2)
+            inspections = serializers.serialize(
+                    'json', inspections,
+                    fields=('date', 'result',
+                            'next_date', 'notes',))
+            data.append(dict(
+                    type_company=compan.type_company.name,
+                    company=compan.get_full_name(),
+                    inspections=json.loads(inspections)
+                ))
         return data
+      

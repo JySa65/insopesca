@@ -32,7 +32,7 @@ class TypeCompany(models.Model):
 class Company(core.Company):
     speg = models.CharField(max_length=4, verbose_name=_('SPES'))
     type_company = models.ForeignKey(TypeCompany,
-                                     on_delete=models.CASCADE, 
+                                     on_delete=models.CASCADE,
                                      verbose_name=_('Tipo De Compañia'))
     is_inspection = models.BooleanField(default=False)
 
@@ -77,6 +77,7 @@ class Company(core.Company):
 
     def get_year_or_week(self, year_week):
         return year_week.split('-')
+
 
 class CompanyHasAccount(models.Model):
     id = models.UUIDField(
@@ -184,7 +185,7 @@ class Inspection(models.Model):
         'Fecha de la siguiente Inspección'))
     notes = models.TextField(null=True, blank=True,
                              verbose_name=_('Observaciones'))
-    pass_inspection = models.BooleanField(default=False) 
+    pass_inspection = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
