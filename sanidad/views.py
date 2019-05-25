@@ -663,6 +663,9 @@ class ReportGenreralView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         context['companys'] = companys
         return context
 
+# TODO
+# acomodar el return del json y el front
+
 
 class ReportGeneralAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
 
@@ -692,31 +695,39 @@ class ReportGeneralAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
         if type_company != '':
             data = self.get_type_company(type_company, date, week1, week2)
             return JsonResponse(data, safe=False)
-        
+
         if company != '':
             data = self.get_company(company, date, week1, week2)
             return JsonResponse(data, safe=False)
 
     def get_type_company(self, type_company, date, week1, week2):
         data = []
+        inspection_total = 0
         type_companys = models.TypeCompany.objects.all()
         if type_company != "all":
             type_companys = type_companys.filter(pk=type_company)
-        for tp_company in type_companys:
+        for key, tp_company in enumerate(type_companys):
+            data.append(dict(
+                type_company=tp_company.name,
+                companys=list(),
+                inspection_total=inspection_total
+            )),
             companys = models.Company.objects.filter(type_company=tp_company)
             for company in companys:
                 inspections = company.get_inspections()
                 if date:
                     inspections = company.get_inspections(week1, week2)
+                inspection_total += len(inspections)
                 inspections = serializers.serialize(
                     'json', inspections,
                     fields=('date', 'result',
                             'next_date', 'notes',))
-                data.append(dict(
-                    type_company=tp_company.name,
-                    company=company.get_full_name(),
+                data[key]['companys'].append(dict(
+                    name=company.get_full_name(),
                     inspections=json.loads(inspections)
                 ))
+            data[key]['inspection_total'] = inspection_total
+            inspection_total = 0
         return data
 
     def get_company(self, company, date, week1, week2):
@@ -729,13 +740,12 @@ class ReportGeneralAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
             if date:
                 inspections = compan.get_inspections(week1, week2)
             inspections = serializers.serialize(
-                    'json', inspections,
-                    fields=('date', 'result',
-                            'next_date', 'notes',))
+                'json', inspections,
+                fields=('date', 'result',
+                        'next_date', 'notes',))
             data.append(dict(
-                    type_company=compan.type_company.name,
-                    company=compan.get_full_name(),
-                    inspections=json.loads(inspections)
-                ))
+                type_company=compan.type_company.name,
+                company=compan.get_full_name(),
+                inspections=json.loads(inspections)
+            ))
         return data
-      
