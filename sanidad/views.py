@@ -732,20 +732,27 @@ class ReportGeneralAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
 
     def get_company(self, company, date, week1, week2):
         data = []
+        inspection_total = 0
         companys = models.Company.objects.all()
         if company != 'all':
             companys = companys.filter(pk=company)
-        for compan in companys:
+        for key, compan in enumerate(companys):
+            data.append(dict(
+                type_company=compan.type_company.name,
+                companys=list(),
+                inspection_total=inspection_total
+            ))
             inspections = compan.get_inspections()
             if date:
                 inspections = compan.get_inspections(week1, week2)
+            inspection_total = len(inspections)
             inspections = serializers.serialize(
                 'json', inspections,
                 fields=('date', 'result',
                         'next_date', 'notes',))
-            data.append(dict(
-                type_company=compan.type_company.name,
-                company=compan.get_full_name(),
-                inspections=json.loads(inspections)
-            ))
+            data[key]['companys'].append(dict(
+                    name=compan.get_full_name(),
+                    inspections=json.loads(inspections)
+                ))
+            data[key]['inspection_total'] = inspection_total
         return data
