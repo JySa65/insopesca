@@ -49,6 +49,7 @@ if (form_report_sanidad) {
         document.querySelector(`#id_date_range1_text`).value = value
         document.querySelector('#id_date_range2').value = ''
         document.querySelector(`#id_date_range2_text`).value = ''
+        state.week2 = `${year}-52`
         changeDate2(e.date)
     });
 
