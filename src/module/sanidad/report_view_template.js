@@ -52,7 +52,7 @@ const template = (data, index) => yo`
                                                 `
                                                 : inspection.fields.result == 'is_good'
                                                 ? yo`
-                                                <img src="/static/assets/images/good.jpg" alt="" class="user-avatar-lg" title="Bueno" data-toggle="tooltip" data-placement="top">
+                                                <img src="/static/assets/images/good.jpg" alt="" class="user-avatar-lg" title="Bueno" data-toggle="tooltip" data-placement="top" >
                                                 `
                                                 : yo`
                                                 <img src="/static/assets/images/verygood.jpg" alt="" class="user-avatar-lg" title="Muy Bueno" data-toggle="tooltip" data-placement="top">
