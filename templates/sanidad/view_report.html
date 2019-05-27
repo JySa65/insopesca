@@ -68,12 +68,50 @@ Consultas
                             </div>
                         </div>
                     </div>
+
+                    <div class="mb-4">
+                        <label class="h3 text-info">Por Compañia</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group mx-sm-3 mb-3 text">
+                                <label for="id_type_company" class="pr-2"><b>Por:</b></label>
+                                <select name="type_company" id="id_type_company" class="form-control show-tick">
+                                    <option selected value="">Tipo de Compañia</option>
+                                    <option value="all">TODOS</option>
+                                    {% for type_company in type_companys%}
+                                    <option value="{{ type_company.pk }}">{{ type_company.name|upper }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group mx-sm-3 mb-3 text">
+                                <select name="company" id="id_company" class="form-control show-tick">
+                                    <option selected value="">Compañia</option>
+                                    <option value="all">TODOS</option>
+                                    {% for company in companys%}
+                                    <option value="{{ company.pk }}">{{ company.get_document|upper }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12" style="padding:0">
+                            <div class="form-group mx-sm-3 mb-3 text">
+                                <label for="id_date_range1" class="pr-2"><b>Por Fechas:</b></label>
+                                <div class="input-group input-daterange" style="padding: 8px 0;">
+                                    <input type="text" class="form-control" name="date_range1" id="id_date_range1"
+                                        readonly>
+                                    <div class="input-group-addon" style="padding: 5px 10px;">a</div>
+                                    <input type="text" class="form-control" name="date_range2" id="id_date_range2"
+                                        readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-4 col-sm-12 offset-md-4 mt-4">
                         <div class="form-group mx-sm-3 mb-3 text-center">
                             <button type="search" class="btn btn-success btn-block">Buscar</button>
                         </div>
                     </div>
-
 
                     <!-- {% if object_list %}
                     <div class="form-group mx-sm-3 mb-3 text-center">
