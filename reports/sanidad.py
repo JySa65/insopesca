@@ -95,20 +95,75 @@ class ReportSanidadListInpections(View):
 
 # class 
 
+class ReportListCompanyOrDriver(View):
+    def valid_type(self, typei):
+        if typei not in ['all_company','all_driver']:
+            return False
+        return True
 
-class ReportCompanyAll(View):
+    def set_data(self):
+        report_select = self.request.GET.get('types', '')
+        status = self.valid_type(report_select)
+        model = models.Company if report_select == "all_company" else models.Driver
+        datas = model.objects.all()
+
+        return status, datas,model
 
     def get(self, *args, **kwargs):
-        typei = self.request.GET.get('typei', '')
-        companys = models.Company.objects.all()
+        status, data,type_ = self.set_data()
+        if status == False:
+            return alert("Algo Esta Haciendo Mal Que No Se Pudo Generar El PDF")
+        if len(data) == 0:
+            return alert("No Hay Nada Que Mostrar")
         cont = 1
         pdf = PDF('L', 'mm', 'A4')
         pdf.alias_nb_pages()
         pdf.add_page()
-        pdf.set_font('Arial', 'B', 14)
+        pdf.set_font('Arial', 'B', 12)
+        name_title = "Empresas" if type_ == models.Company else 'Conductores'
+        pdf.cell(0, 0, f'Lista de {name_title}', 0, 1, 'C')
+        pdf.ln(10)
         pdf.cell(7.9, 8, '#', 1, 0, 'C')
-        pdf.cell(40, 8, 'Nombre', 1, 0, 'C')
-        pdf.cell(40, 8, 'Telefono', 1, 1, 'C')
+        pdf.cell(40, 8, 'Documento', 1, 0, 'C')
+        (pdf.cell(120, 8, 'Nombre', 1, 0, 'C') if type_ == models.Company else 
+                        pdf.cell(120, 8, 'Nombres y Apellidos', 1, 0, 'C'))
+        pdf.cell(35, 8, 'Telefono Movil', 1, 0, 'C')
+        if type_ == models.Company:
+            pdf.cell(40, 8, 'SPES', 1, 0, 'C')
+            pdf.cell(40, 8, 'Activo', 1, 1, 'C')
+            for i in data:
+                document = i.get_document()
+                name = i.get_full_name()
+                tlf = i.tlf
+                spes = i.speg
+                status = i.is_active
+                result = 'Si' if status == True else 'No'
+
+                pdf.cell(7.9, 8, str(cont), 1, 0, 'C')
+                pdf.cell(40, 8, document, 1, 0, 'C')
+                pdf.cell(120, 8, name, 1, 0, 'C')
+                pdf.cell(35, 8, tlf, 1, 0, 'C')
+                pdf.cell(40, 8, spes, 1, 0, 'C')
+                pdf.cell(40, 8, result, 1, 1, 'C')
+
+                cont += 1
+        else:
+            pdf.cell(40, 8, 'Activo', 1, 1, 'C')
+            for i in data:
+
+                document = i.get_document()
+                name = i.get_full_name()
+                tlf = i.tlf
+                status = i.is_active
+                result = 'Si' if status == True else 'No'
+
+                pdf.cell(7.9, 8, str(cont), 1, 0, 'C')
+                pdf.cell(40, 8, document, 1, 0, 'C')
+                pdf.cell(120, 8, name, 1, 0, 'C')
+                pdf.cell(35, 8, tlf, 1, 0, 'C')
+                pdf.cell(40, 8, result, 1, 1, 'C')
+
+                cont += 1
 
         pdf.output(FILENAME, 'F')
         fs = FileSystemStorage()
@@ -119,4 +174,127 @@ class ReportCompanyAll(View):
         return response
 
 
+class ReportListInspectionCompanyOrDriver(View):
+    def valid_type(self, typei):
+        if typei not in ['all_inpection_company','all_inpection_driver']:
+            return False
+        return True
 
+    def set_data(self):
+        report_select = self.request.GET.get('typei', '')
+        status = self.valid_type(report_select)
+        model = models.Inspection 
+        datas = model.objects.filter(company_account_type__model="company") if report_select =="all_inpection_company" else model.objects.filter(company_account_type__model="driver")
+        return status, datas,report_select
+
+    def get(self, *args, **kwargs):
+        status, data,type_ = self.set_data()
+        if status == False:
+            return alert("Algo Esta Haciendo Mal Que No Se Pudo Generar El PDF")
+        if len(data) == 0:
+            return alert("No Hay Nada Que Mostrar")
+        cont = 1
+        pdf = PDF('L', 'mm', 'Legal')
+        pdf.alias_nb_pages()
+        pdf.add_page()
+        pdf.set_font('Arial', 'B', 12)
+        name_title = "Las Empresas Inspeccionadas" if type_ =="inpection_company" else 'Los Conductores Inspeccionados'
+
+        pdf.cell(0, 0, f'Lista de  {name_title}', 0, 1, 'C')
+        pdf.ln(10)
+        pdf.cell(7.9, 8, '#', 1, 0, 'C')
+        pdf.cell(40, 8, 'Documento', 1, 0, 'C')
+        pdf.cell(90, 8, 'Nombre', 1, 0, 'C')
+        pdf.cell(45, 8, 'Fecha de Inspección', 1, 0, 'C')
+        pdf.cell(70, 8, 'Fecha de la siguiente Inspección', 1, 0, 'C')
+        pdf.cell(50, 8, 'Resultado', 1, 1, 'C')
+        for i in data:
+            document = i.company_account.get_document()
+            name = i.company_account.get_full_name()
+            date_ = i.date.strftime('%d/%m/%Y')
+            next_date_ = i.next_date.strftime('%d/%m/%Y')
+            status_result = i.result
+            result = 'Muy Bueno' if status_result == "is_verygood" else 'Bueno' if status_result == "is_good" else 'Malo'
+
+            pdf.cell(7.9, 8, str(cont), 1, 0, 'C')
+            pdf.cell(40, 8, document, 1, 0, 'C')
+            pdf.cell(90, 8, name, 1, 0, 'C')
+            pdf.cell(45, 8, date_, 1, 0, 'C')
+            pdf.cell(70, 8, next_date_, 1, 0, 'C')
+            pdf.cell(50, 8, result, 1, 1, 'C')
+
+            cont+=1
+
+        pdf.output(FILENAME, 'F')
+        fs = FileSystemStorage()
+        with fs.open(FILENAME) as pdf:
+            response = HttpResponse(pdf)
+            response['Content-type'] = 'application/pdf'
+            response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
+        return response
+
+
+class ReportIndividual(View):
+    def valid_type(self, typei):
+        if typei not in ['indiviual_company']:
+            return False
+        return True
+
+    def set_data(self):
+        report_select = self.request.GET.get('typei', '')
+        documents = self.request.GET.get('document','')
+        status = self.valid_type(report_select)
+        model = models.Company
+        datas = model.objects.filter(document=documents)
+        return status, datas,report_select
+
+    def get(self, *args, **kwargs):
+        status, data,type_ = self.set_data()
+        if status == False:
+            return alert("Algo Esta Haciendo Mal Que No Se Pudo Generar El PDF")
+        if (data) == None:
+            return alert("No Hay Nada Que Mostrar")
+
+        pdf = PDF('P', 'mm', 'A4')
+        pdf.alias_nb_pages()
+        pdf.add_page()
+        pdf.ln(20)
+
+        pdf.set_font('Arial', 'B', 10)
+        name_title = "DE LA EMPRESA " if type_ =="indiviual_company" else 'DEL CONDUCTOR'
+        pdf.cell(0, 0, f'INFORMACIÓN {name_title}', 0, 1, 'C')
+        pdf.ln(15)
+
+        for i in data:
+            pdf.cell(30, 10, 'Documento', 1, 0, 'C')
+            pdf.cell(155,10,"NOMBRE",1,1,"C")
+            pdf.cell(30,10,i.get_document(),1,0,"C")
+            pdf.cell(155,10,i.get_full_name(),1,1,"C")
+
+            pdf.cell(92.5, 10, 'TELEFONO MOVIL', 1, 0, 'C')
+            pdf.cell(92.5, 10, 'TELEFONO FIJO', 1, 1, 'C')
+            pdf.cell(92.5,10,(i.tlf),1,0,"C")
+            if i.tlf_house == None:
+                pdf.cell(92.5,10,"NO POSEE",1,1,"C")
+            else:
+                pdf.cell(92.5,10,(i.tlf_house),1,1,"C")
+            
+            pdf.cell(61.6, 10, 'ESTADO', 1, 0, 'C')
+            pdf.cell(61.6, 10, 'MUNICIPIO', 1, 0, 'C')
+            pdf.cell(61.6, 10, 'PARROQUIA', 1, 1, 'C')
+
+            pdf.cell(61.6,10,(i.state.name),1,0,"C")
+            pdf.cell(61.6,10,(i.municipality.name),1,0,"C")
+            pdf.cell(61.6,10,(i.parish.name),1,1,"C")
+
+            pdf.cell(185,10,"DIRECCION",1,1,"C")
+            pdf.multi_cell(185,20,i.address,1,0,"C")
+
+
+        pdf.output(FILENAME, 'F')
+        fs = FileSystemStorage()
+        with fs.open(FILENAME) as pdf:
+            response = HttpResponse(pdf)
+            response['Content-type'] = 'application/pdf'
+            response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
+        return response
