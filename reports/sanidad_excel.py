@@ -1,3 +1,4 @@
+import time
 from openpyxl import Workbook
 from openpyxl.styles import Font, colors, Alignment, Border, Side
 from django.views.generic import View
@@ -9,6 +10,21 @@ FILENAME = f'{settings.MEDIA_ROOT}/reports_excel.xlsx'
 
 class InpectionsCompany(View):
     def get(self, request, *args, **kwargs):
+        import datetime
+
+
+        def getDateRangeFromWeek(p_year, p_week):
+
+            firstdayofweek = datetime.datetime.strptime(
+                f'{p_year}-W{int(p_week )- 1}-1', "%Y-W%W-%w").date()
+            lastdayofweek = firstdayofweek + datetime.timedelta(days=6.9)
+            return firstdayofweek, lastdayofweek
+
+
+        #Call function to get dates range
+        firstdate, lastdate = getDateRangeFromWeek('2019', '2')
+
+        print('print function ', firstdate, ' ', lastdate)
         return self.form()
         # fs = FileSystemStorage()
         # with fs.open(FILENAME) as xlsx:
@@ -33,6 +49,8 @@ class InpectionsCompany(View):
             size=30, name='Arial', color='5969ff', bold=True)
         ws.cell(row=1, column=1).alignment = Alignment(
             horizontal="center", vertical="center")
+
+
 
         wb.save(FILENAME)
         return HttpResponse("si")
