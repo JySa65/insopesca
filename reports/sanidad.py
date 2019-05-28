@@ -93,8 +93,6 @@ class ReportSanidadListInpections(View):
         return response
 
 
-# class 
-
 class ReportListCompanyOrDriver(View):
     def valid_type(self, typei):
         if typei not in ['all_company','all_driver']:
@@ -236,8 +234,8 @@ class ReportListInspectionCompanyOrDriver(View):
 
 class ReportIndividual(View):
     def valid_type(self, typei):
-        if typei not in ['indiviual_company']:
-            return False
+        # if typei not in ['indiviual_company']:
+        #     return False
         return True
 
     def set_data(self):
@@ -245,7 +243,7 @@ class ReportIndividual(View):
         documents = self.request.GET.get('document','')
         status = self.valid_type(report_select)
         model = models.Company
-        datas = model.objects.filter(document=documents)
+        datas = model.objects.filter(document="1111111113")
         return status, datas,report_select
 
     def get(self, *args, **kwargs):
@@ -288,8 +286,10 @@ class ReportIndividual(View):
             pdf.cell(61.6,10,(i.parish.name),1,1,"C")
 
             pdf.cell(185,10,"DIRECCION",1,1,"C")
-            pdf.multi_cell(185,20,i.address,1,0,"C")
+            pdf.multi_cell(185,5,i.address*30,1,1,"C")
 
+            pdf.ln()
+            pdf.cell(185,10,"DIRECCION",1,1,"C")
 
         pdf.output(FILENAME, 'F')
         fs = FileSystemStorage()

@@ -1,30 +1,19 @@
-import time
+import time, calendar
 from openpyxl import Workbook
 from openpyxl.styles import Font, colors, Alignment, Border, Side
 from django.views.generic import View
 from django.http import HttpResponse, FileResponse
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
+from utils.date_insopesca import DateInsopesca
+from isoweek import Week
 
 FILENAME = f'{settings.MEDIA_ROOT}/reports_excel.xlsx'
 
+
 class InpectionsCompany(View):
     def get(self, request, *args, **kwargs):
-        import datetime
-
-
-        def getDateRangeFromWeek(p_year, p_week):
-
-            firstdayofweek = datetime.datetime.strptime(
-                f'{p_year}-W{int(p_week )- 1}-1', "%Y-W%W-%w").date()
-            lastdayofweek = firstdayofweek + datetime.timedelta(days=6.9)
-            return firstdayofweek, lastdayofweek
-
-
-        #Call function to get dates range
-        firstdate, lastdate = getDateRangeFromWeek('2019', '2')
-
-        print('print function ', firstdate, ' ', lastdate)
+        self.get_data()
         return self.form()
         # fs = FileSystemStorage()
         # with fs.open(FILENAME) as xlsx:
@@ -50,7 +39,10 @@ class InpectionsCompany(View):
         ws.cell(row=1, column=1).alignment = Alignment(
             horizontal="center", vertical="center")
 
-
-
         wb.save(FILENAME)
         return HttpResponse("si")
+
+    def get_data(self):
+        for i in range(Week.last_week_of_year(2020)[1]):
+            first, last = DateInsopesca('2019', i+1).get_date_range_from_week()
+            print(f'print function {i}', first, last)
