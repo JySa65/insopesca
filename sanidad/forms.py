@@ -121,7 +121,7 @@ class InspectionForm(forms.ModelForm):
     class Meta:
         model = Inspection
         exclude = ('company_account_type', 'company_account_id',
-                   'company_account', 'pass_inspection')
+                   'company_account', 'pass_inspection','account_register')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

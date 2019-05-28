@@ -110,7 +110,7 @@ class ReportListCompanyOrDriver(View):
         return status, datas,model
 
     def get(self, *args, **kwargs):
-        status, data,type_ = self.set_data()
+        status, data,_type = self.set_data()
         if status == False:
             return alert("Algo Esta Haciendo Mal Que No Se Pudo Generar El PDF")
         if len(data) == 0:
@@ -120,15 +120,15 @@ class ReportListCompanyOrDriver(View):
         pdf.alias_nb_pages()
         pdf.add_page()
         pdf.set_font('Arial', 'B', 12)
-        name_title = "Empresas" if type_ == models.Company else 'Conductores'
+        name_title = "Empresas" if _type == models.Company else 'Conductores'
         pdf.cell(0, 0, f'Lista de {name_title}', 0, 1, 'C')
         pdf.ln(10)
         pdf.cell(7.9, 8, '#', 1, 0, 'C')
         pdf.cell(40, 8, 'Documento', 1, 0, 'C')
-        (pdf.cell(120, 8, 'Nombre', 1, 0, 'C') if type_ == models.Company else 
+        (pdf.cell(120, 8, 'Nombre', 1, 0, 'C') if _type == models.Company else 
                         pdf.cell(120, 8, 'Nombres y Apellidos', 1, 0, 'C'))
         pdf.cell(35, 8, 'Telefono Movil', 1, 0, 'C')
-        if type_ == models.Company:
+        if _type == models.Company:
             pdf.cell(40, 8, 'SPES', 1, 0, 'C')
             pdf.cell(40, 8, 'Activo', 1, 1, 'C')
             for i in data:
@@ -188,7 +188,7 @@ class ReportListInspectionCompanyOrDriver(View):
         return status, datas,report_select
 
     def get(self, *args, **kwargs):
-        status, data,type_ = self.set_data()
+        status, data,_type = self.set_data()
         if status == False:
             return alert("Algo Esta Haciendo Mal Que No Se Pudo Generar El PDF")
         if len(data) == 0:
@@ -198,7 +198,7 @@ class ReportListInspectionCompanyOrDriver(View):
         pdf.alias_nb_pages()
         pdf.add_page()
         pdf.set_font('Arial', 'B', 12)
-        name_title = "Las Empresas Inspeccionadas" if type_ =="inpection_company" else 'Los Conductores Inspeccionados'
+        name_title = "Las Empresas Inspeccionadas" if _type =="inpection_company" else 'Los Conductores Inspeccionados'
 
         pdf.cell(0, 0, f'Lista de  {name_title}', 0, 1, 'C')
         pdf.ln(10)
@@ -211,16 +211,16 @@ class ReportListInspectionCompanyOrDriver(View):
         for i in data:
             document = i.company_account.get_document()
             name = i.company_account.get_full_name()
-            date_ = i.date.strftime('%d/%m/%Y')
-            next_date_ = i.next_date.strftime('%d/%m/%Y')
+            _date = i.date.strftime('%d/%m/%Y')
+            _next_date = i.next_date.strftime('%d/%m/%Y')
             status_result = i.result
             result = 'Muy Bueno' if status_result == "is_verygood" else 'Bueno' if status_result == "is_good" else 'Malo'
 
             pdf.cell(7.9, 8, str(cont), 1, 0, 'C')
             pdf.cell(40, 8, document, 1, 0, 'C')
             pdf.cell(90, 8, name, 1, 0, 'C')
-            pdf.cell(45, 8, date_, 1, 0, 'C')
-            pdf.cell(70, 8, next_date_, 1, 0, 'C')
+            pdf.cell(45, 8, _date, 1, 0, 'C')
+            pdf.cell(70, 8, _next_date, 1, 0, 'C')
             pdf.cell(50, 8, result, 1, 1, 'C')
 
             cont+=1
@@ -234,22 +234,27 @@ class ReportListInspectionCompanyOrDriver(View):
         return response
 
 
-class ReportIndividual(View):
+class ReportIndividualCompanyOrDriver(View):
     def valid_type(self, typei):
-        if typei not in ['indiviual_company']:
+        if typei not in ['indiviual_company','individual_driver']:
             return False
         return True
 
     def set_data(self):
-        report_select = self.request.GET.get('typei', '')
-        documents = self.request.GET.get('document','')
+        # DATO RECIBIDO POR URL O POR OTRO MEDIO
+        # report_select = self.request.GET.get('typei', '')
+        report_select = "individual_driver"
+        # DATO RECIBIDO POR URL O POR OTRO MEDIO        
+        # documents = self.request.GET.get('document','')
+        documents = "16726086"
         status = self.valid_type(report_select)
-        model = models.Company
-        datas = model.objects.filter(document=documents)
-        return status, datas,report_select
+        model = models.Company if report_select == "indiviual_company" else models.Driver
+        company = model.objects.filter(document=documents)
+
+        return status, company,report_select
 
     def get(self, *args, **kwargs):
-        status, data,type_ = self.set_data()
+        status, data,_type = self.set_data()
         if status == False:
             return alert("Algo Esta Haciendo Mal Que No Se Pudo Generar El PDF")
         if (data) == None:
@@ -258,37 +263,124 @@ class ReportIndividual(View):
         pdf = PDF('P', 'mm', 'A4')
         pdf.alias_nb_pages()
         pdf.add_page()
-        pdf.ln(20)
 
-        pdf.set_font('Arial', 'B', 10)
-        name_title = "DE LA EMPRESA " if type_ =="indiviual_company" else 'DEL CONDUCTOR'
+        pdf.set_font('Arial', 'B', 14)
+        name_title = "DE LA EMPRESA " if _type =="indiviual_company" else 'DEL CONDUCTOR'
         pdf.cell(0, 0, f'INFORMACIÓN {name_title}', 0, 1, 'C')
-        pdf.ln(15)
+        pdf.set_font('Arial', 'B', 9)
+        pdf.ln(10)
+        cont = 1
 
-        for i in data:
-            pdf.cell(30, 10, 'Documento', 1, 0, 'C')
-            pdf.cell(155,10,"NOMBRE",1,1,"C")
-            pdf.cell(30,10,i.get_document(),1,0,"C")
-            pdf.cell(155,10,i.get_full_name(),1,1,"C")
+        if _type == models.Company:
 
-            pdf.cell(92.5, 10, 'TELEFONO MOVIL', 1, 0, 'C')
-            pdf.cell(92.5, 10, 'TELEFONO FIJO', 1, 1, 'C')
-            pdf.cell(92.5,10,(i.tlf),1,0,"C")
-            if i.tlf_house == None:
-                pdf.cell(92.5,10,"NO POSEE",1,1,"C")
-            else:
-                pdf.cell(92.5,10,(i.tlf_house),1,1,"C")
-            
-            pdf.cell(61.6, 10, 'ESTADO', 1, 0, 'C')
-            pdf.cell(61.6, 10, 'MUNICIPIO', 1, 0, 'C')
-            pdf.cell(61.6, 10, 'PARROQUIA', 1, 1, 'C')
+            for i in data:
 
-            pdf.cell(61.6,10,(i.state.name),1,0,"C")
-            pdf.cell(61.6,10,(i.municipality.name),1,0,"C")
-            pdf.cell(61.6,10,(i.parish.name),1,1,"C")
+                pdf.cell(30, 10, 'DOCUMENTO', 1, 0, 'C')
+                pdf.cell(155,10,"TIPO DE COMAPAÑIA",1,1,"C")
+                pdf.cell(30,10,i.get_document(),1,0,"C")
+                pdf.cell(155,10,i.type_company.name.upper(),1,1,"C")
+                pdf.cell(185,10,"NOMBRE",1,1,"C") if _type == "indiviual_company" else pdf.cell(155,10,"NOMBRE",1,1,"C")
+                pdf.cell(185,10,i.get_full_name(),1,1,"C")
 
-            pdf.cell(185,10,"DIRECCION",1,1,"C")
-            pdf.multi_cell(185,20,i.address,1,0,"C")
+                pdf.cell(92.5, 10, 'TELEFONO MOVIL', 1, 0, 'C')
+                pdf.cell(92.5, 10, 'TELEFONO DE CASA', 1, 1, 'C')
+                if i.tlf == None:
+                    pdf.cell(92.5,10,"NO POSEE",1,1,"C")
+                else:
+                    pdf.cell(92.5,10,(i.tlf),1,0,"C")
+
+                if i.tlf_house == None:
+                    pdf.cell(92.5,10,"NO POSEE",1,1,"C")
+                else:
+                    pdf.cell(92.5,10,(i.tlf_house),1,1,"C")
+                
+                pdf.cell(61.6, 10, 'ESTADO', 1, 0, 'C')
+                pdf.cell(61.6, 10, 'MUNICIPIO', 1, 0, 'C')
+                pdf.cell(61.8, 10, 'PARROQUIA', 1, 1, 'C')
+
+                pdf.cell(61.6,10,(i.state.name.upper()),1,0,"C")
+                pdf.cell(61.6,10,(i.municipality.name.upper()),1,0,"C")
+                pdf.cell(61.8,10,(i.parish.name.upper()),1,1,"C")
+
+                pdf.cell(185,10,"DIRECCIÓN",1,1,"C")
+                pdf.multi_cell(185,5,i.address,1,"J")
+
+                pdf.ln(10)
+                pdf.set_font('Arial', 'B', 14)
+
+                name_second_title = "A LA EMPRESA " if _type =="indiviual_company" else 'DEL CONDUCTOR'
+                pdf.cell(0, 0, f'INSPECCIONES REALIZADAS {name_second_title}', 0, 1, 'C')
+                pdf.set_font('Arial', 'B', 9)
+
+                pdf.ln(10)
+                pdf.set_text_color(0, 0, 0)
+
+                pdf.cell(10, 8, '#', 1, 0, 'C')
+                pdf.cell(45, 8, 'FECHA DE INSPECCIÓN', 1, 0, 'C')
+                pdf.cell(40, 8, 'RESULTADO', 1, 0, 'C')
+                pdf.cell(90, 8, 'REALIZADO POR ', 1, 1, 'C')
+                
+                for x in i.get_inspections():
+                    
+                    _date = x.date.strftime('%d/%m/%Y')
+                    status_result = x.result
+                    result = 'Muy Bueno' if status_result == "is_verygood" else 'Bueno' if status_result == "is_good" else 'Malo'
+
+                    pdf.cell(10, 8, str(cont), 1, 0, 'C')
+                    pdf.cell(45, 8, _date, 1, 0, 'C')
+                    pdf.cell(40, 8, result, 1, 0, 'C')
+                    pdf.cell(90, 8, (x.account_register.get_full_name()), 1, 0, 'C')
+
+                    cont+=1
+        else:
+            for i in data:
+                pdf.cell(30, 10, 'DOCUMENTO', 1, 0, 'C')
+                pdf.cell(155,10,"NOMBRE",1,1,"C")
+                pdf.cell(30,10,i.get_document(),1,0,"C")
+                pdf.cell(155,10,i.get_full_name(),1,1,"C")
+
+                pdf.cell(92.5, 10, 'TELEFONO MOVIL', 1, 0, 'C')
+                pdf.cell(92.5, 10, 'TELEFONO DE CASA', 1, 1, 'C')
+                if i.tlf == None:
+                    pdf.cell(92.5,10,"NO POSEE",1,1,"C")
+                else:
+                    pdf.cell(92.5,10,(i.tlf),1,0,"C")
+
+                if i.tlf_house == None:
+                    pdf.cell(92.5,10,"NO POSEE",1,1,"C")
+                else:
+                    pdf.cell(92.5,10,(i.tlf_house),1,1,"C")
+                
+                pdf.cell(185,10,"DIRECCIÓN",1,1,"C")
+                pdf.multi_cell(185,5,i.address,1,"J")
+
+                pdf.ln(10)
+                pdf.set_font('Arial', 'B', 14)
+
+                name_second_title = "A LA EMPRESA " if _type =="indiviual_company" else 'DEL CONDUCTOR'
+                pdf.cell(0, 0, f'INSPECCIONES REALIZADAS {name_second_title}', 0, 1, 'C')
+                pdf.set_font('Arial', 'B', 9)
+
+                pdf.ln(10)
+                pdf.set_text_color(0, 0, 0)
+
+                pdf.cell(10, 8, '#', 1, 0, 'C')
+                pdf.cell(45, 8, 'FECHA DE INSPECCIÓN', 1, 0, 'C')
+                pdf.cell(40, 8, 'RESULTADO', 1, 0, 'C')
+                pdf.cell(90, 8, 'REALIZADO POR ', 1, 1, 'C')
+
+                for x in i.get_inspections():
+
+                    _date = x.date.strftime('%d/%m/%Y')
+                    status_result = x.result
+                    result = 'Muy Bueno' if status_result == "is_verygood" else 'Bueno' if status_result == "is_good" else 'Malo'
+
+                    pdf.cell(10, 8, str(cont), 1, 0, 'C')
+                    pdf.cell(45, 8, _date, 1, 0, 'C')
+                    pdf.cell(40, 8, result, 1, 0, 'C')
+                    pdf.cell(90, 8, (x.account_register.get_full_name()), 1, 0, 'C')
+
+                    cont+=1
 
 
         pdf.output(FILENAME, 'F')
@@ -298,3 +390,5 @@ class ReportIndividual(View):
             response['Content-type'] = 'application/pdf'
             response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
         return response
+
+
