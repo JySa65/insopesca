@@ -699,3 +699,36 @@ class ReportGeneralAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
         if company != '':
             data = get_company_report(company, date, week1, week2)
             return JsonResponse(data, safe=False)
+
+class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
+    template_name = "sanidad/reports_ugly.html"
+    def get_context_data(self, **kwargs):
+        context = super(UglyReportsView, self).get_context_data(**kwargs)
+        type_companys = models.TypeCompany.objects.all()
+        driver = models.Driver.objects.all()
+        companys = models.Company.objects.all()
+        context['type_companys'] = type_companys
+        context['companys'] = companys
+        context['driver'] = driver
+
+        date1 = self.request.GET.get('date_range1', "")
+        print(date1.datetime)
+        
+        # date1 = datetime(int(date11[2]), int(date11[1]), int(date11[0]))
+        # print(date1.strptime(date1, '%Y-%m-%d'))
+        # date2 = self.request.GET.get('date_range2', "")
+        # _type = self.request.GET.get("type","")
+        # documents = self.request.GET.get("document","")
+        # print (date1)
+        # if date1 == "" and date2 == "":
+            # if _type == "all_company":
+                # context['all_company'] = models.Company.objects.all()
+        # else:
+            # if _type == "all_company":
+                # context['all_company'] = models.Company.objects.filter(created_at__range=(date1,date2))
+                # print(context['all_company'])
+
+        return context
+    
+    
+

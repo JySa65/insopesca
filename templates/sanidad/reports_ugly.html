@@ -1,0 +1,116 @@
+{% extends 'sanidad/base.html' %}
+{% block title %}
+{% if object.pk %}
+EMPRESA {{ object.name }}
+{% else %}
+RESGISTRO
+{% endif %}
+{% endblock %}
+{% block sidebar %}
+{% include 'sidebar/sanidad.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+
+{% endblock %}
+
+
+{% block context %}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <a href="javascript:history.back()" class="btn btn-rounded btn-primary">Regresar <i
+                        class="fas fa-reply"></i></a>
+            </div>
+            <div class="card-body">
+                <form action="" method="get" id="id_form_report_uglys">
+                    <div class="text-center mb-4">
+                        <label class="h3 text-primary">Que Tipo De Consulta Desea Hacer </label>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group row">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group mx-sm-3 mb-3 text">
+                                            <label for="id_type" class="pr-2"><b>Por:</b></label>
+                                            <select name="type" id="id_type" class="form-control show-tick">
+                                                <option value="">-------</option>
+                                                {% if tip == "company" %}
+                                                    <optgroup label="Compañia">
+                                                        <option value="individual_company">Indiviual</option>                                                
+                                                        <option value="all_company">Todos</option>                                                
+
+                                                    </optgroup>
+                                                {% elif tip == "driver" %}
+                                                    <optgroup label="Conductor">
+                                                        <option value="individual_driver">Indiviual</option>                                                
+                                                        <option value="all_driver">Todos</option>                                                
+                                                    </optgroup>    
+                                                {% endif %}
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group mx-sm-3 mb-3 text">
+                                            <select name="document" id="id_document" class="form-control" disabled>
+                                                <option value="">-------</option>
+                                                {% if tip == "company" %}
+                                                    <optgroup label="Compañia"  >
+                                                        {% for i in companys%}
+                                                        <option value="{{ i.pk }}">{{ i.get_full_name|upper }}</option>
+                                                        {% endfor %}
+                                                    </optgroup>
+                                                {% elif tip == "driver" %}
+                                                    <optgroup label="Conductor" >
+                                                        {% for i in driver%}
+                                                        <option value="{{ i.pk }}">{{ i.name|upper }}</option>
+                                                        {% endfor %}
+                                                    </optgroup>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12" style="padding:0">
+                                        <div class="form-group mx-sm-3 mb-3 text">
+                                            <label for="id_date_range1" class="pr-2"><b>Por Semana:</b></label>
+                                            <div class="input-group input-daterange" style="padding: 8px 0;">
+                                                <input type="text" class="form-control" name="date_range1" id="id_date_range1"
+                                                    readonly disabled>
+                                                <div class="input-group-addon" style="padding: 5px 10px;">a</div>
+                                                <input type="text" class="form-control" name="date_range2" id="id_date_range2"
+                                                    readonly disabled>
+                                            </div>
+                                            <div class="input-group input-daterange" style="padding: 8px 0;">
+                                                <input type="text" class="form-control" name="date_range1_text"
+                                                    id="id_date_range1_text" hidden disabled>
+                                                <div class="input-group-addon" hidden style="padding: 5px 10px;">a</div>
+                                                <input type="text" class="form-control" name="date_range2_text"
+                                                    id="id_date_range2_text" hidden disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>            
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12 offset-md-4 mt-4">
+                        <div class="form-group mx-sm-3 mb-3 text-center">
+                            <button type="search" class="btn btn-success btn-block">Buscar</button>
+                        </div>
+                    </div>
+                    
+                    {% for i in all_company %}
+                        {{i.created_at}}
+                    {% endfor %}
+                        
+                    <!-- <div class="col-md-4 col-sm-12 offset-md-4 mt-4">
+                        <div class="form-group mx-sm-3 mb-3 text-center">
+                            <a href="#" class="btn btn-info btn-block" target="_blank">Generar Resporte</a>
+                        </div>
+                    </div> -->
+                </form>
+            </div>
+        </div>
+</div>
+{% endblock %}

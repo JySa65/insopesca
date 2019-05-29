@@ -13,6 +13,24 @@
 <li class="nav-item">
   <a class="nav-link" href="{% url 'sanidad:report_views' %}"><i class="fas fa-file-pdf"></i>Consultas</a>
 </li>
+
+<li class="nav-item ">
+  <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2"
+    aria-controls="submenu-2"><i class="fa fa-fw fa-user-circle"></i>Reporte <span
+      class="badge badge-success">6</span></a>
+  <div id="submenu-2" class="collapse submenu">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'sanidad:reports_sanidad' tip='company' %}">Compañia</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'sanidad:reports_sanidad' tip='driver' %}">Conductor</a>
+      </li>
+
+    </ul>
+  </div>
+</li>
+
 <li class="nav-item ">
   <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1"
     aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Configuración <span

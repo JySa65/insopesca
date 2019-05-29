@@ -23,5 +23,4 @@ urlpatterns = [
     path('sanidad/report/individual/',
          sanidad_views.ReportIndividualCompanyOrDriver.as_view(),
          name="sanidad_individual"),
-
 ]
