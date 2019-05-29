@@ -8,11 +8,12 @@ class PDF(FPDF):
     def header(self):
         self.image(
             'static/assets/images/logo1.png', 160, 5, 30, 25)
-        self.set_font('Arial', 'B', 15)
-        self.cell(70,5, 'Me recomendaron buscar el membrete de la empresa', 0,1)
-        self.cell(70,5, 'y colocarlo :\'c')
+        self.set_font('Arial', 'BI', 50)
+        self.set_text_color(0,0,255)
+        self.cell(70,15, 'INSOPESCA', 0,1)
+        self.set_text_color(0,0,0)
         self.cell(80)
-        self.ln(20)
+        self.ln(15)
 
     def footer(self):
         self.set_y(-15)

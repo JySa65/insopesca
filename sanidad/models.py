@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.db import models
 from core import models as core
+from authentication import models as authentication
 import uuid
 from utils.Select import Selects
 from datetime import date
@@ -116,6 +117,17 @@ class Driver(core.Account):
             type='is_fluvial'
         )
 
+    def get_inspections(self, date1="", date2=""):
+        inspections = Inspection.objects.filter(
+            company_account_id=self.id)
+        if date1 != "":
+            inspections = inspections.filter(
+                date__year__range=(
+                    self.get_year_or_week(date1)[0], self.get_year_or_week(date2)[0]),
+                date__week__range=(
+                    self.get_year_or_week(date1)[1], self.get_year_or_week(date2)[1]))
+        return inspections
+
 
 class Transport(models.Model):
     company_driver_type = models.ForeignKey(
@@ -186,7 +198,7 @@ class Inspection(models.Model):
     notes = models.TextField(null=True, blank=True,
                              verbose_name=_('Observaciones'))
     pass_inspection = models.BooleanField(default=False)
-
+    account_register = models.ForeignKey(authentication.User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

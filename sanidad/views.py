@@ -430,7 +430,9 @@ class InspectionCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
         data = get_drivers_or_company(pk)
         _object = form.save(commit=False)
         _object.company_account = data
+        _object.account_register = self.request.user
         data.is_inspection = True
+
         data.save()
         self.object = _object.save()
         return super(InspectionCreateView, self).form_valid(form)

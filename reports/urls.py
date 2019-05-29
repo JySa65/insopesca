@@ -14,5 +14,14 @@ urlpatterns = [
 
     path('sanidad/excel/inspection/',
          sanidad_excel_views.InpectionsCompany.as_view(),
-         name="sanidad_inspection_excel_report")
+         name="sanidad_inspection_excel_report"),
+
+    path('sanidad/report/list/',
+         sanidad_views.ReportListCompanyOrDriver.as_view(),
+         name="sanidad_report_list"),
+
+    path('sanidad/report/individual/',
+         sanidad_views.ReportIndividualCompanyOrDriver.as_view(),
+         name="sanidad_individual"),
+
 ]
