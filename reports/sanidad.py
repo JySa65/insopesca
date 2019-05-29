@@ -58,7 +58,8 @@ class ReportSanidadListInpections(View):
         pdf.alias_nb_pages()
         pdf.add_page()
         pdf.set_font('Arial', 'B', 14)
-        name_title = "Empresas" if self.request.GET.get('type', '') == 'company' else 'Conductores'
+        name_title = "Empresas" if self.request.GET.get(
+            'type', '') == 'company' else 'Conductores'
         pdf.cell(0, 0, f'Lista de {name_title} Inspeccionados', 0, 1, 'C')
         pdf.ln(10)
         pdf.set_font('Arial', 'B', 10)
@@ -93,11 +94,9 @@ class ReportSanidadListInpections(View):
         return response
 
 
-# class 
-
 class ReportListCompanyOrDriver(View):
     def valid_type(self, typei):
-        if typei not in ['all_company','all_driver']:
+        if typei not in ['all_company', 'all_driver']:
             return False
         return True
 
@@ -107,10 +106,10 @@ class ReportListCompanyOrDriver(View):
         model = models.Company if report_select == "all_company" else models.Driver
         datas = model.objects.all()
 
-        return status, datas,model
+        return status, datas, model
 
     def get(self, *args, **kwargs):
-        status, data,_type = self.set_data()
+        status, data, _type = self.set_data()
         if status == False:
             return alert("Algo Esta Haciendo Mal Que No Se Pudo Generar El PDF")
         if len(data) == 0:
@@ -125,7 +124,7 @@ class ReportListCompanyOrDriver(View):
         pdf.ln(10)
         pdf.cell(7.9, 8, '#', 1, 0, 'C')
         pdf.cell(40, 8, 'Documento', 1, 0, 'C')
-        (pdf.cell(120, 8, 'Nombre', 1, 0, 'C') if _type == models.Company else 
+        (pdf.cell(120, 8, 'Nombre', 1, 0, 'C') if _type == models.Company else
                         pdf.cell(120, 8, 'Nombres y Apellidos', 1, 0, 'C'))
         pdf.cell(35, 8, 'Telefono Movil', 1, 0, 'C')
         if _type == models.Company:
@@ -176,19 +175,20 @@ class ReportListCompanyOrDriver(View):
 
 class ReportListInspectionCompanyOrDriver(View):
     def valid_type(self, typei):
-        if typei not in ['all_inpection_company','all_inpection_driver']:
+        if typei not in ['all_inpection_company', 'all_inpection_driver']:
             return False
         return True
 
     def set_data(self):
         report_select = self.request.GET.get('typei', '')
         status = self.valid_type(report_select)
-        model = models.Inspection 
-        datas = model.objects.filter(company_account_type__model="company") if report_select =="all_inpection_company" else model.objects.filter(company_account_type__model="driver")
-        return status, datas,report_select
+        model = models.Inspection
+        datas = model.objects.filter(company_account_type__model="company") if report_select == "all_inpection_company" else model.objects.filter(
+            company_account_type__model="driver")
+        return status, datas, report_select
 
     def get(self, *args, **kwargs):
-        status, data,_type = self.set_data()
+        status, data, _type = self.set_data()
         if status == False:
             return alert("Algo Esta Haciendo Mal Que No Se Pudo Generar El PDF")
         if len(data) == 0:
@@ -198,7 +198,7 @@ class ReportListInspectionCompanyOrDriver(View):
         pdf.alias_nb_pages()
         pdf.add_page()
         pdf.set_font('Arial', 'B', 12)
-        name_title = "Las Empresas Inspeccionadas" if _type =="inpection_company" else 'Los Conductores Inspeccionados'
+        name_title = "Las Empresas Inspeccionadas" if _type == "inpection_company" else 'Los Conductores Inspeccionados'
 
         pdf.cell(0, 0, f'Lista de  {name_title}', 0, 1, 'C')
         pdf.ln(10)
@@ -223,7 +223,7 @@ class ReportListInspectionCompanyOrDriver(View):
             pdf.cell(70, 8, _next_date, 1, 0, 'C')
             pdf.cell(50, 8, result, 1, 1, 'C')
 
-            cont+=1
+            cont += 1
 
         pdf.output(FILENAME, 'F')
         fs = FileSystemStorage()
@@ -236,7 +236,7 @@ class ReportListInspectionCompanyOrDriver(View):
 
 class ReportIndividualCompanyOrDriver(View):
     def valid_type(self, typei):
-        if typei not in ['indiviual_company','individual_driver']:
+        if typei not in ['indiviual_company', 'individual_driver']:
             return False
         return True
 
@@ -382,6 +382,8 @@ class ReportIndividualCompanyOrDriver(View):
 
                     cont+=1
 
+            pdf.ln()
+            pdf.cell(185,10,"DIRECCION",1,1,"C")
 
         pdf.output(FILENAME, 'F')
         fs = FileSystemStorage()
@@ -390,5 +392,3 @@ class ReportIndividualCompanyOrDriver(View):
             response['Content-type'] = 'application/pdf'
             response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
         return response
-
-
