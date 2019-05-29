@@ -1,5 +1,6 @@
 import time
 import calendar
+from datetime import datetime
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Font, colors, Alignment, Border, Side, PatternFill
@@ -16,16 +17,15 @@ FILENAME = f'{settings.MEDIA_ROOT}/reports_excel.xlsx'
 
 class InpectionsCompany(View):
     def get(self, request, *args, **kwargs):
-        year= 2019
+        year= request.GET.get('year', datetime.now().year)
         companys, type_companys, total = self.get_data(year)
-        print(total)
-        return self.form(companys, type_companys, total, year)
-        # fs = FileSystemStorage()
-        # with fs.open(FILENAME) as xlsx:
-        #     response = HttpResponse(xlsx)
-        #     response['Content-type'] = 'application/ms-excel'
-        #     response['Content-Disposition'] = 'inline; filename="reporte_excel.xlsx"'
-        # return response
+        self.form(companys, type_companys, total, year)
+        fs = FileSystemStorage()
+        with fs.open(FILENAME) as xlsx:
+            response = HttpResponse(xlsx)
+            response['Content-type'] = 'application/ms-excel'
+            response['Content-Disposition'] = 'inline; filename="reporte_excel.xlsx"'
+        return response
 
     def form(self, companys, type_companys, total_rows, year):
         wb = Workbook()
@@ -118,7 +118,7 @@ class InpectionsCompany(View):
             col = key + 4
             row = 4
             value = type_company['name'].title()
-            ws.column_dimensions[get_column_letter(col)].width = len(value) * 3
+            ws.column_dimensions[get_column_letter(col)].width = len(value) * 2
             ws.cell(row=row, column=col).fill = PatternFill(
                 start_color='bbbcbd', end_color='bbbcbd', fill_type="solid")
             ws.cell(row=row, column=col).value = value
@@ -160,7 +160,8 @@ class InpectionsCompany(View):
 
             # total
             col_total = len(type_companys) + 4
-            ws.cell(row=row, column=col_total).value = company['total_col']
+            total_col = company['total_col'] if company['total_col'] != 0 else ''
+            ws.cell(row=row, column=col_total).value = total_col
             ws.cell(row=row, column=col_total).border = Border(
                 bottom=thin, top=thin, left=thin, right=thin)
             ws.cell(row=row, column=col_total).font = Font(
@@ -205,7 +206,7 @@ class InpectionsCompany(View):
             horizontal="center", vertical="center")
 
         wb.save(FILENAME)
-        return HttpResponse("si")
+        return True
 
     def get_data(self, year):
         type_comanys = [dict(pk=i.pk, name=i.name)

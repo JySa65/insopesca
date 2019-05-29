@@ -3,6 +3,7 @@ import swal from 'sweetalert2'
 import axios from '../../utils/axios'
 import empty from 'empty-element'
 import template from './report_view_template'
+import yo from 'yo-yo'
 
 const form_report_sanidad = document.querySelector("#form_report_sanidad")
 if (form_report_sanidad) {
@@ -128,6 +129,14 @@ if (form_report_sanidad) {
                     data.forEach((data, index) => {
                         emp.append(template(data, index))
                     });
+                    const html = yo`
+                    <div class="row mt-5">
+                        <div class="col-sm-12 text-center">
+                            <a href="/reports/sanidad/excel/inspection/" class="btn btn-lg btn-success">Generar Excel Anual</a>
+                        </div>
+                    </div>
+                    `
+                    emp.append(html)
                 })
         })
     })
