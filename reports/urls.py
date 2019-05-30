@@ -8,9 +8,9 @@ urlpatterns = [
          sanidad_views.ReportSanidadListInpections.as_view(),
          name="sanidad_inspection_list"),
 
-    path('sanidad/report/company/all/',
+    path('sanidad/report/all/',
          sanidad_views.ReportListCompanyOrDriver.as_view(),
-         name="sanidad_report_all_company"),
+         name="sanidad_report_all"),
 
     path('sanidad/excel/inspection/',
          sanidad_excel_views.InpectionsCompany.as_view(),
@@ -23,4 +23,8 @@ urlpatterns = [
     path('sanidad/report/individual/',
          sanidad_views.ReportIndividualCompanyOrDriver.as_view(),
          name="sanidad_individual"),
+
+
+
+
 ]

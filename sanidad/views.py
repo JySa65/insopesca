@@ -8,7 +8,7 @@ from utils.check_password import checkPassword
 from utils.get_driver_or_company import get_drivers_or_company
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 from sanidad import models, forms
 from core.models import Notification
 from utils.permissions import UserUrlCorrectMixin
@@ -700,10 +700,13 @@ class ReportGeneralAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
             data = get_company_report(company, date, week1, week2)
             return JsonResponse(data, safe=False)
 
+
 class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
     template_name = "sanidad/reports_ugly.html"
+
     def get_context_data(self, **kwargs):
-        context = super(UglyReportsView, self).get_context_data(**kwargs)
+        context = super(
+            UglyReportsView, self).get_context_data(**kwargs)
         type_companys = models.TypeCompany.objects.all()
         driver = models.Driver.objects.all()
         companys = models.Company.objects.all()
@@ -711,24 +714,46 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         context['companys'] = companys
         context['driver'] = driver
 
+        context['type'] = self.request.GET.get("type", "")
+
+        documents = self.request.GET.get("document", "")
         date1 = self.request.GET.get('date_range1', "")
-        print(date1.datetime)
+        date2 = self.request.GET.get('date_range2', "")
+        f_date1, f_date2 = date1.replace("/", ""), date2.replace("/", "")
+
+        if date1 != "" and date2 != "":
+
+            day1, month1, year1, day2, month2, year2 = (f_date1[0:2],
+                    f_date1[2:4], f_date1[4:9], f_date2[0:2],
+                        f_date2[2:4], f_date2[4:9])
+
+            start, end = (datetime(int(year1), int(month1), int(day1), 0, 0),
+                        datetime(int(year2), int(month2), int(day2), 23, 59))
+
+            if context['type'] =="all_company":
+                context['all_company'] = models.Company.objects.filter(created_at__range=(start, end))
+
+            elif context['type'] == "all_driver":
+                context['all_driver'] = models.Driver.objects.filter(
+                    created_at__range=(start, end))
+            else:
+                context['msg'] = "Algo Esta Haciendo Mal."
         
-        # date1 = datetime(int(date11[2]), int(date11[1]), int(date11[0]))
-        # print(date1.strptime(date1, '%Y-%m-%d'))
-        # date2 = self.request.GET.get('date_range2', "")
-        # _type = self.request.GET.get("type","")
-        # documents = self.request.GET.get("document","")
-        # print (date1)
-        # if date1 == "" and date2 == "":
-            # if _type == "all_company":
-                # context['all_company'] = models.Company.objects.all()
-        # else:
-            # if _type == "all_company":
-                # context['all_company'] = models.Company.objects.filter(created_at__range=(date1,date2))
-                # print(context['all_company'])
+        else:
+            if context['type'] == "all_company":
+                context['all_company'] = models.Company.objects.all()
+                
+            elif context['type'] =="individual_company":
+                context['individual_company'] = models.Company.objects.filter(pk=documents)
+
+            elif context['type'] == "all_driver":
+                context['all_driver'] = models.Driver.objects.all()
+
+            elif context['type'] =="individual_driver":
+                context['individual_driver'] = models.Driver.objects.filter(pk=documents)
+
+            else:
+                context['msg'] = "Algo Esta Haciendo Mal."
 
         return context
-    
-    
 

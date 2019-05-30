@@ -19,9 +19,8 @@ if (form_report_ugly) {
             date_2.value = "";
             new_date_1.value = "";
             new_date_2.value = "";
-
         
-        } else if(val == ""){
+        } else if (val == ""){
             documents.disabled = true;
             date_1.disabled = true;
             date_2.disabled = true;
@@ -32,8 +31,8 @@ if (form_report_ugly) {
 
         } else if (val == "individual_company" || val == "individual_driver" ) {
             documents.disabled = false;
-            date_1.disabled = false;
-            date_2.disabled = false;
+            date_1.disabled = true;
+            date_2.disabled = true;
             date_1.value = "";
             date_2.value = "";
             new_date_1.value = "";
@@ -44,7 +43,6 @@ if (form_report_ugly) {
             date_2.value = "";
             new_date_1.value = "";
             new_date_2.value = "";
-
             documents.disabled = true;
             date_1.disabled = true;
             date_2.disabled = true;
