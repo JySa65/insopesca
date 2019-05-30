@@ -198,12 +198,10 @@ class ReportIndividualCompanyOrDriver(View):
     def set_data(self):
         report_select = self.request.GET.get('typei', '')
         ppk = self.request.GET.get('pk','')
-        print(report_select)
-        print(ppk)
         status = self.valid_type(report_select)
+
         model = models.Company if report_select == "individual_company" else models.Driver
         company = model.objects.filter(pk=ppk)
-        print(company)
 
         return status, company,report_select
 
