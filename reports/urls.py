@@ -24,6 +24,10 @@ urlpatterns = [
          sanidad_views.ReportIndividualCompanyOrDriver.as_view(),
          name="sanidad_individual"),
 
+     path('sanidad/inspection/',
+          sanidad_views.ReportInspectionGeneralView.as_view(),
+          name="sanidad_report_inspections")
+
 
 
 

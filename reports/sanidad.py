@@ -6,6 +6,7 @@ from datetime import datetime,date
 from reports.base import PDF, FILENAME
 from utils.alert import alert
 from sanidad import models
+from utils.get_data_report import get_company_report, get_type_company_report
 
 
 class ReportSanidadListInpections(View):
@@ -341,3 +342,50 @@ class ReportIndividualCompanyOrDriver(View):
             response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
         return response
 
+
+class ReportInspectionGeneralView(View):
+    
+    def get(self, request, *args, **kwargs):
+        type_company = request.GET.get('type_company', '')
+        company = request.GET.get('company', '')
+        week1 = request.GET.get('week1', '')
+        week2 = request.GET.get('week2', '')
+        date = bool(int(request.GET.get('date')))
+
+        if (type_company == "" and company == "" or
+                type_company != "" and company != ""):
+            return alert("Debes Escoger una compañia o un tipo de compañia")
+
+        if date == 1:
+            if week1 == "":
+                return alert("Asignes Fecha Inicial Para La Consulta")
+
+        if type_company != '':
+            data = get_type_company_report(type_company, date, week1, week2)
+            
+
+        if company != '':
+            data = get_company_report(company, date, week1, week2)
+
+        self.form(data)        
+        fs = FileSystemStorage()
+        with fs.open(FILENAME) as pdf:
+            response = HttpResponse(pdf)
+            response['Content-type'] = 'application/pdf'
+            response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
+        return response
+
+    def form(self, data):
+        pdf = PDF('P', 'mm', 'A4')
+        pdf.alias_nb_pages()
+        pdf.add_page()
+        pdf.set_font('Arial', 'B', 14)
+        pdf.cell(0, 0, f'Reporte de Inspecciones', 0, 1, 'C')
+        pdf.ln(10)
+        
+        pdf.set_font('Arial', '', 12)
+        pdf.cell(185, 7, f'Tipo De Compañia: Test_tiles', 1, 1,)
+        pdf.cell(10, 7, f'', 0, 0,)
+        pdf.cell(185, 7, f'Nombre De la Compañia: Test_tiles_Company', 1, 1,)
+
+        pdf.output(FILENAME, 'F')
