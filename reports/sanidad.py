@@ -104,19 +104,22 @@ class ReportListCompanyOrDriver(View):
         report_select = self.request.GET.get('typei', '')
         date_1 = self.request.GET.get('date1', '')
         date_2 = self.request.GET.get('date2', '')
-
         status = self.valid_type(report_select)
         model = models.Company if report_select == "all_company" else models.Driver
-        f_date1, f_date2 = date_1.replace("/", ""), date_2.replace("/", "")
-        if len(date_1) == "0" and len(date_2) == "0":
+        print(len(date_1),len(date_2))
+        if len(date_1) == 0 and len(date_2) == 0:
             datas = model.objects.all()
         else:
+            f_date1, f_date2 = date_1.replace("/", ""), date_2.replace("/", "")
             day1, month1, year1, day2, month2, year2 = (f_date1[0:2],
                     f_date1[2:4], f_date1[4:8], f_date2[0:2],
                         f_date2[2:4], f_date2[4:8])
- 
+
             start, end = (datetime(int(year1), int(month1), int(day1), 0, 0),
                         datetime(int(year2), int(month2), int(day2), 23, 59))
+ 
+            # print(start,end)
+            # datas = model.objects.all()
  
             datas = model.objects.filter(created_at__range=(start,end))
         return status, datas, model
@@ -188,17 +191,19 @@ class ReportListCompanyOrDriver(View):
 
 class ReportIndividualCompanyOrDriver(View):
     def valid_type(self, typei):
-        if typei not in ['indiviual_company', 'individual_driver']:
+        if typei not in ['individual_company', 'individual_driver']:
             return False
         return True
 
     def set_data(self):
         report_select = self.request.GET.get('typei', '')
         ppk = self.request.GET.get('pk','')
-        # documents = "16726086"
+        print(report_select)
+        print(ppk)
         status = self.valid_type(report_select)
-        model = models.Company if report_select == "indiviual_company" else models.Driver
+        model = models.Company if report_select == "individual_company" else models.Driver
         company = model.objects.filter(pk=ppk)
+        print(company)
 
         return status, company,report_select
 
