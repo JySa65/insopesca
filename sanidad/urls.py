@@ -8,7 +8,8 @@ from sanidad.views import HomeTemplateView, \
     DriverListView, DriverDetailView, DriverCreateView, DriverUpdateView, \
     DriverDeleteView, TransportDriverCreateView, InspectionListApiView, \
     InspectionDetailApiView, InspectionListNotificationView, \
-    InspectionDriversCompanyListView, ReportGenreralView, ReportGeneralAPIView
+    InspectionDriversCompanyListView, ReportGenreralView, ReportGeneralAPIView, \
+    UglyReportsView
 
 app_name = 'sanidad'
 
@@ -76,5 +77,14 @@ urlpatterns = [
 
      path('api/report/',
           ReportGeneralAPIView.as_view(),
-          name="api_report_views")
+          name="api_report_views"),
+
+
+     path('sanidad/reports/<str:tip>/',
+               UglyReportsView.as_view(),
+          name="reports_sanidad")
+
+
+
+
 ]

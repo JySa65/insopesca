@@ -2,7 +2,7 @@ from django.views.generic import View
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.storage import FileSystemStorage
-from datetime import datetime
+from datetime import datetime,date
 from reports.base import PDF, FILENAME
 from utils.alert import alert
 from sanidad import models
@@ -101,11 +101,24 @@ class ReportListCompanyOrDriver(View):
         return True
 
     def set_data(self):
-        report_select = self.request.GET.get('types', '')
+        report_select = self.request.GET.get('typei', '')
+        date_1 = self.request.GET.get('date1', '')
+        date_2 = self.request.GET.get('date2', '')
+
         status = self.valid_type(report_select)
         model = models.Company if report_select == "all_company" else models.Driver
-        datas = model.objects.all()
-
+        f_date1, f_date2 = date_1.replace("/", ""), date_2.replace("/", "")
+        if len(date_1) == "0" and len(date_2) == "0":
+            datas = model.objects.all()
+        else:
+            day1, month1, year1, day2, month2, year2 = (f_date1[0:2],
+                    f_date1[2:4], f_date1[4:8], f_date2[0:2],
+                        f_date2[2:4], f_date2[4:8])
+ 
+            start, end = (datetime(int(year1), int(month1), int(day1), 0, 0),
+                        datetime(int(year2), int(month2), int(day2), 23, 59))
+ 
+            datas = model.objects.filter(created_at__range=(start,end))
         return status, datas, model
 
     def get(self, *args, **kwargs):
@@ -173,67 +186,6 @@ class ReportListCompanyOrDriver(View):
         return response
 
 
-class ReportListInspectionCompanyOrDriver(View):
-    def valid_type(self, typei):
-        if typei not in ['all_inpection_company', 'all_inpection_driver']:
-            return False
-        return True
-
-    def set_data(self):
-        report_select = self.request.GET.get('typei', '')
-        status = self.valid_type(report_select)
-        model = models.Inspection
-        datas = model.objects.filter(company_account_type__model="company") if report_select == "all_inpection_company" else model.objects.filter(
-            company_account_type__model="driver")
-        return status, datas, report_select
-
-    def get(self, *args, **kwargs):
-        status, data, _type = self.set_data()
-        if status == False:
-            return alert("Algo Esta Haciendo Mal Que No Se Pudo Generar El PDF")
-        if len(data) == 0:
-            return alert("No Hay Nada Que Mostrar")
-        cont = 1
-        pdf = PDF('L', 'mm', 'Legal')
-        pdf.alias_nb_pages()
-        pdf.add_page()
-        pdf.set_font('Arial', 'B', 12)
-        name_title = "Las Empresas Inspeccionadas" if _type == "inpection_company" else 'Los Conductores Inspeccionados'
-
-        pdf.cell(0, 0, f'Lista de  {name_title}', 0, 1, 'C')
-        pdf.ln(10)
-        pdf.cell(7.9, 8, '#', 1, 0, 'C')
-        pdf.cell(40, 8, 'Documento', 1, 0, 'C')
-        pdf.cell(90, 8, 'Nombre', 1, 0, 'C')
-        pdf.cell(45, 8, 'Fecha de Inspección', 1, 0, 'C')
-        pdf.cell(70, 8, 'Fecha de la siguiente Inspección', 1, 0, 'C')
-        pdf.cell(50, 8, 'Resultado', 1, 1, 'C')
-        for i in data:
-            document = i.company_account.get_document()
-            name = i.company_account.get_full_name()
-            _date = i.date.strftime('%d/%m/%Y')
-            _next_date = i.next_date.strftime('%d/%m/%Y')
-            status_result = i.result
-            result = 'Muy Bueno' if status_result == "is_verygood" else 'Bueno' if status_result == "is_good" else 'Malo'
-
-            pdf.cell(7.9, 8, str(cont), 1, 0, 'C')
-            pdf.cell(40, 8, document, 1, 0, 'C')
-            pdf.cell(90, 8, name, 1, 0, 'C')
-            pdf.cell(45, 8, _date, 1, 0, 'C')
-            pdf.cell(70, 8, _next_date, 1, 0, 'C')
-            pdf.cell(50, 8, result, 1, 1, 'C')
-
-            cont += 1
-
-        pdf.output(FILENAME, 'F')
-        fs = FileSystemStorage()
-        with fs.open(FILENAME) as pdf:
-            response = HttpResponse(pdf)
-            response['Content-type'] = 'application/pdf'
-            response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
-        return response
-
-
 class ReportIndividualCompanyOrDriver(View):
     def valid_type(self, typei):
         if typei not in ['indiviual_company', 'individual_driver']:
@@ -241,15 +193,12 @@ class ReportIndividualCompanyOrDriver(View):
         return True
 
     def set_data(self):
-        # DATO RECIBIDO POR URL O POR OTRO MEDIO
-        # report_select = self.request.GET.get('typei', '')
-        report_select = "individual_driver"
-        # DATO RECIBIDO POR URL O POR OTRO MEDIO        
-        # documents = self.request.GET.get('document','')
-        documents = "16726086"
+        report_select = self.request.GET.get('typei', '')
+        ppk = self.request.GET.get('pk','')
+        # documents = "16726086"
         status = self.valid_type(report_select)
         model = models.Company if report_select == "indiviual_company" else models.Driver
-        company = model.objects.filter(document=documents)
+        company = model.objects.filter(pk=ppk)
 
         return status, company,report_select
 
@@ -383,7 +332,6 @@ class ReportIndividualCompanyOrDriver(View):
                     cont+=1
 
             pdf.ln()
-            pdf.cell(185,10,"DIRECCION",1,1,"C")
 
         pdf.output(FILENAME, 'F')
         fs = FileSystemStorage()

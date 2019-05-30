@@ -1,0 +1,384 @@
+{% extends 'sanidad/base.html' %}
+{% block title %}
+{% if object.pk %}
+EMPRESA {{ object.name }}
+{% else %}
+RESGISTRO
+{% endif %}
+{% endblock %}
+{% block sidebar %}
+{% include 'sidebar/sanidad.html' %}
+{% endblock sidebar %}
+{% block pageheader %}
+
+{% endblock %}
+
+
+{% block context %}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <a href="javascript:history.back()" class="btn btn-rounded btn-primary">Regresar <i
+                        class="fas fa-reply"></i></a>
+            </div>
+            <div class="card-body">
+                <form action="" method="GET" id="id_form_report_uglys">
+                    <div class="text-center mb-4">
+                        <label class="h3 text-primary">Que Tipo De Consulta Desea Hacer </label>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group row">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group mx-sm-3 mb-3 text">
+                                            <label for="id_type" class="pr-2"><b>Por:</b></label>
+                                            <select name="type" id="id_type" class="form-control show-tick">
+                                                <option value="">-------</option>
+                                                {% if tip == "company" %}
+                                                    <optgroup label="Compañia">
+                                                        <option value="individual_company">Indiviual</option>                                                
+                                                        <option value="all_company">Todos</option>                                                
+
+                                                    </optgroup>
+                                                {% elif tip == "driver" %}
+                                                    <optgroup label="Conductor">
+                                                        <option value="individual_driver">Indiviual</option>                                                
+                                                        <option value="all_driver">Todos</option>                                                
+                                                    </optgroup>    
+                                                {% endif %}
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group mx-sm-3 mb-3 text">
+                                            <select name="document" id="id_document" class="form-control" disabled>
+                                                <option value="">-------</option>
+                                                {% if tip == "company" %}
+                                                    <optgroup label="Compañia"  >
+                                                        {% for i in companys%}
+                                                        <option value="{{ i.pk }}">{{ i.get_full_name|upper }}</option>
+                                                        {% endfor %}
+                                                    </optgroup>
+                                                {% elif tip == "driver" %}
+                                                    <optgroup label="Conductor" >
+                                                        {% for i in driver%}
+                                                        <option value="{{ i.pk }}">{{ i.name|upper }}</option>
+                                                        {% endfor %}
+                                                    </optgroup>
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-12" style="padding:0">
+                                        <div class="form-group mx-sm-3 mb-3 text">
+                                            <label for="id_date_range1" class="pr-2"><b>Por Fecha:</b></label>
+                                            <div class="input-group input-daterange" style="padding: 8px 0;">
+                                                <input type="text" class="form-control" name="date_range1" id="id_date_range1"
+                                                    readonly disabled>
+                                                <div class="input-group-addon" style="padding: 5px 10px;">a</div>
+                                                <input type="text" class="form-control" name="date_range2" id="id_date_range2"
+                                                    readonly disabled>
+                                            </div>
+                                            <div class="input-group input-daterange" style="padding: 8px 0;">
+                                                <input type="text" class="form-control" name="date_range1_text"
+                                                    id="id_date_range1_text" hidden disabled>
+                                                <div class="input-group-addon" hidden style="padding: 5px 10px;">a</div>
+                                                <input type="text" class="form-control" name="date_range2_text"
+                                                    id="id_date_range2_text" hidden disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>            
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12 offset-md-4 mt-4">
+                        <div class="form-group mx-sm-3 mb-3 text-center">
+                            <button type="search" class="btn btn-success btn-block">Buscar</button>
+                        </div>
+                    </div>
+
+                    {% if type == "all_company" or type == "all_driver" %}
+                        <div class="col-md-4 col-sm-12 offset-md-4 mt-4">
+                            <div class="form-group mx-sm-3 mb-3 text-center">
+                                <a href="{% url 'reports:sanidad_report_all' %}?typei={{ request.GET.type }}&date1={{ request.GET.date_range1 }}&date2={{ request.GET.date_range2 }}"
+                                    class="btn btn-info btn-block" target="_blank">Generar Resporte</a>
+                            </div>
+                        </div>
+                    {% elif type == "individual_company" or type == "individual_driver" %}
+                        <div class="col-md-4 col-sm-12 offset-md-4 mt-4">
+                            <div class="form-group mx-sm-3 mb-3 text-center">
+                                <a href="{% url 'reports:sanidad_individual' %}?typei={{ request.GET.type }}&pk={{request.GET.document}}"
+                                    class="btn btn-info btn-block" target="_blank">Generar Resporte</a>
+                            </div>
+                        </div>
+
+                    {% else %}
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+
+        {% for i in all_company %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="media influencer-profile-data d-flex align-items-center p-2">
+                                <div class="mr-4">
+                                    <h1
+                                        style="border: 3px solid #5969ff !important;border-radius: 100%; color: #2b3590 !important;     padding: 0px 15px;">
+                                        {{ forloop.counter }}</h1>
+                                </div>
+                                <div class="media-body ">
+                                    <div class="influencer-profile-data">
+                                        <h3 class="m-b-10">{{i.name}}</h3>
+                                        <p>
+                                            <span class="m-r-20 d-inline-block"> Telefono
+                                                <span class="m-l-10 text-secondary">{{i.tlf}}</span>
+                                            </span>
+                                            <span class="m-r-20 d-inline-block">Activo <span class="m-l-10  text-info">
+                                                    {% if i.is_active == True  %}
+                                                    Si
+                                                    {% else %}
+                                                    No
+                                                    {% endif %}
+                                                </span>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-top card-footer p-0">
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0 ">{{i.state}}</h4>
+                        <p>Estado</p>
+                    </div>
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0">{{i.municipality}}</h4>
+                        <p>Municipio</p>
+                    </div>
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0 ">{{i.parish}}</h4>
+                        <p>Parroquia</p>
+                    </div>
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0 ">{{i.address}}</h4>
+                        <p>Dirección</p>
+
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+
+        
+        {% for i in all_driver  %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="media influencer-profile-data d-flex align-items-center p-2">
+                                <div class="mr-4">
+                                    <h1
+                                        style="border: 3px solid #5969ff !important;border-radius: 100%; color: #2b3590 !important;     padding: 0px 15px;">
+                                        {{ forloop.counter }}</h1>
+                                </div>
+                                <div class="media-body ">
+                                    <div class="influencer-profile-data">
+                                        <h3 class="m-b-10">{{i.name}} {{i.last_name}}</h3>
+                                        <p>
+                                            <span class="m-r-20 d-inline-block"> Documento
+                                                <span
+                                                    class="m-l-10 text-secondary">{{i.type_document}}-{{i.document}}</span>
+                                            </span>
+                                            
+                                            {% if i.tlf %}
+                                                <span class="m-r-20 d-inline-block"> Telefono Movil
+                                                    <span class="m-l-10 text-secondary">{{i.tlf}}</span>
+                                                </span>
+                                            {% else %}
+                                                <span class="m-r-20 d-inline-block"> Telefono Movil
+                                                    <span class="m-l-10 text-secondary">No Posee</span>
+                                                </span>
+
+                                            {% endif %}
+                                                
+                                            {% if i.tlf_house %}
+                                                <span class="m-r-20 d-inline-block"> Telefono de Casa
+                                                    <span class="m-l-10 text-secondary">{{i.tlf_house}}</span>
+                                                </span>
+                                            {% else %}
+                                                <span class="m-r-20 d-inline-block"> Telefono de Casa
+                                                    <span class="m-l-10 text-secondary">No Posee</span>
+                                                </span>
+
+                                            {% endif %}
+
+                                            <span class="m-r-20 d-inline-block">Activo <span class="m-l-10  text-info">
+                                                    {% if i.is_active == True  %}
+                                                    Si
+                                                    {% else %}
+                                                    No
+                                                    {% endif %}
+                                                </span>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-top card-footer p-0">
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0 ">{{i.created_at}}</h4>
+                        <p>Fecha de Creación</p>
+
+                    </div>
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0 ">{% if i.sex == "is_male" %}Masculino{%else%} Femenino{% endif %}</h4>
+                        <p>Sexo</p>
+                    </div>
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0 ">{{i.birthday}}</h4>
+                        <p>Fecha de Nacimiento</p>
+                    </div>
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0 ">{{i.address}}</h4>
+                        <p>Dirección</p>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+        
+        
+        {% for i in individual_company  %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="media influencer-profile-data d-flex align-items-center p-2">
+                                <div class="media-body ">
+                                    <div class="influencer-profile-data">
+                                        <h3 class="m-b-10">{{i.name}}</h3>
+                                        <p>
+                                            <span class="m-r-20 d-inline-block"> Telefono
+                                                <span class="m-l-10 text-secondary">{{i.tlf}}</span>
+                                            </span>
+                                            <span class="m-r-20 d-inline-block">Activo <span class="m-l-10  text-info">
+                                                    {% if i.is_active == True  %}
+                                                    Si
+                                                    {% else %}
+                                                    No
+                                                    {% endif %}
+                                                </span>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-top card-footer p-0">
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0 ">{{i.state}}</h4>
+                        <p>Estado</p>
+                    </div>
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0">{{i.municipality}}</h4>
+                        <p>Municipio</p>
+                    </div>
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0 ">{{i.parish}}</h4>
+                        <p>Parroquia</p>
+                    </div>
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0 ">{{i.address}}</h4>
+                        <p>Dirección</p>
+                    </div>
+
+                </div>
+            </div>             
+        {% endfor %}
+
+        {% for i in individual_driver  %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="media influencer-profile-data d-flex align-items-center p-2">
+                                <div class="media-body ">
+                                    <div class="influencer-profile-data">
+                                        <h3 class="m-b-10">{{i.get_full_name}}</h3>
+                                        <p>
+                                            {% if i.tlf %}
+                                                <span class="m-r-20 d-inline-block"> Telefono Movil
+                                                    <span class="m-l-10 text-secondary">{{i.tlf}}</span>
+                                                </span>
+                                            {% else %}
+                                                <span class="m-r-20 d-inline-block"> Telefono Movil
+                                                    <span class="m-l-10 text-secondary">No Posee</span>
+                                                </span>
+
+                                            {% endif %}
+
+                                            {% if i.tlf_house %}
+                                                <span class="m-r-20 d-inline-block"> Telefono de Casa
+                                                    <span class="m-l-10 text-secondary">{{i.tlf_house}}</span>
+                                                </span>
+                                            {% else %}
+                                                <span class="m-r-20 d-inline-block"> Telefono de Casa
+                                                    <span class="m-l-10 text-secondary">No Posee</span>
+                                                </span>
+
+                                            {% endif %}
+
+
+                                            <span class="m-r-20 d-inline-block">Activo <span class="m-l-10  text-info">
+                                                    {% if i.is_active == True  %}
+                                                    Si
+                                                    {% else %}
+                                                    No
+                                                    {% endif %}
+                                                </span>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-top card-footer p-0">
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0 ">{{i.created_at}}</h4>
+                        <p>Fecha de Creación</p>
+
+                    </div>
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0 ">{% if i.sex == "is_male" %}Masculino{%else%} Femenino{% endif %}</h4>
+                        <p>Sexo</p>
+                    </div>
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0 ">{{i.birthday}}</h4>
+                        <p>Fecha de Nacimiento</p>
+                    </div>
+                    <div class="campaign-metrics d-xl-inline-block">
+                        <h4 class="mb-0 ">{{i.address}}</h4>
+                        <p>Dirección</p>
+                    </div>
+                </div>
+            </div>             
+        {% endfor %}
+        
+    </div>
+</div>
+{% endblock %}
