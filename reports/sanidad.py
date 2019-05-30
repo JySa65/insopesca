@@ -7,7 +7,7 @@ from reports.base import PDF, FILENAME
 from utils.alert import alert
 from sanidad import models
 from utils.get_data_report import get_company_report, get_type_company_report
-
+from utils.validate_uuid import validate_uuid4
 
 class ReportSanidadListInpections(View):
 
@@ -367,6 +367,10 @@ class ReportInspectionGeneralView(View):
         if date == 1:
             if week1 == "":
                 return alert("Asignes Fecha Inicial Para La Consulta")
+        
+        if type_company != 'all' or type_company != 'all':
+            if not validate_uuid4(type_company) or not validate_uuid4(company):
+                return alert("Esta Haciendo Algo Raro :'c")
 
         if type_company != '':
             data = get_type_company_report(type_company, date, week1, week2)
