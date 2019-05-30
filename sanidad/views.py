@@ -664,6 +664,8 @@ class ReportGenreralView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         companys = models.Company.objects.all()
         context['type_companys'] = type_companys
         context['companys'] = companys
+        years = datetime.now().year
+        context['year_list'] = [i for i in range(years - 30, years+1)][::-1] 
         return context
 
 

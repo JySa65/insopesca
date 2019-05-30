@@ -19,11 +19,38 @@ Consultas
                         class="fas fa-reply"></i></a>
             </div>
             <div class="card-body">
-                <form action="" method="get" id="form_report_sanidad">
-                    <div class="text-center mb-4">
-                        <label class="h3 text-primary">Que Tipo De Consulta Desea Hacer</label>
+                <div class="text-center mb-4">
+                    <label class="h3 text-primary">Que Tipo De Consulta Desea Hacer</label>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="mb-4">
+                            <label class="h3 text-info">Generar Excel Anual De Las Inspecciones</label>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 offset-md-4">
+                                    <form action="/reports/sanidad/excel/inspection/" method="get" id="report_form_excel">
+                                    <div class="input-group">
+                                        <select name="year" class="custom-select" id="inputGroupSelect04">
+                                            <option selected value="">Escoger Año</option>
+                                            {% for yeear in year_list %}
+                                            <option value="{{yeear}}">{{ yeear }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-outline-success" style="padding: 7px 13px;">
+                                                <i class="far fa-file-excel"></i>
+                                                Generar Excel Anual
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="mb-4">
+                </div>
+                <form action="" method="get" id="form_report_sanidad">
+                    <div class="mb-4 mt-5">
                         <label class="h3 text-info">Por Inspección</label>
                     </div>
                     <div class="row">
@@ -68,63 +95,16 @@ Consultas
                             </div>
                         </div>
                     </div>
-<!-- 
-                    <div class="mb-4">
-                        <label class="h3 text-info">Por Compañia</label>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group mx-sm-3 mb-3 text">
-                                <label for="id_type_company" class="pr-2"><b>Por:</b></label>
-                                <select name="type_company" id="id_type_company" class="form-control show-tick">
-                                    <option selected value="">Tipo de Compañia</option>
-                                    <option value="all">TODOS</option>
-                                    {% for type_company in type_companys%}
-                                    <option value="{{ type_company.pk }}">{{ type_company.name|upper }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="form-group mx-sm-3 mb-3 text">
-                                <select name="company" id="id_company" class="form-control show-tick">
-                                    <option selected value="">Compañia</option>
-                                    <option value="all">TODOS</option>
-                                    {% for company in companys%}
-                                    <option value="{{ company.pk }}">{{ company.get_document|upper }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12" style="padding:0">
-                            <div class="form-group mx-sm-3 mb-3 text">
-                                <label for="id_date_range1" class="pr-2"><b>Por Fechas:</b></label>
-                                <div class="input-group input-daterange" style="padding: 8px 0;">
-                                    <input type="text" class="form-control" name="date_range1" id="id_date_range1"
-                                        readonly>
-                                    <div class="input-group-addon" style="padding: 5px 10px;">a</div>
-                                    <input type="text" class="form-control" name="date_range2" id="id_date_range2"
-                                        readonly>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
+
                     <div class="col-md-4 col-sm-12 offset-md-4 mt-4">
                         <div class="form-group mx-sm-3 mb-3 text-center">
                             <button type="search" class="btn btn-success btn-block">Buscar</button>
                         </div>
                     </div>
-
-                    <!-- {% if object_list %}
-                    <div class="form-group mx-sm-3 mb-3 text-center">
-                        <a href="{% url 'reports:sanidad_report_all_company' %}?typei={{ request.GET.select_report }}" class="btn btn-info btn-block" target="_blank">Generar Resporte</a>
-                    </div>
-                    {% endif %} -->
-
                 </form>
             </div>
         </div>
-        <div class="col-sm-12 mt-3" id="reports_view_id">
-            
-        </div>
+        <div class="col-sm-12 mt-3" id="reports_view_id"></div>
     </div>
 </div>
 {% endblock %}

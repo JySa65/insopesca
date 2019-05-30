@@ -17,14 +17,18 @@ FILENAME = f'{settings.MEDIA_ROOT}/reports_excel.xlsx'
 
 class InpectionsCompany(View):
     def get(self, request, *args, **kwargs):
-        year= request.GET.get('year', datetime.now().year)
+        year = request.GET.get('year', '')
+        if year == '':
+            year = datetime.now().year
+        year = datetime(int(year), 1, 1).year
         companys, type_companys, total = self.get_data(year)
         self.form(companys, type_companys, total, year)
         fs = FileSystemStorage()
+        # return HttpResponse("si")
         with fs.open(FILENAME) as xlsx:
             response = HttpResponse(xlsx)
             response['Content-type'] = 'application/ms-excel'
-            response['Content-Disposition'] = 'inline; filename="reporte_excel.xlsx"'
+            response['Content-Disposition'] = f'inline; filename="reporte_excel_{year}.xlsx"'
         return response
 
     def form(self, companys, type_companys, total_rows, year):
@@ -181,14 +185,15 @@ class InpectionsCompany(View):
                     size=11, name='Arial')
                 ws.cell(row=row, column=col).alignment = Alignment(
                     horizontal="center", vertical="center")
-        
-        
-        rowe = row + 1 
+
+        rowe = row + 1
         ws.row_dimensions[rowe].height = 30
         ws.cell(row=rowe, column=1).fill = PatternFill(
             start_color='bbbcbd', end_color='bbbcbd', fill_type="solid")
-        ws.merge_cells(f'A{rowe}:{get_column_letter(len(type_companys) + 3)}{rowe}')
-        ws.cell(row=rowe, column=1).value = f"Total Inspecciones Del Año {year}"
+        ws.merge_cells(
+            f'A{rowe}:{get_column_letter(len(type_companys) + 3)}{rowe}')
+        ws.cell(
+            row=rowe, column=1).value = f"Total Inspecciones Del Año {year}"
         ws.cell(row=rowe, column=1).border = Border(bottom=thin)
         ws.cell(row=rowe, column=len(type_companys) +
                 3).border = Border(right=thin)
@@ -222,7 +227,7 @@ class InpectionsCompany(View):
             data.append(dict(
                 range_week=f'{first} a {last}',
                 inspections_total=[],
-                month=month, 
+                month=month,
                 total_col=0))
             for type_comany in type_comanys:
                 inspection_total = 0
@@ -234,7 +239,7 @@ class InpectionsCompany(View):
                     inspection_total += len(inspections)
                 data[i]['inspections_total'].append(inspection_total)
                 data[i]['total_col'] += inspection_total
-        
+
         total = 0
         for tot in data:
             total += tot['total_col']

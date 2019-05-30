@@ -132,7 +132,10 @@ if (form_report_sanidad) {
                     const html = yo`
                     <div class="row mt-5">
                         <div class="col-sm-12 text-center">
-                            <a href="/reports/sanidad/excel/inspection/" class="btn btn-lg btn-success">Generar Excel Anual</a>
+                            <a href="/reports/sanidad/excel/inspection/?type_company=${type_company}&company=${company}&week1=${week1}&week2=${state.week2}&date=${state.date}" class="btn btn-lg btn-success" target="_blank">
+                                <i class="far fa-file-pdf"></i>
+                                Generar PDF
+                            </a>
                         </div>
                     </div>
                     `
