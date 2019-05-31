@@ -88,3 +88,34 @@ def get_driver_report(driver, date, week1, week2):
         ))
         data[key]['inspection_total'] = inspection_total
     return data
+
+
+def get_inspections_expired():
+    data = []
+    companys = Company.objects.filter(is_inspection=False)
+    drivers = Driver.objects.filter(is_inspection=False)
+    for company in companys:
+        inspection = company.get_inspections().first()
+        data.append(dict(
+            type_company=company.type_company.name,
+            name=company.get_full_name(),
+            inspection=dict(
+                date=inspection.date,
+                pass_date=inspection.next_date,
+                user=inspection.account_register.email,
+                result=inspection.result
+            )
+        ))
+    for driver in drivers:
+        inspection = driver.get_inspections().first()
+        data.append(dict(
+            type_company='Conductor',
+            name=driver.get_full_name(),
+            inspection=dict(
+                date=inspection.date,
+                pass_date=inspection.next_date,
+                user=inspection.account_register.email,
+                result=inspection.result
+            )
+        ))
+        return data

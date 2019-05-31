@@ -3,6 +3,7 @@ import swal from 'sweetalert2'
 import axios from '../../utils/axios'
 import empty from 'empty-element'
 import template from './report_view_template'
+import t_inspection from './report_view_inspection'
 import yo from 'yo-yo'
 
 const form_report_sanidad = document.querySelector("#form_report_sanidad")
@@ -10,7 +11,7 @@ if (form_report_sanidad) {
     const state = {
         type_company: '',
         company: '',
-        driver:'',
+        driver: '',
         week1: '',
         week2: '',
         date: 0
@@ -95,8 +96,8 @@ if (form_report_sanidad) {
         e.preventDefault()
         const { type_company, company, driver, week1, week2 } = state
 
-        if (type_company == "" && company == ""  && driver == "" ||
-            type_company != "" && company != "" && driver != "" ) {
+        if (type_company == "" && company == "" && driver == "" ||
+            type_company != "" && company != "" && driver != "") {
             swal.fire('Debes Escoger una compañia o un tipo de compañia', '', 'warning')
             return false
         }
@@ -152,3 +153,14 @@ if (form_report_sanidad) {
 
 }
 
+const $report_sanidad_expired = document.querySelector("#form_report_sanidad_expired")
+if ($report_sanidad_expired) {
+    $report_sanidad_expired.addEventListener('submit', e => {
+        e.preventDefault()
+        axios.get('/sanidad/api/report/inspections')
+        .then(data => {
+            const el = document.querySelector("#reports_view_id")
+            empty(el).append(t_inspection(data.data))
+        })
+    })
+}

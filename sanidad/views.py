@@ -13,7 +13,7 @@ from sanidad import models, forms
 from core.models import Notification
 from utils.permissions import UserUrlCorrectMixin
 from utils.get_data_report import get_company_report, get_type_company_report, \
-    get_driver_report
+    get_driver_report, get_inspections_expired
 from uuid import UUID
 import json
 
@@ -709,6 +709,13 @@ class ReportGeneralAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
         if driver != '':
             data = get_driver_report(driver, date, week1, week2)
             return JsonResponse(data, safe=False)
+
+
+class ReportInspectionExpired(LoginRequiredMixin, UserUrlCorrectMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        data = get_inspections_expired()
+        return JsonResponse(data, safe=False)
 
 
 class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
