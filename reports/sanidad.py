@@ -197,10 +197,10 @@ class ReportIndividualCompanyOrDriver(View):
         model = models.Company if report_select == "individual_company" else models.Driver
         company = model.objects.filter(pk=ppk)
 
-        return status, company, report_select
+        return status, company, report_select,model
 
     def get(self, *args, **kwargs):
-        status, data, _type = self.set_data()
+        status, data, _type,_mode = self.set_data()
         if status == False:
             return alert("Algo Esta Haciendo Mal Que No Se Pudo Generar El PDF")
         if (data) == None:
@@ -211,13 +211,13 @@ class ReportIndividualCompanyOrDriver(View):
         pdf.add_page()
 
         pdf.set_font('Arial', 'B', 14)
-        name_title = "DE LA EMPRESA " if _type == "indiviual_company" else 'DEL CONDUCTOR'
+        name_title = "DE LA EMPRESA " if _mode == models.Company else 'DEL CONDUCTOR'
         pdf.cell(0, 0, f'INFORMACIÓN {name_title}', 0, 1, 'C')
         pdf.set_font('Arial', 'B', 9)
         pdf.ln(10)
         cont = 1
 
-        if _type == models.Company:
+        if _mode == models.Company:
 
             for i in data:
 
@@ -225,7 +225,7 @@ class ReportIndividualCompanyOrDriver(View):
                 pdf.cell(155, 10, "TIPO DE COMAPAÑIA", 1, 1, "C")
                 pdf.cell(30, 10, i.get_document(), 1, 0, "C")
                 pdf.cell(155, 10, i.type_company.name.upper(), 1, 1, "C")
-                pdf.cell(185, 10, "NOMBRE", 1, 1, "C") if _type == "indiviual_company" else pdf.cell(
+                pdf.cell(185, 10, "NOMBRE", 1, 1, "C") if _mode == models.Company else pdf.cell(
                     155, 10, "NOMBRE", 1, 1, "C")
                 pdf.cell(185, 10, i.get_full_name(), 1, 1, "C")
 
@@ -255,7 +255,7 @@ class ReportIndividualCompanyOrDriver(View):
                 pdf.ln(10)
                 pdf.set_font('Arial', 'B', 14)
 
-                name_second_title = "A LA EMPRESA " if _type == "indiviual_company" else 'DEL CONDUCTOR'
+                name_second_title = "A LA EMPRESA " if _mode == models.Company else 'DEL CONDUCTOR'
                 pdf.cell(
                     0, 0, f'INSPECCIONES REALIZADAS {name_second_title}', 0, 1, 'C')
                 pdf.set_font('Arial', 'B', 9)
@@ -269,6 +269,7 @@ class ReportIndividualCompanyOrDriver(View):
                 pdf.cell(90, 8, 'REALIZADO POR ', 1, 1, 'C')
 
                 for x in i.get_inspections():
+                    print(x)
 
                     _date = x.date.strftime('%d/%m/%Y')
                     status_result = x.result
@@ -306,7 +307,7 @@ class ReportIndividualCompanyOrDriver(View):
                 pdf.ln(10)
                 pdf.set_font('Arial', 'B', 14)
 
-                name_second_title = "A LA EMPRESA " if _type == "indiviual_company" else 'DEL CONDUCTOR'
+                name_second_title = "A LA EMPRESA " if _mode == models.Company else 'DEL CONDUCTOR'
                 pdf.cell(
                     0, 0, f'INSPECCIONES REALIZADAS {name_second_title}', 0, 1, 'C')
                 pdf.set_font('Arial', 'B', 9)

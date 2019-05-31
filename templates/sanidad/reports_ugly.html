@@ -370,7 +370,7 @@ RESGISTRO
             </div>
         </div>
         {% endfor %}
-
+            
         {% if type == "all_company" or type == "all_driver" %}
         <div class="row">
             <div class="col-12">
@@ -389,7 +389,7 @@ RESGISTRO
                 </div>
             </div>
         </div>
-        {% elif type == "individual_company" or type == "individual_driver" %}
+        {% elif type == "individual_company" and msg == None or type == "individual_driver" and  msg == None %}
         <div class="row">
             <div class="col-12">
                 <div class="card">
