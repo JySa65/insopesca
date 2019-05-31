@@ -18,7 +18,7 @@ const getRandomColor = () => {
     }
     return color;
 }
-
+const $selectChartYearChangeType = document.querySelector('#id_select_chart_year_change_type')
 const $sanidad_home_chart_line = document.querySelector('#sanidad_home_chart_line')
 if ($sanidad_home_chart_line) {
     const $selectChartYearChange = document.querySelector('#id_select_chart_year_change')
@@ -83,22 +83,17 @@ if ($sanidad_home_chart_line) {
 
 const $sanidad_home_chart_pie = document.querySelector('#sanidad_home_chart_pie')
 if ($sanidad_home_chart_pie) {
+    $selectChartYearChangeType.addEventListener('change', e => {
+        e.preventDefault()
+        render(e.target.value)
+    })
+   
     const getData = (year) => axios.get(
         `/api/sanidad/chart_inspection_driver_company/?year=${year}`)
 
-    const gChart = data => new Chart(sanidad_home_chart_pie, {
+    const chart = new Chart(sanidad_home_chart_pie, {
         type: 'pie',
-        data: {
-            labels: [data[0].name, data[1].name],
-            datasets: [{
-                label: '# De Conductores y Compañias',
-                data: [data[0].data, data[1].data],
-                backgroundColor: [
-                    color.primary,
-                    color.success,
-                ],
-            }]
-        },
+        data: {},
         options: {
             responsive: true,
             title: {
@@ -113,7 +108,18 @@ if ($sanidad_home_chart_pie) {
 
     const render = (year = new Date().getFullYear()) => {
         getData(year).then(({ data }) => {
-            gChart(data)
+            chart.data = {
+                labels: [data[0].name, data[1].name],
+                datasets: [{
+                    label: '# De Conductores y Compañias',
+                    data: [data[0].data, data[1].data],
+                    backgroundColor: [
+                        color.primary,
+                        color.success,
+                    ],
+                }]
+            }
+            chart.update()
         })
     }
     render()
@@ -121,19 +127,16 @@ if ($sanidad_home_chart_pie) {
 
 const $sanidad_home_chart_pie1 = document.querySelector('#sanidad_home_chart_pie1')
 if ($sanidad_home_chart_pie1) {
+    $selectChartYearChangeType.addEventListener('change', e => {
+        e.preventDefault()
+        render(e.target.value)
+    })
     const getData = (year) => axios.get(
         `/api/sanidad/chart_inspection_type/?year=${year}`)
 
-    const gChart = data => new Chart(sanidad_home_chart_pie1, {
+    const chart = new Chart(sanidad_home_chart_pie1, {
         type: 'pie',
-        data: {
-            labels: data.name,
-            datasets: [{
-                label: '# Inspecciones Por Tipo',
-                data: data.data,
-                backgroundColor: data.colors,
-            }]
-        },
+        data: {},
         options: {
             responsive: true,
             title: {
@@ -144,7 +147,7 @@ if ($sanidad_home_chart_pie1) {
                 lineHeight: 2
             }
         }
-    }).update();
+    });
     const render = (year = new Date().getFullYear()) => {
         const getColors = (num) => {
             const colors = []
@@ -157,7 +160,15 @@ if ($sanidad_home_chart_pie1) {
         getData(year).then(({ data }) => {
             const colors = getColors(data.name.length)
             data.colors = colors
-            gChart(data)
+            chart.data = {
+                labels: data.name,
+                datasets: [{
+                    label: '# Inspecciones Por Tipo',
+                    data: data.data,
+                    backgroundColor: data.colors,
+                }]
+            }
+            chart.update()
         })
     }
     render()
