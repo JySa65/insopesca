@@ -16,20 +16,6 @@ uvicorn==0.7.1
 openpyxl==2.6.2
 isoweek==1.3.3
 
-# espresar unidades en la capacidad del carro 
-# preguntar bien los utm
-#preguntar estandar en la inspeccion de la laguna
-#corregir al añadir un usuario existe en la compañia mme da error cuando existe uni
-
-
-# x = time
-# y = number of data 
-# de como fue las inspecciones mensuales
-# 
-
-
-# as user watn  singn one user and logout user
-# añadir validacion del user
-
 # cada cierto tiempor elimanara los backup anteriores
 # y tener un limite  
+#mostrar inspecciones vencida

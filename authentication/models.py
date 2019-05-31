@@ -4,9 +4,10 @@ from django.contrib.auth.models import AbstractBaseUser, \
     PermissionsMixin, BaseUserManager
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.utils import timezone
+from django.dispatch import receiver
 from simple_history.models import HistoricalRecords
 from utils.Select import Selects
-import datetime
+import datetime, os, time
 # Create your models here.
 
 
@@ -114,3 +115,9 @@ class BackupRestoreBD(models.Model):
 
     def __str__(self):
         return f"{self.user.get_full_name()} - {self.created_at}"    
+
+
+@receiver(models.signals.post_delete, sender=BackupRestoreBD)
+def delete_repre_productive(sender, instance, *args, **kwargs):
+    if os.path.exists(instance.path):
+        os.remove(instance.path)

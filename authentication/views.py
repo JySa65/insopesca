@@ -400,7 +400,7 @@ class BackupBDView(LoginRequiredMixin, TemplateView):
             status=True,
             msg="Le Avisaremos Cuando Este Listo"
         )
-        Session.objects.all().delete()
+        # Session.objects.all().delete()
         return JsonResponse(data)
 
 
@@ -425,6 +425,7 @@ class BackupBDAPiView(LoginRequiredMixin, View):
                 status=True,
                 msg="Espere Por Favor"
             )
+            Session.objects.all().delete()
             return JsonResponse(data)
         except Exception as e:
             data = dict(

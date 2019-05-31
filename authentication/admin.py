@@ -39,7 +39,7 @@ class UserAdmin(BaseUserAdmin, SimpleHistoryAdmin):
 
 
 admin.site.register(SecurityQuestion, SimpleHistoryAdmin)
-
+admin.site.register(BackupRestoreBD)
 # @admin.register(BackupRestoreBD)
 # class DBAdmin(admin.ModelAdmin):
 #     actions = ['delete_selected']

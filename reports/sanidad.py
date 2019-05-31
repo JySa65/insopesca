@@ -368,9 +368,13 @@ class ReportInspectionGeneralView(View):
             if week1 == "":
                 return alert("Asignes Fecha Inicial Para La Consulta")
         
-        if type_company != 'all' or type_company != 'all':
-            if not validate_uuid4(type_company) or not validate_uuid4(company):
-                return alert("Esta Haciendo Algo Raro :'c")
+        # if type_company != 'all' and type_company != "":
+        #     if not validate_uuid4(type_company) or not validate_uuid4(company):
+        #         return alert("Esta Haciendo Algo Raro :'c")
+        
+        # if company != 'all' and company != "":
+        #     if not validate_uuid4(type_company) or not validate_uuid4(company):
+        #         return alert("Esta Haciendo Algo Raro :'c")
 
         if type_company != '':
             data = get_type_company_report(type_company, date, week1, week2)
@@ -395,7 +399,6 @@ class ReportInspectionGeneralView(View):
         pdf.ln(10)
 
         for key, ins in enumerate(data):
-            print(ins)
             index_ins = key + 1
             pdf.set_font('Arial', 'B', 12)
             pdf.cell(185, 10,
@@ -404,7 +407,7 @@ class ReportInspectionGeneralView(View):
                 for key_company, company in enumerate(ins['companys']):
                     pdf.set_font('Arial', 'B', 12)
                     pdf.cell(185, 10,
-                             f'  {index_ins}.{key_company+1}) Nombre De la Compañia: {company["name"].upper()}', 1, 1,)
+                            f'  {index_ins}.{key_company+1}) Nombre De la Compañia: {company["name"].upper()}', 1, 1,)
 
                     pdf.set_font('Arial', 'B', 11)
                     pdf.cell(10, 7, '#', 1, 0, 'C')
@@ -429,7 +432,7 @@ class ReportInspectionGeneralView(View):
                     else:
                         pdf.set_font('Arial', 'B', 12)
                         pdf.cell(185, 10,
-                                 f'No Tiene Inspecciones Registradas', 1, 1, 'C')
+                                f'No Tiene Inspecciones Registradas', 1, 1, 'C')
             else:
                 pdf.set_font('Arial', 'B', 12)
                 pdf.cell(185, 10, f'No Tiene Compañias Registradas', 1, 1, 'C')
