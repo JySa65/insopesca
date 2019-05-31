@@ -29,7 +29,8 @@ const template = (inspection) => yo`
                             <tr class="table-dark">
                                 <th>Ultima Inspección</th>
                                 <th>Fecha De Vencimiento</th>
-                                <th>Usuario Responsable</th>
+                                <th>Resultado</th>
+				<th>Usuario Responsable</th>
                                 <th>Observaciones</th>
                             </tr>
                         </thead>
@@ -53,6 +54,7 @@ const template = (inspection) => yo`
                                 `
                                 }
                             </th>
+			    <th>${data.inspection.user}</th>
                             <th>${data.inspection.notes}</th>
                         </tbody>
                     </table>
@@ -60,7 +62,7 @@ const template = (inspection) => yo`
                 `)}
                 <div class="row mt-5">
                     <div class="col-12 text-center">
-                        <a href="/reports/sanidad/inspection/" class="btn btn-lg btn-success" target="_blank">
+                        <a href="/reports/sanidad/inspection/expired/" class="btn btn-lg btn-success" target="_blank">
                             <i class="far fa-file-pdf"></i>
                             Generar PDF
                         </a>

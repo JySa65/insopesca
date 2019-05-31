@@ -72,6 +72,7 @@ class HomeTemplateView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
             if i.company_account.is_inspection:
                 inspection_list.append(i)
         context['inspection'] = inspection_list
+        context['inspection_expired'] = len(get_inspections_expired())
         return context
 
 
@@ -468,7 +469,7 @@ class InspectionDriversCompanyListView(LoginRequiredMixin,
 
     def dispatch(self, request, *args, **kwargs):
         if (self.kwargs.get('type')
-                not in ['driver', 'company', 'end']):
+                not in ['driver', 'company', 'end', 'expired']):
             raise Http404
         return super(
             InspectionDriversCompanyListView, self).dispatch(
@@ -490,7 +491,8 @@ class InspectionDriversCompanyListView(LoginRequiredMixin,
         return dict(
             driver=self.get_drivers,
             company=self.get_companies,
-            end=self.get_end
+            end=self.get_end,
+            expired=self.get_inspections
         )[self.kwargs.get('type')](date1, date2)
 
     def get_data_query(self, model, date1, date2):
@@ -533,6 +535,9 @@ class InspectionDriversCompanyListView(LoginRequiredMixin,
             if i.company_account.is_inspection:
                 inspection_list.append(i)
         return inspection_list
+    
+    def get_inspections(self, *args):
+        return get_inspections_expired()
 
 
 class InspectionDetailView(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):

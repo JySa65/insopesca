@@ -26,7 +26,11 @@ urlpatterns = [
 
      path('sanidad/inspection/',
           sanidad_views.ReportInspectionGeneralView.as_view(),
-          name="sanidad_report_inspections")
+          name="sanidad_report_inspections"),
+
+     path('sanidad/inspection/expired/',
+          sanidad_views.ReportInspectionExpired.as_view(),
+          name="sanidad_report_inspections_expired"),
 
 
 

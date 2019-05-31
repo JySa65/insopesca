@@ -99,6 +99,9 @@ def get_inspections_expired():
         data.append(dict(
             type_company=company.type_company.name,
             name=company.get_full_name(),
+            document=company.get_document(),
+            tlf=company.tlf,
+            is_active=company.is_active,
             inspection=dict(
                 date=inspection.date,
                 pass_date=inspection.next_date,
@@ -111,6 +114,9 @@ def get_inspections_expired():
         data.append(dict(
             type_company='Conductor',
             name=driver.get_full_name(),
+            document=driver.get_document(),
+            tlf=driver.tlf,
+            is_active=driver.is_active,
             inspection=dict(
                 date=inspection.date,
                 pass_date=inspection.next_date,

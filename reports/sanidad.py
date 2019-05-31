@@ -7,7 +7,7 @@ from reports.base import PDF, FILENAME
 from utils.alert import alert
 from sanidad import models
 from utils.get_data_report import get_company_report, get_type_company_report, \
-    get_driver_report
+    get_driver_report, get_inspections_expired
 from utils.validate_uuid import validate_uuid4
 
 class ReportSanidadListInpections(View):
@@ -420,7 +420,7 @@ class ReportInspectionGeneralView(View):
                         for key_inspections, inspection in enumerate(company['inspections']):
                             info = inspection['fields']
                             result = 'Muy Bueno' if info['result'] == "is_verygood" else 'Bueno' if info[
-                                'result'] == "verygood" else 'Malo'
+                                'result'] == "id_good" else 'Malo'
                             pdf.set_font('Arial', '', 11)
                             pdf.cell(10, 7, f'{key_inspections+1}', 1, 0, 'C')
                             pdf.cell(45, 7, f'{info["date"]}', 1, 0, 'C')
@@ -438,4 +438,48 @@ class ReportInspectionGeneralView(View):
                 pdf.cell(185, 10, f'No Tiene Compañias Registradas', 1, 1, 'C')
             pdf.ln(10)
 
+        pdf.output(FILENAME, 'F')
+
+
+class ReportInspectionExpired(View):
+
+    def get(self, *args, **kwargs):
+        data = get_inspections_expired()
+        self.form(data)
+        fs = FileSystemStorage()
+        with fs.open(FILENAME) as pdf:
+            response = HttpResponse(pdf)
+            response['Content-type'] = 'application/pdf'
+            response['Content-Disposition'] = 'inline; filename="reporte.pdf"'
+        return response
+
+    def form(self, inspections):
+        pdf = PDF('P', 'mm', 'A4')
+        pdf.alias_nb_pages()
+        pdf.add_page()
+        pdf.set_font('Arial', 'B', 14)
+        pdf.cell(0, 0, f'Reporte de Inspecciones Vencidas', 0, 1, 'C')
+        pdf.ln(10)
+        for i, inspection in enumerate(inspections):
+            info = inspection['inspection']['result']
+            result = 'Muy Bueno' if info == "is_verygood" else 'Bueno' if info == "is_good" else 'Malo'
+            pdf.set_font('Arial', 'B', 12)
+            pdf.cell(10, 7, '#', 1, 0, 'C')
+            pdf.cell(70, 7, 'TIPO', 1, 0, 'C')
+            pdf.cell(105, 7, "NOMBRE", 1, 1, "C")
+            pdf.set_font('Arial', '', 12)
+            pdf.cell(10, 7, f'{i+1}', 1, 0, "C")
+            pdf.cell(70, 7, f'{inspection["type_company"].upper()}', 1, 0, "C")
+            pdf.cell(105, 7, f'{inspection["name"].upper()}', 1, 1, "C")
+            pdf.set_font('Arial', 'B', 12)
+            pdf.cell(40, 7, 'Ultima Inspección', 1, 0, 'C')
+            pdf.cell(50, 7, 'Fecha De Vencimiento', 1, 0, 'C')
+            pdf.cell(35, 7, "Resultado", 1, 0, "C")
+            pdf.cell(60, 7, "Usuario Responsable", 1, 1, "C")
+            pdf.set_font('Arial', '', 12)
+            pdf.cell(40, 7, f"{inspection['inspection']['date']}", 1, 0, 'C')
+            pdf.cell(50, 7, f"{inspection['inspection']['pass_date']}", 1, 0, 'C')
+            pdf.cell(35, 7, f'{result}', 1, 0, "C")
+            pdf.cell(60, 7, f"{inspection['inspection']['user']}", 1, 1, "C")
+            pdf.ln(10)
         pdf.output(FILENAME, 'F')

@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="row">
-            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                 <a href="{% url 'sanidad:inspection_drivers_company' type='driver' %}">
                     <div class="card">
                         <div class="card-body">
@@ -20,7 +20,7 @@
                     </div>
                 </a>
             </div>
-            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                 <a href="{% url 'sanidad:inspection_drivers_company' type='company' %}">
                     <div class="card">
                         <div class="card-body">
@@ -35,7 +35,7 @@
                     </div>
                 </a>
             </div>
-            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                 <a href="{% url 'sanidad:inspection_drivers_company' type='end' %}">
                     <div class="card">
                         <div class="card-body">
@@ -50,19 +50,21 @@
                     </div>
                 </a>
             </div>
-            <!-- <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-inline-block">
-                            <h5 class="text-muted">Inspecci</h5>
-                            <h2 class="mb-0"> $149.00</h2>
-                        </div>
-                        <div class="float-right icon-circle-medium  icon-box-lg  bg-brand-light mt-1">
-                            <i class="fa fa-money-bill-alt fa-fw fa-sm text-brand"></i>
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                <a href="{% url 'sanidad:inspection_drivers_company' type='expired' %}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-inline-block">
+                                <h5 class="text-muted">Inspecciones <br> Vencidas</h5>
+                                <h2 class="mb-0">{{ inspection_expired }}</h2>
+                            </div>
+                            <div class="float-right icon-circle-medium  icon-box-lg  bg-brand-light mt-1">
+                                <i class="fas fa-history fa-fw fa-sm text-brand"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div> -->
+                </a>
+            </div>
         </div>
         <div class="card">
             <div class="card-body">
