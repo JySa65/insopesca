@@ -713,7 +713,7 @@ class ReportGeneralAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
 
 class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
     template_name = "sanidad/reports_ugly.html"
-
+    
     def get_context_data(self, **kwargs):
         context = super(
             UglyReportsView, self).get_context_data(**kwargs)
@@ -726,47 +726,50 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         context['driver'] = driver
 
         context['type'] = self.request.GET.get("type", "")
-
         documents = self.request.GET.get("document", "")
         date1 = self.request.GET.get('date_range1', "")
         date2 = self.request.GET.get('date_range2', "")
         f_date1, f_date2 = date1.replace("/", ""), date2.replace("/", "")
 
-        if date1 != "" and date2 != "":
+        if len(context['type']) != 1:
 
-            day1, month1, year1, day2, month2, year2 = (f_date1[0:2],
-                                                        f_date1[2:4], f_date1[4:9], f_date2[0:2],
-                                                        f_date2[2:4], f_date2[4:9])
+            if date1 != "" and date2 != "":
 
-            start, end = (datetime(int(year1), int(month1), int(day1), 0, 0),
-                          datetime(int(year2), int(month2), int(day2), 23, 59))
+                day1, month1, year1, day2, month2, year2 = (f_date1[0:2],
+                        f_date1[2:4], f_date1[4:9], f_date2[0:2],
+                            f_date2[2:4], f_date2[4:9])
+                if int(day1+month1+year1) - int(day2+month2+year2) <= 0:
+                    start, end = (datetime(int(year1), int(month1), int(day1), 0, 0),
+                                datetime(int(year2), int(month2), int(day2), 23, 59))
 
-            if context['type'] == "all_company":
-                context['all_company'] = models.Company.objects.filter(
-                    created_at__range=(start, end))
+                    if context['type'] =="all_company":
+                        context['all_company'] = models.Company.objects.filter(created_at__range=(start, end))
 
-            elif context['type'] == "all_driver":
-                context['all_driver'] = models.Driver.objects.filter(
-                    created_at__range=(start, end))
+                    elif context['type'] == "all_driver":
+                        context['all_driver'] = models.Driver.objects.filter(
+                            created_at__range=(start, end))
+                else:
+                    context['msg'] = "RANGO DE FECHA INCORRECTO."
+           
             else:
-                context['msg'] = "Algo Esta Haciendo Mal."
+                if context['type'] =="individual_company":
+                    if len(documents)  != 0:
+                        context['individual_company'] = models.Company.objects.filter(pk=documents)
+                    else:
+                        context['msg'] = "Falta el Documento."
 
+                elif context['type'] =="individual_driver":
+                    if len(documents)  != 0:
+                        context['individual_driver'] = models.Driver.objects.filter(pk=documents)
+                    else:
+                        context['msg'] = "Falta el Documento."
+
+                elif context['type'] == "all_company":
+                    context['all_company'] = models.Company.objects.all()
+
+                elif context['type'] == "all_driver":
+                    context['all_driver'] = models.Driver.objects.all()
         else:
-            if context['type'] == "all_company":
-                context['all_company'] = models.Company.objects.all()
-
-            elif context['type'] == "individual_company":
-                context['individual_company'] = models.Company.objects.filter(
-                    pk=documents)
-
-            elif context['type'] == "all_driver":
-                context['all_driver'] = models.Driver.objects.all()
-
-            elif context['type'] == "individual_driver":
-                context['individual_driver'] = models.Driver.objects.filter(
-                    pk=documents)
-
-            else:
-                context['msg'] = "Algo Esta Haciendo Mal."
+            context['msg'] = "No Pasaras La Seguridad del Sistema."
 
         return context

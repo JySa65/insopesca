@@ -17,6 +17,15 @@ RESGISTRO
 {% block context %}
 <div class="row">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        {% if msg %}
+            <div class="form-group">
+                <div class="alert alert-danger" role="alert">
+                    {{ msg }}
+                </div>
+            </div>
+
+        {% endif %}
+
         <div class="card">
             <div class="card-header">
                 <a href="javascript:history.back()" class="btn btn-rounded btn-primary">Regresar <i
@@ -35,7 +44,7 @@ RESGISTRO
                                         <div class="form-group mx-sm-3 mb-3 text">
                                             <label for="id_type" class="pr-2"><b>Por:</b></label>
                                             <select name="type" id="id_type" class="form-control show-tick">
-                                                <option value="">-------</option>
+                                                <option value=" ">-------</option>
                                                 {% if tip == "company" %}
                                                     <optgroup label="Compañia">
                                                         <option value="individual_company">Indiviual</option>                                                
@@ -99,7 +108,7 @@ RESGISTRO
                             <button type="search" class="btn btn-success btn-block">Buscar</button>
                         </div>
                     </div>
-
+        
                     {% if type == "all_company" or type == "all_driver" %}
                         <div class="col-md-4 col-sm-12 offset-md-4 mt-4">
                             <div class="form-group mx-sm-3 mb-3 text-center">
@@ -117,10 +126,13 @@ RESGISTRO
 
                     {% else %}
                     {% endif %}
+                    
                 </form>
             </div>
         </div>
 
+        
+        
         {% for i in all_company %}
             <div class="card">
                 <div class="card-body">
