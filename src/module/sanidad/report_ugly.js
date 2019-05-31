@@ -31,7 +31,7 @@ if (form_report_ugly) {
 
         } else if (val == "individual_company" || val == "individual_driver" ) {
             documents.disabled = false;
-            documents.required = true;
+            // documents.required = true;
             date_1.disabled = true;
             date_2.disabled = true;
             date_1.value = "";

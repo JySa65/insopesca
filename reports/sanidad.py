@@ -107,7 +107,7 @@ class ReportListCompanyOrDriver(View):
         date_2 = self.request.GET.get('date2', '')
         status = self.valid_type(report_select)
         model = models.Company if report_select == "all_company" else models.Driver
-        print(len(date_1), len(date_2))
+
         if len(date_1) == 0 and len(date_2) == 0:
             datas = model.objects.all()
         else:
@@ -118,9 +118,6 @@ class ReportListCompanyOrDriver(View):
 
             start, end = (datetime(int(year1), int(month1), int(day1), 0, 0),
                           datetime(int(year2), int(month2), int(day2), 23, 59))
-
-            # print(start,end)
-            # datas = model.objects.all()
 
             datas = model.objects.filter(created_at__range=(start, end))
         return status, datas, model
