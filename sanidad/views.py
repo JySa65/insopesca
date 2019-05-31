@@ -74,6 +74,8 @@ class HomeTemplateView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
                 inspection_list.append(i)
         context['inspection'] = inspection_list
         context['inspection_expired'] = len(get_inspections_expired())
+        years = datetime.now().year
+        context['year_list'] = [i for i in range(years - 5, years+1)][::-1]
         return context
 
 
@@ -803,50 +805,11 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         return context
 
 
-class ChartMonthReportAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
-    
-    def get(self, *args, **kwargs):
-        data = [
-            dict(name="Muy Bueno", bg="rgba(54, 162, 235, 0.2)", 
-                 bd="rgba(54, 162, 235, 1)", data=[]),
-            dict(name="Bueno", bg="rgba(255, 206, 86, 0.2)", 
-                 bd="rgba(255, 206, 86, 1)", data=[]),
-            dict(name="Malo", bg="rgba(255, 99, 132, 0.2)", 
-                 bd="rgba(255, 99, 132, 1)", data=[]),
-        ]
-        very_good = 0
-        good = 0
-        bad = 0
-        year = datetime.now().year
-        for month in range(12):
-            inspections = models.Inspection.objects.filter(date__year=year, date__month=month+1)
-            for inspection in inspections:
-                if inspection.result == "is_verygood":
-                    very_good += 1
-                elif inspection.result == "is_good":
-                    good += 1
-                else:
-                    bad += 1
-            data[0]['data'].append(very_good)
-            data[1]['data'].append(good)
-            data[2]['data'].append(bad)
-            very_good = 0
-            good = 0
-            bad = 0
-        return JsonResponse(data, safe=False)
+class HomeGrapichView(TemplateView):
+    template_name = 'sanidad/home_grapich.html'
 
-    def get_month(self):
-        return [
-            "ENERO",
-            "FEBRERO",
-            "MARZO",
-            "ABRIL",
-            "MAYO",
-            "JUNIO",
-            "JULIO",
-            "AGOSTO",
-            "SEPTIEMBRE",
-            "OCTUBRE",
-            "NOVIEMBRE",
-            "DICIEMBRE"
-        ]
+    def get_context_data(self, **kwargs):
+        context = super(HomeGrapichView, self).get_context_data(**kwargs)
+        years = datetime.now().year
+        context['year_list'] = [i for i in range(years - 5, years+1)][::-1]
+        return context

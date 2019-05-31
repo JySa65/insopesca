@@ -1,0 +1,44 @@
+{% extends 'sanidad/base.html' %}
+
+
+{% block context %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header text-right">
+                <select name="" id="id_select_chart_year_change" class="selectpicker">
+                    {% for years in year_list %}
+                    <option value="{{ years }}">{{ years }}</option>
+                    {% endfor%}
+                </select>
+            </div>
+            <div class="card-body mb-3">
+                <div class="row">
+                    <div class="col-12">
+                        <canvas id="sanidad_home_chart_line"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <!-- <div class="card-header text-right">
+                <select name="" id="id_select_chart_year_change_type" class="selectpicker">
+                    {% for years in year_list %}
+                    <option value="{{ years }}">{{ years }}</option>
+                    {% endfor%}
+                </select>
+            </div> -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <canvas id="sanidad_home_chart_pie"></canvas>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <canvas id="sanidad_home_chart_pie1"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
