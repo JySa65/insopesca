@@ -14,6 +14,7 @@ from core.models import Notification
 from utils.permissions import UserUrlCorrectMixin
 from utils.get_data_report import get_company_report, get_type_company_report, \
     get_driver_report, get_inspections_expired
+from utils.validate_uuid import validate_uuid4
 from uuid import UUID
 import json
 
@@ -744,7 +745,7 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         date1 = self.request.GET.get('date_range1', "")
         date2 = self.request.GET.get('date_range2', "")
         f_date1, f_date2 = date1.replace("/", ""), date2.replace("/", "")
-
+        print(date1)
         if len(context['type']) != 1:
 
             if date1 != "" and date2 != "":
@@ -753,13 +754,18 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
                         f_date1[2:4], f_date1[4:9], f_date2[0:2],
                             f_date2[2:4], f_date2[4:9])
                 if int(day1+month1+year1) - int(day2+month2+year2) <= 0:
-                    start, end = (datetime(int(year1), int(month1), int(day1), 0, 0),
-                                datetime(int(year2), int(month2), int(day2), 23, 59))
+                    # jajja = (datetime.strptime("21/11/06 16:30", "%d/%m/%y %H:%M"))
+
+                    start,end = (datetime.strptime((date1+" 0:0"), "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"),datetime.strptime((date2+" 23:59"), "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"))
+
+                    print(start,end)
+                    # start, end = (datetime(int(year1), int(month1), int(day1), 0, 0),
+                    #             datetime(int(year2), int(month2), int(day2), 23, 59))
 
                     if context['type'] =="all_company":
                         context['all_company'] = models.Company.objects.filter(created_at__range=(start, end))
-
                     elif context['type'] == "all_driver":
+
                         context['all_driver'] = models.Driver.objects.filter(
                             created_at__range=(start, end))
                 else:
