@@ -107,7 +107,7 @@ def get_inspections_expired():
                 pass_date=inspection.next_date,
                 user=inspection.account_register.email,
                 result=inspection.result
-            )
+            ) if inspection else []
         ))
     for driver in drivers:
         inspection = driver.get_inspections().first()
@@ -122,6 +122,6 @@ def get_inspections_expired():
                 pass_date=inspection.next_date,
                 user=inspection.account_register.email,
                 result=inspection.result
-            )
+            ) if inspection else []
         ))
-        return data
+    return data

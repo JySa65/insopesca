@@ -785,3 +785,52 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
             context['msg'] = "No Pasaras La Seguridad del Sistema."
 
         return context
+
+
+class ChartMonthReportAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
+    
+    def get(self, *args, **kwargs):
+        data = [
+            dict(name="Muy Bueno", bg="rgba(54, 162, 235, 0.2)", 
+                 bd="rgba(54, 162, 235, 1)", data=[]),
+            dict(name="Bueno", bg="rgba(255, 206, 86, 0.2)", 
+                 bd="rgba(255, 206, 86, 1)", data=[]),
+            dict(name="Malo", bg="rgba(255, 99, 132, 0.2)", 
+                 bd="rgba(255, 99, 132, 1)", data=[]),
+        ]
+        very_good = 0
+        good = 0
+        bad = 0
+        year = datetime.now().year
+        for month in range(12):
+            inspections = models.Inspection.objects.filter(date__year=year, date__month=month+1)
+            for inspection in inspections:
+                if inspection.result == "is_verygood":
+                    very_good += 1
+                elif inspection.result == "is_good":
+                    good += 1
+                else:
+                    bad += 1
+            data[0]['data'].append(very_good)
+            data[1]['data'].append(good)
+            data[2]['data'].append(bad)
+            very_good = 0
+            good = 0
+            bad = 0
+        return JsonResponse(data, safe=False)
+
+    def get_month(self):
+        return [
+            "ENERO",
+            "FEBRERO",
+            "MARZO",
+            "ABRIL",
+            "MAYO",
+            "JUNIO",
+            "JULIO",
+            "AGOSTO",
+            "SEPTIEMBRE",
+            "OCTUBRE",
+            "NOVIEMBRE",
+            "DICIEMBRE"
+        ]

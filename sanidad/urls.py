@@ -9,7 +9,7 @@ from sanidad.views import HomeTemplateView, \
     DriverDeleteView, TransportDriverCreateView, InspectionListApiView, \
     InspectionDetailApiView, InspectionListNotificationView, \
     InspectionDriversCompanyListView, ReportGenreralView, ReportGeneralAPIView, \
-    UglyReportsView, ReportInspectionExpired
+    UglyReportsView, ReportInspectionExpired, ChartMonthReportAPIView
 
 app_name = 'sanidad'
 
@@ -86,9 +86,12 @@ urlpatterns = [
 
      path('sanidad/reports/<str:tip>/',
                UglyReportsView.as_view(),
-          name="reports_sanidad")
+          name="reports_sanidad"),
 
+     # graphical
 
-
+     path('api/chart/month/',
+     ChartMonthReportAPIView.as_view(),
+     name="chart_month_report")
 
 ]

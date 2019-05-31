@@ -16,6 +16,7 @@ module.exports = {
 		index: './src/index.js',
 		acuicultura: './src/module/acuicultura/index.js',
 		sanidad: './src/module/sanidad/index.js',
+		chat_js: './src/module/chart_js/index.js'
 	},
 	output: {
 		filename: '[name].js',
