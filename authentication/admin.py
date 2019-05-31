@@ -40,27 +40,3 @@ class UserAdmin(BaseUserAdmin, SimpleHistoryAdmin):
 
 admin.site.register(SecurityQuestion, SimpleHistoryAdmin)
 admin.site.register(BackupRestoreBD)
-# @admin.register(BackupRestoreBD)
-# class DBAdmin(admin.ModelAdmin):
-#     actions = ['delete_selected']
-
-#     def has_delete_permission(self, request, obj=None):
-        
-#         print("hola")
-#         return True
-
-#     def delete_selected(self, request, queryset):
-#         print("hola")
-#         # print("hola")
-#         # print("hola")
-#         # print("hola")
-#         # print("hola")
-#         # print("hola")
-#         # print("hola")
-#         # # Handle this however you like. You could raise PermissionDenied,
-#         # # or just remove it, and / or use the messages framework...
-#         # queryset = queryset.exclude(pk=1)
-
-#         # actions.delete_selected(self, request, queryset)
-#     delete_selected.short_description = "Delete stuff"
-# # admin.site.register(BackupRestoreBD)

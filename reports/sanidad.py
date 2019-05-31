@@ -6,7 +6,8 @@ from datetime import datetime, date
 from reports.base import PDF, FILENAME
 from utils.alert import alert
 from sanidad import models
-from utils.get_data_report import get_company_report, get_type_company_report
+from utils.get_data_report import get_company_report, get_type_company_report, \
+    get_driver_report
 from utils.validate_uuid import validate_uuid4
 
 class ReportSanidadListInpections(View):
@@ -356,31 +357,33 @@ class ReportInspectionGeneralView(View):
     def get(self, request, *args, **kwargs):
         type_company = request.GET.get('type_company', '')
         company = request.GET.get('company', '')
+        driver = request.GET.get('driver', '')
         week1 = request.GET.get('week1', '')
         week2 = request.GET.get('week2', '')
         date = bool(int(request.GET.get('date')))
 
-        if (type_company == "" and company == "" or
-                type_company != "" and company != ""):
+        if (type_company == "" and company == "" and driver == "" or
+                type_company != "" and company != "" and driver != ""):
             return alert("Debes Escoger una compañia o un tipo de compañia")
 
         if date == 1:
             if week1 == "":
                 return alert("Asignes Fecha Inicial Para La Consulta")
         
-        # if type_company != 'all' and type_company != "":
-        #     if not validate_uuid4(type_company) or not validate_uuid4(company):
-        #         return alert("Esta Haciendo Algo Raro :'c")
+        if (type_company != 'all' and type_company != "" or
+            company != "" and company != 'all' or 
+            driver != "" and driver != 'all'):
+            if not validate_uuid4(type_company) and not validate_uuid4(company):
+                return alert("Esta Haciendo Algo Raro :'c")
         
-        # if company != 'all' and company != "":
-        #     if not validate_uuid4(type_company) or not validate_uuid4(company):
-        #         return alert("Esta Haciendo Algo Raro :'c")
-
         if type_company != '':
             data = get_type_company_report(type_company, date, week1, week2)
 
         if company != '':
             data = get_company_report(company, date, week1, week2)
+
+        if driver != '':
+            data = get_driver_report(driver, date, week1, week2)
 
         self.form(data)
         fs = FileSystemStorage()
@@ -402,12 +405,12 @@ class ReportInspectionGeneralView(View):
             index_ins = key + 1
             pdf.set_font('Arial', 'B', 12)
             pdf.cell(185, 10,
-                     f'{index_ins}) Tipo De Compañia: {ins["type_company"].upper()}', 1, 1,)
+                     f'{index_ins}) Tipo: {ins["type_company"].upper()}', 1, 1,)
             if len(ins['companys']) != 0:
                 for key_company, company in enumerate(ins['companys']):
                     pdf.set_font('Arial', 'B', 12)
                     pdf.cell(185, 10,
-                            f'  {index_ins}.{key_company+1}) Nombre De la Compañia: {company["name"].upper()}', 1, 1,)
+                            f'  {index_ins}.{key_company+1}) Nombre: {company["name"].upper()}', 1, 1,)
 
                     pdf.set_font('Arial', 'B', 11)
                     pdf.cell(10, 7, '#', 1, 0, 'C')

@@ -128,6 +128,9 @@ class Driver(core.Account):
                     self.get_year_or_week(date1)[1], self.get_year_or_week(date2)[1]))
         return inspections
 
+    def get_year_or_week(self, year_week):
+        return year_week.split('-')
+
 
 class Transport(models.Model):
     company_driver_type = models.ForeignKey(

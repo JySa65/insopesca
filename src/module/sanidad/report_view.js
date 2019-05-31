@@ -10,6 +10,7 @@ if (form_report_sanidad) {
     const state = {
         type_company: '',
         company: '',
+        driver:'',
         week1: '',
         week2: '',
         date: 0
@@ -20,17 +21,15 @@ if (form_report_sanidad) {
 
     const $id_type_company = document.querySelector("#id_type_company")
     const $id_company = document.querySelector("#id_company")
-    // const $id_date_range1 = document.querySelector("#id_date_range1")
-    // const $id_date_range2 = document.querySelector("#id_date_range2")
-    // const $id_date_range1_text = document.querySelector("#id_date_range1_text")
-    // const $id_date_range2_text = document.querySelector("#id_date_range2_text")
+    const $id_driver = document.querySelector("#id_driver")
 
     const onChange = (e) => {
         state[e.target.name] = e.target.value
     }
 
-    $id_company.addEventListener('change', e => onChange(e))
     $id_type_company.addEventListener('change', e => onChange(e))
+    $id_company.addEventListener('change', e => onChange(e))
+    $id_driver.addEventListener('change', e => onChange(e))
 
     $('#id_date_range1').datepicker({
         language: 'es',
@@ -75,26 +74,29 @@ if (form_report_sanidad) {
     }
 
     const changeSelect = (value, id_attr) => {
-        id_attr.value = ""
-        if (value != "") {
-            id_attr.setAttribute('disabled', 'disabled')
-        } else {
-            id_attr.removeAttribute('disabled')
-        }
-
+        id_attr.forEach(data => {
+            data.value = ""
+            if (value != "") {
+                data.setAttribute('disabled', 'disabled')
+            } else {
+                data.removeAttribute('disabled')
+            }
+        })
     }
 
     $id_type_company.addEventListener('change',
-        e => changeSelect(e.target.value, $id_company))
+        e => changeSelect(e.target.value, [$id_company, $id_driver]))
     $id_company.addEventListener('change',
-        e => changeSelect(e.target.value, $id_type_company))
+        e => changeSelect(e.target.value, [$id_type_company, $id_driver]))
+    $id_driver.addEventListener('change',
+        e => changeSelect(e.target.value, [$id_type_company, $id_company]))
 
     form_report_sanidad.addEventListener('submit', e => {
         e.preventDefault()
-        const { type_company, company, week1, week2 } = state
+        const { type_company, company, driver, week1, week2 } = state
 
-        if (type_company == "" && company == "" ||
-            type_company != "" && company != "") {
+        if (type_company == "" && company == ""  && driver == "" ||
+            type_company != "" && company != "" && driver != "" ) {
             swal.fire('Debes Escoger una compañia o un tipo de compañia', '', 'warning')
             return false
         }
@@ -121,25 +123,29 @@ if (form_report_sanidad) {
             } else {
                 state.date = 0
             }
-            axios.get(`/sanidad/api/report/?type_company=${type_company}&company=${company}&week1=${week1}&week2=${state.week2}&date=${state.date}`)
+            axios.get(`/sanidad/api/report/?type_company=${type_company}&company=${company}&driver=${driver}&week1=${week1}&week2=${state.week2}&date=${state.date}`)
                 .then(response => {
                     const el = document.querySelector("#reports_view_id")
                     const { data } = response
                     const emp = empty(el)
-                    data.forEach((data, index) => {
-                        emp.append(template(data, index))
-                    });
-                    const html = yo`
-                    <div class="row mt-5">
-                        <div class="col-sm-12 text-center">
-                            <a href="/reports/sanidad/inspection/?type_company=${type_company}&company=${company}&week1=${week1}&week2=${state.week2}&date=${state.date}" class="btn btn-lg btn-success" target="_blank">
-                                <i class="far fa-file-pdf"></i>
-                                Generar PDF
-                            </a>
+                    if (data.status != false) {
+                        data.forEach((data, index) => {
+                            emp.append(template(data, index))
+                        });
+                        const html = yo`
+                        <div class="row mt-5">
+                            <div class="col-sm-12 text-center">
+                                <a href="/reports/sanidad/inspection/?type_company=${type_company}&company=${company}&driver=${driver}&week1=${week1}&week2=${state.week2}&date=${state.date}" class="btn btn-lg btn-success" target="_blank">
+                                    <i class="far fa-file-pdf"></i>
+                                    Generar PDF
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    `
-                    emp.append(html)
+                        `
+                        emp.append(html)
+                    } else {
+                        swal.fire(`${data.msg}`, '', 'error')
+                    }
                 })
         })
     })

@@ -12,7 +12,8 @@ from datetime import timedelta, datetime, date
 from sanidad import models, forms
 from core.models import Notification
 from utils.permissions import UserUrlCorrectMixin
-from utils.get_data_report import get_company_report, get_type_company_report
+from utils.get_data_report import get_company_report, get_type_company_report, \
+    get_driver_report
 from uuid import UUID
 import json
 
@@ -662,10 +663,12 @@ class ReportGenreralView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         context = super(ReportGenreralView, self).get_context_data(**kwargs)
         type_companys = models.TypeCompany.objects.all()
         companys = models.Company.objects.all()
+        driver = models.Driver.objects.all()
         context['type_companys'] = type_companys
         context['companys'] = companys
+        context['drivers'] = driver
         years = datetime.now().year
-        context['year_list'] = [i for i in range(years - 30, years+1)][::-1] 
+        context['year_list'] = [i for i in range(years - 30, years+1)][::-1]
         return context
 
 
@@ -674,12 +677,13 @@ class ReportGeneralAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
     def get(self, request, *args, **kwargs):
         type_company = request.GET.get('type_company', '')
         company = request.GET.get('company', '')
+        driver = request.GET.get('driver', '')
         week1 = request.GET.get('week1', '')
         week2 = request.GET.get('week2', '')
         date = bool(int(request.GET.get('date')))
 
-        if (type_company == "" and company == "" or
-                type_company != "" and company != ""):
+        if (type_company == "" and company == "" and driver == "" or
+                type_company != "" and company != "" and driver != ""):
             data = dict(
                 status=False,
                 msg="Debes Escoger una compañia o un tipo de compañia"
@@ -702,6 +706,10 @@ class ReportGeneralAPIView(LoginRequiredMixin, UserUrlCorrectMixin, View):
             data = get_company_report(company, date, week1, week2)
             return JsonResponse(data, safe=False)
 
+        if driver != '':
+            data = get_driver_report(driver, date, week1, week2)
+            return JsonResponse(data, safe=False)
+
 
 class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
     template_name = "sanidad/reports_ugly.html"
@@ -712,6 +720,7 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         type_companys = models.TypeCompany.objects.all()
         driver = models.Driver.objects.all()
         companys = models.Company.objects.all()
+        
         context['type_companys'] = type_companys
         context['companys'] = companys
         context['driver'] = driver
@@ -726,36 +735,38 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         if date1 != "" and date2 != "":
 
             day1, month1, year1, day2, month2, year2 = (f_date1[0:2],
-                    f_date1[2:4], f_date1[4:9], f_date2[0:2],
-                        f_date2[2:4], f_date2[4:9])
+                                                        f_date1[2:4], f_date1[4:9], f_date2[0:2],
+                                                        f_date2[2:4], f_date2[4:9])
 
             start, end = (datetime(int(year1), int(month1), int(day1), 0, 0),
-                        datetime(int(year2), int(month2), int(day2), 23, 59))
+                          datetime(int(year2), int(month2), int(day2), 23, 59))
 
-            if context['type'] =="all_company":
-                context['all_company'] = models.Company.objects.filter(created_at__range=(start, end))
+            if context['type'] == "all_company":
+                context['all_company'] = models.Company.objects.filter(
+                    created_at__range=(start, end))
 
             elif context['type'] == "all_driver":
                 context['all_driver'] = models.Driver.objects.filter(
                     created_at__range=(start, end))
             else:
                 context['msg'] = "Algo Esta Haciendo Mal."
-        
+
         else:
             if context['type'] == "all_company":
                 context['all_company'] = models.Company.objects.all()
-                
-            elif context['type'] =="individual_company":
-                context['individual_company'] = models.Company.objects.filter(pk=documents)
+
+            elif context['type'] == "individual_company":
+                context['individual_company'] = models.Company.objects.filter(
+                    pk=documents)
 
             elif context['type'] == "all_driver":
                 context['all_driver'] = models.Driver.objects.all()
 
-            elif context['type'] =="individual_driver":
-                context['individual_driver'] = models.Driver.objects.filter(pk=documents)
+            elif context['type'] == "individual_driver":
+                context['individual_driver'] = models.Driver.objects.filter(
+                    pk=documents)
 
             else:
                 context['msg'] = "Algo Esta Haciendo Mal."
 
         return context
-
