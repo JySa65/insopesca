@@ -745,42 +745,52 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         date1 = self.request.GET.get('date_range1', "")
         date2 = self.request.GET.get('date_range2', "")
         f_date1, f_date2 = date1.replace("/", ""), date2.replace("/", "")
-        print(date1)
+        print("tp:",context['type'] )
         if len(context['type']) != 1:
 
             if date1 != "" and date2 != "":
 
-                day1, month1, year1, day2, month2, year2 = (f_date1[0:2],
-                        f_date1[2:4], f_date1[4:9], f_date2[0:2],
-                            f_date2[2:4], f_date2[4:9])
-                if int(day1+month1+year1) - int(day2+month2+year2) <= 0:
-                    # jajja = (datetime.strptime("21/11/06 16:30", "%d/%m/%y %H:%M"))
+                if (int(f_date1) - int(f_date2) <= 0):
 
-                    start,end = (datetime.strptime((date1+" 0:0"), "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"),datetime.strptime((date2+" 23:59"), "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"))
-
-                    print(start,end)
-                    # start, end = (datetime(int(year1), int(month1), int(day1), 0, 0),
-                    #             datetime(int(year2), int(month2), int(day2), 23, 59))
+                    start,end = (datetime.strptime((date1+" 0:0"), 
+                                "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"),
+                                    datetime.strptime((date2+" 23:59"), 
+                                        "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"))
 
                     if context['type'] =="all_company":
+
                         context['all_company'] = models.Company.objects.filter(created_at__range=(start, end))
+
                     elif context['type'] == "all_driver":
 
                         context['all_driver'] = models.Driver.objects.filter(
                             created_at__range=(start, end))
+                    else:
+                        print("asdasdasds")
+                        context['msg'] = "Esta Haciendo Algo Raro :'c"
+
                 else:
                     context['msg'] = "RANGO DE FECHA INCORRECTO."
            
             else:
                 if context['type'] =="individual_company":
-                    if len(documents)  != 0:
-                        context['individual_company'] = models.Company.objects.filter(pk=documents)
+                    if len(documents) != 0:
+                        if not (validate_uuid4(documents)):
+                            context['msg'] = "Esta Haciendo Algo Raro :'c"
+                        
+                        else:
+                            context['individual_company'] = models.Company.objects.filter(pk=documents)
+                            if len(context['individual_company']) == 0:
+                                context['msg'] = "No se encontraron Coincidencias."
                     else:
                         context['msg'] = "Falta el Documento."
 
                 elif context['type'] =="individual_driver":
                     if len(documents)  != 0:
-                        context['individual_driver'] = models.Driver.objects.filter(pk=documents)
+                        if not (validate_uuid4(documents)):
+                            context['msg'] = "Esta Haciendo Algo Raro :'c"
+                        else:
+                            context['individual_driver'] = models.Driver.objects.filter(pk=documents)
                     else:
                         context['msg'] = "Falta el Documento."
 
@@ -789,6 +799,8 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
 
                 elif context['type'] == "all_driver":
                     context['all_driver'] = models.Driver.objects.all()
+                else:
+                    context['msg'] = "Esta Haciendo Algo Raro :'c"                    
         else:
             context['msg'] = "No Pasaras La Seguridad del Sistema."
 
