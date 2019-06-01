@@ -193,18 +193,25 @@ class ReportIndividualCompanyOrDriver(View):
         report_select = self.request.GET.get('typei', '')
         ppk = self.request.GET.get('pk','')
         status = self.valid_type(report_select)
+        valid_uui =validate_uuid4(ppk)
 
         model = models.Company if report_select == "individual_company" else models.Driver
-        company = model.objects.filter(pk=ppk)
+        if valid_uui == True:
+            company = model.objects.filter(pk=ppk)
+        else:
+            company = False
 
-        return status, company, report_select,model
+        return status, company, report_select,model,valid_uui
 
     def get(self, *args, **kwargs):
-        status, data, _type,_mode = self.set_data()
+        status, data, _type,_mode,uui = self.set_data()
         if status == False:
             return alert("Algo Esta Haciendo Mal Que No Se Pudo Generar El PDF")
         if (data) == None:
             return alert("No Hay Nada Que Mostrar")
+        if (uui) == False:
+            return alert("Esta Haciendo Algo Raro :'c")
+
 
         pdf = PDF('P', 'mm', 'A4')
         pdf.alias_nb_pages()
@@ -269,7 +276,6 @@ class ReportIndividualCompanyOrDriver(View):
                 pdf.cell(90, 8, 'REALIZADO POR ', 1, 1, 'C')
 
                 for x in i.get_inspections():
-                    print(x)
 
                     _date = x.date.strftime('%d/%m/%Y')
                     status_result = x.result

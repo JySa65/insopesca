@@ -745,14 +745,11 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         date1 = self.request.GET.get('date_range1', "")
         date2 = self.request.GET.get('date_range2', "")
         f_date1, f_date2 = date1.replace("/", ""), date2.replace("/", "")
-
+        print("tp:",context['type'] )
         if len(context['type']) != 1:
 
             if date1 != "" and date2 != "":
-                print(int(f_date1) - int(f_date2))
-                day1, month1, year1, day2, month2, year2 = (f_date1[0:2],
-                        f_date1[2:4], f_date1[4:9], f_date2[0:2],
-                            f_date2[2:4], f_date2[4:9])
+
                 if (int(f_date1) - int(f_date2) <= 0):
 
                     start,end = (datetime.strptime((date1+" 0:0"), 
@@ -768,6 +765,10 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
 
                         context['all_driver'] = models.Driver.objects.filter(
                             created_at__range=(start, end))
+                    else:
+                        print("asdasdasds")
+                        context['msg'] = "Esta Haciendo Algo Raro :'c"
+
                 else:
                     context['msg'] = "RANGO DE FECHA INCORRECTO."
            
@@ -781,7 +782,6 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
                             context['individual_company'] = models.Company.objects.filter(pk=documents)
                             if len(context['individual_company']) == 0:
                                 context['msg'] = "No se encontraron Coincidencias."
-
                     else:
                         context['msg'] = "Falta el Documento."
 
@@ -799,6 +799,8 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
 
                 elif context['type'] == "all_driver":
                     context['all_driver'] = models.Driver.objects.all()
+                else:
+                    context['msg'] = "Esta Haciendo Algo Raro :'c"                    
         else:
             context['msg'] = "No Pasaras La Seguridad del Sistema."
 
