@@ -749,36 +749,35 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         if len(context['type']) != 1:
 
             if date1 != "" and date2 != "":
+                print(int(f_date2) <= int(f_date1))
+                print(int(f_date2) , int(f_date1))
 
-                if (int(f_date1) - int(f_date2) <= 0):
-
-                    start,end = (datetime.strptime((date1+" 0:0"), 
+ 
+                start,end = (datetime.strptime((date1+" 0:0"), 
                                 "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"),
                                     datetime.strptime((date2+" 23:59"), 
                                         "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"))
 
-                    if context['type']  in ['individual_driver',
-                                                'individual_company',"all_company",
-                                                'all_driver','']:
+                if context['type']  in ['individual_driver',
+                                            'individual_company',"all_company",
+                                            'all_driver','']:
 
-                        if context['type'] =="all_company":
+                    if context['type'] =="all_company":
 
-                            context['all_company'] = models.Company.objects.filter(created_at__range=(start, end))
-                            if len(context['all_company']) == 0:
-                                context['msg'] = "No hay nada que mostrar."
+                        context['all_company'] = models.Company.objects.filter(created_at__range=(start, end))
+                        if len(context['all_company']) == 0:
+                            context['msg'] = "No hay nada que mostrar."
 
-                        elif context['type'] == "all_driver":
+                    elif context['type'] == "all_driver":
 
-                            context['all_driver'] = models.Driver.objects.filter(
-                                created_at__range=(start, end))
-                            if len(context['all_driver']) == 0:
-                                context['msg'] = "No hay nada que mostrar."
-
-                    else:
-                        context['msg'] = "Esta Haciendo Algo Raro :'c."
+                        context['all_driver'] = models.Driver.objects.filter(
+                            created_at__range=(start, end))
+                        if len(context['all_driver']) == 0:
+                            context['msg'] = "No hay nada que mostrar."
 
                 else:
-                    context['msg'] = "RANGO DE FECHA INCORRECTO."
+                    context['msg'] = "Esta Haciendo Algo Raro :'c."
+
            
             else:
                 if context['type']  in ['individual_driver',
