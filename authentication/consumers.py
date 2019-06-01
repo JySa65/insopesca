@@ -10,11 +10,11 @@ class NotifyConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self):
         await self.accept()
         await self.channel_layer.group_add("events", self.channel_name)
-        print(f"Added {self.channel_name} channel to events")
+        # print(f"Added {self.channel_name} channel to events")
 
     async def disconnect(self, message):
         await self.channel_layer.group_discard("events", self.channel_name)
-        print(f"Removed {self.channel_name} channel to events")
+        # print(f"Removed {self.channel_name} channel to events")
 
     async def events_alarms(self, event):
         data = dict(
