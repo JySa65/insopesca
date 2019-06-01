@@ -745,7 +745,7 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         date1 = self.request.GET.get('date_range1', "")
         date2 = self.request.GET.get('date_range2', "")
         f_date1, f_date2 = date1.replace("/", ""), date2.replace("/", "")
-        print("tp:",context['type'] )
+
         if len(context['type']) != 1:
 
             if date1 != "" and date2 != "":
@@ -766,7 +766,6 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
                         context['all_driver'] = models.Driver.objects.filter(
                             created_at__range=(start, end))
                     else:
-                        print("asdasdasds")
                         context['msg'] = "Esta Haciendo Algo Raro :'c"
 
                 else:
