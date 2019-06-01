@@ -370,7 +370,7 @@ class ReportInspectionGeneralView(View):
 
         if (type_company == "" and company == "" and driver == "" or
                 type_company != "" and company != "" and driver != ""):
-            return alert("Debes Escoger una compañia o un tipo de compañia")
+            return alert("Debes Escoger una compañia o un tipo de compañia o conductor")
 
         if date == 1:
             if week1 == "":
@@ -379,7 +379,8 @@ class ReportInspectionGeneralView(View):
         if (type_company != 'all' and type_company != "" or
             company != "" and company != 'all' or 
             driver != "" and driver != 'all'):
-            if not validate_uuid4(type_company) and not validate_uuid4(company):
+            if (not validate_uuid4(type_company) and 
+                not validate_uuid4(company) and not validate_uuid4(driver)):
                 return alert("Esta Haciendo Algo Raro :'c")
         
         if type_company != '':
@@ -423,7 +424,8 @@ class ReportInspectionGeneralView(View):
                     pdf.cell(45, 7, 'Fecha De Inspección', 1, 0, 'C')
                     pdf.cell(45, 7, 'Proxima Inspección', 1, 0, 'C')
                     pdf.cell(35, 7, 'Resultado', 1, 0, 'C')
-                    pdf.cell(50, 7, 'Observación', 1, 1, 'C')
+                    pdf.cell(50, 7, 'Usuario Responsable', 1, 1, 'C')
+                    # pdf.cell(50, 7, 'Observación', 1, 1, 'C')
 
                     if len(company['inspections']) != 0:
                         for key_inspections, inspection in enumerate(company['inspections']):
@@ -435,6 +437,8 @@ class ReportInspectionGeneralView(View):
                             pdf.cell(45, 7, f'{info["date"]}', 1, 0, 'C')
                             pdf.cell(45, 7, f'{info["next_date"]}', 1, 0, 'C')
                             pdf.cell(35, 7, f'{result}', 1, 0, 'C')
+                            pdf.cell(
+                                35, 7, f'{info["account_register"]}', 1, 0, 'C')
                             pdf.set_font('Arial', '', 9)
                             pdf.multi_cell(
                                 50, 7, f'{info["notes"]}', 1, 1, 'C')

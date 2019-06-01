@@ -8,10 +8,9 @@ application = ProtocolTypeRouter({
     # (http->django views is added by default)
     'websocket': AuthMiddlewareStack(
         URLRouter([
-            path('ws/notify/', authentication.consumers.NotifyConsumer),
+            re_path('ws/notify/', authentication.consumers.NotifyConsumer),
             re_path(
                 r'^ws/chat/(?P<room_name>[^/]+)/$', chat.consumers.ChatConsumer),
-            # path('ws/chat/<str:room_name>', chat.consumers.ChatConsumer)
         ])
     ),
 })
