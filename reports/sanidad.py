@@ -284,7 +284,7 @@ class ReportIndividualCompanyOrDriver(View):
                     pdf.cell(45, 8, _date, 1, 0, 'C')
                     pdf.cell(40, 8, result, 1, 0, 'C')
                     pdf.cell(
-                        90, 8, (x.account_register.get_full_name()), 1, 0, 'C')
+                        90, 8, (x.account_register.get_full_name()), 1, 1, 'C')
 
                     cont += 1
         else:
@@ -335,7 +335,7 @@ class ReportIndividualCompanyOrDriver(View):
                     pdf.cell(45, 8, _date, 1, 0, 'C')
                     pdf.cell(40, 8, result, 1, 0, 'C')
                     pdf.cell(
-                        90, 8, (x.account_register.get_full_name()), 1, 0, 'C')
+                        90, 8, (x.account_register.get_full_name()), 1, 1, 'C')
 
                     cont += 1
 
