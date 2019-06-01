@@ -757,18 +757,23 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
                                     datetime.strptime((date2+" 23:59"), 
                                         "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"))
 
-                    if context['type']  in ['individual_company',
+                    if context['type']  in ['individual_driver',
                                                 'individual_company',"all_company",
                                                 'all_driver','']:
 
                         if context['type'] =="all_company":
 
                             context['all_company'] = models.Company.objects.filter(created_at__range=(start, end))
+                            if len(context['all_company']) == 0:
+                                context['msg'] = "No hay nada que mostrar."
 
                         elif context['type'] == "all_driver":
 
                             context['all_driver'] = models.Driver.objects.filter(
                                 created_at__range=(start, end))
+                            if len(context['all_driver']) == 0:
+                                context['msg'] = "No hay nada que mostrar."
+
                     else:
                         context['msg'] = "Esta Haciendo Algo Raro :'c."
 
@@ -776,7 +781,7 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
                     context['msg'] = "RANGO DE FECHA INCORRECTO."
            
             else:
-                if context['type']  in ['individual_company',
+                if context['type']  in ['individual_driver',
                                             'individual_company',"all_company",
                                             'all_driver','']:
 
@@ -792,7 +797,7 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
                         else:
                             context['msg'] = "Falta el Documento."
 
-                    elif context['type'] =="c":
+                    elif context['type'] =="individual_driver":
                         if len(documents)  != 0:
                             if not (validate_uuid4(documents)):
                                 context['msg'] = "Esta Haciendo Algo Raro :'c..."
@@ -808,9 +813,9 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
                         context['all_driver'] = models.Driver.objects.all()
                 else:
                     context['msg'] = "Esta Haciendo Algo Raro :'c...."                    
-                    print("asdad")
         else:
             context['msg'] = "No Pasaras La Seguridad del Sistema."
+
         return context
 
 
