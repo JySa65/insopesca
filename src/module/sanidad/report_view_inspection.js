@@ -30,7 +30,7 @@ const template = (inspection) => yo`
                                 <th>Ultima Inspección</th>
                                 <th>Fecha De Vencimiento</th>
                                 <th>Resultado</th>
-				<th>Usuario Responsable</th>
+                                <th>Usuario Responsable</th>
                                 <th>Observaciones</th>
                             </tr>
                         </thead>
@@ -54,20 +54,29 @@ const template = (inspection) => yo`
                                 `
                                 }
                             </th>
-			    <th>${data.inspection.user}</th>
+                            <th>${data.inspection.user}</th>
                             <th>${data.inspection.notes}</th>
                         </tbody>
                     </table>
                 </div>
                 `)}
-                <div class="row mt-5">
-                    <div class="col-12 text-center">
-                        <a href="/reports/sanidad/inspection/expired/" class="btn btn-lg btn-success" target="_blank">
-                            <i class="far fa-file-pdf"></i>
-                            Generar PDF
-                        </a>
-                    </div>
-                </div>
+                ${inspection.length != 0 
+                ? yo`
+                    <div class="row mt-5">
+                        <div class="col-12 text-center">
+                            <a href="/reports/sanidad/inspection/expired/" class="btn btn-lg btn-success" target="_blank">
+                                <i class="far fa-file-pdf"></i>
+                                Generar PDF
+                            </a>
+                        </div>
+                    </div>`
+                : yo`
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <label class="h1">No Hay Inspecciones Vencidas</label>
+                        </div>
+                    </div>`
+                }
             </div>
         </div>
     </div>

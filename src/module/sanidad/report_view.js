@@ -133,7 +133,7 @@ if (form_report_sanidad) {
                         data.forEach((data, index) => {
                             emp.append(template(data, index))
                         });
-                        const html = yo`
+                        const html = data.length != 0 ? yo`
                         <div class="row mt-5">
                             <div class="col-sm-12 text-center">
                                 <a href="/reports/sanidad/inspection/?type_company=${type_company}&company=${company}&driver=${driver}&week1=${week1}&week2=${state.week2}&date=${state.date}" class="btn btn-lg btn-success" target="_blank">
@@ -141,7 +141,13 @@ if (form_report_sanidad) {
                                     Generar PDF
                                 </a>
                             </div>
-                        </div>
+                        </div>                        
+                        ` : yo`
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <label class="h1">No Hay Inspecciones Vencidas</label>
+                                </div>
+                            </div>
                         `
                         emp.append(html)
                     } else {
