@@ -8,6 +8,7 @@ if (form_report_ugly) {
     const date_2 = document.querySelector("#id_date_range2")
     const new_date_1 = document.querySelector("#id_date_range1_text")
     const new_date_2 = document.querySelector("#id_date_range2_text")
+    selects.required = true;
 
     selects.onchange = e => {
         const val = e.target.value

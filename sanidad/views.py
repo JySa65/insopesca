@@ -759,7 +759,7 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
 
                     if context['type']  in ['individual_company',
                                                 'individual_company',"all_company",
-                                                'all_driver',' ']:
+                                                'all_driver','']:
 
                         if context['type'] =="all_company":
 
@@ -778,7 +778,7 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
             else:
                 if context['type']  in ['individual_company',
                                             'individual_company',"all_company",
-                                            'all_driver',' ']:
+                                            'all_driver','']:
 
                     if context['type'] =="individual_company" :
                         if len(documents) != 0:
