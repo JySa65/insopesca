@@ -119,3 +119,5 @@ staticfiles
 static/admin
 static/suit
 static/django_extensions
+
+default

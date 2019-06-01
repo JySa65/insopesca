@@ -2,11 +2,17 @@ from django.utils.deprecation import MiddlewareMixin
 from datetime import datetime
 from sanidad.models import Inspection
 from utils.get_driver_or_company import get_drivers_or_company
+import asyncio
 
 
 class CheckInspectionCompaniesBeat(MiddlewareMixin):
 
     def process_request(self, request):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_in_executor(None, self.check_inspections)
+
+    def check_inspections(self):
         today = datetime.now()
         inspections = Inspection.objects.exclude(
             next_date__year__lte=(today.year - 2)).filter(pass_inspection=False)
