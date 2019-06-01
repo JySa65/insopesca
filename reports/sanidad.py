@@ -193,7 +193,7 @@ class ReportIndividualCompanyOrDriver(View):
         report_select = self.request.GET.get('typei', '')
         ppk = self.request.GET.get('pk','')
         status = self.valid_type(report_select)
-        valid_uui =validate_uuid4(ppk)
+        valid_uui = validate_uuid4(ppk)
 
         model = models.Company if report_select == "individual_company" else models.Driver
         if valid_uui == True:
