@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.storage import FileSystemStorage
 from datetime import datetime, date
-from reports.base import PDF, FILENAME
+from reports.base import PDF, FILENAME, PDFL
 from utils.alert import alert
 from sanidad import models
 from utils.get_data_report import get_company_report, get_type_company_report, \
@@ -56,7 +56,7 @@ class ReportSanidadListInpections(View):
         if len(data) == 0:
             return alert("No Hay Nada Que Mostrar")
         cont = 1
-        pdf = PDF('L', 'mm', 'A4')
+        pdf = PDFL('L', 'mm', 'A4')
         pdf.alias_nb_pages()
         pdf.add_page()
         pdf.set_font('Arial', 'B', 14)
@@ -125,7 +125,7 @@ class ReportListCompanyOrDriver(View):
         if len(data) == 0:
             return alert("No Hay Nada Que Mostrar")
         cont = 1
-        pdf = PDF('L', 'mm', 'A4')
+        pdf = PDFL('L', 'mm', 'A4')
         pdf.alias_nb_pages()
         pdf.add_page()
         pdf.set_font('Arial', 'B', 12)
