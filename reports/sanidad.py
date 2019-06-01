@@ -212,7 +212,6 @@ class ReportIndividualCompanyOrDriver(View):
         if (uui) == False:
             return alert("Esta Haciendo Algo Raro :'c")
 
-
         pdf = PDF('P', 'mm', 'A4')
         pdf.alias_nb_pages()
         pdf.add_page()
