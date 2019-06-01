@@ -112,10 +112,14 @@ class ReportListCompanyOrDriver(View):
         if len(date_1) == 0 and len(date_2) == 0:
             datas = model.objects.all()
         else:
-            start,end = (datetime.strptime((date_1+" 0:0"), "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"),
-                            datetime.strptime((date_2+" 23:59"), "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"))
+            if date_1 != "" and date_2 != "":
+                start,end = (datetime.strptime((date_1+" 0:0"), "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"),
+                                datetime.strptime((date_2+" 23:59"), "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"))
 
-            datas = model.objects.filter(created_at__range=(start, end))
+                datas = model.objects.filter(created_at__range=(start, end))
+            else:
+                status = False
+                datas = False
         return status, datas, model
 
     def get(self, *args, **kwargs):
