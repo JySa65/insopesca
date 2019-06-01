@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.storage import FileSystemStorage
 from datetime import datetime, date
-from reports.base import PDF, FILENAME
+from reports.base import PDF, FILENAME, PDFL
 from utils.alert import alert
 from sanidad import models
 from utils.get_data_report import get_company_report, get_type_company_report, \
@@ -56,7 +56,7 @@ class ReportSanidadListInpections(View):
         if len(data) == 0:
             return alert("No Hay Nada Que Mostrar")
         cont = 1
-        pdf = PDF('L', 'mm', 'A4')
+        pdf = PDFL('L', 'mm', 'A4')
         pdf.alias_nb_pages()
         pdf.add_page()
         pdf.set_font('Arial', 'B', 14)
@@ -125,7 +125,8 @@ class ReportListCompanyOrDriver(View):
         if len(data) == 0:
             return alert("No Hay Nada Que Mostrar")
         cont = 1
-        pdf = PDF('L', 'mm', 'A4')
+        pdf = PDFL('L', 'mm', 'A4')
+        if _type != models.Company: pdf = PDF('P', 'mm', 'A4')
         pdf.alias_nb_pages()
         pdf.add_page()
         pdf.set_font('Arial', 'B', 12)
@@ -135,11 +136,12 @@ class ReportListCompanyOrDriver(View):
         pdf.cell(7.9, 8, '#', 1, 0, 'C')
         pdf.cell(40, 8, 'Documento', 1, 0, 'C')
         (pdf.cell(120, 8, 'Nombre', 1, 0, 'C') if _type == models.Company else
-         pdf.cell(120, 8, 'Nombres y Apellidos', 1, 0, 'C'))
+         pdf.cell(90, 8, 'Nombres y Apellidos', 1, 0, 'C'))
         pdf.cell(35, 8, 'Telefono Movil', 1, 0, 'C')
         if _type == models.Company:
-            pdf.cell(40, 8, 'SPES', 1, 0, 'C')
+            pdf.cell(35, 8, 'SPES', 1, 0, 'C')
             pdf.cell(40, 8, 'Activo', 1, 1, 'C')
+            pdf.set_font('Arial', '', 11)
             for i in data:
                 document = i.get_document()
                 name = i.get_full_name()
@@ -152,14 +154,14 @@ class ReportListCompanyOrDriver(View):
                 pdf.cell(40, 8, document, 1, 0, 'C')
                 pdf.cell(120, 8, name, 1, 0, 'C')
                 pdf.cell(35, 8, tlf, 1, 0, 'C')
-                pdf.cell(40, 8, spes, 1, 0, 'C')
+                pdf.cell(35, 8, spes, 1, 0, 'C')
                 pdf.cell(40, 8, result, 1, 1, 'C')
 
                 cont += 1
         else:
-            pdf.cell(40, 8, 'Activo', 1, 1, 'C')
+            pdf.cell(20, 8, 'Activo', 1, 1, 'C')
+            pdf.set_font('Arial', '', 11)
             for i in data:
-
                 document = i.get_document()
                 name = i.get_full_name()
                 tlf = i.tlf
@@ -168,12 +170,14 @@ class ReportListCompanyOrDriver(View):
 
                 pdf.cell(7.9, 8, str(cont), 1, 0, 'C')
                 pdf.cell(40, 8, document, 1, 0, 'C')
-                pdf.cell(120, 8, name, 1, 0, 'C')
+                pdf.cell(90, 8, name, 1, 0, 'C')
                 pdf.cell(35, 8, tlf, 1, 0, 'C')
-                pdf.cell(40, 8, result, 1, 1, 'C')
+                pdf.cell(20, 8, result, 1, 1, 'C')
 
                 cont += 1
-
+        
+        position = 190 if _type != models.Company else 275
+        pdf.cell(position, 8, f'Total De {name_title}: {len(data)}', 0, 1, 'R')
         pdf.output(FILENAME, 'F')
         fs = FileSystemStorage()
         with fs.open(FILENAME) as pdf:

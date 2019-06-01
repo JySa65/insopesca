@@ -9,7 +9,7 @@ class CheckInspectionCompaniesBeat(MiddlewareMixin):
     def process_request(self, request):
         today = datetime.now()
         inspections = Inspection.objects.exclude(
-            next_date__year__lte=(today.year - 1)).filter(pass_inspection=False)
+            next_date__year__lte=(today.year - 2)).filter(pass_inspection=False)
         today = datetime.strftime(today, "%Y-%m-%d")
         if inspections.count() != 0:
             for inspection in inspections:

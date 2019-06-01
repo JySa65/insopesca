@@ -2154,7 +2154,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/**\n * This module containts
 /*!*******************************************************!*\
   !*** ./node_modules/sweetalert2/src/staticMethods.js ***!
   \*******************************************************/
-/*! exports provided: isValidParameter, isUpdatableParameter, isDeprecatedParameter, argsToParams, getContainer, getPopup, getTitle, getContent, getImage, getIcons, getCloseButton, getActions, getConfirmButton, getCancelButton, getFooter, getFocusableElements, getValidationMessage, isLoading, isVisible, clickConfirm, clickCancel, fire, mixin, queue, getQueueStep, insertQueueStep, deleteQueueStep, showLoading, enableLoading, getTimerLeft, stopTimer, resumeTimer, toggleTimer, increaseTimer, isTimerRunning */
+/*! exports provided: argsToParams, getContainer, getPopup, getTitle, getContent, getImage, getIcons, getCloseButton, getActions, getConfirmButton, getCancelButton, getFooter, getFocusableElements, getValidationMessage, isLoading, isVisible, clickConfirm, clickCancel, fire, mixin, queue, getQueueStep, insertQueueStep, deleteQueueStep, showLoading, enableLoading, getTimerLeft, stopTimer, resumeTimer, toggleTimer, increaseTimer, isTimerRunning, isValidParameter, isUpdatableParameter, isDeprecatedParameter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

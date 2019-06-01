@@ -19,3 +19,7 @@ isoweek==1.3.3
 # cada cierto tiempor elimanara los backup anteriores
 # y tener un limite  
 #mostrar inspecciones vencida
+
+
+# g20000339-1
+# 
