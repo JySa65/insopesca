@@ -732,89 +732,77 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(
             UglyReportsView, self).get_context_data(**kwargs)
-        type_companys = models.TypeCompany.objects.all()
-        driver = models.Driver.objects.all()
-        companys = models.Company.objects.all()
         
-        context['type_companys'] = type_companys
-        context['companys'] = companys
-        context['driver'] = driver
-
-        context['type'] = self.request.GET.get("type", "")
+        drivers = models.Driver.objects.all()
+        companys = models.Company.objects.all()
+         
+        _type = self.request.GET.get("type", "")
         documents = self.request.GET.get("document", "")
         date1 = self.request.GET.get('date_range1', "")
         date2 = self.request.GET.get('date_range2', "")
-        f_date1, f_date2 = date1.replace("/", ""), date2.replace("/", "")
+        valid = self.request.GET.get('valid', '0')
+        valid_type_all = ["all_company", 'all_driver']
+        valid_type_ind = ['individual_driver', 'individual_company']
 
-        if len(context['type']) != 1:
+        context['companys'] = companys
+        context['driver'] = drivers
+        context['type'] = _type
+        valid_type = valid_type_all + valid_type_ind
+        print(str(date2) < str(date1))
+        if _type not in valid_type and _type != "":
+            context['msg'] = "Esta Haciendo Algo Raro :'c."
+            return context
 
-            if date1 != "" and date2 != "":
-                print(int(f_date2) <= int(f_date1))
-                print(int(f_date2) , int(f_date1))
+        if valid == "1":
+            start = datetime.strptime((date1), 
+                                             "%d/%m/%Y").strftime("%Y-%m-%d %H:%M")
+            end = datetime.today()
 
- 
-                start,end = (datetime.strptime((date1+" 0:0"), 
-                                "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"),
-                                    datetime.strptime((date2+" 23:59"), 
-                                        "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"))
+            if date2 != "":
+                end = datetime.strptime((date2+" 23:59"), 
+                                            "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M")
 
-                if context['type']  in ['individual_driver',
-                                            'individual_company',"all_company",
-                                            'all_driver','']:
+            if str(end) <= str(start):
+                context['msg'] = "Rango de Fechas es Incoherente"
+                return context
 
-                    if context['type'] =="all_company":
 
-                        context['all_company'] = models.Company.objects.filter(created_at__range=(start, end))
-                        if len(context['all_company']) == 0:
-                            context['msg'] = "No hay nada que mostrar."
+        if _type == "all_company":
+            if valid == "1": 
+                companys = companys.filter(created_at__range=(start, end))    
+            context['all_company'] = companys
+            if len(companys) == 0:
+                context['msg'] = "No hay nada que mostrar..."
 
-                    elif context['type'] == "all_driver":
+            return context
 
-                        context['all_driver'] = models.Driver.objects.filter(
-                            created_at__range=(start, end))
-                        if len(context['all_driver']) == 0:
-                            context['msg'] = "No hay nada que mostrar."
+        if _type == "all_driver":
+            if valid == "1": 
+                drivers = drivers.filter(created_at__range=(start, end))    
+            context['all_driver'] = drivers
+            if len(drivers) == 0:
+                context['msg'] = "No hay nada que mostrar.."
+            return context
 
-                else:
-                    context['msg'] = "Esta Haciendo Algo Raro :'c."
+        if _type in valid_type_ind:
+            if documents == "":
+                context['msg'] = "Esta Haciendo Algo Raro :'c.."
 
-           
-            else:
-                if context['type']  in ['individual_driver',
-                                            'individual_company',"all_company",
-                                            'all_driver','']:
+            if documents != "" and not validate_uuid4(documents):
+                context['msg'] = "Esta Haciendo Algo Raro :'c.."
+            return context
 
-                    if context['type'] =="individual_company" :
-                        if len(documents) != 0:
-                            if not (validate_uuid4(documents)):
-                                context['msg'] = "Esta Haciendo Algo Raro :'c.."
-                            
-                            else:
-                                context['individual_company'] = models.Company.objects.filter(pk=documents)
-                                if len(context['individual_company']) == 0:
-                                    context['msg'] = "No se encontraron Coincidencias."
-                        else:
-                            context['msg'] = "Falta el Documento."
+        if _type == 'individual_company':
+            company = companys.filter(pk=documents)
+            context['individual_company'] = company
+            if len(company) == 0:
+                context['msg'] = "No hay coincidencia."
 
-                    elif context['type'] =="individual_driver":
-                        if len(documents)  != 0:
-                            if not (validate_uuid4(documents)):
-                                context['msg'] = "Esta Haciendo Algo Raro :'c..."
-                            else:
-                                context['individual_driver'] = models.Driver.objects.filter(pk=documents)
-                        else:
-                            context['msg'] = "Falta el Documento."
-
-                    elif context['type'] == "all_company":
-                        context['all_company'] = models.Company.objects.all()
-
-                    elif context['type'] == "all_driver":
-                        context['all_driver'] = models.Driver.objects.all()
-                else:
-                    context['msg'] = "Esta Haciendo Algo Raro :'c...."                    
-        else:
-            context['msg'] = "No Pasaras La Seguridad del Sistema."
-
+        if _type == 'individual_driver':
+            driver = driver.filter(pk=documents)
+            context['individual_driver'] = driver
+            if len(driver) == 0:
+                context['msg'] = "No hay coincidencia."
         return context
 
 

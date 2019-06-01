@@ -33,6 +33,7 @@ RESGISTRO
             </div>
             <div class="card-body">
                 <form action="" method="GET" id="id_form_report_uglys">
+                    <input type="hidden" name="valid" id="id_valid">
                     <div class="text-center mb-4">
                         <label class="h3 text-primary">
                             Reportes De {% if tip == "company" %} Compañias {% else %} Conductores {% endif %}
@@ -45,7 +46,7 @@ RESGISTRO
                                     <div class="form-group mx-sm-3 mb-3 text">
                                         <label for="id_type" class="pr-2"><b>Por:</b></label>
                                         <select name="type" id="id_type" class="form-control show-tick">
-                                            <option value=" ">-------</option>
+                                            <option value="">-------</option>
                                             {% if tip == "company" %}
                                             <optgroup label="Compañia">
                                                 <option value="individual_company">Indiviual</option>
@@ -102,7 +103,6 @@ RESGISTRO
                             </div>
                         </div>
                     </div>
-
                     <div class="col-md-4 col-sm-12 offset-md-4 mt-4">
                         <div class="form-group mx-sm-3 mb-3 text-center">
                             <button type="search" class="btn btn-success btn-block">Buscar</button>
@@ -111,7 +111,6 @@ RESGISTRO
                 </form>
             </div>
         </div>
-
 
         {% for i in all_company %}
         <div class="card">
@@ -377,7 +376,7 @@ RESGISTRO
                     <div class="card-body">
                         <div class="col-md-4 col-sm-12 offset-md-4 mt-4">
                             <div class="form-group mx-sm-3 mb-3 text-center">
-                                <a href="{% url 'reports:sanidad_report_all' %}?typei={{ request.GET.type }}&date1={{ request.GET.date_range1 }}&date2={{ request.GET.date_range2 }}"
+                                <a href="{% url 'reports:sanidad_report_all' %}?typei={{ request.GET.type }}&date1={{ request.GET.date_range1 }}&date2={{ request.GET.date_range2 }}&valid={{request.GET.valid}}"
                                     class="btn btn-lg btn-success btn-block" target="_blank">
                                     <i class="far fa-file-pdf"></i>
                                     Generar Resporte

@@ -93,4 +93,15 @@ if (form_report_ugly) {
         });
         $('#id_date_range2').datepicker('setStartDate', date)
     } 
+
+    form_report_ugly.addEventListener('submit', e => {
+        e.preventDefault()
+        const id_valid = document.querySelector('#id_valid')
+        id_valid.value = 0
+        if (date_1.value != '') {
+            id_valid.value=1
+        }
+        form_report_ugly.submit()
+    })
+
 }
