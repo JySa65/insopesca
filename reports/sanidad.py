@@ -110,32 +110,42 @@ class ReportListCompanyOrDriver(View):
         status = self.valid_type(report_select)
         valid = self.request.GET.get('valid', '0')
         values = None
+        dates = None
 
         model = models.Company if report_select == "all_company" else models.Driver
         if valid == "1":
-            start = datetime.strptime((date_1), "%d/%m/%Y").strftime("%Y-%m-%d %H:%M")
-            end = datetime.today()
+            if date_1 != '':
+                start = datetime.strptime((date_1), "%d/%m/%Y").strftime("%Y-%m-%d %H:%M")
+                end = datetime.today()
             if date_2 != "":
                 end = datetime.strptime((date_2+" 23:59"), 
                                             "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M")
-            if str(end) <= str(start):
-                values = False
+            if date_1 !="":
+                if str(end) <= str(start):
+                    values = False
 
-        if (date_1) == "":
+            else:
+                dates = False
+                
+        if (date_1) == '':
             datas = model.objects.all()
         else:
             datas = model.objects.filter(created_at__range=(start, end))
-        return status, datas, model,values
+        return status, datas, model,values,dates
 
     def get(self, *args, **kwargs):
-        status, data, _type,val = self.set_data()
+        status, data, _type,val,dates_value = self.set_data()
 
         if status == False:
             return alert("Algo Esta Haciendo Mal Que No Se Pudo Generar El PDF")
+        if dates_value == False:
+            return alert("Por Favor declare Las Fechas,.")
         if val == False:
             return alert("Rango de Fechas Incoherente.")
+
         if len(data) == 0:
             alert("No hay nada que mostrar")
+
         cont = 1
         pdf = PDFL('L', 'mm', 'A4')
         if _type != models.Company: pdf = PDF('P', 'mm', 'A4')

@@ -754,17 +754,22 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
             return context
 
         if valid == "1":
-            start = datetime.strptime((date1), 
-                                             "%d/%m/%Y").strftime("%Y-%m-%d %H:%M")
-            end = datetime.today()
+            if date1 != "":
+                start = datetime.strptime((date1), 
+                                                "%d/%m/%Y").strftime("%Y-%m-%d %H:%M")
+                end = datetime.today()
 
-            if date2 != "":
-                end = datetime.strptime((date2+" 23:59"), 
-                                            "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M")
+                if date2 != "":
+                    end = datetime.strptime((date2+" 23:59"), 
+                                                "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M")
 
-            if str(end) <= str(start):
-                context['msg'] = "ESTAS BUSCANDO A MADURO :D"
+                if str(end) <= str(start):
+                    context['msg'] = "Rango de Fechas es Incoherente"
+                    return context
+            else:
+                context['msg'] = "Declare las Fechas Por Favor."
                 return context
+            
 
         if _type == "all_company":
             if valid == "1": 
@@ -784,11 +789,11 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
 
         if _type in valid_type_ind:
             if documents == "":
-                context['msg'] = "Esta Haciendo Algo Raro :'c.., NO ESNCONTRARAS A MADURO AQUI"
+                context['msg'] = "Esta Haciendo Algo Raro :'c.."
                 return context
 
             if documents != "" and not validate_uuid4(documents):
-                context['msg'] = "Esta Haciendo Algo Raro :'c., MADURO TE AMA"
+                context['msg'] = "Esta Haciendo Algo Raro :'c.."
                 return context
 
         if _type == 'individual_company':
