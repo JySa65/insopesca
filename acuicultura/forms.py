@@ -1,6 +1,6 @@
 from django import forms
 from acuicultura.models import ProductionUnit, CardinalPoint, RepreUnitProductive, \
-    Specie, Tracing, InspectionLagoon, BoundaryMap
+    Specie, Tracing, InspectionLagoon, BoundaryMap, StatusInsopesca
 from django.db.models import Q
 
 
@@ -74,8 +74,8 @@ class TracingCreateForm(forms.ModelForm):
 
     class Meta:
         model = Tracing
-        fields = ('number_lagoon', 'new_number_lagoon', 'number_well', 'new_number_well',
-                  'illegal_superfaces', 'permise_superfaces', 'regular_superfaces')
+        fields = ('number_lagoon', 'new_number_lagoon', 
+                'number_well', 'new_number_well',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -87,8 +87,8 @@ class TracingCreateForm(forms.ModelForm):
 class TracingUpdateForm(forms.ModelForm):
     class Meta:
         model = Tracing
-        fields = ('number_lagoon', 'new_number_lagoon', 'number_well', 'new_number_well',
-                  'illegal_superfaces', 'permise_superfaces', 'regular_superfaces')
+        fields = ('number_lagoon', 'new_number_lagoon', 
+                'number_well', 'new_number_well')
 
     def __init__(self, *args, **kwargs):
 
@@ -135,3 +135,16 @@ class InspectionLagoonForm(forms.ModelForm):
             if name == "notes":
                 field.widget.attrs.update(
                     {'class': 'form-control', 'autocomplete': 'off', 'rows': 1})
+
+
+class StatusInsopescaForm(forms.ModelForm):
+
+    class Meta:
+        model = StatusInsopesca
+        exclude = ('company',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for _, field in self.fields.items():
+            field.widget.attrs.update(
+                {'class': 'custom-control-input'})

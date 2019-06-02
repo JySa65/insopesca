@@ -6,6 +6,7 @@ services:
     env_file: ./.env
     volumes:
       - ./.docker/postgres:/var/lib/postgresql/data
+    command: ["-c", "shared_buffers=256MB", "-c", "max_connections=200", "-c", "log_lock_waits=on"]
     networks:
       - insopesca
 

@@ -175,6 +175,24 @@ class Well(models.Model):
         return str(self.pk)
 
 
+class StatusInsopesca(models.Model):
+    company = models.OneToOneField(ProductionUnit, on_delete=models.CASCADE)
+    illegal_superfaces = models.BooleanField(
+        verbose_name=_("Superficies Ilegales"),
+        blank=False, null=False)
+    permise_superfaces = models.BooleanField(
+        verbose_name=_("Superficies Permisadas"),
+        blank=False, null=False)
+    regular_superfaces = models.BooleanField(
+        verbose_name=_("Superficies Registradas"),
+        blank=False, null=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.company)
+
 class Tracing(models.Model):
     id = models.UUIDField(
         default=uuid.uuid4, editable=False, unique=True, primary_key=True)
@@ -190,12 +208,6 @@ class Tracing(models.Model):
     new_number_well = models.PositiveIntegerField(
         _("Numero de  Nuevos Pozos "), null=False, blank=False)
 
-    illegal_superfaces = models.PositiveIntegerField(
-        _("Numero de Superficies Ilegales"), blank=False, null=False)
-    permise_superfaces = models.PositiveIntegerField(
-        _("Numero de Superficies Permisadas"), blank=False, null=False)
-    regular_superfaces = models.PositiveIntegerField(
-        _("Numero de Superficies Registradas"), blank=False, null=False)
     responsible = models.ForeignKey(User, on_delete=models.CASCADE)
 
     date = models.DateField(verbose_name=_('Fecha Del Seguimiento'),

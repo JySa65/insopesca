@@ -1,6 +1,6 @@
 from django.contrib import admin
 from acuicultura.models import ProductionUnit, Specie, CardinalPoint,RepreUnitProductive,Lagoon,LagoonTracing,Well,WellTracing,Tracing,LagoonEspecies, \
-    InspectionLagoon, RepreUnitProductiveMany
+    InspectionLagoon, RepreUnitProductiveMany, StatusInsopesca
 # from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Group
 
@@ -9,6 +9,7 @@ from django.contrib.auth.models import Group
 
 # Register your models here.
 
+admin.site.register(StatusInsopesca)
 admin.site.register(ProductionUnit)
 admin.site.register(Specie)
 admin.site.register(Lagoon)

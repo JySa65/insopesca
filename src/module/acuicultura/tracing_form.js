@@ -19,14 +19,31 @@ if (id_new_lagoon && id_new_well) {
     let dataSave = {
         lagoon: [],
         well: [],
-        illegal_superfaces: 0,
-        permise_superfaces: 0,
-        regular_superfaces: 0,
         well_current: well_current,
         laggon_current: laggon_current
     }
 
-    const onChange = (index, dat) => e => dat[index][e.target.name] = e.target.value
+    const onChange = (index, dat, id="") => e => {
+        const name = e.target.name
+        const value = e.target.value
+        if (name == 'type') {
+            if (value == 'circular'){
+                const $el = document.querySelector(`#${id}_div`)
+                const $input = document.querySelector(`#${id}`)
+                $input.type = 'hidden'
+                $input.value = 0
+                $el.setAttribute('hidden', 'hidden')
+                dat[index]['height'] = 0
+            } else {
+                const $el = document.querySelector(`#${id}_div`)
+                const $input = document.querySelector(`#${id}`)
+                $input.type = 'number'
+                $input.value = ''
+                $el.removeAttribute('hidden')
+            }
+        } 
+        dat[index][name] = value
+    }
 
     const onChangeInput = e => dataSave[e.target.name] = e.target.value
 
@@ -113,6 +130,17 @@ if (id_new_lagoon && id_new_well) {
                 <div class="col-sm-10">
                     <div class="row" id=${index}>
                         <div class="col-md-6 col-sm-12">
+                            <label for="${id}" class="col-form-label">
+                                Tipo De Laguna Nro° ${index + 1}
+                            </label>
+                            <select name="type" required class="form-control" onchange="${onChange(index, data, `height_${index}`)}">
+                                <option ${!value.type ? 'selected' : ''} value="">------------</option>
+                                <option ${value.type == 'circular' ? 'selected' : ''}     value="circular">Circular</option>
+                                <option ${value.type == 'rectangular' ? 'selected' : ''}     value="rectangular">Rectangular</option>
+                                <option ${value.type == 'irregular' ? 'selected' : ''}     value="irregular">Irregular</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="${id}" class="col-form-label">
                                     Ancho de la Laguna Nro° ${index + 1}
@@ -130,25 +158,14 @@ if (id_new_lagoon && id_new_well) {
                                     onchange="${onChange(index, data)}" required autocomplete="off">
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-12">
+                        <div class="col-md-6 col-sm-12" ${value.type == 'circular' ? 'hidden' : ''} id="height_${index}_div">
                             <div class="form-group">
                                 <label for="${id}" class="col-form-label">
                                     Altura de la Laguna Nro° ${index + 1}
                                 </label>
-                                <input class="form-control" type="number" step="any" name="height" id="${id}" value="${value.height}"
+                                <input class="form-control" type="${value.type == 'circular' ? 'hidden' : 'number'}" step="any" name="height" id="height_${index}" value="${value.height}"
                                     onchange="${onChange(index, data)}" required autocomplete="off">
                             </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <label for="${id}" class="col-form-label">
-                                Sistema de Cultivo Nro° ${index + 1}
-                            </label>
-                            <select name="type" required class="form-control" onchange="${onChange(index, data)}">
-                                <option ${!value.type ? 'selected' : ''} value="">------------</option>
-                                <option ${value.type == 'circular' ? 'selected' : ''}     value="circular">Circular</option>
-                                <option ${value.type == 'rectangular' ? 'selected' : ''}     value="rectangular">Rectangular</option>
-                                <option ${value.type == 'irregular' ? 'selected' : ''}     value="irregular">Irregular</option>
-                            </select>
                         </div>
                         <div class="col-md-6 col-sm-12">
                             <label for="${id}" class="col-form-label">
@@ -249,7 +266,7 @@ if (id_new_lagoon && id_new_well) {
         const html = []
         const emt = empty($root)
         dat.forEach((item, index) => html.push(
-            template("id_well", index, item)))
+            template(id, index, item)))
         html.forEach(inp => {
             emt.append(inp)
         })
@@ -277,10 +294,6 @@ if (id_new_lagoon && id_new_well) {
         })
         return render('#id_data_well', dataWell, well_template)
     })
-
-    id_illegal_superfaces.addEventListener('change', e => onChangeInput(e))
-    id_permise_superfaces.addEventListener('change', e => onChangeInput(e))
-    id_regular_superfaces.addEventListener('change', e => onChangeInput(e))
 
     const saveData = data => {
         const pk = object_pk
@@ -341,7 +354,7 @@ if (tracingDetailDelete) {
                         showConfirmButton: false,
                         timer: 1000
                     })
-                    window.location.href = "http://localhost:8000/acuicultura/production/unit/List/"
+                    window.location.href = `${window.location.origin}/acuicultura/production/unit/List/`
                 }
             })
     })

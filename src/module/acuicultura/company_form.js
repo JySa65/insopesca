@@ -14,6 +14,36 @@ if (id_form_company_acui) {
 
     document.querySelector("#id_tlf_house").addEventListener(
         "keypress", (event) => validInput('n', 11, event))
+
+    const $id_illegal_superfaces = document.querySelector("#id_illegal_superfaces")
+    const $id_permise_superfaces = document.querySelector("#id_permise_superfaces")
+    const $id_regular_superfaces = document.querySelector("#id_regular_superfaces")
+    
+    const enabledDisabled = (status, ids) => {
+        if (status) {
+            ids.forEach(id => {
+                id.checked = false
+                id.setAttribute("disabled", "disabled")
+            })
+        } else {
+            ids.forEach(id => {
+                id.checked = false
+                id.removeAttribute('disabled')
+            })
+        }
+    }
+
+    $id_illegal_superfaces.addEventListener('change', 
+        e => enabledDisabled(e.target.checked, 
+            [$id_permise_superfaces,$id_regular_superfaces]))
+    
+    $id_permise_superfaces.addEventListener('change', 
+        e => enabledDisabled(e.target.checked, 
+            [$id_illegal_superfaces]))
+
+    $id_regular_superfaces.addEventListener('change', 
+        e => enabledDisabled(e.target.checked, 
+            [$id_illegal_superfaces]))
 }
 
 const deleteuni = (password, company) => {

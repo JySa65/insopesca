@@ -93,6 +93,26 @@ Acuicultura / Unida Productora /{{ object.name }}
 
 		<div class="card">
 			<div class="card-header">
+				<span class="h4 text-primary"><b>Estatus En Insopesca</b></span>
+			</div>
+			<div class="card-body">
+				<div class="text-center">
+					{% if status_ins.illegal_superfaces %}
+					<h1 class="text-danger">Ilegal</h1>
+					{{ status_ins }}
+					{% else %}
+					<h1 class="text-success">Registrada y Permisada</h1>
+					{% endif %}
+					<a href="{% url 'acuicultura:status_update' pk=status_ins.pk pkc=object.pk %}" class="btn btn-rounded btn-info">
+						<i class="far fa-edit"></i>
+						Editar
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-header">
 				<span class="h4 text-primary"><b>UMT</b></span>
 			</div>
 			<div class="card-body">

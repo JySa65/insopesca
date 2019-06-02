@@ -1,6 +1,7 @@
 from django.urls import path
 from acuicultura.views import AcuiculturaHome, ProductionUnitCreateView,\
-    ProductionUnitUpdate, ProductionuUnitDetail, ProductionUnitDelete, ProductionUnitList,\
+    ProductionUnitUpdate, ProductionuUnitDetail, ProductionUnitDelete, \
+         ProductionUnitList, StatusInsopescaUpdateView, \
     SpeciesCreateView, SpeciesList, SpeciesDetail, SpeciesUpdate, SpeciesDelete, TracingCreate, RepreUnitCreate,\
     TracingDetail, WellDetail, LagoonDetail, TracingdeleteView, Representative_unit_production_delete, Representative_unit_production_detail, \
     RepresentativeUnitProductionUpdate, TracingInspectionHomeView, \
@@ -8,11 +9,6 @@ from acuicultura.views import AcuiculturaHome, ProductionUnitCreateView,\
     LagoonInspectionCreateView
 
 
-# ,Production_unit_CreateView,Production_unit_Update,Production_unit_List, \
-# Production_unit_Detail,Production_unit_Delete,SpeciesCreateView,SpeciesDelete,SpeciesDetail, \
-# SpeciesList,SpeciesUpdate,TracingCreate,TracingDetail,TracingUpdate,Tracingdelete ,TracingList, \
-# Representative_unit_production_create,Representative_unit_production_delete,Representative_unit_production_list,\
-# Representative_unit_production_detail,Representative_unit_production_update
 
 app_name = "acuicultura"
 urlpatterns = [
@@ -66,6 +62,9 @@ urlpatterns = [
           LagoonInspectionView.as_view(), name="inspection_lagoon"),
 
     path('inspection/<uuid:pk>/create', 
-         LagoonInspectionCreateView.as_view(), name="inspection_create")
+         LagoonInspectionCreateView.as_view(), name="inspection_create"),
+    
+    path('<int:pk>/update/<uuid:pkc>', 
+         StatusInsopescaUpdateView.as_view(), name="status_update")
 
 ]

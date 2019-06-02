@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, render_to_response
-from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, LagoonEspecies, RepreUnitProductiveMany, BoundaryMap, BoundaryMapSelect, InspectionLagoon
-from acuicultura.forms import UnitCreateForm, CardinaPointForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm, BoundaryMapForm, InspectionLagoonForm
+from acuicultura.models import ProductionUnit, Specie, Tracing, RepreUnitProductive, CardinalPoint, Well, WellTracing, Lagoon, LagoonTracing, LagoonEspecies, RepreUnitProductiveMany, BoundaryMap, BoundaryMapSelect, InspectionLagoon, StatusInsopesca
+from acuicultura.forms import UnitCreateForm, CardinaPointForm, EspecieForm, TracingCreateForm, TracingUpdateForm, RepresentativeForm, BoundaryMapForm, InspectionLagoonForm, StatusInsopescaForm
 from django.core.paginator import Paginator
 from django.db.models import Q, Sum
 from django.db.models.functions import Lower
@@ -73,9 +73,11 @@ class ProductionUnitCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateVi
     model = ProductionUnit
     second_model = CardinalPoint
     thrid_model = BoundaryMap
+    four_model = StatusInsopesca
     form_class = UnitCreateForm
     second_form = CardinaPointForm
     three_form = BoundaryMapForm
+    four_form = StatusInsopescaForm
     template_name = "acuicultura/production_unit_form.html"
 
     def get_context_data(self, **kwargs):
@@ -83,28 +85,35 @@ class ProductionUnitCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateVi
         context["first"] = self.form_class()
         context["second"] = self.second_form()
         context["three"] = self.three_form()
+        context["four"] = self.four_form()
         return context
 
     def post(self, request, *args, **kwargs):
         unit_form = self.form_class(request.POST)
         utm_form = self.second_form(request.POST)
         location_form = self.three_form(request.POST)
+        status_form = self.four_form(request.POST)
 
-        if unit_form.is_valid() and utm_form.is_valid() and location_form.is_valid():
+        if (unit_form.is_valid() and utm_form.is_valid() and 
+                location_form.is_valid() and status_form.is_valid()):
             with transaction.atomic():
                 unit_save = unit_form.save()
                 utm = utm_form.save(commit=False)
                 utm.production_unit_id = unit_save.pk
                 location = location_form.save(commit=False)
                 location.production_unit = unit_save
+                status = status_form.save(commit=False)
+                status.company = unit_save
                 utm.save()
                 location.save()
+                status.save()
                 return HttpResponseRedirect(
                     reverse('acuicultura:detail_unit', args=(unit_save.pk,)))
         return render(
             request,
             self.template_name,
-            {'form': unit_form, 'second': utm_form, 'three': location_form})
+            {'form': unit_form, 'second': utm_form, 
+                'three': location_form, 'four': status_form})
 
 
 class ProductionUnitUpdate(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):
@@ -167,6 +176,8 @@ class ProductionuUnitDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView)
             production_unit=self.object)
         context['tracing'] = Tracing.objects.filter(
             producion_unit=self.object).order_by('-created_at')
+        context['status_ins'] = StatusInsopesca.objects.filter(
+            company=self.object).first()
         return context
 
 
@@ -328,10 +339,10 @@ class TracingInspectionHomeView(LoginRequiredMixin, UserUrlCorrectMixin, Templat
         return context
 
 
-class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
+class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
     model = Tracing
-    form_class = TracingCreateForm
-    tempalte_name = "acuicultura/tracing_form.html"
+    # form_class = TracingCreateForm
+    template_name = "acuicultura/tracing_form.html"
 
     def get_object(self):
         pk = self.kwargs['pk']
@@ -355,9 +366,9 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
         data = json.loads(str(request.body, 'utf-8'))
         lagoons = data.get('lagoon')
         wells = data.get('well')
-        illegal_superfaces = data.get('illegal_superfaces', 0)
-        permise_superfaces = data.get('permise_superfaces', 0)
-        regular_superfaces = data.get('regular_superfaces', 0)
+        # illegal_superfaces = data.get('illegal_superfaces', 0)
+        # permise_superfaces = data.get('permise_superfaces', 0)
+        # regular_superfaces = data.get('regular_superfaces', 0)
         well_current = data.get('well_current', 0)
         laggon_current = data.get('laggon_current', 0)
         producion_unit = self.get_object()
@@ -418,20 +429,17 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
                     )
                     return JsonResponse(data)
 
-        if (illegal_superfaces == 0 or
-                permise_superfaces == 0 or regular_superfaces == 0):
-            data = dict(
-                status=False,
-                msg=f"Algunos Datos Son Requeridos En La Superficies"
-            )
-            return JsonResponse(data)
+        # if (illegal_superfaces == 0 or
+        #         permise_superfaces == 0 or regular_superfaces == 0):
+        #     data = dict(
+        #         status=False,
+        #         msg=f"Algunos Datos Son Requeridos En La Superficies"
+        #     )
+        #     return JsonResponse(data)
 
         try:
             with transaction.atomic():
                 data = dict(
-                    illegal_superfaces=illegal_superfaces,
-                    permise_superfaces=permise_superfaces,
-                    regular_superfaces=regular_superfaces,
                     number_well=well_current,
                     number_lagoon=laggon_current,
                     new_number_lagoon=len(lagoons),
@@ -492,7 +500,6 @@ class TracingDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
             tracing=self.kwargs['pk'])
         context['lagoon_tracing'] = LagoonTracing.objects.filter(
             tracing=self.kwargs['pk'])
-
         return context
 
 
@@ -721,3 +728,6 @@ class LagoonInspectionCreateView(LoginRequiredMixin, UserUrlCorrectMixin, Create
             'acuicultura:inspection_lagoon', args=(self.kwargs.get('pk'),))
 
     
+class StatusInsopescaUpdateView(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):
+    model = StatusInsopesca
+    form_class = StatusInsopescaForm

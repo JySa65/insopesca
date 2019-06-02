@@ -186,6 +186,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 
 # seccion expire
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 3600
+# SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# SESSION_COOKIE_AGE = 3600
