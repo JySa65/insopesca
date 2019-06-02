@@ -102,32 +102,50 @@ class ReportListCompanyOrDriver(View):
             return False
         return True
 
+
     def set_data(self):
         report_select = self.request.GET.get('typei', '')
         date_1 = self.request.GET.get('date1', '')
         date_2 = self.request.GET.get('date2', '')
         status = self.valid_type(report_select)
-        model = models.Company if report_select == "all_company" else models.Driver
+        valid = self.request.GET.get('valid', '0')
+        values = None
+        dates = None
 
-        if len(date_1) == 0 and len(date_2) == 0:
+        model = models.Company if report_select == "all_company" else models.Driver
+        if valid == "1":
+            if date_1 != '':
+                start = datetime.strptime((date_1), "%d/%m/%Y").strftime("%Y-%m-%d %H:%M")
+                end = datetime.today()
+            if date_2 != "":
+                end = datetime.strptime((date_2+" 23:59"), 
+                                            "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M")
+            if date_1 !="":
+                if str(end) <= str(start):
+                    values = False
+
+            else:
+                dates = False
+                
+        if (date_1) == '':
             datas = model.objects.all()
         else:
-            if date_1 != "" and date_2 != "":
-                start,end = (datetime.strptime((date_1+" 0:0"), "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"),
-                                datetime.strptime((date_2+" 23:59"), "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M"))
-
-                datas = model.objects.filter(created_at__range=(start, end))
-            else:
-                status = False
-                datas = False
-        return status, datas, model
+            datas = model.objects.filter(created_at__range=(start, end))
+        return status, datas, model,values,dates
 
     def get(self, *args, **kwargs):
-        status, data, _type = self.set_data()
+        status, data, _type,val,dates_value = self.set_data()
+
         if status == False:
             return alert("Algo Esta Haciendo Mal Que No Se Pudo Generar El PDF")
+        if dates_value == False:
+            return alert("Por Favor declare Las Fechas,.")
+        if val == False:
+            return alert("Rango de Fechas Incoherente.")
+
         if len(data) == 0:
-            return alert("No Hay Nada Que Mostrar")
+            alert("No hay nada que mostrar")
+
         cont = 1
         pdf = PDFL('L', 'mm', 'A4')
         if _type != models.Company: pdf = PDF('P', 'mm', 'A4')
@@ -142,6 +160,7 @@ class ReportListCompanyOrDriver(View):
         (pdf.cell(120, 8, 'Nombre', 1, 0, 'C') if _type == models.Company else
          pdf.cell(90, 8, 'Nombres y Apellidos', 1, 0, 'C'))
         pdf.cell(35, 8, 'Telefono Movil', 1, 0, 'C')
+
         if _type == models.Company:
             pdf.cell(35, 8, 'SPES', 1, 0, 'C')
             pdf.cell(40, 8, 'Activo', 1, 1, 'C')
