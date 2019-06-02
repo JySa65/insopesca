@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -24,10 +23,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-# DEBUG = False
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 APPS_DJANGO = [
@@ -163,12 +160,10 @@ USE_TZ = True
 
 STATIC = "static"
 STATIC_URL = f"/{STATIC}/"
-if DEBUG:
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, STATIC)
-    ]
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, STATIC)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, STATIC)
+]
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -191,6 +186,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 
 # seccion expire
-# SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
-# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-# SESSION_COOKIE_AGE = 3600
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 3600

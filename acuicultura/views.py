@@ -353,7 +353,6 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         data = json.loads(str(request.body, 'utf-8'))
-        print(data)
         lagoons = data.get('lagoon')
         wells = data.get('well')
         illegal_superfaces = data.get('illegal_superfaces', 0)

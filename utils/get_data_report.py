@@ -23,8 +23,8 @@ def get_type_company_report(type_company, date, week1, week2):
             inspection_total += len(inspections)
             inspections = serializers.serialize(
                 'json', inspections,
-                fields=('date', 'result', 'account_register__name',
-                        'next_date', 'notes',))
+                fields=('date', 'result', 'account_register',
+                        'next_date', 'notes',),  use_natural_foreign_keys=True, use_natural_primary_keys=True)
             data[key]['companys'].append(dict(
                 name=company.get_full_name(),
                 inspections=json.loads(inspections)
@@ -53,7 +53,7 @@ def get_company_report(company, date, week1, week2):
         inspections = serializers.serialize(
             'json', inspections,
             fields=('date', 'result', 'account_register',
-                    'next_date', 'notes',))
+                    'next_date', 'notes',),  use_natural_foreign_keys=True, use_natural_primary_keys=True)
         data[key]['companys'].append(dict(
             name=compan.get_full_name(),
             inspections=json.loads(inspections)
@@ -81,7 +81,7 @@ def get_driver_report(driver, date, week1, week2):
         inspections = serializers.serialize(
             'json', inspections,
             fields=('date', 'result', 'account_register',
-                    'next_date', 'notes',))
+                    'next_date', 'notes',), use_natural_foreign_keys=True, use_natural_primary_keys=True)
         data[key]['companys'].append(dict(
             name=compan.get_full_name(),
             inspections=json.loads(inspections)

@@ -425,7 +425,6 @@ class ReportInspectionGeneralView(View):
                     pdf.cell(45, 7, 'Proxima Inspección', 1, 0, 'C')
                     pdf.cell(35, 7, 'Resultado', 1, 0, 'C')
                     pdf.cell(50, 7, 'Usuario Responsable', 1, 1, 'C')
-                    # pdf.cell(50, 7, 'Observación', 1, 1, 'C')
 
                     if len(company['inspections']) != 0:
                         for key_inspections, inspection in enumerate(company['inspections']):
@@ -438,10 +437,9 @@ class ReportInspectionGeneralView(View):
                             pdf.cell(45, 7, f'{info["next_date"]}', 1, 0, 'C')
                             pdf.cell(35, 7, f'{result}', 1, 0, 'C')
                             pdf.cell(
-                                35, 7, f'{info["account_register"]}', 1, 0, 'C')
-                            pdf.set_font('Arial', '', 9)
+                                50, 7, f'{info["account_register"][0]}', 1, 1, 'C')
                             pdf.multi_cell(
-                                50, 7, f'{info["notes"]}', 1, 1, 'C')
+                                185, 7, f'Observaciones: {info["notes"]}', 1, 1, '')
                     else:
                         pdf.set_font('Arial', 'B', 12)
                         pdf.cell(185, 10,
@@ -494,5 +492,8 @@ class ReportInspectionExpired(View):
             pdf.cell(50, 7, f"{inspection['inspection']['pass_date']}", 1, 0, 'C')
             pdf.cell(35, 7, f'{result}', 1, 0, "C")
             pdf.cell(60, 7, f"{inspection['inspection']['user']}", 1, 1, "C")
+            pdf.set_font('Arial', '', 11)
+            pdf.multi_cell(
+                185, 7, f'Observaciones: {inspection["inspection"]["notes"]}', 1, 1, '')
             pdf.ln(10)
         pdf.output(FILENAME, 'F')
