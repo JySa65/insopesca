@@ -112,14 +112,14 @@ class ReportListCompanyOrDriver(View):
         values = None
 
         model = models.Company if report_select == "all_company" else models.Driver
-        start = datetime.strptime((date_1), 
-                                            "%d/%m/%Y").strftime("%Y-%m-%d %H:%M")
-        end = datetime.today()
-        if date_2 != "":
-            end = datetime.strptime((date_2+" 23:59"), 
-                                        "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M")
-        if str(end) <= str(start):
-            values = False
+        if valid == "1":
+            start = datetime.strptime((date_1), "%d/%m/%Y").strftime("%Y-%m-%d %H:%M")
+            end = datetime.today()
+            if date_2 != "":
+                end = datetime.strptime((date_2+" 23:59"), 
+                                            "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M")
+            if str(end) <= str(start):
+                values = False
 
         if (date_1) == "":
             datas = model.objects.all()
@@ -150,6 +150,7 @@ class ReportListCompanyOrDriver(View):
         (pdf.cell(120, 8, 'Nombre', 1, 0, 'C') if _type == models.Company else
          pdf.cell(90, 8, 'Nombres y Apellidos', 1, 0, 'C'))
         pdf.cell(35, 8, 'Telefono Movil', 1, 0, 'C')
+
         if _type == models.Company:
             pdf.cell(35, 8, 'SPES', 1, 0, 'C')
             pdf.cell(40, 8, 'Activo', 1, 1, 'C')

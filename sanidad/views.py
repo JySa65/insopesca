@@ -748,7 +748,7 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         context['driver'] = drivers
         context['type'] = _type
         valid_type = valid_type_all + valid_type_ind
-        print(str(date2) < str(date1))
+
         if _type not in valid_type and _type != "":
             context['msg'] = "Esta Haciendo Algo Raro :'c."
             return context
@@ -763,9 +763,8 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
                                             "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M")
 
             if str(end) <= str(start):
-                context['msg'] = "Rango de Fechas es Incoherente"
+                context['msg'] = "ESTAS BUSCANDO A MADURO :D"
                 return context
-
 
         if _type == "all_company":
             if valid == "1": 
@@ -773,9 +772,8 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
             context['all_company'] = companys
             if len(companys) == 0:
                 context['msg'] = "No hay nada que mostrar..."
-
             return context
-
+            
         if _type == "all_driver":
             if valid == "1": 
                 drivers = drivers.filter(created_at__range=(start, end))    
@@ -786,11 +784,12 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
 
         if _type in valid_type_ind:
             if documents == "":
-                context['msg'] = "Esta Haciendo Algo Raro :'c.."
+                context['msg'] = "Esta Haciendo Algo Raro :'c.., NO ESNCONTRARAS A MADURO AQUI"
+                return context
 
             if documents != "" and not validate_uuid4(documents):
-                context['msg'] = "Esta Haciendo Algo Raro :'c.."
-            return context
+                context['msg'] = "Esta Haciendo Algo Raro :'c., MADURO TE AMA"
+                return context
 
         if _type == 'individual_company':
             company = companys.filter(pk=documents)
@@ -799,10 +798,12 @@ class UglyReportsView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
                 context['msg'] = "No hay coincidencia."
 
         if _type == 'individual_driver':
-            driver = driver.filter(pk=documents)
+            driver = drivers.filter(pk=documents)
+
             context['individual_driver'] = driver
             if len(driver) == 0:
                 context['msg'] = "No hay coincidencia."
+        
         return context
 
 
