@@ -680,7 +680,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/**\n * This module containts
 /*!*******************************************************!*\
   !*** ./node_modules/sweetalert2/src/staticMethods.js ***!
   \*******************************************************/
-/*! exports provided: isValidParameter, isUpdatableParameter, isDeprecatedParameter, argsToParams, getContainer, getPopup, getTitle, getContent, getImage, getIcons, getCloseButton, getActions, getConfirmButton, getCancelButton, getFooter, getFocusableElements, getValidationMessage, isLoading, isVisible, clickConfirm, clickCancel, fire, mixin, queue, getQueueStep, insertQueueStep, deleteQueueStep, showLoading, enableLoading, getTimerLeft, stopTimer, resumeTimer, toggleTimer, increaseTimer, isTimerRunning */
+/*! exports provided: argsToParams, getContainer, getPopup, getTitle, getContent, getImage, getIcons, getCloseButton, getActions, getConfirmButton, getCancelButton, getFooter, getFocusableElements, getValidationMessage, isLoading, isVisible, clickConfirm, clickCancel, fire, mixin, queue, getQueueStep, insertQueueStep, deleteQueueStep, showLoading, enableLoading, getTimerLeft, stopTimer, resumeTimer, toggleTimer, increaseTimer, isTimerRunning, isValidParameter, isUpdatableParameter, isDeprecatedParameter */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1161,7 +1161,18 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var swee
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _company_form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./company_form */ \"./src/module/acuicultura/company_form.js\");\n/* harmony import */ var _repre_form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./repre_form */ \"./src/module/acuicultura/repre_form.js\");\n/* harmony import */ var _specie__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./specie */ \"./src/module/acuicultura/specie.js\");\n/* harmony import */ var _species_form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./species_form */ \"./src/module/acuicultura/species_form.js\");\n/* harmony import */ var _tracing_form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./tracing_form */ \"./src/module/acuicultura/tracing_form.js\");\n\n\n\n\n\n\n//# sourceURL=webpack:///./src/module/acuicultura/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _company_form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./company_form */ \"./src/module/acuicultura/company_form.js\");\n/* harmony import */ var _repre_form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./repre_form */ \"./src/module/acuicultura/repre_form.js\");\n/* harmony import */ var _specie__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./specie */ \"./src/module/acuicultura/specie.js\");\n/* harmony import */ var _species_form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./species_form */ \"./src/module/acuicultura/species_form.js\");\n/* harmony import */ var _tracing_form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./tracing_form */ \"./src/module/acuicultura/tracing_form.js\");\n/* harmony import */ var _report_view_simple__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./report_view_simple */ \"./src/module/acuicultura/report_view_simple.js\");\n/* harmony import */ var _report_view_simple__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_report_view_simple__WEBPACK_IMPORTED_MODULE_5__);\n\n\n\n\n\n\n\n//# sourceURL=webpack:///./src/module/acuicultura/index.js?");
+
+/***/ }),
+
+/***/ "./src/module/acuicultura/report_view_simple.js":
+/*!******************************************************!*\
+  !*** ./src/module/acuicultura/report_view_simple.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("\n\n//# sourceURL=webpack:///./src/module/acuicultura/report_view_simple.js?");
 
 /***/ }),
 
