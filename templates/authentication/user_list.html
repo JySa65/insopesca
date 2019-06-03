@@ -1,15 +1,4 @@
-{% extends 'base.html' %}
-{% block title %} USUARIOS {% endblock %}
 
-
-{% block sidebar %}
-{% include 'sidebar/authentication.html' %}
-{% endblock sidebar %}
-{% block pageheader %}
-Usuarios
-{% endblock pageheader %}
-
-{% block context %}
 <div class="row">
 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 		<div class="card">
@@ -31,7 +20,7 @@ Usuarios
 							</tr>
 						</thead>
 						<tbody>
-							{% for object in object_list %}
+							{% for object in user %}
 							<tr>
 								<td>{{ forloop.counter }}</td>
 								<td><a href="{% url 'authentication:detail' object.pk %}">{{ object.email }}</a></td>
@@ -70,4 +59,4 @@ Usuarios
 		</div>
 	</div>
 </div>
-{% endblock %}
+

@@ -5,6 +5,10 @@ import validInput from '../../utils/validInput.js';
 import deleteSwalCompany from '../../utils/delete_with_swal.js';
 
 const id_form_company_acui = document.querySelector("#id_form_company_acuicultura")
+const $id_illegal_superfaces = document.querySelector("#id_illegal_superfaces")
+const $id_permise_superfaces = document.querySelector("#id_permise_superfaces")
+const $id_regular_superfaces = document.querySelector("#id_regular_superfaces")
+
 if (id_form_company_acui) {
     document.querySelector("#id_name").addEventListener(
         "keypress", (event) => validInput('g', 50, event))
@@ -14,12 +18,10 @@ if (id_form_company_acui) {
 
     document.querySelector("#id_tlf_house").addEventListener(
         "keypress", (event) => validInput('n', 11, event))
+}
 
-    const $id_illegal_superfaces = document.querySelector("#id_illegal_superfaces")
-    const $id_permise_superfaces = document.querySelector("#id_permise_superfaces")
-    const $id_regular_superfaces = document.querySelector("#id_regular_superfaces")
-    
-    const enabledDisabled = (status, ids) => {
+if ($id_illegal_superfaces && $id_permise_superfaces && $id_regular_superfaces) {
+    const enaDisa = (status, ids) => {
         if (status) {
             ids.forEach(id => {
                 id.checked = false
@@ -33,21 +35,45 @@ if (id_form_company_acui) {
         }
     }
 
-    $id_illegal_superfaces.addEventListener('change', 
-        e => enabledDisabled(e.target.checked, 
-            [$id_permise_superfaces,$id_regular_superfaces]))
-    
-    $id_permise_superfaces.addEventListener('change', 
-        e => enabledDisabled(e.target.checked, 
+    const enabledDisabled = (e) => {
+        let name = e.target.name
+        const check = e.target.checked
+       
+        switch (name) {
+            case 'illegal_superfaces':
+                enaDisa(check, [$id_permise_superfaces, $id_regular_superfaces])
+                break;
+            case 'permise_superfaces':
+                enaDisa(check, [$id_illegal_superfaces])
+                if (check) $id_regular_superfaces.checked = true 
+                else $id_regular_superfaces.checked = false 
+                break
+            case 'regular_superfaces':
+                enaDisa(check, [$id_illegal_superfaces])
+                if (check) $id_permise_superfaces.checked = true 
+                else $id_permise_superfaces.checked = false 
+                break
+            default:
+                break;
+        
+        }
+    }
+
+    $id_illegal_superfaces.addEventListener('change',
+        e => enabledDisabled(e,
+            [$id_permise_superfaces, $id_regular_superfaces]))
+
+    $id_permise_superfaces.addEventListener('change',
+        e => enabledDisabled(e,
             [$id_illegal_superfaces]))
 
-    $id_regular_superfaces.addEventListener('change', 
-        e => enabledDisabled(e.target.checked, 
+    $id_regular_superfaces.addEventListener('change',
+        e => enabledDisabled(e,
             [$id_illegal_superfaces]))
 }
 
 const deleteuni = (password, company) => {
-    
+
     const config = {
         headers: {
             "X-CSRFToken": getCookie("csrftoken"),
@@ -82,7 +108,7 @@ const btn_add_south = document.querySelector("#btn_add_south")
 const btn_add_west = document.querySelector("#btn_add_west")
 const btn_add_oest = document.querySelector("#btn_add_oest")
 
-if (btn_add_north && btn_add_south && btn_add_west && btn_add_oest){
+if (btn_add_north && btn_add_south && btn_add_west && btn_add_oest) {
     btn_add_north.addEventListener('click', (e) => addLinderCompany(e, '#id_north'))
     btn_add_south.addEventListener('click', (e) => addLinderCompany(e, '#id_south'))
     btn_add_west.addEventListener('click', (e) => addLinderCompany(e, '#id_west'))
@@ -136,7 +162,7 @@ const addLinderCompany = (e, id) => {
             idSelects.forEach(idSelect => {
                 const select = document.querySelector(idSelect)
                 select.innerHTML += `
-                    <option value="${data.data.id}" ${id == idSelect ? 'selected': ''}>${data.data.name.replace(/\b[a-z]/g, c => c.toUpperCase())}</option>
+                    <option value="${data.data.id}" ${id == idSelect ? 'selected' : ''}>${data.data.name.replace(/\b[a-z]/g, c => c.toUpperCase())}</option>
                 `
             });
             swal.fire({

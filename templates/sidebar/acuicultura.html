@@ -1,10 +1,11 @@
-<li class="nav-item">
-	<a class="nav-link" href="{% url 'acuicultura:home' %}"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+{% if request.user.is_superuser or request.user.rol == 'is_coordinator'%}
+<li class="nav-divider">
+	Acuicultura
 </li>
+{% endif %}
 
 <li class="nav-item ">
-	<a class="nav-link " href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-4"
-		aria-controls="submenu-4">
+	<a class="nav-link " href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-4">
 		<i class="fa fa-fw fa-circle"></i>
 		Unidades Productoras
 		<span class="badge badge-success">6</span>
@@ -49,20 +50,30 @@
 </ul>
 
 <li class="nav-item ">
-	<a class="nav-link " href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1"
-		aria-controls="submenu-1">
-		<i class="fa fa-fw fa-user-circle"></i>
-		Configuración
+	<a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3"
+		aria-controls="submenu-3">
+		<i class="fas fa-file-pdf"></i>
+		Consultas
 	</a>
-	<div id="submenu-1" class="collapse submenu">
+	<div id="submenu-3" class="collapse submenu">
 		<ul class="nav flex-column">
 			<li class="nav-item">
-				<a class="nav-link" href="{% url 'authentication:change_password' %}">Cambio De Contraseña
-				</a>
+				<a class="nav-link" href="">Unidad Productora</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="">Seguimiento</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="">Inspecciones</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="">Especies</a>
 			</li>
 		</ul>
 	</div>
 </li>
-<li class="nav-item">
-	<a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-power-off "></i>Cerrar Sesión</a>
-</li>
+
+<!-- 
+	en un mes decir cuantos seguimiento en dicho estado
+	mostrar las empresa de acuerdo al estatus permisada o iligal
+ -->

@@ -1,8 +1,41 @@
 {% extends 'base.html' %}
-{% block title %} {{ object.name|upper }} {% endblock %}
+{% block title %} {{ unit.name|upper }} {% endblock %}
 {% block sidebar %}
 {% include 'sidebar/acuicultura.html' %}
 {% endblock sidebar %}
 {% block pageheader %}
-Acuicultura / Unida Productora /{{ object.name }}
+Acuicultura / Unida Productora / Estatus / <a href="{% url 'acuicultura:detail_unit' unit.pk %}">{{ unit.name }}</a>
 {% endblock pageheader %}
+
+
+{% block context %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card-header">
+                        <a href="javascript:window.history.back()" class="btn btn-rounded btn-primary">Regresar <i
+                                class="fas fa-reply"></i></a>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" class="text-center">
+                            {% csrf_token %}
+                            <p class="h1 mb-4">Estado Legal Ante Insopesca</p>
+                            {% for i in form %}
+                            <label class="custom-control custom-checkbox custom-control-inline">
+                                {{ i }}
+                                <span class="custom-control-label">{{ i.label}}</span>
+                            </label>
+                            {% endfor %}
+                            <div class="mt-5">
+                                <button type="submit" class="btn btn-rounded btn-success">Aceptar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,6 +1,8 @@
-<li class="nav-item">
-  <a class="nav-link" href="{% url 'sanidad:home' %}"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
+{% if request.user.is_superuser or request.user.rol == 'is_coordinator'%}
+<li class="nav-divider">
+  Sanidad
 </li>
+{% endif %}
 <li class="nav-item">
   <a class="nav-link" href="{% url 'sanidad:company_list' %}"><i class="fa fa-fw fa-circle"></i>Empresas</a>
 </li>
@@ -12,12 +14,12 @@
 </li>
 
 <li class="nav-item ">
-  <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2"
-    aria-controls="submenu-2">
+  <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-21"
+    aria-controls="submenu-21">
     <i class="fas fa-file-pdf"></i>
     Consultas
   </a>
-  <div id="submenu-2" class="collapse submenu">
+  <div id="submenu-21" class="collapse submenu">
     <ul class="nav flex-column">
       <li class="nav-item">
         <a class="nav-link" href="{% url 'sanidad:report_views' %}">Inspecciones</a>
@@ -31,23 +33,6 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'sanidad:home_grapich' %}">Graficas</a>
       </li>
-
     </ul>
   </div>
-</li>
-
-<li class="nav-item ">
-  <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1"
-    aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Configuración <span
-      class="badge badge-success">6</span></a>
-  <div id="submenu-1" class="collapse submenu">
-    <ul class="nav flex-column">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'authentication:change_password' %}">Cambio De Contraseña</a>
-      </li>
-    </ul>
-  </div>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-power-off "></i>Cerrar Sesión</a>
 </li>

@@ -1,8 +1,6 @@
 {% extends 'sanidad/base.html' %}
 {% block title %} {{ object.name|upper }} {% endblock %}
-{% block sidebar %}
-{% include 'sidebar/sanidad.html' %}
-{% endblock sidebar %}
+
 {% block pageheader %}
 <a href="{% url 'sanidad:home' %}">Sanidad</a> / <a href="{% url 'sanidad:company_list'  %}">Empresas</a> / <a
     href="{% url 'sanidad:company_detail' company.pk %}">{{ company.name }}</a> / {{ object.get_full_name }}

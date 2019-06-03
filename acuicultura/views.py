@@ -731,3 +731,18 @@ class LagoonInspectionCreateView(LoginRequiredMixin, UserUrlCorrectMixin, Create
 class StatusInsopescaUpdateView(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):
     model = StatusInsopesca
     form_class = StatusInsopescaForm
+
+    def dispatch(self, request, *args, **kwargs):
+        self.unit = get_object_or_404(ProductionUnit, pk=self.kwargs.get('pkc'))
+        return super(StatusInsopescaUpdateView, 
+                            self).dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, **kwargs):
+        context = super(StatusInsopescaUpdateView,
+                        self).get_context_data(**kwargs)
+        context['unit'] = self.unit
+        return context
+    
+    def get_success_url(self):
+        return reverse_lazy('acuicultura:detail_unit', args=(self.unit.pk,))
+    

@@ -93,13 +93,14 @@ Acuicultura / Unida Productora /{{ object.name }}
 
 		<div class="card">
 			<div class="card-header">
-				<span class="h4 text-primary"><b>Estatus En Insopesca</b></span>
+				<span class="h4 text-primary">
+					<b>Estado Legal Ante Insopesca</b>
+				</span>
 			</div>
 			<div class="card-body">
 				<div class="text-center">
 					{% if status_ins.illegal_superfaces %}
 					<h1 class="text-danger">Ilegal</h1>
-					{{ status_ins }}
 					{% else %}
 					<h1 class="text-success">Registrada y Permisada</h1>
 					{% endif %}

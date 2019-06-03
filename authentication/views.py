@@ -67,7 +67,7 @@ class UserListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
         # self.model.objects.filter(**data)
         return self.model.objects.filter(is_delete=False, is_superuser=False).exclude(
             email=self.request.user.email
-      
+
         )
 
 
@@ -211,10 +211,11 @@ class LoginFormView(FormView):
     template_name = "authentication/login.html"
 
     def render_user(self, user):
-        if user.is_superuser or user.role == 'is_coordinator':
-            return HttpResponseRedirect(Selects().level_user_url()['is_admin_or_coordinator'])
-        else:
-            return HttpResponseRedirect(Selects().level_user_url()[user.level])
+        return HttpResponseRedirect('/dashboard')
+        # if user.is_superuser or user.role == 'is_coordinator':
+        #     return HttpResponseRedirect(Selects().level_user_url()['is_admin_or_coordinator'])
+        # else:
+        #     return HttpResponseRedirect(Selects().level_user_url()[user.level])
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -244,9 +245,10 @@ class LoginFormView(FormView):
                             user=user, session=session)
             url_next = request.GET.get('next')
             if url_next is not None:
-                return HttpResponseRedirect(url_next)
+                return HttpResponseRedirect('/dashboard')
             else:
-                return self.render_user(user)
+                return HttpResponseRedirect('/dashboard')
+                # return self.render_user(user)
         msg = "Usuario o Contraseña Incorrecta"
         messages.add_message(self.request, messages.INFO, msg)
         return render(request, self.template_name, {'form': self.form_class})

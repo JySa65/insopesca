@@ -1,15 +1,3 @@
-{% extends 'base.html' %}
-{% block title %} ACUICULTURA {% endblock %}
-
-
-{% block sidebar %}
-{% include 'sidebar/acuicultura.html' %}
-{% endblock sidebar %}
-{% block pageheader %}
-Unidades Productoras
-{% endblock pageheader %}
-
-{% block context %}
 <div class="row">
 	<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 		<div class="card">
@@ -31,7 +19,7 @@ Unidades Productoras
 							</tr>
 						</thead>
 						<tbody>
-							{% for object in object_list %}
+							{% for object in acuicultura %}
 							<tr>
 								<td>{{ forloop.counter }}</td>
                                
@@ -61,7 +49,6 @@ Unidades Productoras
 								<td>Esto</td>
 								<td>Momento</td>
 							</tr>
-
 							{% endfor %}
 						</tbody>
 					</table>
@@ -70,4 +57,3 @@ Unidades Productoras
 		</div>
 	</div>
 </div>
-{% endblock %}

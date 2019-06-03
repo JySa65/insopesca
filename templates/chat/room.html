@@ -117,9 +117,20 @@
     document.querySelector('#chat-message-submit').onclick = function (e) {
         var messageInputDom = document.querySelector('#chat-message-input');
         var message = messageInputDom.value;
-        chatSocket.send(JSON.stringify({
-            'message': message
-        }));
+        if (message == 'clear') {
+            window.location.reload()
+        }
+        if (typeof (String.prototype.trim) === "undefined") {
+            String.prototype.trim = function () {
+                return String(this).replace(/^\s+|\s+$/g, '');
+            };
+        }
+        message = message.trim()
+        if (message.length != 0 && message != 'clear') {
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+        }
         messageInputDom.value = '';
     };
 </script>

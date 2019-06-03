@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %} Dashboard {% endblock %}
+
+{% block sidebar %}
+{% include 'sidebar/index.html' %}
+{% endblock sidebar %}
+
+{% block pageheader %}
+Dashboard
+{% endblock pageheader %}
+
+{% block context %}
+{% if request.user.is_superuser  or request.user.rol == 'is_coordinator' %}
+<h4 class="pageheader-title text-center text-primary"><b>Usuario</b></h4>
+<hr>
+{% include 'authentication/user_list.html' %}
+{% endif %}
+
+{% if request.user.level == 'is_acuicul' or request.user.is_superuser or request.user.rol == 'is_coordinator' %}
+<div class="row">
+    <div class="col-12">
+        {% if request.user.level != 'is_acuicul' %}
+        <h4 class="pageheader-title text-center text-primary mt-5"><b>Acuicultura</b></h4>
+        <hr>
+        {% endif %}
+        {% include 'acuicultura/home.html' %}
+    </div>
+</div>
+{% endif %}
+
+
+{% if request.user.level == 'is_sanid' or request.user.is_superuser or request.user.rol == 'is_coordinator'%}
+<div class="row">
+    <div class="col-12">
+        {% if request.user.level != 'is_sanid' %}
+        <h4 class="pageheader-title text-center text-primary mt-5"><b>Sanidad</b></h4>
+        <hr>
+        {% endif %}
+        {% include 'sanidad/home_view.html' %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
