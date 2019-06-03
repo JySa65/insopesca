@@ -5,6 +5,10 @@
     <a class="nav-link" href="/"><i class="fa fa-fw fa-user-circle"></i>Dashboard</a>
 </li>
 
+{% if request.user.is_superuser  or request.user.rol == 'is_coordinator' %}
+{% include 'sidebar/authentication.html' %}
+{% endif %}
+
 {% if request.user.level == 'is_acuicul' or request.user.is_superuser or request.user.rol%}
 {% include 'sidebar/acuicultura.html' %}
 {% endif %}
