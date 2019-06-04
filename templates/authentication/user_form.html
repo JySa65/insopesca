@@ -28,7 +28,7 @@ Registro De Usuario
 				{% if object.pk %}
 				<a href="{% url 'authentication:detail' object.pk %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
 				{% else %}
-				<a href="{% url 'authentication:list' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
+				<a href="/" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>
 				{% endif %}
 				{% else %}
 				<a href="{% url 'authentication:detail_profile' %}" class="btn btn-rounded btn-primary">Regresar <i class="fas fa-reply"></i></a>

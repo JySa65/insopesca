@@ -61,9 +61,9 @@ class Selects(object):
 
     def level_user_url(self):
         return {
-            'is_admin_or_coordinator': reverse('authentication:list'),
-            'is_acuicul': reverse('acuicultura:home'),
-            'is_sanid': reverse('sanidad:home'),
+            'is_admin_or_coordinator': reverse('home'),
+            'is_acuicul': reverse('home'),
+            'is_sanid': reverse('home'),
             # 'is_ord_pesque':
             # 'is_tvc',
             # 'is_fomen',

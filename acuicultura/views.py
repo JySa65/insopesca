@@ -366,9 +366,6 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
         data = json.loads(str(request.body, 'utf-8'))
         lagoons = data.get('lagoon')
         wells = data.get('well')
-        # illegal_superfaces = data.get('illegal_superfaces', 0)
-        # permise_superfaces = data.get('permise_superfaces', 0)
-        # regular_superfaces = data.get('regular_superfaces', 0)
         well_current = data.get('well_current', 0)
         laggon_current = data.get('laggon_current', 0)
         producion_unit = self.get_object()
@@ -428,15 +425,6 @@ class TracingCreate(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
                         msg=f"Algunos Datos Son Requeridos En El Pozo N° {number+1}"
                     )
                     return JsonResponse(data)
-
-        # if (illegal_superfaces == 0 or
-        #         permise_superfaces == 0 or regular_superfaces == 0):
-        #     data = dict(
-        #         status=False,
-        #         msg=f"Algunos Datos Son Requeridos En La Superficies"
-        #     )
-        #     return JsonResponse(data)
-
         try:
             with transaction.atomic():
                 data = dict(

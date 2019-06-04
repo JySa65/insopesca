@@ -98,7 +98,7 @@ class UserCreateView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
 class UserUpdateView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
     model = models.User
     form_class = forms.UserUpdateForm
-    success_url = reverse_lazy('authentication:list')
+    success_url = reverse_lazy('home')
 
     def form_valid(self, form):
         _object = form.save(commit=False)
@@ -121,7 +121,7 @@ class UserDeleteView(LoginRequiredMixin, AdminRequiredMixin, DeleteView):
         user.change_pass = False
         user.set_password(user.ci)
         user.save()
-        return HttpResponseRedirect(reverse_lazy('authentication:list'))
+        return HttpResponseRedirect(reverse_lazy('home'))
 
 
 class UserAdminDetailView(LoginRequiredMixin, AdminRequiredMixin, DetailView):
@@ -208,11 +208,8 @@ class LoginFormView(FormView):
     template_name = "authentication/login.html"
 
     def render_user(self, user):
-        return HttpResponseRedirect('/dashboard')
-        # if user.is_superuser or user.role == 'is_coordinator':
-        #     return HttpResponseRedirect(Selects().level_user_url()['is_admin_or_coordinator'])
-        # else:
-        #     return HttpResponseRedirect(Selects().level_user_url()[user.level])
+        return HttpResponseRedirect(reverse_lazy('home'))
+       
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -240,12 +237,7 @@ class LoginFormView(FormView):
                             session_key=user_session.session.session_key).delete()
                         models.SessionUser.objects.create(
                             user=user, session=session)
-            url_next = request.GET.get('next')
-            if url_next is not None:
-                return HttpResponseRedirect('/dashboard')
-            else:
-                return HttpResponseRedirect('/dashboard')
-                # return self.render_user(user)
+            return self.render_user(user)
         msg = "Usuario o Contraseña Incorrecta"
         messages.add_message(self.request, messages.INFO, msg)
         return render(request, self.template_name, {'form': self.form_class})

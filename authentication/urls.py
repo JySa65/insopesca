@@ -9,7 +9,7 @@ from authentication.views import UserListView, UserCreateView, UserUpdateView, \
 app_name = "authentication"
 
 urlpatterns = [
-    path('', UserListView.as_view(), name="list"),
+#     path('', UserListView.as_view(), name="list"),
     path('create/', UserCreateView.as_view(), name="create"),
     path('detail/<pk>/', UserDetailView.as_view(), name="detail"),
     path('update/<pk>/', UserUpdateView.as_view(), name="update"),
