@@ -101,7 +101,7 @@ if (btn_delete_company) {
                         showConfirmButton: false,
                         timer: 1000
                     })
-                    window.location.href = "http://localhost:8000/sanidad/company/"
+                    window.location.href = `${window.location.origin}/sanidad/company/`
                 }
             })
     })

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Tipo De Compañias
+{% endblock %}
+
+{% block pageheader %}
+Tipo De Compañias
+{% endblock %}
+
+{% block context %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <a href="javascript:history.back()" class="btn btn-rounded btn-primary">
+                    Regresar
+                    <i class="fas fa-reply"></i>
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="id_type_company_list">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Creada</th>
+                                <th>Actualizada</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for object in object_list %}
+                                <tr id={{ object.pk }}>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ object.name }}</td>
+                                    <td>{{ object.created_at }}</td>
+                                    <td>{{ object.updated_at }}</td>
+                                    <td>
+                                        <button type="button" data-toggle="tooltip" data-placement="top" title="Editar" class="btn btn-sm btn-info" name="update">
+                                            Editar
+                                            <!-- <i class="fas fa-edit"></i> -->
+                                        </button>
+                                        <button type="button" data-toggle="tooltip" data-placement="top" title="Eliminar" class="btn btn-sm btn-danger" name="delete">
+                                            Eliminar
+                                            <!-- <i class="fas fa-trash"></!--> 
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="5">No Hay Datos</td>
+                                </tr>
+                            {% endfor %} 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

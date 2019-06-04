@@ -9,7 +9,7 @@ from sanidad.views import HomeTemplateView, \
     DriverDeleteView, TransportDriverCreateView, InspectionListApiView, \
     InspectionDetailApiView, InspectionListNotificationView, \
     InspectionDriversCompanyListView, ReportGenreralView, ReportGeneralAPIView, \
-    UglyReportsView, ReportInspectionExpired, HomeGrapichView
+    UglyReportsView, ReportInspectionExpired, HomeGrapichView, TypeCompanyListView
 
 app_name = 'sanidad'
 
@@ -90,6 +90,8 @@ urlpatterns = [
 
      # graphical
 
-     path('graficos/', HomeGrapichView.as_view(), name="home_grapich")
+     path('graficos/', HomeGrapichView.as_view(), name="home_grapich"),
 
+     # type company
+     path('type_company/', TypeCompanyListView.as_view(), name="type_company")
 ]

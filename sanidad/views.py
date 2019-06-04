@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.views.generic import TemplateView, ListView, CreateView, \
     DetailView, UpdateView, DeleteView, View
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 from utils.check_password import checkPassword
@@ -19,6 +21,68 @@ from uuid import UUID
 import json
 
 # Create your views here.
+@method_decorator(csrf_exempt, name='dispatch')
+class TypeCompanyListView(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
+    model = models.TypeCompany
+
+    def get_data(self):
+        return json.loads(
+            str(self.request.body, 'utf-8'))
+
+    def put(self, request, *args, **kwargs):
+        data = self.get_data()
+        _id = data.get('id', '')
+        value = data.get('value', '')
+        if value  == '' or _id == '':
+            data=dict(
+                status=False,
+                msg="No Puede Estar Vacio")
+            return JsonResponse(data)
+        check_data = self.model.objects.filter(
+            name=value.lower()).exists()
+        if check_data:
+            data = dict(
+                status=False,
+                msg="Tipo De Compañia Existe"
+            )
+            return JsonResponse(data)
+        self.model.objects.filter(pk=_id).update(name=value)
+        data = dict(
+            status = True,
+            msg="Tipo De Compañia Actualizado"
+        )
+        return JsonResponse(data)
+
+    def post(self, request, *args, **kwargs):
+        data = self.get_data()
+        _id = data.get('id', '')
+        value = data.get('value', '')
+        if value  == '' or _id == '':
+            data=dict(
+                status=False,
+                msg="No Puede Estar Vacio")
+            return JsonResponse(data)
+        user = checkPassword(self.request.user.email, value)
+        if not user:
+            data = dict(
+                status=False,
+                msg="Contraseña Incorrecta"
+            )
+            return JsonResponse(data)
+        
+        try:
+            get_object_or_404(self.model, pk=_id).delete()
+            data = dict(
+                status=True,
+                msg="Tipo De Compañia Eliminada"
+            )            
+        except Exception:
+            data = dict(
+                status=True,
+                msg="No Se Puede Eliminar El Tipo De Compañia"
+            )
+        return JsonResponse(data)
+
 
 
 class InspectionDetailApiView(LoginRequiredMixin, View):

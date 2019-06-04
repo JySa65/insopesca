@@ -10,13 +10,13 @@ Dashboard
 {% endblock pageheader %}
 
 {% block context %}
-{% if request.user.is_superuser  or request.user.rol == 'is_coordinator' %}
+{% if request.user.is_superuser  or request.user.role == 'is_coordinator' %}
 <h4 class="pageheader-title text-center text-primary"><b>Usuario</b></h4>
 <hr>
 {% include 'authentication/user_list.html' %}
 {% endif %}
 
-{% if request.user.level == 'is_acuicul' or request.user.is_superuser or request.user.rol == 'is_coordinator' %}
+{% if request.user.level == 'is_acuicul' or request.user.is_superuser or request.user.role == 'is_coordinator' %}
 <div class="row">
     <div class="col-12">
         {% if request.user.level != 'is_acuicul' %}
@@ -29,7 +29,7 @@ Dashboard
 {% endif %}
 
 
-{% if request.user.level == 'is_sanid' or request.user.is_superuser or request.user.rol == 'is_coordinator'%}
+{% if request.user.level == 'is_sanid' or request.user.is_superuser or request.user.role == 'is_coordinator'%}
 <div class="row">
     <div class="col-12">
         {% if request.user.level != 'is_sanid' %}

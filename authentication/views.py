@@ -198,11 +198,8 @@ class SecurityQuestionCreateView(LoginRequiredMixin, FormView):
                     self.model.objects.create(**security, user=user)
                 user.question = True
                 user.save()
-                if self.request.user.is_superuser or self.request.user.role == 'is_coordinator':
-                    return HttpResponseRedirect(
-                        Selects().level_user_url()['is_admin_or_coordinator'])
-                else:
-                    return HttpResponseRedirect(Selects().level_user_url()[user.level])
+                return HttpResponseRedirect(
+                    reverse_lazy('home'))
         return render(self.request, self.template_name, {'form': form})
 
 
