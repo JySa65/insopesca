@@ -36,13 +36,20 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'authentication:change_password' %}">Cambio De Contraseña</a>
             </li>
-            {% if request.user.is_superuser %}
+            <!-- {% if request.user.is_superuser %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'authentication:bd_user' %}">Base De Datos</a>
             </li>
-            {% endif %}
+            {% endif %} -->
         </ul>
     </div>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="/admin/">
+        <i class="fas fa-question-circle"></i>
+        Ayuda
+    </a>
 </li>
 
 {% if request.user.is_superuser %}
