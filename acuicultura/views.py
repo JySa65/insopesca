@@ -15,6 +15,7 @@ import json
 from utils.permissions import UserUrlCorrectMixin
 from django.db import transaction
 from django.utils import timezone
+from datetime import datetime, date
 # Create your views here.
 
 
@@ -737,3 +738,99 @@ class StatusInsopescaUpdateView(LoginRequiredMixin, UserUrlCorrectMixin, UpdateV
 
 class ReportProductionUnitView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
     template_name = "acuicultura/report_view_unit.html"
+
+    
+    def get_context_data(self, **kwargs):
+        context = super(ReportProductionUnitView,
+                        self).get_context_data(**kwargs)
+        units = ProductionUnit.objects.all()
+        _type = self.request.GET.get('type', '')
+        document = self.request.GET.get('document', '')
+        date1 = self.request.GET.get('date_range1', '')
+        date2 = self.request.GET.get('date_range2', '')
+        valid = self.request.GET.get('valid', '0')
+
+        context['unit'] = units
+
+        if valid == "1":
+            if date1 != "":
+                start = datetime.strptime((date1),
+                                "%d/%m/%Y").strftime("%Y-%m-%d %H:%M")
+                end = datetime.today()
+
+                if date2 != "":
+                    end = datetime.strptime((date2+" 23:59"),
+                                "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M")
+
+                if str(end) <= str(start):
+                    context['msg'] = "Rango de Fechas es Incoherente"
+                    return context
+
+                context['all'] = units.filter(created_at__range=(start, end))
+                return context       
+            
+            context['msg'] = "Declare las Fechas Por Favor."
+            return context
+        
+        if _type == 'individual_unit':
+            if document == "":
+                context['msg'] = "Declare la unidad productora."
+                return context
+
+            context['all'] = units.filter(pk=document)
+            return context
+        elif _type == "all_unit":     
+            context['all'] = units
+            return context
+        return context
+
+    
+
+class ReportTracingView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
+    template_name = "acuicultura/report_view_tracing.html"
+
+    
+    def get_context_data(self, **kwargs):
+        context = super(ReportTracingView,
+                        self).get_context_data(**kwargs)
+        units = ProductionUnit.objects.all()
+        _type = self.request.GET.get('type', '')
+        document = self.request.GET.get('document', '')
+        date1 = self.request.GET.get('date_range1', '')
+        date2 = self.request.GET.get('date_range2', '')
+        valid = self.request.GET.get('valid', '0')
+
+        context['unit'] = units
+
+        if valid == "1":
+            if date1 != "":
+                start = datetime.strptime((date1),
+                                "%d/%m/%Y").strftime("%Y-%m-%d %H:%M")
+                end = datetime.today()
+
+                if date2 != "":
+                    end = datetime.strptime((date2+" 23:59"),
+                                "%d/%m/%Y %H:%M").strftime("%Y-%m-%d %H:%M")
+
+                if str(end) <= str(start):
+                    context['msg'] = "Rango de Fechas es Incoherente"
+                    return context
+
+                context['all'] = units.filter(created_at__range=(start, end))
+                return context       
+            
+            context['msg'] = "Declare las Fechas Por Favor."
+            return context
+        
+        if _type == 'individual_unit':
+            if document == "":
+                context['msg'] = "Declare la unidad productora."
+                return context
+
+            context['all'] = units.filter(pk=document)
+            return context
+        else:     
+            context['all'] = units
+            return context
+        return context
+    

@@ -17,13 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from authentication.views import LoginFormView, ForgotPassword
 from django.contrib.auth.views import LogoutView
-from core.views import ApiMunicipalityView, ApiParishView, HomeTemplateView
+from core.views import ApiMunicipalityView, ApiParishView, HomeTemplateView, HelpView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', LoginFormView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),
     path('dashboard/', HomeTemplateView.as_view(), name="home"),
+    path('help/', HelpView.as_view(), name="help"),
     path('api/municipality/<pk>', ApiMunicipalityView.as_view(), name="municipality"),
     path('api/parish/<pk>', ApiParishView.as_view(), name="parish"),
     path('authentication/', include(

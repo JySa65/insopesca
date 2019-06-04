@@ -8,9 +8,12 @@ import asyncio
 class CheckInspectionCompaniesBeat(MiddlewareMixin):
 
     def process_request(self, request):
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.run_in_executor(None, self.check_inspections)
+        if (request.user.level == 'is_sanid' or 
+            request.user.is_superuser or request.user.role == 'is_coordinator'):
+            self.check_inspections
+        # loop = asyncio.new_event_loop()
+        # asyncio.set_event_loop(loop)
+        # loop.run_in_executor(None, )
 
     def check_inspections(self):
         today = datetime.now()

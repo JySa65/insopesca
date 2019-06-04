@@ -64,3 +64,6 @@ class HomeTemplateView(TemplateView):
         context['year_list'] = [i for i in range(years - 5, years+1)][::-1]
         return context
     
+
+class HelpView(TemplateView):
+    template_name = "help.html"

@@ -43,6 +43,13 @@ class ProductionUnit(core.Company):
         self.name = self.name.lower()
         super(ProductionUnit, self).save(*args, **kwargs)
 
+    def get_tracings(self, date1, date2):
+        alls = Tracing.objects.all()
+        if date1 and date2:
+            alls = alls.filter(created_at__range=(date1, date2))
+        return alls
+
+
 
 class RepreUnitProductive(core.Account):
     """
@@ -192,6 +199,7 @@ class StatusInsopesca(models.Model):
 
     def __str__(self):
         return str(self.company)
+
 
 class Tracing(models.Model):
     id = models.UUIDField(
