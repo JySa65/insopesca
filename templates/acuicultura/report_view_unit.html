@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}
+UNIDAD PRODUCTORA 
+{% endblock %}
+
+
+{% block pageheader %}
+UNIDAD PRODUCTORA 
+<hr>
+{% endblock pageheader %}
+
+{% block context %}
+<div class="row">
+    <div class="col-12">
+        {% if msg %}
+        <div class="form-group">
+            <div class="alert alert-danger" role="alert">
+                {{ msg }}
+            </div>
+        </div>
+        {% endif %}
+        <div class="card">
+            <div class="card-header">
+                <a href="javascript:window.history.back()" class="btn btn-rounded btn-primary">
+                    Regresar 
+                    <i class="fas fa-reply"></i>
+                </a>
+            </div>
+            <div class="card-body">
+                <form action="" method="get">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="text-center mb-4">
+                                <label class="h3 text-primary">
+                                    Reportes De Unidad Productora
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group mx-sm-3 mb-3 text">
+                                <label for="id_type" class="pr-2"><b>Por:</b></label>
+                                <select name="type" id="id_type" class="form-control show-tick">
+                                    <option value="">-------</option>
+                                
+                                    <!-- <option value="individual_company">Indiviual</option> -->
+                                    <option value="all_company">Todos</option>
+                            
+                                  
+                                    <!-- <optgroup label="Conductor">
+                                        <option value="individual_driver">Indiviual</option>
+                                        <option value="all_driver">Todos</option>
+                                    </optgroup> -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group mx-sm-3 mb-3 text">
+                                <label for="id_date_range1" class="pr-2"><b>Por Fecha:</b></label>
+                                <div class="input-group input-daterange" style="padding: 8px 0;">
+                                    <input type="text" class="form-control" name="date_range1" id="id_date_range1" readonly disabled>
+                                    <div class="input-group-addon" style="padding: 5px 10px;">a</div>
+                                    <input type="text" class="form-control" name="date_range2" id="id_date_range2" readonly disabled>
+                                </div>
+                                <div class="input-group input-daterange" style="padding: 8px 0;">
+                                    <input type="text" class="form-control" name="date_range1_text" id="id_date_range1_text" hidden disabled>
+                                    <div class="input-group-addon" hidden style="padding: 5px 10px;">a</div>
+                                    <input type="text" class="form-control" name="date_range2_text" id="id_date_range2_text" hidden disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

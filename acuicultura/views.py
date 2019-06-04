@@ -94,7 +94,7 @@ class ProductionUnitCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateVi
         location_form = self.three_form(request.POST)
         status_form = self.four_form(request.POST)
 
-        if (unit_form.is_valid() and utm_form.is_valid() and 
+        if (unit_form.is_valid() and utm_form.is_valid() and
                 location_form.is_valid() and status_form.is_valid()):
             with transaction.atomic():
                 unit_save = unit_form.save()
@@ -112,7 +112,7 @@ class ProductionUnitCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateVi
         return render(
             request,
             self.template_name,
-            {'form': unit_form, 'second': utm_form, 
+            {'form': unit_form, 'second': utm_form,
                 'three': location_form, 'four': status_form})
 
 
@@ -125,14 +125,13 @@ class ProductionUnitUpdate(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):
     three_form = BoundaryMapForm
     template_name = "acuicultura/production_unit_form.html"
 
-
     def get_context_data(self, **kwargs):
         context = super(ProductionUnitUpdate, self).get_context_data(**kwargs)
         unit = self.object
         cardinal = self.second_model.objects.filter(
             production_unit=unit).first()
         linder = self.thrid_model.objects.filter(
-             production_unit=unit).first()
+            production_unit=unit).first()
 
         context['first'] = self.form_class(instance=unit)
         context["second"] = self.second_form(instance=cardinal)
@@ -149,16 +148,16 @@ class ProductionUnitUpdate(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):
         cardinal_form = self.second_form(request.POST, instance=cardinal)
         linder_form = self.three_form(request.POST, instance=linder)
         if (unit_form.is_valid() and cardinal_form.is_valid() and
-            linder_form.is_valid()):
+                linder_form.is_valid()):
             unit_form.save()
             cardinal_form.save()
             linder_form.save()
             return HttpResponseRedirect(
                 reverse('acuicultura:detail_unit', args=(unit.pk,)))
         else:
-            return render(request, 
-                    self.template_name, 
-                    {'form': unit_form, 'second': cardinal_form})
+            return render(request,
+                          self.template_name,
+                          {'form': unit_form, 'second': cardinal_form})
 
 
 class ProductionuUnitDetail(LoginRequiredMixin, UserUrlCorrectMixin, DetailView):
@@ -687,7 +686,6 @@ class LagoonInspectionView(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
             lagoon=self.kwargs.get('pk')).order_by('-date')
         return queryset
 
-    
     def get_context_data(self, **kwargs):
         context = super(LagoonInspectionView, self).get_context_data(**kwargs)
         context['lagoon'] = get_object_or_404(Lagoon, pk=self.kwargs.get('pk'))
@@ -697,9 +695,10 @@ class LagoonInspectionView(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
 class LagoonInspectionCreateView(LoginRequiredMixin, UserUrlCorrectMixin, CreateView):
     model = InspectionLagoon
     form_class = InspectionLagoonForm
-    
+
     def get_context_data(self, **kwargs):
-        context = super(LagoonInspectionCreateView, self).get_context_data(**kwargs)
+        context = super(LagoonInspectionCreateView,
+                        self).get_context_data(**kwargs)
         context['lagoon'] = get_object_or_404(Lagoon, pk=self.kwargs.get('pk'))
         return context
 
@@ -715,22 +714,26 @@ class LagoonInspectionCreateView(LoginRequiredMixin, UserUrlCorrectMixin, Create
         return reverse_lazy(
             'acuicultura:inspection_lagoon', args=(self.kwargs.get('pk'),))
 
-    
+
 class StatusInsopescaUpdateView(LoginRequiredMixin, UserUrlCorrectMixin, UpdateView):
     model = StatusInsopesca
     form_class = StatusInsopescaForm
 
     def dispatch(self, request, *args, **kwargs):
-        self.unit = get_object_or_404(ProductionUnit, pk=self.kwargs.get('pkc'))
-        return super(StatusInsopescaUpdateView, 
-                            self).dispatch(request, *args, **kwargs)
-    
+        self.unit = get_object_or_404(
+            ProductionUnit, pk=self.kwargs.get('pkc'))
+        return super(StatusInsopescaUpdateView,
+                     self).dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(StatusInsopescaUpdateView,
                         self).get_context_data(**kwargs)
         context['unit'] = self.unit
         return context
-    
+
     def get_success_url(self):
         return reverse_lazy('acuicultura:detail_unit', args=(self.unit.pk,))
-    
+
+
+class ReportProductionUnitView(LoginRequiredMixin, UserUrlCorrectMixin, TemplateView):
+    template_name = "acuicultura/report_view_unit.html"

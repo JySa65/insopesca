@@ -26,6 +26,6 @@ class UserUrlCorrectMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
         url = f'/{request.META.get("PATH_INFO").split("/")[1].lower()}/'
         url_user = Selects().level_user_url()
-        if (url_user.get(request.user.level) != url and not request.user.is_superuser and not request.user.role == 'is_coordinator'):
-            return redirect('/')
+        # if (url_user.get(request.user.level) != url and not request.user.is_superuser and not request.user.role == 'is_coordinator'):
+        #     return redirect('/')
         return super().dispatch(request, *args, **kwargs)

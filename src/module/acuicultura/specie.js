@@ -30,7 +30,7 @@ if (btn_delete_specie) {
                         showConfirmButton: false,
                         timer: 1000
                     })
-                    window.location.href = "http://localhost:8000/acuicultura/species/list/"
+                    window.location.href = "/acuicultura/species/list/"
                 }
             })
     })

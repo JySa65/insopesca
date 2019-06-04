@@ -78,7 +78,7 @@ class TypeCompanyListView(LoginRequiredMixin, UserUrlCorrectMixin, ListView):
             )            
         except Exception:
             data = dict(
-                status=True,
+                status=False,
                 msg="No Se Puede Eliminar El Tipo De Compañia"
             )
         return JsonResponse(data)

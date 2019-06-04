@@ -6,7 +6,7 @@ from acuicultura.views import AcuiculturaHome, ProductionUnitCreateView,\
     TracingDetail, WellDetail, LagoonDetail, TracingdeleteView, Representative_unit_production_delete, Representative_unit_production_detail, \
     RepresentativeUnitProductionUpdate, TracingInspectionHomeView, \
     InspectionProductionUnitLagoon, LinderoView, LagoonInspectionView, \
-    LagoonInspectionCreateView
+    LagoonInspectionCreateView, ReportProductionUnitView
 
 
 
@@ -65,6 +65,8 @@ urlpatterns = [
          LagoonInspectionCreateView.as_view(), name="inspection_create"),
     
     path('<int:pk>/update/<uuid:pkc>', 
-         StatusInsopescaUpdateView.as_view(), name="status_update")
+         StatusInsopescaUpdateView.as_view(), name="status_update"),
+
+    path('report/production-unit', ReportProductionUnitView.as_view(), name="report_unit")
 
 ]

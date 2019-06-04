@@ -9,9 +9,7 @@ UNIDAD PRODUCTORA {{ object.name }}
 UNIDAD PRODUCTORA REGISTRO
 {% endif %}
 {% endblock %}
-{% block sidebar %}
-{% include 'sidebar/acuicultura.html' %}
-{% endblock sidebar %}
+
 {% block pageheader %}
 {% if object.pk %}
 Actualizacion De Unidad Productora: {{object.name}}
