@@ -1,4 +1,4 @@
-Django==2.1
+Django==2.1.11
 https://github.com/darklow/django-suit/tarball/v2
 bpython==0.17.1
 psycopg2==2.7.5
